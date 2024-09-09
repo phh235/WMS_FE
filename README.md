@@ -41,5 +41,5 @@ pnpm install
 ## Run project
 
 ```sh
-pnpm run dev
+pnpm dev
 ```
