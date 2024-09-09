@@ -1,16 +1,29 @@
 <template>
-  <main class="container-fluid">
+  <main class="container-fluid p-0">
     <div class="row align-items-center justify-content-center vh-100">
-      <div class="col-sm-6 text-black">
+      <div class="col-12 col-md-6 text-black vh-100 d-none d-lg-block">
+        <img
+          src="https://res.cloudinary.com/dnfccnxew/image/upload/v1725710674/aepjhdbiizkukw60fhuf.png"
+          alt="Logo WMS"
+          class="w-100 h-100"
+        />
+      </div>
+      <div
+        class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center text-black"
+      >
+        <!-- Logo and Title -->
+        <div class="text-center mb-4">
+          <img
+            src="https://res.cloudinary.com/dc1txyr7b/image/upload/v1724138470/th78gsygvjv2wm7zbwh7.png"
+            alt="Logo"
+            style="width: 60px; height: 60px"
+          />
+        </div>
+        <!-- Form -->
         <div class="container d-flex justify-content-center">
           <div>
-            <img
-              src="https://res.cloudinary.com/dc1txyr7b/image/upload/v1724138470/th78gsygvjv2wm7zbwh7.png"
-              alt="Logo WMS"
-              class="mb-4"
-              style="margin: 0 auto; display: block"
-            />
-            <h2 class="text-center mb-5 text-dark">ĐĂNG NHẬP</h2>
+            <h2 class="text-center mb-1 fw-bold">CHÀO MỪNG TRỞ LẠI</h2>
+            <h6 class="text-center mb-5">Vui lòng đăng nhập để tiếp tục</h6>
             <form style="width: 23rem">
               <!-- Username input -->
               <div class="form-floating mb-2">
@@ -20,7 +33,7 @@
                 >
               </div>
               <!-- Password input -->
-              <div class="form-floating mb-4">
+              <div class="form-floating mb-2">
                 <input
                   type="password"
                   id="password"
@@ -29,6 +42,9 @@
                   required
                 />
                 <label class="form-label" for="password" style="font-size: 14px">Mật khẩu</label>
+              </div>
+              <div class="mb-2 text-end">
+                <router-link to="/quen-mat-khau" class="forgot"> Quên mật khẩu? </router-link>
               </div>
               <!-- Submit button -->
               <button class="btn btn-login text-dark w-100" @click="login">Đăng nhập</button>
@@ -68,7 +84,7 @@ const login = async (event) => {
   } else if (username === "" && password === "") {
     Swal.fire({
       title: "Đăng nhập thất bại!",
-      text: "Tài khoản hoặc mật khẩu không được để trống!",
+      text: "Tài khoản và mật khẩu không được để trống!",
       icon: "error",
       timer: 1000,
       showConfirmButton: false,
@@ -120,21 +136,20 @@ const login = async (event) => {
 </script>
 
 <style scoped>
-main {
-  background-image: url(https://res.cloudinary.com/dnfccnxew/image/upload/v1724076953/easgitoly7rnx1telnp8.png);
-  background-size: cover;
-  background-repeat: no-repeat;
+.container-fluid {
+  overflow: hidden;
 }
 .btn-login {
   border: 2px solid #16b674bf;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
   border-radius: 8px;
   padding: 8px 12px;
   background-color: var(--primary-color);
   color: #171717 !important;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
   &:hover,
   &:focus,
   &:active {
@@ -143,13 +158,20 @@ main {
   }
 }
 input {
-  font-size: 14px;
+  font-size: 15px;
   border-radius: 8px;
   border: 2px solid var(--secondary-color);
   &:focus,
   &:active {
     box-shadow: none;
     border: 2px solid var(--primary-color);
+  }
+}
+.forgot {
+  color: #171717;
+  text-decoration: none;
+  &:hover {
+    border-bottom: 1.5px solid #171717;
   }
 }
 </style>

@@ -1,19 +1,19 @@
 <template>
-  <div class="container-fluid p-3">
+  <div class="container-fluid p-0">
     <div class="row">
       <div
-        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
+        class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 p-2"
         v-for="(product, index) in products"
         :key="products.id"
         @click="handleRowClick(product)"
       >
-        <div class="card mb-3">
-          <img :src="product.anh" class="card-img-top" alt="Product Image" />
+        <div class="card">
+          <img :src="product.anh" class="card-img-top py-2" alt="Product Image" />
           <div class="card-body text-center">
-            <div class="card-text h6" style="color: #489a78">
+            <div class="card-text h6 fw-bold" style="color: var(--main-text-color)">
               {{ product.tenSanPham }}
             </div>
-            <div class="card-text" style="font-weight: 600">
+            <div class="card-text fw-bold">
               <p>{{ product.giaBan }}₫</p>
               <p>
                 Hiện có: <span class="text-danger">{{ product.hienCo }} đơn vị</span>

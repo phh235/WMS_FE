@@ -7,7 +7,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Tìm kiếm..."
+        placeholder="Tìm kiếm"
         aria-label="Search"
         aria-describedby="basic-addon1"
       />

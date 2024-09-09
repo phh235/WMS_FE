@@ -1,3 +1,1 @@
-<template>
-  chào
-</template>
+<template>thêm/chi tiết sản phẩm</template>

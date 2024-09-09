@@ -1,33 +1,42 @@
+@font-face {
+  font-family: "Google Sans";
+  src: url("fonts/GoogleSans-Regular.ttf") format("truetype");
+}
+.swal2-popup {
+  font-family: "Google Sans", sans-serif;
+}
 html,
 body,
 #app {
   height: 100%;
   width: 100%;
-  font-family: "Be Vietnam Pro", sans-serif;
-  /* font-family: "Google Sans", sans-serif; */
+  font-family: "Google Sans";
+  font-weight: 500;
 }
 body {
   width: 100%;
   height: 100%;
   background-color: #fafafa !important;
-  /* background-image: radial-gradient(rgba(12, 12, 12, 0.171) 2px, transparent 0);
-  background-size: 30px 30px;
-  background-position: -5px -5px; */
 }
 :root {
   --primary-color: #72e3ad;
   --primary-color-hover: #64d8a3;
-  --secondary-color: #ebebeb;
+  --secondary-color: #f3f3f3;
   --secondary-color-border: #00000014;
   --secondary-color-border-hover: #c9c9c9;
+  --btn-logout-bg: #fff0ee;
+  --btn-logout-bg-hover: #fdd8d3;
+  --btn-logout-border: #f3b0a2;
+  --btn-logout-border-hover: #e54d2e;
+  --main-text-color: #489a78;
 }
 .material-symbols-outlined {
   font-size: 17px;
 }
 .btn.btn-primary {
   border: 2px solid #16b674bf;
+  /* border: none; */
   font-size: 14px;
-  font-weight: 500;
   border-radius: 6px;
   padding: 8px 10px;
   background-color: var(--primary-color);
@@ -38,6 +47,21 @@ body {
   &:focus,
   &:active {
     border: 2px solid #097c4f;
+    /* border: none; */
     background-color: var(--primary-color-hover) !important;
   }
+}
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
 }

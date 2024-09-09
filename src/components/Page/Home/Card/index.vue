@@ -1,20 +1,14 @@
 <template>
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="(card, index) in cards" :key="index">
-    <div class="card">
+  <div class="col-12 col-sm-6 col-md-4 col-lg-4" v-for="(card, index) in cards" :key="index">
+    <div class="card" :style="{ '--card-bg-color': card.bgColor }">
       <div class="row">
         <div class="col">
           <div class="card-body">
-            <router-link
-              :to="card.link"
-              class="card-title h6"
-              style="cursor: pointer; text-decoration: none; color: #489a78"
-            >
+            <router-link :to="card.path" class="card-title h6 fw-bold">
               {{ card.title }}
             </router-link>
             <p class="card-text text-secondary">{{ card.text }}</p>
-            <router-link :to="card.link" class="btn btn-primary text-light">{{
-              card.buttonText
-            }}</router-link>
+            <router-link :to="card.path" class="btn btn-primary">{{ card.buttonText }}</router-link>
           </div>
         </div>
         <div class="col">
@@ -37,23 +31,50 @@ const cards = [
   {
     title: "Phiếu nhập kho",
     text: "phh235",
-    link: "/inventory/nhap",
+    path: "/inventory/nhap",
     buttonText: "6 cần xử lý",
     orderStatus: "Trễ",
+    bgColor: "#00a86b",
   },
   {
     title: "Phiếu xuất kho",
     text: "phh235",
-    link: "/inventory/xuat",
+    path: "/inventory/xuat",
     buttonText: "6 cần xử lý",
     orderStatus: "Đang chờ",
+    bgColor: "#00a86b",
   },
   {
     title: "Điều chuyển nội bộ",
     text: "phh235",
-    link: "/inventory/dieu-chuyen",
+    path: "/inventory/dieu-chuyen",
     buttonText: "6 cần xử lý",
     orderStatus: "Đơn chậm trễ",
+    bgColor: "#00a86b",
+  },
+  {
+    title: "Phiếu nhập kho",
+    text: "trungnb",
+    path: "/inventory/nhap",
+    buttonText: "6 cần xử lý",
+    orderStatus: "Trễ",
+    bgColor: "#aaf0ca",
+  },
+  {
+    title: "Phiếu xuất kho",
+    text: "trungnb",
+    path: "/inventory/xuat",
+    buttonText: "6 cần xử lý",
+    orderStatus: "Đang chờ",
+    bgColor: "#aaf0ca",
+  },
+  {
+    title: "Điều chuyển nội bộ",
+    text: "trungnb",
+    path: "/inventory/dieu-chuyen",
+    buttonText: "6 cần xử lý",
+    orderStatus: "Đơn chậm trễ",
+    bgColor: "#aaf0ca",
   },
 ];
 // bỏ comment nếu call api get all phiếu nhập/xuất
@@ -70,13 +91,34 @@ const cards = [
 
 <style scoped>
 .card {
+  border-left: 1px solid #000;
   margin-bottom: 20px;
   border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, .04);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
   border: 1px solid #00000014;
   transition: all 0.1s;
+  overflow: hidden;
+  position: relative;
   &:hover {
     border: 1px solid #c9c9c9;
   }
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 6px;
+  background-color: var(--card-bg-color);
+}
+.card-content {
+  padding: 15px;
+}
+.card-title {
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--main-text-color);
+  font-size: 16px;
 }
 </style>

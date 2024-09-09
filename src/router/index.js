@@ -4,7 +4,8 @@ import Error from "@pages/Error.vue";
 import BlankLayout from "@layouts/BlankLayout.vue";
 import MainLayout from "@layouts/DefaultLayout.vue";
 import MenuItems from "@components/Header/MenuBar/MenuItems";
-import Login from "@pages/Login/Login.vue";
+import Login from "@pages/User/Login.vue";
+import ForgotPassword from "@/pages/User/ForgotPassword.vue";
 
 export const routes = [
   {
@@ -31,17 +32,34 @@ export const routes = [
           storeConfig: {},
         },
       },
+      {
+        path: "quen-mat-khau",
+        name: "quen-mat-khau",
+        component: ForgotPassword,
+        meta: {
+          requiresAuth: false,
+          headerTitle: "Quên mật khẩu",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
     ],
   },
   {
     path: "/:pathMatch(.*)*",
     name: "Page Not Found",
     component: NotFound,
+    meta: {
+      headerTitle: "404",
+    },
   },
   {
     path: "/error",
     name: "Error",
     component: Error,
+    meta: {
+      headerTitle: "Error",
+    },
   },
 ];
 
@@ -50,8 +68,9 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async () => {
-  // check auth
+router.beforeEach((to) => {
+  // Cập nhật tiêu đề trang ngay khi điều hướng
+  document.title = to.meta.headerTitle || "Default Title";
 });
 
 export default router;
