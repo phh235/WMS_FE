@@ -7,5 +7,5 @@
 </template>
 
 <script setup>
-import Card from "@components/Page/Home/Card/index.vue";
+import Card from "@components/Page/Home/Card/Card.vue";
 </script>

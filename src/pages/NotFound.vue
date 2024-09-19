@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-12">
           <div class="text-center">
-            <h2 class="d-flex justify-content-center align-items-center gap-2 mb-4">
+            <h2 class="d-flex justify-content-center align-items-center gap-2">
               <span class="display-1 fw-bold">4</span>
               <span class="material-symbols-outlined text-danger display-1"> error </span>
               <span class="display-1 fw-bold">4</span>

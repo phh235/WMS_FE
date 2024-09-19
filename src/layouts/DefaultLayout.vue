@@ -1,7 +1,3 @@
-<script setup>
-import MenuBar from "@components/Header/MenuBar/index.vue";
-</script>
-
 <template>
   <div class="container-fluid p-0">
     <MenuBar />
@@ -9,9 +5,10 @@ import MenuBar from "@components/Header/MenuBar/index.vue";
       <router-view></router-view>
     </div>
   </div>
-  <div class="position-fixed bottom-0 end-0 p-3">
-    <span class="fw-bold" style="font-size: 14px"
-      >Developed by <span style="color: var(--main-text-color)">Tech Tribe</span></span
-    >
-  </div>
+  <Cre />
 </template>
+
+<script setup>
+import MenuBar from "@components/Header/MenuBar/index.vue";
+import Cre from "@layouts/Cre/Cre.vue";
+</script>

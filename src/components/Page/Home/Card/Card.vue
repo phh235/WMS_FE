@@ -2,20 +2,20 @@
   <div class="col-12 col-sm-6 col-md-4 col-lg-4" v-for="(card, index) in cards" :key="index">
     <div class="card" :style="{ '--card-bg-color': card.bgColor }">
       <div class="row">
-        <div class="col">
+        <div class="col-7">
           <div class="card-body">
             <router-link :to="card.path" class="card-title h6 fw-bold">
               {{ card.title }}
             </router-link>
-            <p class="card-text text-secondary">{{ card.text }}</p>
+            <p class="card-text text-secondary fs">{{ card.warehouseName }} - {{ card.text }}</p>
             <router-link :to="card.path" class="btn btn-primary">{{ card.buttonText }}</router-link>
           </div>
         </div>
-        <div class="col">
+        <div class="col-5">
           <div class="card-body float-end">
-            <p class="card-text text-secondary" style="font-size: 14px">2 {{ card.orderStatus }}</p>
-            <p class="card-text text-secondary" style="font-size: 14px">2 {{ card.orderStatus }}</p>
-            <p class="card-text text-secondary" style="font-size: 14px">2 {{ card.orderStatus }}</p>
+            <p class="card-text text-secondary" style="font-size: 12px">2 {{ card.orderStatus }}</p>
+            <p class="card-text text-secondary" style="font-size: 12px">2 {{ card.orderStatus }}</p>
+            <p class="card-text text-secondary" style="font-size: 12px">2 {{ card.orderStatus }}</p>
           </div>
         </div>
       </div>
@@ -31,6 +31,7 @@ const cards = [
   {
     title: "Phiếu nhập kho",
     text: "phh235",
+    warehouseName: "Kho chính",
     path: "/inventory/nhap",
     buttonText: "6 cần xử lý",
     orderStatus: "Trễ",
@@ -39,6 +40,7 @@ const cards = [
   {
     title: "Phiếu xuất kho",
     text: "phh235",
+    warehouseName: "Kho chính",
     path: "/inventory/xuat",
     buttonText: "6 cần xử lý",
     orderStatus: "Đang chờ",
@@ -47,6 +49,7 @@ const cards = [
   {
     title: "Điều chuyển nội bộ",
     text: "phh235",
+    warehouseName: "Kho chính",
     path: "/inventory/dieu-chuyen",
     buttonText: "6 cần xử lý",
     orderStatus: "Đơn chậm trễ",
@@ -55,6 +58,7 @@ const cards = [
   {
     title: "Phiếu nhập kho",
     text: "trungnb",
+    warehouseName: "Kho chính",
     path: "/inventory/nhap",
     buttonText: "6 cần xử lý",
     orderStatus: "Trễ",
@@ -63,6 +67,7 @@ const cards = [
   {
     title: "Phiếu xuất kho",
     text: "trungnb",
+    warehouseName: "Kho chính",
     path: "/inventory/xuat",
     buttonText: "6 cần xử lý",
     orderStatus: "Đang chờ",
@@ -71,6 +76,7 @@ const cards = [
   {
     title: "Điều chuyển nội bộ",
     text: "trungnb",
+    warehouseName: "Kho chính",
     path: "/inventory/dieu-chuyen",
     buttonText: "6 cần xử lý",
     orderStatus: "Đơn chậm trễ",
@@ -109,7 +115,7 @@ const cards = [
   top: 0;
   left: 0;
   height: 100%;
-  width: 6px;
+  width: 5px;
   background-color: var(--card-bg-color);
 }
 .card-content {
@@ -120,5 +126,8 @@ const cards = [
   text-decoration: none;
   color: var(--main-text-color);
   font-size: 16px;
+}
+.fs {
+  font-size: 14px;
 }
 </style>

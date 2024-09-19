@@ -6,7 +6,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "10",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Điện thoại"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "15",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Điện thoại"
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Quần áo"
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Quần áo"
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Gia dụng"
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Gia dụng"
   },
   {
     "id": 7,
@@ -60,7 +66,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "10",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Thực phẩm"
   },
   {
     "id": 8,
@@ -69,7 +76,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "15",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Thực phẩm"
   },
   {
     "id": 9,
@@ -78,7 +86,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Thực phẩm"
   },
   {
     "id": 10,
@@ -87,7 +96,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Điện thoại"
   },
   {
     "id": 11,
@@ -96,7 +106,8 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Điện thoại"
   },
   {
     "id": 12,
@@ -105,6 +116,7 @@
     "chiPhi": "500,000",
     "tenSanPham": "iPhone 13",
     "hienCo": "5",
-    "ghiChu": "Đóng gói cẩn thận"
+    "ghiChu": "Đóng gói cẩn thận",
+    "loaiSanPham": "Điện thoại"
   }
 ]

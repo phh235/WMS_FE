@@ -8,16 +8,17 @@
         @click="handleRowClick(product)"
       >
         <div class="card">
-          <img :src="product.anh" class="card-img-top py-2" alt="Product Image" />
+          <div class="p-3 image">
+            <img :src="product.anh" class="card-img-top" alt="Product Image" />
+          </div>
           <div class="card-body text-center">
             <div class="card-text h6 fw-bold" style="color: var(--main-text-color)">
               {{ product.tenSanPham }}
             </div>
+            <div class="card-text fw-bold">{{ product.giaBan }}₫</div>
             <div class="card-text fw-bold">
-              <p>{{ product.giaBan }}₫</p>
-              <p>
-                Hiện có: <span class="text-danger">{{ product.hienCo }} đơn vị</span>
-              </p>
+              Hiện có:
+              <span style="color: var(--btn-logout-border-hover)">{{ product.hienCo }} đơn vị</span>
             </div>
           </div>
         </div>
@@ -47,5 +48,11 @@ function handleRowClick(product) {
     cursor: pointer;
     border: 1px solid var(--secondary-color-border-hover);
   }
+}
+.card-text {
+  margin: 10px !important;
+}
+.image {
+  padding-bottom: 0 !important;
 }
 </style>

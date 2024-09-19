@@ -1,8 +1,41 @@
 <template>
-  <router-view></router-view>
-  <div class="position-fixed bottom-0 end-0 p-3">
-    <span class="fw-bold" style="font-size: 14px"
-      >Developed by <span style="color: var(--main-text-color)">Tech Tribe</span></span
+  <main class="container-fluid p-0">
+    <!-- Logo and Title -->
+    <div
+      class="mb-4 top-0 start-0 position-absolute p-2 d-flex align-items-center justify-content-center user-select-none"
     >
-  </div>
+      <img
+        src="https://res.cloudinary.com/dc1txyr7b/image/upload/v1724138470/th78gsygvjv2wm7zbwh7.png"
+        alt="Logo WMS"
+        width="50"
+      />
+      <p class="h5 fw-bold mt-2">Inventory</p>
+    </div>
+    <div class="row align-items-center justify-content-center vh-100">
+      <div
+        class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center text-black"
+      >
+        <!-- Form -->
+        <router-view></router-view>
+      </div>
+      <div class="col-12 col-md-6 text-black vh-100 d-none d-lg-block">
+        <img
+          src="https://res.cloudinary.com/dnfccnxew/image/upload/v1725710674/aepjhdbiizkukw60fhuf.png"
+          alt="Logo WMS"
+          class="w-100 h-100 user-select-none"
+        />
+      </div>
+    </div>
+  </main>
+  <Cre />
 </template>
+
+<script setup>
+import Cre from "@layouts/Cre/Cre.vue";
+</script>
+
+<style scoped>
+.container-fluid {
+  overflow: hidden;
+}
+</style>

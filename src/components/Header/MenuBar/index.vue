@@ -1,13 +1,13 @@
 <template>
   <div style="background-color: #fff !important">
     <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
+      <div class="container-fluid p-0">
         <router-link to="/inventory/tong-quan" class="navbar-brand">
           <img
             src="https://res.cloudinary.com/dc1txyr7b/image/upload/v1724138470/th78gsygvjv2wm7zbwh7.png"
             width="30"
             alt=""
-            class="me-2"
+            class="ms-2"
           />
         </router-link>
         <button
@@ -28,7 +28,7 @@
           aria-labelledby="staticBackdropLabel"
         >
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="staticBackdropLabel">Quản lý tồn kho</h5>
+            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel">Quản lý tồn kho</h5>
             <button
               type="button"
               class="btn-close text-reset"
@@ -39,7 +39,91 @@
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
+              <div class="mobile-layout-end">
+                <div class="d-flex align-items-center">
+                  <div class="dropdown">
+                    <button
+                      class="nav-link d-flex align-items-center"
+                      type="button"
+                      id="dropdownMenuButton"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img
+                        src="https://avatars.githubusercontent.com/u/121915529?v=4"
+                        alt="Avatar"
+                        style="border-radius: 5px"
+                        width="30"
+                      />
+                      <span class="ms-2 text-dark fw-bold">Phan Huy Hoàng</span>
+                      <span class="material-symbols-outlined ms-2">unfold_more</span>
+                    </button>
+                    <ul
+                      class="dropdown-menu dropdown-menu-lg-end mt-2"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <li>
+                        <router-link
+                          to="/inventory/thong-tin-tai-khoan"
+                          class="dropdown-item d-flex align-items-center mb-1"
+                          aria-expanded="false"
+                        >
+                          <div class="d-flex flex-column">
+                            <span class="text-dark fs mb-1 fw-bold"
+                              >Phan Huy Hoàng
+                              <span
+                                class="badge text-bg-secondary ms-1 float-end"
+                                style="
+                                  background-color: var(--secondary-color-border) !important;
+                                  color: #171717 !important;
+                                  font-size: 13px;
+                                "
+                                >Admin</span
+                              ></span
+                            >
+                            <span class="text-muted fs-sm">phanhuyhoang.dev@gmail.com</span>
+                          </div>
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          to="/inventory/cai-dat"
+                          class="dropdown-item d-flex align-items-center justify-content-between"
+                          aria-expanded="false"
+                        >
+                          <span class="text-dark fs">Cài đặt</span>
+                          <span class="material-symbols-outlined">settings</span>
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link
+                          to="/inventory/ngon-ngu"
+                          class="dropdown-item d-flex align-items-center justify-content-between"
+                          aria-expanded="false"
+                        >
+                          <span class="text-dark fs">Ngôn ngữ</span>
+                          <span class="material-symbols-outlined">language</span>
+                        </router-link>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li>
+                        <router-link
+                          to="/"
+                          class="btn btn-logout d-flex align-items-center justify-content-between"
+                          href="#"
+                          @click.prevent="handleLogout"
+                        >
+                          <span style="font-size: 14px"> Đăng xuất </span>
+                          <span class="material-symbols-outlined float-end" style="color: #ef4444"
+                            >logout</span
+                          >
+                        </router-link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <li class="nav-item d-flex align-items-center">
                 <router-link to="/inventory/tong-quan" class="nav-link">Tổng quan</router-link>
               </li>
               <li class="nav-item dropdown">
@@ -51,32 +135,32 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Hoạt động <span class="material-symbols-outlined ms-2">keyboard_arrow_down</span>
+                  Hoạt động
+                  <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
                     <router-link
                       to="/inventory/nhap"
-                      class="dropdown-item d-flex align-items-center"
+                      class="dropdown-item d-flex align-items-center justify-content-between"
                     >
-                      <span class="material-symbols-outlined me-2">download</span> Nhập kho
+                      <span class="fs">Nhập kho</span>
+                      <span class="material-symbols-outlined">download</span>
                     </router-link>
                   </li>
                   <li>
                     <router-link
                       to="/inventory/xuat"
-                      class="dropdown-item d-flex align-items-center"
+                      class="dropdown-item d-flex align-items-center justify-content-between"
                     >
-                      <span class="material-symbols-outlined me-2">upload</span> Xuất kho
+                      <span class="fs">Xuất kho</span>
+                      <span class="material-symbols-outlined">upload</span>
                     </router-link>
                   </li>
                 </ul>
               </li>
               <li class="nav-item">
                 <router-link to="/inventory/san-pham" class="nav-link">Sản phẩm</router-link>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Báo cáo</a>
               </li>
               <li class="nav-item">
                 <router-link to="/inventory/quan-ly-kho" class="nav-link">Quản lý kho</router-link>
@@ -86,49 +170,112 @@
                   >Quản lý tài khoản</router-link
                 >
               </li>
+              <li class="nav-item">
+                <router-link to="/inventory/bao-cao" class="nav-link">Báo cáo</router-link>
+              </li>
             </ul>
             <div class="layout-end">
               <div class="d-flex align-items-center">
-                <router-link
-                  to="/inventory/thong-tin-tai-khoan"
-                  class="nav-link d-flex align-items-center"
-                  aria-expanded="false"
-                >
-                  <span class="text-dark me-2 fs">phh235</span>
-                  <img
-                    src="https://avatars.githubusercontent.com/u/121915529?v=4"
-                    alt="Avatar"
-                    class="rounded-circle"
-                    width="30"
-                  />
-                </router-link>
-                <router-link to="/" class="d-flex align-items-center btn-logout">
-                  <span class="material-symbols-outlined">logout</span>
-                  <span class="logout-text fs">Đăng xuất</span>
-                </router-link>
+                <div class="dropdown">
+                  <button
+                    class="nav-link d-flex align-items-center"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="https://avatars.githubusercontent.com/u/121915529?v=4"
+                      alt="Avatar"
+                      style="border-radius: 5px"
+                      width="30"
+                    />
+                    <span class="material-symbols-outlined ms-2">unfold_more</span>
+                  </button>
+                  <ul
+                    class="dropdown-menu dropdown-menu-lg-end mt-2"
+                    aria-labelledby="dropdownMenuButton"
+                    style="min-width: 170px !important"
+                  >
+                    <li>
+                      <router-link
+                        to="/inventory/thong-tin-tai-khoan"
+                        class="dropdown-item d-flex align-items-center mb-1"
+                        aria-expanded="false"
+                      >
+                        <div class="d-flex flex-column">
+                          <span class="text-dark fs mb-1 fw-bold"
+                            >Phan Huy Hoàng
+                            <span
+                              class="badge text-bg-secondary ms-1 float-end"
+                              style="
+                                background-color: var(--secondary-color-border) !important;
+                                color: #171717 !important;
+                                font-size: 13px;
+                              "
+                              >Admin</span
+                            ></span
+                          >
+                          <span class="text-muted fs-sm">phanhuyhoang.dev@gmail.com</span>
+                        </div>
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link
+                        to="/inventory/cai-dat"
+                        class="dropdown-item d-flex align-items-center justify-content-between"
+                        aria-expanded="false"
+                      >
+                        <span class="text-dark fs">Cài đặt</span>
+                        <span class="material-symbols-outlined">settings</span>
+                      </router-link>
+                    </li>
+                    <li>
+                      <router-link
+                        to="/inventory/ngon-ngu"
+                        class="dropdown-item d-flex align-items-center justify-content-between"
+                        aria-expanded="false"
+                      >
+                        <span class="text-dark fs">Ngôn ngữ</span>
+                        <span class="material-symbols-outlined">language</span>
+                      </router-link>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <router-link
+                        to="/"
+                        class="btn btn-logout d-flex align-items-center justify-content-between"
+                        href="#"
+                        @click.prevent="handleLogout"
+                      >
+                        <span style="font-size: 14px"> Đăng xuất </span>
+                        <span class="material-symbols-outlined float-end" style="color: #ef4444"
+                          >logout</span
+                        >
+                      </router-link>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </nav>
-    <div class="sub-nav mt-2 px-1">
-      <div class="container-fluid d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-          <button
-            class="btn btn-primary text-light d-flex align-items-center me-2"
-            :class="{ 'd-none': !isVisible }"
-            @click="handleNewClick"
-          >
-            <span class="material-symbols-outlined me-2">add</span> Mới
-          </button>
-          <div class="d-flex flex-column">
-            <span class="mb-1" style="font-size: 14px">{{ headerTitle }}</span>
-            <!-- <span class="text-sm">phh235</span> -->
-          </div>
-        </div>
-        <SearchBar />
-        <div></div>
+    <div class="sub-nav px-3 d-flex position-relative" style="overflow-x: hidden">
+      <button
+        class="btn btn-primary text-light d-flex align-items-center justify-content-center"
+        :class="{ 'd-none': !isVisible }"
+        @click="handleNewClick"
+        style="z-index: 999"
+      >
+        <span class="material-symbols-outlined me-2">add</span> Mới
+      </button>
+      <div
+        class="position-absolute w-100 d-flex justify-content-center mt-2"
+        style="max-width: 95%"
+      >
+        <span style="font-size: 16px; font-weight: bold">{{ headerTitle }}</span>
       </div>
     </div>
   </div>
@@ -137,7 +284,9 @@
 <script setup>
 import { computed, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import SearchBar from "@components/Common/SearchBar/index.vue";
+import { useAuthStore } from "@/store/auth.js";
+
+const authStore = useAuthStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -167,6 +316,14 @@ const handleNewClick = () => {
     router.push("/inventory/san-pham/them-moi");
   }
 };
+
+const handleLogout = async () => {
+  try {
+    await authStore.logout();
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style scoped>
@@ -174,15 +331,17 @@ const handleNewClick = () => {
   font-size: 14px;
 }
 .sub-nav {
+  min-height: 65px !important;
+  max-height: 65px !important;
   box-shadow: inset 0 -1px rgba(0, 0, 0, 0.08);
-  padding-bottom: 10px;
+  padding: 12px;
 }
 .navbar {
   padding: 10px !important;
 }
 .nav-link {
   font-size: 14px;
-  color: #000 !important;
+  color: #000;
   border-radius: 6px;
   margin-right: 5px;
   transition: all 0.1s;
@@ -201,6 +360,7 @@ const handleNewClick = () => {
 }
 .dropdown-menu {
   padding: 8px;
+  border-radius: 14px;
 }
 .dropdown-item {
   font-size: 14px;
@@ -212,17 +372,6 @@ const handleNewClick = () => {
     padding: 8px;
   }
   &:focus {
-    color: #000;
-  }
-}
-.btn-dropdown {
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  &:hover,
-  &:focus,
-  &:active {
-    background-color: var(--secondary-color);
     color: #000;
   }
 }
@@ -247,41 +396,35 @@ input {
 }
 .btn-logout {
   text-decoration: none;
-  padding: 10px;
-  /* background-color: var(--btn-logout-bg);
-  color: #171717;
-  border: 2px solid var(--btn-logout-border); */
-  background-color: var(--btn-logout-bg-hover);
-  border: 2px solid var(--btn-logout-border-hover);
-  color: #171717;
-  border-radius: 6px;
-  /* transition: all 0.2s;
-  &:hover,
-  &:focus,
-  &:active {
-    background-color: var(--btn-logout-bg-hover);
-    border: 2px solid var(--btn-logout-border-hover);
-    color: #171717;
-  } */
-}
-.view-info {
   padding: 8px;
-  margin-right: 7px;
-  color: #000;
+  /* background-color: var(--btn-logout-bg); */
+  color: #ef4444;
   border: none;
+  /* border: 2px solid var(--btn-logout-border); */
+  /* background-color: var(--btn-logout-bg-hover);
+  border: 2px solid var(--btn-logout-border-hover);
+  color: #171717; */
   border-radius: 6px;
+  transition: all 0.2s;
   &:hover,
   &:focus,
   &:active {
-    background-color: var(--secondary-color);
-    color: #000;
+    background-color: #fef2f2;
+    color: #ef4444;
+    /* border: 2px solid var(--btn-logout-border-hover); */
+    /* color: #171717; */
   }
+}
+.mobile-layout-end {
+  display: none;
 }
 @media (max-width: 991.98px) {
   .offcanvas {
-    padding-right: 10px;
     width: 260px !important;
     transition: all 0.3s ease-in-out;
+  }
+  .btn-close {
+    padding-right: 30px !important;
   }
   .offcanvas-body .nav-link {
     background-color: transparent;
@@ -291,7 +434,6 @@ input {
     width: 100%;
   }
   .offcanvas-body {
-    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -302,23 +444,28 @@ input {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-    background-color: var(--btn-logout-bg-hover);
-    border: 2px solid var(--btn-logout-border-hover);
-    color: #171717;
+    background-color: #fef2f2;
+    /* border: 2px solid var(--btn-logout-border-hover); */
+    color: #ef4444;
   }
   .logout-text {
     margin-left: 6px;
     display: inline;
   }
-  .layout-end > .d-flex {
-    flex-direction: column !important;
-    align-items: flex-start !important;
+  .layout-end {
+    display: none;
+  }
+  .mobile-layout-end {
+    display: unset;
   }
   .nav-link {
     font-size: 15px;
   }
   .fs {
     font-size: 15px;
+  }
+  .dropdown-menu {
+    margin-bottom: 10px !important;
   }
 }
 </style>

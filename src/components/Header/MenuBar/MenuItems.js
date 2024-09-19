@@ -2,9 +2,9 @@ export default [
   {
     path: "tong-quan",
     name: "tong-quan",
-    component: () => import("@components/Page/Home/index.vue"),
+    component: () => import("@/components/Page/Home/Home.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Tổng quan kho",
       searchConfig: {},
       storeConfig: {},
@@ -13,20 +13,9 @@ export default [
   {
     path: "thong-tin-tai-khoan",
     name: "thong-tin-tai-khoan",
-    component: () => import("@components/Page/Account/AccountInfo/index.vue"),
+    component: () => import("@/components/Page/Account/AccountInfo/AccountInfo.vue"),
     meta: {
-      requiresAuth: true,
-      headerTitle: "Thông tin tài khoản",
-      searchConfig: {},
-      storeConfig: {},
-    },
-  },
-  {
-    path: "thong-tin-tai-khoan",
-    name: "thong-tin-tai-khoan",
-    component: () => import("@components/Page/Account/AccountInfo/index.vue"),
-    meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Thông tin tài khoản",
       searchConfig: {},
       storeConfig: {},
@@ -35,9 +24,9 @@ export default [
   {
     path: "quan-ly-tai-khoan",
     name: "quan-ly-tai-khoan",
-    component: () => import("@components/Page/Account/AccountManage/index.vue"),
+    component: () => import("@/components/Page/Account/AccountManage/AccountManage.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Quản lý tài khoản",
       searchConfig: {},
       storeConfig: {},
@@ -46,9 +35,9 @@ export default [
   {
     path: "san-pham",
     name: "san-pham",
-    component: () => import("@components/Page/Product/ProductTab/index.vue"),
+    component: () => import("@components/Page/Product/ProductTab/ProductTab.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -57,9 +46,9 @@ export default [
   {
     path: "san-pham/them-moi",
     name: "them-moi",
-    component: () => import("@components/Page/Product/ProductForm/index.vue"),
+    component: () => import("@components/Page/Product/ProductForm/ProductForm.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Thêm sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -68,9 +57,9 @@ export default [
   {
     path: "nhap",
     name: "nhap",
-    component: () => import("@components/Page/Inbound/InboundTable/index.vue"),
+    component: () => import("@components/Page/Inbound/InboundTable/InboundTable.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Nhập kho",
       searchConfig: {},
       storeConfig: {},
@@ -79,9 +68,9 @@ export default [
   {
     path: "nhap/tao-phieu-nhap",
     name: "tao-phieu-nhap",
-    component: () => import("@components/Page/Inbound/InboundDetail/index.vue"),
+    component: () => import("@components/Page/Inbound/InboundDetail/InboundDetail.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Thêm nhập kho",
       searchConfig: {},
       storeConfig: {},
@@ -90,9 +79,9 @@ export default [
   {
     path: "xuat",
     name: "xuat",
-    component: () => import("@components/Page/Outbound/OutboundTable/index.vue"),
+    component: () => import("@components/Page/Outbound/OutboundTable/OutboundTable.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Xuất kho",
       searchConfig: {},
       storeConfig: {},
@@ -101,10 +90,21 @@ export default [
   {
     path: "xuat/tao-phieu-xuat",
     name: "tao-phieu-xuat",
-    component: () => import("@components/Page/Outbound/OutboundDetail/index.vue"),
+    component: () => import("@components/Page/Outbound/OutboundDetail/OutboundDetail.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       headerTitle: "Thêm xuất kho",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "bao-cao",
+    name: "bao-cao",
+    component: () => import("@/components/Page/Report/Report.vue"),
+    meta: {
+      requiresAuth: false,
+      headerTitle: "Báo cáo",
       searchConfig: {},
       storeConfig: {},
     },
