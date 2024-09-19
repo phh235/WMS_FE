@@ -1,59 +1,35 @@
 <template>
- <div class="container-fluid mt-3 p-3">
+  <div class="container-fluid mt-3 p-3">
     <div class="row">
       <div class="col-lg-5 col-md-6 col-sm-12">
         <form>
           <div class="mb-3 d-none">
             <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                id="id"
-                
-                placeholder="ID"
-              />
+              <input type="text" class="form-control" id="id" placeholder="ID" />
               <label for="id">ID</label>
             </div>
           </div>
           <div class="mb-3">
             <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-               
-                placeholder="Username"
-              />
+              <input type="text" class="form-control" id="username" placeholder="Username" />
               <label for="username">Username</label>
             </div>
           </div>
           <div class="mb-3">
             <div class="form-floating">
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                
-                placeholder="Password"
-              />
+              <input type="password" class="form-control" id="password" placeholder="Password" />
               <label for="password">Password</label>
             </div>
           </div>
           <div class="mb-3">
             <div class="form-floating">
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                
-                placeholder="Email"
-              />
+              <input type="email" class="form-control" id="email" placeholder="Email" />
               <label for="email">Email</label>
             </div>
           </div>
           <div class="mb-3">
             <div class="form-floating">
-              <select class="form-select" id="roleId" >
+              <select class="form-select" id="roleId">
                 <option value="1">Admin</option>
                 <option value="2">User</option>
               </select>
@@ -64,12 +40,7 @@
             <button type="button" class="btn btn-primary me-2" @click="">
               <span class="material-symbols-outlined"> add </span>
             </button>
-            <button
-              type="button"
-              class="btn btn-upgrade me-2"
-             
-              @click=""
-            >
+            <button type="button" class="btn btn-upgrade me-2" @click="">
               <span class="material-symbols-outlined"> upgrade </span>
             </button>
             <button type="button" class="btn btn-dark" @click="">
@@ -79,7 +50,7 @@
         </form>
       </div>
     </div>
- </div>
+  </div>
 </template>
 <style scoped>
 .table-col-id {

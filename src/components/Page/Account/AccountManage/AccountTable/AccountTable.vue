@@ -1,17 +1,12 @@
-<template><div class="col-lg-7 col-md-6 col-sm-12">
+<template>
+  <div class="col-lg-7 col-md-6 col-sm-12">
     <div class="d-flex justify-content-end flex-wrap mb-2">
       <div class="input-group mb-3">
         <span class="input-group-text"
           ><span class="material-symbols-outlined"> search </span></span
         >
-        <input
-          type="text"
-          class="form-control"
-          id="search"
-          placeholder="Search"
-        
-        />
-        <select class="form-select" id="roleIdFilter" >
+        <input type="text" class="form-control" id="search" placeholder="Search" />
+        <select class="form-select" id="roleIdFilter">
           <option value="">All</option>
           <option value="1">Admin</option>
           <option value="2">User</option>
@@ -31,13 +26,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr  style="text-align: center; font-style: italic">
+          <tr style="text-align: center; font-style: italic">
             <td colspan="6">Not found</td>
           </tr>
-          <tr
-            
-            style="cursor: pointer"
-          >
+          <tr style="cursor: pointer">
             <td class="table-col-id text-center"></td>
             <td class="table-col-username"></td>
             <td class="table-col-password"></td>
@@ -53,8 +45,8 @@
       </table>
     </div>
   </div>
+</template>
 
-</div></template>
 <style scoped>
 .table-col-id {
   width: 50px;
@@ -118,4 +110,3 @@
   }
 }
 </style>
-
