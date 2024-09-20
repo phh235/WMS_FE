@@ -394,27 +394,6 @@ input {
 .logout-text {
   display: none;
 }
-.btn-logout {
-  text-decoration: none;
-  padding: 8px;
-  /* background-color: var(--btn-logout-bg); */
-  color: #ef4444;
-  border: none;
-  /* border: 2px solid var(--btn-logout-border); */
-  /* background-color: var(--btn-logout-bg-hover);
-  border: 2px solid var(--btn-logout-border-hover);
-  color: #171717; */
-  border-radius: 6px;
-  transition: all 0.2s;
-  &:hover,
-  &:focus,
-  &:active {
-    background-color: #fef2f2;
-    color: #ef4444;
-    /* border: 2px solid var(--btn-logout-border-hover); */
-    /* color: #171717; */
-  }
-}
 .mobile-layout-end {
   display: none;
 }
