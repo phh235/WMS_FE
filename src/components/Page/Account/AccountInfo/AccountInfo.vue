@@ -4,95 +4,118 @@
       <div class="settings-content">
         <h2>Tổng quan tài khoản</h2>
         <div class="profile-card d-flex align-items-center">
-          <img
-            src="https://avatars.githubusercontent.com/u/121915529?v=4"
-            alt="User Profile"
-            class="profile-image"
-          />
-          <div class="profile-info">
-            <h3>Phan Huy Hoàng</h3>
+          <div
+            class="profile-image-container"
+            @mouseover="showCamera = true"
+            @mouseleave="showCamera = false"
+          >
+            <img :src="avatarUrl" alt="User Profile" class="profile-image" />
+            <div class="camera-overlay" v-if="showCamera" @click="$refs.fileInput.click()">
+              <span class="material-symbols-outlined"> photo_camera </span>
+            </div>
+            <input
+              type="file"
+              ref="fileInput"
+              style="display: none"
+              @change="uploadAvatar"
+              accept="image/*"
+            />
+          </div>
+          <div class="profile-info ms-3">
+            <h3 class="fw-bold">Phan Huy Hoàng</h3>
             <p class="role">Admin</p>
             <p class="email">phanhuyhoang.dev@gmail.com</p>
           </div>
-          <button class="btn btn-secondary d-flex align-items-center ms-auto">
-            <i class="bi bi-pencil"></i>
-            <span class="material-symbols-outlined me-2"> edit </span>Edit
-          </button>
         </div>
-
-        <div class="info-card">
-          <div class="card-header">
-            <h3>Thông tin cá nhân</h3>
-            <button class="btn btn-secondary d-flex align-items-center">
-              <i class="bi bi-pencil"></i
-              ><span class="material-symbols-outlined me-2"> edit </span>Edit
-            </button>
-          </div>
-          <div class="info-grid">
-            <div class="info-item">
-              <label>Họ tên</label>
-              <input type="text" value="Phan Huy Hoàng" />
-            </div>
-            <div class="info-item">
-              <label>Tên người dùng</label>
-              <input type="text" value="phh235" />
-            </div>
-            <div class="info-item">
-              <label>Email</label>
-              <input type="email" value="phanhuyhoang.dev@gmail.com" />
-            </div>
-            <div class="info-item">
-              <label>Mật khẩu</label>
-              <input type="password" value="123" />
-            </div>
-            <div class="info-item">
-              <label>Điện thoại</label>
-              <input type="tel" value="+84 559 224 553" />
-            </div>
-            <div class="info-item">
-              <label>Role</label>
-              <input type="text" value="Admin" />
-            </div>
-            <div class="d-flex">
-              <button class="btn btn-primary d-flex align-items-center me-2">
-                <span class="material-symbols-outlined me-2"> save </span>Lưu
-              </button>
-              <button class="btn btn-secondary d-flex align-items-center">
-                <span class="material-symbols-outlined me-2"> cancel </span>Hủy
-              </button>
+        <div class="row">
+          <div class="col-6">
+            <div class="info-card">
+              <div class="card-header">
+                <h3>Thông tin cơ bản</h3>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <label>Họ tên</label>
+                  <input type="text" value="Phan Huy Hoàng" />
+                </div>
+                <div class="info-item">
+                  <label>Tên người dùng</label>
+                  <input type="text" value="phh235" />
+                </div>
+                <div class="info-item">
+                  <label>Email</label>
+                  <input type="email" value="phanhuyhoang.dev@gmail.com" />
+                </div>
+                <div class="info-item">
+                  <label>Điện thoại</label>
+                  <input type="tel" value="0559 224 553" />
+                </div>
+                <div class="d-flex">
+                  <button class="btn btn-primary">Cập nhật</button>
+                </div>
+              </div>
             </div>
           </div>
+          <div class="col-6">
+            <div class="info-card">
+              <div class="card-header">
+                <h3>Đổi mật khẩu</h3>
+              </div>
+              <div class="info-grid">
+                <div class="info-item">
+                  <label>Mật khẩu</label>
+                  <input type="password" value="123" />
+                </div>
+                <div class="info-item">
+                  <label>Nhập lại mật khẩu</label>
+                  <input type="password" value="123" />
+                </div>
+                <div class="d-flex">
+                  <button class="btn btn-primary">Cập nhật</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- <div class="info-card">
-            <div class="card-header">
-              <h3>Address</h3>
-              <button class="btn btn-secondary"><i class="bi bi-pencil"></i> Edit</button>
-            </div>
-            <div class="info-grid">
-              <div class="info-item">
-                <label>Country</label>
-                <input type="text" value="United Kingdom" />
-              </div>
-              <div class="info-item">
-                <label>City/State</label>
-                <input type="text" value="Leeds, East London" />
-              </div>
-              <div class="info-item">
-                <label>Postal Code</label>
-                <input type="text" value="ERT 2354" />
-              </div>
-              <div class="info-item">
-                <label>TAX ID</label>
-                <input type="text" value="AS45645756" />
-              </div>
-            </div>
-          </div> -->
       </div>
     </main>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const showCamera = ref(false);
+const fileInput = ref(null);
+const avatarUrl = ref("https://avatars.githubusercontent.com/u/121915529?v=4");
+const isUploading = ref(false);
+
+const uploadAvatar = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  isUploading.value = true;
+
+  try {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      avatarUrl.value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Simulating API call
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Here you would typically make an API call to upload the file
+    console.log("Avatar uploaded successfully");
+  } catch (error) {
+    console.error("Error uploading avatar:", error);
+    // Here you might want to show an error message to the user
+  } finally {
+    isUploading.value = false;
+  }
+};
+</script>
 
 <style scoped>
 .content {
@@ -137,7 +160,7 @@ h2 {
   width: 80px;
   height: 80px;
   border-radius: 10px;
-  margin-right: 1rem;
+  transition: filter 0.3s ease;
 }
 
 .profile-info h3 {
@@ -148,15 +171,6 @@ h2 {
   margin: 0;
   color: #666;
   font-size: 0.9rem;
-}
-
-.profile-info .role {
-  margin-top: 0.2rem;
-}
-
-.profile-info .email {
-  margin-top: 0.2rem;
-  font-size: 0.8rem;
 }
 
 .edit-btn {
@@ -225,6 +239,20 @@ h2 {
   }
 }
 
+input {
+  padding: 0.5rem;
+  font-size: 15px;
+  border-radius: 8px;
+  /* border: 2px solid var(--secondary-color); */
+  border: 2px solid #dcdcdc !important;
+  transition: all 0.2s;
+  &:focus,
+  &:active {
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+    border: 2px solid var(--border-input-color) !important;
+  }
+}
+
 @media (max-width: 768px) {
   .app-container {
     padding: 1rem;
@@ -263,5 +291,31 @@ h2 {
     margin-left: 0;
     margin-top: 1rem;
   }
+}
+.profile-image-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.camera-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.camera-overlay span {
+  color: white;
+  font-size: 24px;
+}
+
+.profile-image-container:hover .profile-image {
+  filter: brightness(0.95);
 }
 </style>

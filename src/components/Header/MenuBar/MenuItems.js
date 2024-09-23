@@ -49,7 +49,7 @@ export default [
     component: () => import("@components/Page/Product/ProductForm/ProductForm.vue"),
     meta: {
       requiresAuth: false,
-      headerTitle: "Thêm sản phẩm",
+      headerTitle: "Quản lý sản phẩm",
       searchConfig: {},
       storeConfig: {},
     },
@@ -71,7 +71,7 @@ export default [
     component: () => import("@components/Page/Inbound/InboundDetail/InboundDetail.vue"),
     meta: {
       requiresAuth: false,
-      headerTitle: "Thêm nhập kho",
+      headerTitle: "Quản lý nhập kho",
       searchConfig: {},
       storeConfig: {},
     },
@@ -93,7 +93,7 @@ export default [
     component: () => import("@components/Page/Outbound/OutboundDetail/OutboundDetail.vue"),
     meta: {
       requiresAuth: false,
-      headerTitle: "Thêm xuất kho",
+      headerTitle: "Quản lý xuất kho",
       searchConfig: {},
       storeConfig: {},
     },
@@ -105,6 +105,17 @@ export default [
     meta: {
       requiresAuth: false,
       headerTitle: "Báo cáo",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "cau-hinh",
+    name: "cau-hinh",
+    component: () => import("@/components/Page/ConfigSettings/ConfigSettings.vue"),
+    meta: {
+      requiresAuth: false,
+      headerTitle: "Cấu hình kho",
       searchConfig: {},
       storeConfig: {},
     },

@@ -87,11 +87,11 @@
                       </li>
                       <li>
                         <router-link
-                          to="/inventory/cai-dat"
+                          to="/inventory/cau-hinh"
                           class="dropdown-item d-flex align-items-center justify-content-between"
                           aria-expanded="false"
                         >
-                          <span class="text-dark fs">Cài đặt</span>
+                          <span class="text-dark fs">Cấu hình</span>
                           <span class="material-symbols-outlined">settings</span>
                         </router-link>
                       </li>
@@ -162,9 +162,9 @@
               <li class="nav-item">
                 <router-link to="/inventory/san-pham" class="nav-link">Sản phẩm</router-link>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <router-link to="/inventory/quan-ly-kho" class="nav-link">Quản lý kho</router-link>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <router-link to="/inventory/quan-ly-tai-khoan" class="nav-link"
                   >Quản lý tài khoản</router-link
@@ -222,11 +222,11 @@
                     </li>
                     <li>
                       <router-link
-                        to="/inventory/cai-dat"
+                        to="/inventory/cau-hinh"
                         class="dropdown-item d-flex align-items-center justify-content-between"
                         aria-expanded="false"
                       >
-                        <span class="text-dark fs">Cài đặt</span>
+                        <span class="text-dark fs">Cấu hình</span>
                         <span class="material-symbols-outlined">settings</span>
                       </router-link>
                     </li>
