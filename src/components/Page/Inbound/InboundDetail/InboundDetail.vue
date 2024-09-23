@@ -1,5 +1,6 @@
 <template>
   <div class="container mt-4">
+    <h4 class="fw-bold">Phiếu nhập</h4>
     <div
       class="mb-3"
       style="
@@ -14,19 +15,8 @@
         <div class="row mb-3">
           <div class="col">
             <button class="btn btn-primary me-2">Đánh dấu việc cần làm</button>
-            <button class="btn btn-secondary me-2">Xác nhận</button>
             <button class="btn btn-secondary me-2">In nhãn</button>
-            <button
-              class="btn btn-logout"
-              style="
-                background-color: #fef2f2;
-                color: #ef4444 !important;
-                border: 1px solid #c20000;
-                font-size: 14px;
-              "
-            >
-              Hủy
-            </button>
+            <button class="btn btn-logout" @click="btnCancel">Hủy</button>
           </div>
         </div>
 
@@ -312,6 +302,10 @@ const froms = ref([
     name: "giangvth",
   },
 ]);
+
+const btnCancel = () => {
+  window.history.back();
+};
 </script>
 
 <style scoped>
@@ -333,9 +327,22 @@ textarea {
 .nav-link {
   color: #000;
   border: 1px solid #d3d3d3;
+  font-size: 14px;
 }
 .nav-link.active {
   color: #000;
   background-color: var(--primary-color);
+}
+.form-label {
+  font-weight: bold;
+}
+.btn-logout {
+  background-color: #fef2f2;
+  color: #ef4444 !important;
+  border: 1px solid #fef2f2;
+  font-size: 14px;
+  &:hover {
+    border: 1px solid #c20000;
+  }
 }
 </style>

@@ -63,7 +63,6 @@ body {
   outline: none;
   transition: all 0.2s;
   &:hover,
-  &:focus,
   &:active {
     border: 1px solid #097c4f !important;
     /* border: none; */
@@ -81,7 +80,6 @@ body {
   outline: none;
   transition: all 0.2s;
   &:hover,
-  &:focus,
   &:active {
     border: 1px solid #dcdcdc !important;
     /* border: none; */
