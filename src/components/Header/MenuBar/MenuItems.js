@@ -99,6 +99,17 @@ export default [
     },
   },
   {
+    path: "ton-kho-vat-ly",
+    name: "ton-kho-vat-ly",
+    component: () => import("@components/Page/PhysicalInventory/PhysicalInventory.vue"),
+    meta: {
+      requiresAuth: false,
+      headerTitle: "Hàng tồn kho vật lý",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "bao-cao",
     name: "bao-cao",
     component: () => import("@/components/Page/Report/Report.vue"),

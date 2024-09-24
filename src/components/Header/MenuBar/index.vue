@@ -62,6 +62,9 @@
                       class="dropdown-menu dropdown-menu-lg-end mt-2"
                       aria-labelledby="dropdownMenuButton"
                     >
+                      <small class="text-muted p-2 fw-bold" style="font-size: 12px"
+                        >Tài khoản</small
+                      >
                       <li>
                         <router-link
                           to="/inventory/thong-tin-tai-khoan"
@@ -85,17 +88,18 @@
                           </div>
                         </router-link>
                       </li>
+                      <small class="text-muted p-2 fw-bold" style="font-size: 12px">Kho</small>
                       <li>
                         <router-link
                           to="/inventory/cau-hinh"
                           class="dropdown-item d-flex align-items-center justify-content-between"
                           aria-expanded="false"
                         >
-                          <span class="text-dark fs">Cấu hình</span>
+                          <span class="text-dark fs">Cấu hình kho</span>
                           <span class="material-symbols-outlined">settings</span>
                         </router-link>
                       </li>
-                      <li>
+                      <!-- <li>
                         <router-link
                           to="/inventory/ngon-ngu"
                           class="dropdown-item d-flex align-items-center justify-content-between"
@@ -104,7 +108,7 @@
                           <span class="text-dark fs">Ngôn ngữ</span>
                           <span class="material-symbols-outlined">language</span>
                         </router-link>
-                      </li>
+                      </li> -->
                       <li><hr class="dropdown-divider" /></li>
                       <li>
                         <router-link
@@ -139,6 +143,7 @@
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <small class="text-muted p-2 fw-bold" style="font-size: 12px">Điều chuyển</small>
                   <li>
                     <router-link
                       to="/inventory/nhap"
@@ -155,6 +160,17 @@
                     >
                       <span class="fs">Xuất kho</span>
                       <span class="material-symbols-outlined">upload</span>
+                    </router-link>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <small class="text-muted p-2 fw-bold" style="font-size: 12px">Điều chỉnh</small>
+                  <li>
+                    <router-link
+                      to="/inventory/ton-kho-vat-ly"
+                      class="dropdown-item d-flex align-items-center justify-content-between"
+                    >
+                      <span class="fs">Tồn kho vật lý</span>
+                      <span class="material-symbols-outlined">warehouse</span>
                     </router-link>
                   </li>
                 </ul>
@@ -197,6 +213,7 @@
                     aria-labelledby="dropdownMenuButton"
                     style="min-width: 170px !important"
                   >
+                    <small class="text-muted p-2 fw-bold" style="font-size: 12px">Tài khoản</small>
                     <li>
                       <router-link
                         to="/inventory/thong-tin-tai-khoan"
@@ -220,17 +237,18 @@
                         </div>
                       </router-link>
                     </li>
+                    <small class="text-muted p-2 fw-bold" style="font-size: 12px">Kho</small>
                     <li>
                       <router-link
                         to="/inventory/cau-hinh"
                         class="dropdown-item d-flex align-items-center justify-content-between"
                         aria-expanded="false"
                       >
-                        <span class="text-dark fs">Cấu hình</span>
+                        <span class="text-dark fs">Cấu hình kho</span>
                         <span class="material-symbols-outlined">settings</span>
                       </router-link>
                     </li>
-                    <li>
+                    <!-- <li>
                       <router-link
                         to="/inventory/ngon-ngu"
                         class="dropdown-item d-flex align-items-center justify-content-between"
@@ -239,7 +257,7 @@
                         <span class="text-dark fs">Ngôn ngữ</span>
                         <span class="material-symbols-outlined">language</span>
                       </router-link>
-                    </li>
+                    </li> -->
                     <li><hr class="dropdown-divider" /></li>
                     <li>
                       <router-link
