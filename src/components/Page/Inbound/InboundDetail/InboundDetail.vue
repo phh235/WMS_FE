@@ -1,16 +1,7 @@
 <template>
   <div class="container mt-4">
     <h4 class="fw-bold">Phiếu nhập</h4>
-    <div
-      class="mb-3"
-      style="
-        padding: 1rem;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-        border: 1px solid #00000014;
-      "
-    >
+    <div class="mb-3 block">
       <div class="d-flex justify-content-between">
         <div class="row mb-3">
           <div class="col">
@@ -80,15 +71,7 @@
         </div>
       </div> -->
     </div>
-    <div
-      style="
-        padding: 1rem;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-        border: 1px solid #00000014;
-      "
-    >
+    <div class="block">
       <div class="row mb-3">
         <div class="col">
           <nav>
@@ -309,6 +292,13 @@ const btnCancel = () => {
 </script>
 
 <style scoped>
+.block {
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid #dfdfdf;
+}
 input,
 .form-select,
 textarea {
@@ -328,6 +318,9 @@ textarea {
   color: #000;
   border: 1px solid #d3d3d3;
   font-size: 14px;
+}
+.nav-link:hover {
+  background-color: #d3f8e4;
 }
 .nav-link.active {
   color: #000;

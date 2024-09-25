@@ -4,7 +4,7 @@ export default [
     name: "tong-quan",
     component: () => import("@/components/Page/Home/Home.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Tổng quan kho",
       searchConfig: {},
       storeConfig: {},
@@ -15,7 +15,7 @@ export default [
     name: "thong-tin-tai-khoan",
     component: () => import("@/components/Page/Account/AccountInfo/AccountInfo.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Thông tin tài khoản",
       searchConfig: {},
       storeConfig: {},
@@ -26,7 +26,7 @@ export default [
     name: "quan-ly-tai-khoan",
     component: () => import("@/components/Page/Account/AccountManage/AccountManage.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý tài khoản",
       searchConfig: {},
       storeConfig: {},
@@ -37,7 +37,7 @@ export default [
     name: "san-pham",
     component: () => import("@components/Page/Product/ProductTab/ProductTab.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -48,7 +48,7 @@ export default [
     name: "them-moi",
     component: () => import("@components/Page/Product/ProductForm/ProductForm.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -59,7 +59,7 @@ export default [
     name: "nhap",
     component: () => import("@components/Page/Inbound/InboundTable/InboundTable.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Nhập kho",
       searchConfig: {},
       storeConfig: {},
@@ -70,7 +70,7 @@ export default [
     name: "tao-phieu-nhap",
     component: () => import("@components/Page/Inbound/InboundDetail/InboundDetail.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý nhập kho",
       searchConfig: {},
       storeConfig: {},
@@ -81,7 +81,7 @@ export default [
     name: "xuat",
     component: () => import("@components/Page/Outbound/OutboundTable/OutboundTable.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Xuất kho",
       searchConfig: {},
       storeConfig: {},
@@ -92,7 +92,7 @@ export default [
     name: "tao-phieu-xuat",
     component: () => import("@components/Page/Outbound/OutboundDetail/OutboundDetail.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý xuất kho",
       searchConfig: {},
       storeConfig: {},
@@ -103,7 +103,7 @@ export default [
     name: "ton-kho-vat-ly",
     component: () => import("@components/Page/PhysicalInventory/PhysicalInventory.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Hàng tồn kho vật lý",
       searchConfig: {},
       storeConfig: {},
@@ -114,21 +114,20 @@ export default [
     name: "bao-cao",
     component: () => import("@/components/Page/Report/Report.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Báo cáo",
       searchConfig: {},
       storeConfig: {},
     },
   },
   {
-    path: "cau-hinh",
+    path: "cau-hinh/danh-muc",
     name: "cau-hinh",
-    component: () => import("@/components/Page/ConfigSettings/ConfigSettings.vue"),
+    component: () => import("@/components/Page/ConfigSettings/ConfigCategory/ConfigCategory.vue"),
     meta: {
-      requiresAuth: false,
-      headerTitle: "Cấu hình kho",
+      requiresAuth: true,
+      headerTitle: "Danh mục sản phẩm",
       searchConfig: {},
       storeConfig: {},
     },
-  },
-];
+  },];

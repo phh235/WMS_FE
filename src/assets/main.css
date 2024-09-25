@@ -22,6 +22,7 @@ body {
   --primary-color: #72e3ad;
   --primary-color-hover: #64d8a3;
   --secondary-color: #f3f3f3;
+  --secondary-color-hover: #ededed;
   --secondary-color-border: #00000014;
   --secondary-color-border-hover: #c9c9c9;
   --btn-logout-bg: #fff0ee;
@@ -63,6 +64,7 @@ body {
   outline: none;
   transition: all 0.2s;
   &:hover,
+  &:focus,
   &:active {
     border: 1px solid #097c4f !important;
     /* border: none; */
@@ -80,8 +82,9 @@ body {
   outline: none;
   transition: all 0.2s;
   &:hover,
+  &:focus,
   &:active {
-    border: 1px solid #dcdcdc !important;
+    border: 1px solid #8f8f8f !important;
     /* border: none; */
     background-color: var(--secondary-color) !important;
   }

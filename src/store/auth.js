@@ -29,12 +29,12 @@ export const useAuthStore = defineStore("auth", {
 
     setToken(token) {
       this.token = token;
-      localStorage.setItem("tokenApi", token);
+      localStorage.setItem("token", token);
       // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
 
     checkAuth() {
-      const token = localStorage.getItem("tokenApi");
+      const token = localStorage.getItem("token");
       if (token) {
         this.setToken(token);
         return true;
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("auth", {
 
     logout() {
       this.token = null;
-      localStorage.removeItem("tokenApi");
+      localStorage.removeItem("token");
       // delete axios.defaults.headers.common["Authorization"];
       showToastSuccess("Đã đăng xuất");
       return router.push("/");
