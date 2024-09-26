@@ -153,7 +153,7 @@ h2 {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #00000014;
+  border: 1px solid #dfdfdf;
 }
 
 .profile-image {
@@ -189,7 +189,7 @@ h2 {
   padding: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #00000014;
+  border: 1px solid #dfdfdf;
 }
 
 .card-header {
@@ -230,7 +230,7 @@ h2 {
   font-size: 15px;
   border-radius: 8px;
   /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
+  border: 1px solid #dfdfdf;
   transition: all 0.2s;
   &:focus,
   &:active {

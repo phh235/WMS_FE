@@ -5,9 +5,10 @@
       class="mb-4 top-0 start-0 position-absolute p-2 d-flex align-items-center justify-content-center user-select-none"
     >
       <img
-        src="https://res.cloudinary.com/dc1txyr7b/image/upload/v1724138470/th78gsygvjv2wm7zbwh7.png"
+        src="https://res.cloudinary.com/dnfccnxew/image/upload/v1727249885/fqzo9a6ok3qk4ykxnzxu.png"
         alt="Logo WMS"
-        width="50"
+        width="40"
+        class="me-2"
       />
       <p class="h5 fw-bold mt-2">Inventory</p>
     </div>
