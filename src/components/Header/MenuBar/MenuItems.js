@@ -35,7 +35,7 @@ export default [
   {
     path: "san-pham",
     name: "san-pham",
-    component: () => import("@components/Page/Product/ProductTab/ProductTab.vue"),
+    component: () => import("@components/Page/Product/ProductTable/ProductTable.vue"),
     meta: {
       requiresAuth: true,
       headerTitle: "Sản phẩm",

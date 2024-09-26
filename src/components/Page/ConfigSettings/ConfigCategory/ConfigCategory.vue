@@ -46,11 +46,7 @@
         Trước
       </button>
       <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-      <button
-        class="btn btn-primary ms-2"
-        @click="nextPage"
-        :disabled="currentPage === totalPages"
-      >
+      <button class="btn btn-primary ms-2" @click="nextPage" :disabled="currentPage === totalPages">
         Sau
       </button>
     </div>
@@ -143,7 +139,7 @@ const selectedCategory = reactive({
 // pagination
 const currentPage = ref(0);
 const totalPages = ref(1);
-const pageSize = ref(10);
+const pageSize = ref(5);
 
 onMounted(() => {
   getCategories();
@@ -159,7 +155,6 @@ const nextPage = () => {
   if (currentPage.value < totalPages.value) {
     currentPage.value++;
     getCategories();
-    q;
   }
 };
 
@@ -217,7 +212,6 @@ const saveCategory = async () => {
     // Kiểm tra phản hồi từ API
     if (response) {
       await getCategories();
-
       // Làm mới form
       btnResetForm_Click();
       addCategoryBtn.value.click();

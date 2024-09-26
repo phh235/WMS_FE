@@ -40,6 +40,22 @@ export const apiService = {
       throw error;
     }
   },
+
+  async postImage(url, data) {
+    try {
+      const response = await axios.post(`${BASE_URL}${url}`, data, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "application/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("POST request error:", error);
+      throw error;
+    }
+  },
+
   async delete(url, id) {
     try {
       const response = await axios.delete(`${BASE_URL}${url}`, id, {
