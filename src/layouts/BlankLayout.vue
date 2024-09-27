@@ -10,7 +10,7 @@
         width="40"
         class="me-2"
       />
-      <p class="h5 fw-bold mt-2">Inventory</p>
+      <p class="h5 fw-bold mt-2">Quản lý kho hàng - WMS</p>
     </div>
     <div class="row align-items-center justify-content-center vh-100">
       <div

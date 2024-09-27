@@ -3,36 +3,39 @@
     <button
       type="button"
       class="btn btn-primary d-flex align-items-center"
-      ref="addWarehouseBtn"
+      ref="addWarehouseTypeBtn"
       data-bs-toggle="modal"
       data-bs-target="#warehouseModal"
     >
       <span class="material-symbols-outlined me-2"> add </span>
-      Thêm kho hàng
+      Thêm loại kho hàng
     </button>
   </div>
   <table class="table table-hover" @click="handleRowClick">
     <thead>
       <tr>
         <th scope="col">ID</th>
-        <th scope="col">Tên kho hàng</th>
-        <th scope="col">Địa chỉ</th>
+        <th scope="col">Tên loại kho hàng</th>
         <th scope="col">Mô Tả</th>
+        <th scope="col">ID kho</th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       <tr
-        v-for="warehouse in warehouses"
-        :key="warehouse.sysIdWarehouse"
-        :data-id="warehouse.sysIdWarehouse"
+        v-for="warehouseType in warehouseTypes"
+        :key="warehouseType.sysIdWarehouseType"
+        :data-id="warehouseType.sysIdWarehouseType"
       >
-        <td scope="row">{{ warehouse.sysIdWarehouse }}</td>
-        <td>{{ warehouse.warehouseName }}</td>
-        <td>{{ warehouse.warehouseAddress }}</td>
-        <td>{{ warehouse.description }}</td>
+        <td scope="row">{{ warehouseType.sysIdWarehouseType }}</td>
+        <td>{{ warehouseType.warehouseTypeName }}</td>
+        <td>{{ warehouseType.warehouseTypeDesc }}</td>
+        <td>{{ warehouseType.sysIdWarehouse }}</td>
         <td class="text-center">
-          <button class="btn btn-danger" @click="deleteWarehouse(warehouse.sysIdWarehouse, $event)">
+          <button
+            class="btn btn-danger"
+            @click="deleteWarehouse(warehouseType.sysIdWarehouseType, $event)"
+          >
             <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
           </button>
         </td>
@@ -61,7 +64,11 @@
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedWarehouse.sysIdWarehouse ? "Chỉnh sửa kho hàng" : "Thêm kho hàng" }}
+            {{
+              selectedWarehouseTypes.sysIdWarehouseType
+                ? "Chỉnh sửa loại kho hàng"
+                : "Thêm loại kho hàng"
+            }}
           </h5>
           <button
             type="button"
@@ -74,42 +81,42 @@
         <div class="modal-body">
           <form>
             <div class="mb-3">
-              <label for="warehouseId" class="form-label fw-bold">Mã Kho hàng</label>
+              <label for="warehouseId" class="form-label fw-bold">Mã loại Kho hàng</label>
               <input
                 type="text"
                 class="form-control"
                 id="warehouseId"
                 aria-describedby="warehouseIdHelp"
-                v-model="selectedWarehouse.sysIdWarehouse"
+                v-model="selectedWarehouseTypes.sysIdWarehouseType"
               />
             </div>
             <div class="mb-3">
-              <label for="warehouseName" class="form-label fw-bold">Tên kho hàng</label>
+              <label for="warehouseTypeName" class="form-label fw-bold">Tên loại kho hàng</label>
               <input
                 type="text"
                 class="form-control"
-                id="warehouseName"
-                aria-describedby="warehouseNameHelp"
-                v-model="selectedWarehouse.warehouseName"
+                id="warehouseTypeName"
+                aria-describedby="warehouseTypeNameHelp"
+                v-model="selectedWarehouseTypes.warehouseTypeName"
               />
             </div>
             <div class="mb-3">
-              <label for="warehouseAddress" class="form-label fw-bold">Địa chỉ</label>
+              <label for="warehouseTypeDesc" class="form-label fw-bold">Mô tả</label>
               <input
                 type="text"
                 class="form-control"
-                id="warehouseAddress"
-                aria-describedby="warehouseAdressHelp"
-                v-model="selectedWarehouse.warehouseAddress"
+                id="warehouseTypeDesc"
+                aria-describedby="warehouseTypeDescHelp"
+                v-model="selectedWarehouseTypes.warehouseTypeDesc"
               />
             </div>
             <div class="mb-3">
-              <label for="warehouseDescription" class="form-label fw-bold">Mô Tả</label>
+              <label for="sysIdWarehouse" class="form-label fw-bold">ID kho</label>
               <textarea
                 class="form-control"
-                id="warehouseDescription"
-                aria-describedby="warehouseDescriptionHelp"
-                v-model="selectedWarehouse.description"
+                id="sysIdWarehouse"
+                aria-describedby="sysIdWarehouseHelp"
+                v-model="selectedWarehouseTypes.sysIdWarehouse"
               ></textarea>
             </div>
           </form>
@@ -124,7 +131,7 @@
             Hủy
           </button>
           <button type="button" class="btn btn-primary" @click="saveWarehouse">
-            {{ selectedWarehouse.sysIdWarehouse ? "Cập nhật" : "Lưu" }}
+            {{ selectedWarehouseTypes.sysIdWarehouseType ? "Cập nhật" : "Lưu" }}
           </button>
         </div>
       </div>
@@ -139,13 +146,13 @@ import { showToastSuccess, showToastError } from "@components/Toast/utils/toastH
 import Swal from "sweetalert2";
 
 const apiStore = useApiStore();
-const warehouses = ref([]);
-const addWarehouseBtn = ref(null);
-const selectedWarehouse = reactive({
+const warehouseTypes = ref([]);
+const addWarehouseTypeBtn = ref(null);
+const selectedWarehouseTypes = reactive({
+  sysIdWarehouseType: "",
+  warehouseTypeName: "",
+  warehouseTypeDesc: "",
   sysIdWarehouse: "",
-  warehouseName: "",
-  warehouseAddress: "",
-  description: "",
 });
 // pagination
 const currentPage = ref(0);
@@ -176,60 +183,60 @@ const prevPage = () => {
   }
 };
 
-// Lấy kho hàng sản phẩm
+// Lấy loại kho hàng sản phẩm
 const getWarehouses = async () => {
   try {
     const response = await apiStore.get(
-      `warehouses?page=${currentPage.value}&size=${pageSize.value}`
+      `warehouse-types?page=${currentPage.value}&size=${pageSize.value}`
     );
-    warehouses.value = response.list;
+    warehouseTypes.value = response.list;
     console.log(response);
     totalPages.value = Math.ceil(response.total / pageSize.value);
   } catch (error) {
-    console.error("Failed to fetch warehouses:", error);
+    console.error("Failed to fetch warehouseTypes:", error);
   }
 };
 
-// Lưu hoặc cập nhật kho hàng
+// Lưu hoặc cập nhật loại kho hàng
 const saveWarehouse = async () => {
   // Kiểm tra nếu ID trống
-  if (!selectedWarehouse.sysIdWarehouse.trim()) {
-    showToastError("ID kho hàng không được để trống!");
+  if (!selectedWarehouseTypes.sysIdWarehouseType.trim()) {
+    showToastError("ID loại kho hàng không được để trống!");
     return;
   }
-  // Kiểm tra nếu tên kho hàng trống
-  if (!selectedWarehouse.warehouseName.trim()) {
-    showToastError("Tên kho hàng không được để trống!");
+  // Kiểm tra nếu tên loại kho hàng trống
+  if (!selectedWarehouseTypes.warehouseTypeName.trim()) {
+    showToastError("Tên loại khypeDesc không được để trống!");
     return;
   }
   // Kiểm tra nếu mô tả trống
-  if (!selectedWarehouse.description.trim()) {
-    showToastError("Mô tả kho hàng không được để trống!");
+  if (!selectedWarehouseTypes.warehouseTypeDesc.trim()) {
+    showToastError("Mô tả loại kho hàng không được để trống!");
     return;
   }
   // Kiểm tra nếu địa chỉ trống
-  if (!selectedWarehouse.warehouseAddress.trim()) {
-    showToastError("Địa chỉ kho hàng không được để trống!");
+  if (!selectedWarehouseTypes.sysIdWarehouse.trim()) {
+    showToastError("Địa chỉ loại kho hàng không được để trống!");
     return;
   }
 
   try {
     let response;
-    if (selectedWarehouse.sysIdWarehouse) {
+    if (selectedWarehouseTypes.sysIdWarehouseType) {
       // Nếu có ID, thực hiện cập nhật
-      response = await apiStore.post("warehouses", {
-        sysIdWarehouse: selectedWarehouse.sysIdWarehouse,
-        warehouseName: selectedWarehouse.warehouseName,
-        warehouseAddress: selectedWarehouse.warehouseAddress,
-        description: selectedWarehouse.description,
+      response = await apiStore.post("warehouse-types", {
+        sysIdWarehouseType: selectedWarehouseTypes.sysIdWarehouseType,
+        warehouseTypeName: selectedWarehouseTypes.warehouseTypeName,
+        warehouseTypeDesc: selectedWarehouseTypes.warehouseTypeDesc,
+        sysIdWarehouse: warehouseType.sysIdWarehouse,
       });
     } else {
       // Nếu không có ID, thực hiện thêm mới
-      response = await apiStore.post("warehouses", {
-        sysIdWarehouse: selectedWarehouse.sysIdWarehouse,
-        warehouseName: selectedWarehouse.warehouseName,
-        warehouseAddress: selectedWarehouse.warehouseAddress,
-        description: selectedWarehouse.description,
+      response = await apiStore.post("warehouse-types", {
+        sysIdWarehouseType: selectedWarehouseTypes.sysIdWarehouseType,
+        warehouseTypeName: selectedWarehouseTypes.warehouseTypeName,
+        warehouseTypeDesc: selectedWarehouseTypes.warehouseTypeDesc,
+        sysIdWarehouse: selectedWaTypeDesc.sysIdWarehouse,
       });
     }
 
@@ -238,16 +245,16 @@ const saveWarehouse = async () => {
       await getWarehouses();
       // Làm mới form
       btnResetForm_Click();
-      addWarehouseBtn.value.click();
+      addWarehouseTypeBtn.value.click();
       showToastSuccess("Lưu thành công");
     } else {
-      // console.error("Failed to save warehouse:", response);
+      // console.error("Failed to save warehouseType:", response);
       if (response && response.error) {
         console.error("Error details:", response.error); // Ghi nhận chi tiết lỗi nếu có
       }
     }
   } catch (error) {
-    console.error("Error while saving warehouse:", error);
+    console.error("Error while saving warehouseType:", error);
   }
 };
 
@@ -259,25 +266,27 @@ const handleRowClick = (event) => {
   // Lấy giá trị của thuộc tính 'data-id' từ <tr> đã được click.
   const id = row.getAttribute("data-id");
 
-  // Tìm kho hàng có ID tương ứng trong danh sách 'warehouses'.
-  const selectedWarehouseValue = warehouses.value.find((warehouse) => warehouse.sysIdWarehouse);
+  // Tìm loại kho hàng có ID tương ứng trong danh sách 'warehouseTypes'.
+  const selectedWarehouseValue = warehouseTypes.value.find(
+    (warehouseType) => warehouseType.sysIdWarehouseType
+  );
 
-  // Nếu tìm thấy kho hàng có ID tương ứng.
+  // Nếu tìm thấy loại kho hàng có ID tương ứng.
   if (selectedWarehouseValue) {
-    // Sao chép dữ liệu của kho hàng được chọn vào biến 'selectedWarehouse'.
-    Object.assign(selectedWarehouse, selectedWarehouseValue);
+    // Sao chép dữ liệu của loại kho hàng được chọn vào biến 'selectedWarehouseTypes'.
+    Object.assign(selectedWarehouseTypes, selectedWarehouseValue);
 
-    // Tự động click vào nút 'Thêm kho hàng' để mở modal chỉnh sửa thông tin kho hàng.
-    addWarehouseBtn.value.click();
+    // Tự động click vào nút 'Thêm loại kho hàng' để mở modal chỉnh sửa thông tin loại kho hàng.
+    addWarehouseTypeBtn.value.click();
   }
 };
 
-// Xóa kho hàng
+// Xóa loại kho hàng
 const deleteWarehouse = async (id, event) => {
   event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên dòng <tr>
   const swalConfirm = await Swal.fire({
-    title: "Xóa kho hàng?",
-    text: "Bạn có chắc chắn muốn xóa kho hàng này?",
+    title: "Xóa loại kho hàng?",
+    text: "Bạn có chắc chắn muốn xóa loại kho hàng này?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -288,23 +297,23 @@ const deleteWarehouse = async (id, event) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`warehouses/${id}`);
-      await getWarehouses(); // Cập nhật lại danh sách kho hàng sau khi xóa
-      showToastSuccess("Kho hàng đã được xóa");
+      await apiStore.delete(`warehouse-types/${id}`);
+      await getWarehouses(); // Cập nhật lại danh sách loại kho hàng sau khi xóa
+      showToastSuccess("loại Kho hàng đã được xóa");
     } catch (error) {
-      console.error("Error while deleting warehouse:", error);
-      showToastError("Xóa kho hàng thất bại. Vui lòng thử lại");
+      console.error("Error while deleting warehouseType:", error);
+      showToastError("Xóa loại kho hàng thất bại. Vui lòng thử lại");
     }
   }
 };
 
 // Làm mới form nhập
 const btnResetForm_Click = () => {
-  Object.assign(selectedWarehouse, {
+  Object.assign(selectedWarehouseTypes, {
+    sysIdWarehouseType: "",
+    warehouseTypeName: "",
+    warehouseTypeDesc: "",
     sysIdWarehouse: "",
-    warehouseName: "",
-    warehouseAddress: "",
-    description: "",
   });
 };
 </script>

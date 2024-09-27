@@ -121,13 +121,64 @@ export default [
     },
   },
   {
-    path: "cau-hinh/danh-muc",
+    path: "cau-hinh",
     name: "cau-hinh",
-    component: () => import("@/components/Page/ConfigSettings/ConfigCategory/ConfigCategory.vue"),
+    component: () => import("@components/Page/ConfigSettings/ConfigSettings.vue"),
     meta: {
       requiresAuth: true,
       headerTitle: "Danh mục sản phẩm",
       searchConfig: {},
       storeConfig: {},
     },
-  },];
+    children: [
+      {
+        path: "danh-muc",
+        name: "danh-muc",
+        component: () =>
+          import("@components/Page/ConfigSettings/ConfigCategory/ConfigCategory.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình danh mục",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "kho-hang",
+        name: "kho-hang",
+        component: () =>
+          import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouse.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình kho hàng",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "loai-kho",
+        name: "loai-kho",
+        component: () =>
+          import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouseType.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình loại kho",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "khu-vuc",
+        name: "khu-vuc",
+        component: () =>
+          import("@components/Page/ConfigSettings/ConfigWarehouseZone/ConfigWarehouseZone.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình khu vực",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+    ],
+  },
+];

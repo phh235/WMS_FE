@@ -1,121 +1,122 @@
 <template>
-  <div class="container p-4 rounded-2">
-    <div class="mb-3 d-flex justify-content-end align-items-center">
-      <button
-        type="button"
-        class="btn btn-primary d-flex align-items-center"
-        ref="addCategoryBtn"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-      >
-        <span class="material-symbols-outlined me-2"> add </span>
-        Thêm danh mục
-      </button>
-    </div>
-    <table class="table table-hover" @click="handleRowClick">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Tên danh mục</th>
-          <th scope="col">Mô Tả</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="category in categories"
-          :key="category.sysIdCategoryProd"
-          :data-id="category.sysIdCategoryProd"
-        >
-          <td scope="row">{{ category.sysIdCategoryProd }}</td>
-          <td>{{ category.categoryName }}</td>
-          <td>{{ category.categoryDesc }}</td>
-          <td class="text-center">
-            <button
-              class="btn btn-danger"
-              @click="deleteCategory(category.sysIdCategoryProd, $event)"
-            >
-              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="pagination d-flex justify-content-center align-items-center mt-3">
-      <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
-        Trước
-      </button>
-      <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-      <button class="btn btn-primary ms-2" @click="nextPage" :disabled="currentPage === totalPages">
-        Sau
-      </button>
-    </div>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+  <div class="mb-3 d-flex justify-content-end align-items-center">
+    <button
+      type="button"
+      class="btn btn-primary d-flex align-items-center"
+      ref="addCategoryBtn"
+      data-bs-toggle="modal"
+      data-bs-target="#categoryModal"
     >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header border-0">
-            <h5 class="modal-title fw-bold" id="exampleModalLabel">
-              {{ selectedCategory.sysIdCategoryProd ? "Chỉnh sửa danh mục" : "Thêm danh mục" }}
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3 d-none">
-                <label for="categoryId" class="form-label">Mã Danh Mục</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="categoryId"
-                  aria-describedby="categoryIdHelp"
-                  v-model="selectedCategory.sysIdCategoryProd"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="categoryName" class="form-label fw-bold">Tên danh mục</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="categoryName"
-                  aria-describedby="categoryNameHelp"
-                  v-model="selectedCategory.categoryName"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="categoryDescription" class="form-label fw-bold">Mô Tả</label>
-                <textarea
-                  class="form-control"
-                  id="categoryDescription"
-                  aria-describedby="categoryDescriptionHelp"
-                  v-model="selectedCategory.categoryDesc"
-                ></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer border-0">
-            <button
-              type="button"
-              class="btn btn-logout"
-              data-bs-dismiss="modal"
-              @click="btnResetForm_Click"
-            >
-              Hủy
-            </button>
-            <button type="button" class="btn btn-primary" @click="saveCategory">
-              {{ selectedCategory.sysIdCategoryProd ? "Cập nhật" : "Lưu" }}
-            </button>
-          </div>
+      <span class="material-symbols-outlined me-2"> add </span>
+      Thêm danh mục
+    </button>
+  </div>
+  <table class="table table-hover" @click="handleRowClick">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Tên danh mục</th>
+        <th scope="col">Mô Tả</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="category in categories"
+        :key="category.sysIdCategoryProd"
+        :data-id="category.sysIdCategoryProd"
+      >
+        <td scope="row">{{ category.sysIdCategoryProd }}</td>
+        <td>{{ category.categoryName }}</td>
+        <td>{{ category.categoryDesc }}</td>
+        <td class="text-center">
+          <button
+            class="btn btn-danger"
+            @click="deleteCategory(category.sysIdCategoryProd, $event)"
+          >
+            <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination d-flex justify-content-center align-items-center mt-3">
+    <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
+      Trước
+    </button>
+    <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
+    <button class="btn btn-primary ms-2" @click="nextPage" :disabled="currentPage === totalPages">
+      Sau
+    </button>
+  </div>
+  <div
+    class="modal fade"
+    id="categoryModal"
+    tabindex="-1"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold" id="exampleModalLabel">
+            {{ selectedCategory.sysIdCategoryProd ? "Chỉnh sửa danh mục" : "Thêm danh mục" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            @click="btnResetForm_Click"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3 d-none">
+              <label for="categoryId" class="form-label">Mã Danh Mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="categoryId"
+                aria-describedby="categoryIdHelp"
+                v-model="selectedCategory.sysIdCategoryProd"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="categoryName" class="form-label fw-bold">Tên danh mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="categoryName"
+                aria-describedby="categoryNameHelp"
+                v-model="selectedCategory.categoryName"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="categoryDescription" class="form-label fw-bold">Mô Tả</label>
+              <textarea
+                class="form-control"
+                id="categoryDescription"
+                aria-describedby="categoryDescriptionHelp"
+                v-model="selectedCategory.categoryDesc"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-0">
+          <button
+            type="button"
+            class="btn btn-logout"
+            data-bs-dismiss="modal"
+            @click="btnResetForm_Click"
+          >
+            Hủy
+          </button>
+          <button type="button" class="btn btn-primary" @click="saveCategory">
+            {{ selectedCategory.sysIdCategoryProd ? "Cập nhật" : "Lưu" }}
+          </button>
         </div>
       </div>
     </div>
@@ -139,7 +140,7 @@ const selectedCategory = reactive({
 // pagination
 const currentPage = ref(0);
 const totalPages = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(10);
 
 onMounted(() => {
   getCategories();
@@ -172,6 +173,7 @@ const getCategories = async () => {
       `category-product?page=${currentPage.value}&size=${pageSize.value}`
     );
     categories.value = response.list;
+    console.log(response);
     totalPages.value = Math.ceil(response.total / pageSize.value);
   } catch (error) {
     console.error("Failed to fetch categories:", error);
@@ -322,5 +324,17 @@ textarea {
 }
 .btn-danger {
   padding: 6px 6px;
+}
+.btn-close {
+  box-shadow: none;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.1s;
+  &:hover,
+  &:active {
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 8px;
+  }
 }
 </style>
