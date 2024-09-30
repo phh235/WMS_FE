@@ -30,7 +30,7 @@
         <td scope="row">{{ warehouse.sysIdWarehouse }}</td>
         <td>{{ warehouse.warehouseName }}</td>
         <td>{{ warehouse.warehouseAddress }}</td>
-        <td>{{ warehouse.description }}</td>
+        <td>{{ warehouse.warehouseDesc }}</td>
         <td class="text-center">
           <button class="btn btn-danger" @click="deleteWarehouse(warehouse.sysIdWarehouse, $event)">
             <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
@@ -109,7 +109,7 @@
                 class="form-control"
                 id="warehouseDescription"
                 aria-describedby="warehouseDescriptionHelp"
-                v-model="selectedWarehouse.description"
+                v-model="selectedWarehouse.warehouseDesc"
               ></textarea>
             </div>
           </form>
@@ -145,7 +145,7 @@ const selectedWarehouse = reactive({
   sysIdWarehouse: "",
   warehouseName: "",
   warehouseAddress: "",
-  description: "",
+  warehouseDesc: "",
 });
 // pagination
 const currentPage = ref(0);
@@ -203,7 +203,7 @@ const saveWarehouse = async () => {
     return;
   }
   // Kiểm tra nếu mô tả trống
-  if (!selectedWarehouse.description.trim()) {
+  if (!selectedWarehouse.warehouseDesc.trim()) {
     showToastError("Mô tả kho hàng không được để trống!");
     return;
   }
@@ -221,7 +221,7 @@ const saveWarehouse = async () => {
         sysIdWarehouse: selectedWarehouse.sysIdWarehouse,
         warehouseName: selectedWarehouse.warehouseName,
         warehouseAddress: selectedWarehouse.warehouseAddress,
-        description: selectedWarehouse.description,
+        warehouseDesc: selectedWarehouse.warehouseDesc,
       });
     } else {
       // Nếu không có ID, thực hiện thêm mới
@@ -229,7 +229,7 @@ const saveWarehouse = async () => {
         sysIdWarehouse: selectedWarehouse.sysIdWarehouse,
         warehouseName: selectedWarehouse.warehouseName,
         warehouseAddress: selectedWarehouse.warehouseAddress,
-        description: selectedWarehouse.description,
+        warehouseDesc: selectedWarehouse.warehouseDesc,
       });
     }
 
@@ -304,7 +304,7 @@ const btnResetForm_Click = () => {
     sysIdWarehouse: "",
     warehouseName: "",
     warehouseAddress: "",
-    description: "",
+    warehouseDesc: "",
   });
 };
 </script>

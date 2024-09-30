@@ -1,0 +1,63 @@
+<template>
+  <div class="container-fluid p-0">
+    <!-- <div class="row">
+      <Card />
+    </div> -->
+    <div class="d-flex justify-content-center align-items-center mt-5">
+      <div class="warehouse-block">
+        <div class="row">
+          <div class="col-12 col-md-6 mb-3" v-for="warehouse in warehouses" :key="warehouse.type">
+            <router-link
+              :to="warehouse.link"
+              class="warehouse-card d-flex justify-content-center align-items-center"
+            >
+              <h3 class="fw-bold">{{ warehouse.name }}</h3>
+              <span class="material-symbols-outlined ms-5">{{ warehouse.icon }}</span>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+
+const warehouses = ref([
+  { type: "normal", name: "Kho thường", icon: "width_normal", link: "/inventory/normal-warehouse" },
+  { type: "cold", name: "Kho lạnh", icon: "ac_unit", link: "/inventory/cold-warehouse" },
+]);
+</script>
+
+<style scoped>
+.warehouse-block {
+  width: 80%;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid #dfdfdf;
+}
+
+.warehouse-card {
+  display: block;
+  padding: 140px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid #dfdfdf;
+  &:hover {
+    background-color: #f8f9fa;
+    color: #fff;
+    background-image: url("https://res.cloudinary.com/dnfccnxew/image/upload/v1725710674/aepjhdbiizkukw60fhuf.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+
+.material-symbols-outlined {
+  font-size: 100px;
+}
+</style>

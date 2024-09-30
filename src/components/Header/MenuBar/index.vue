@@ -176,6 +176,9 @@
                 >
               </li>
               <li class="nav-item">
+                <router-link to="/inventory/quan-ly-kho" class="nav-link">Quản lý kho</router-link>
+              </li>
+              <li class="nav-item">
                 <router-link to="/inventory/bao-cao" class="nav-link">Báo cáo</router-link>
               </li>
               <li class="nav-item dropdown">

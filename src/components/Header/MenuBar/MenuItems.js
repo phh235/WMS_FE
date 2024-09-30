@@ -11,6 +11,17 @@ export default [
     },
   },
   {
+    path: "quan-ly-kho",
+    name: "quan-ly-kho",
+    component: () => import("@/components/Page/WarehouseManagement/WarehouseManagement.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Quản lý kho",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "thong-tin-tai-khoan",
     name: "thong-tin-tai-khoan",
     component: () => import("@/components/Page/Account/AccountInfo/AccountInfo.vue"),
