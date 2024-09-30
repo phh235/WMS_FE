@@ -175,6 +175,15 @@
                     </td>
                   </tr>
                   <button class="btn btn-primary ms-2 mt-3" @click="addNewProduct">Thêm</button>
+                  <!-- Button trigger modal -->
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    Launch demo modal
+                  </button>
                 </tbody>
               </table>
             </div>
@@ -215,11 +224,34 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body"><ProductForm /></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
+import ProductForm from "../../Product/ProductForm/ProductForm.vue";
 
 const inputFrom = ref("");
 const status = ref("nhap");
