@@ -4,12 +4,12 @@
       <Card />
     </div> -->
     <div class="d-flex justify-content-center align-items-center mt-5">
-      <div class="warehouse-block">
+      <div class="warehouse-block box-shadow">
         <div class="row">
           <div class="col-12 col-md-6 mb-3" v-for="warehouse in warehouses" :key="warehouse.type">
             <router-link
               :to="warehouse.link"
-              class="warehouse-card d-flex justify-content-center align-items-center"
+              class="warehouse-card box-shadow d-flex justify-content-center align-items-center"
             >
               <h3 class="fw-bold">{{ warehouse.name }}</h3>
               <span class="material-symbols-outlined ms-5">{{ warehouse.icon }}</span>
@@ -35,9 +35,8 @@ const warehouses = ref([
   width: 80%;
   padding: 30px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
 }
 
 .warehouse-card {
@@ -45,9 +44,8 @@ const warehouses = ref([
   padding: 140px;
   text-decoration: none;
   color: inherit;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
   &:hover {
     background-color: #f8f9fa;
     color: #fff;

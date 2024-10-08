@@ -1,15 +1,19 @@
 <template>
-  <div class="container p-4 rounded-2">
-    <router-view></router-view>
+  <div class="container p-4 box-shadow">
+    <router-view />
   </div>
 </template>
 
 <style scoped>
 .container {
-  width: 50%;
+  width: 60%;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
+}
+@media screen and (max-width: 1200px) {
+  .container {
+    width: 100%;
+  }
 }
 </style>

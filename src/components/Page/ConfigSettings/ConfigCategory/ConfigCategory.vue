@@ -1,5 +1,14 @@
 <template>
   <div class="mb-3 d-flex justify-content-end align-items-center">
+    <div class="form-group fs has-search d-flex align-items-center me-3">
+      <span class="material-symbols-outlined form-control-feedback">search</span>
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Tìm kiếm danh mục"
+        v-model="searchQuery"
+      />
+    </div>
     <button
       type="button"
       class="btn btn-primary d-flex align-items-center"
@@ -11,35 +20,37 @@
       Thêm danh mục
     </button>
   </div>
-  <table class="table table-hover" @click="handleRowClick">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Tên danh mục</th>
-        <th scope="col">Mô Tả</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="category in categories"
-        :key="category.sysIdCategoryProd"
-        :data-id="category.sysIdCategoryProd"
-      >
-        <td scope="row">{{ category.sysIdCategoryProd }}</td>
-        <td>{{ category.categoryName }}</td>
-        <td>{{ category.categoryDesc }}</td>
-        <td class="text-center">
-          <button
-            class="btn btn-danger"
-            @click="deleteCategory(category.sysIdCategoryProd, $event)"
-          >
-            <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover" @click="handleRowClick">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Tên danh mục</th>
+          <th scope="col">Mô tả</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-if="filteredCategories.length === 0" style="text-align: center; font-style: italic">
+          <td colspan="10">Không tìm thấy danh mục</td>
+        </tr>
+        <tr
+          v-for="category in filteredCategories"
+          :key="category.sysIdDanhMuc"
+          :data-id="category.sysIdDanhMuc"
+        >
+          <td scope="row">{{ category.sysIdDanhMuc }}</td>
+          <td>{{ category.tenDanhMuc }}</td>
+          <td>{{ category.moTa }}</td>
+          <td class="text-center">
+            <button class="btn btn-danger" @click="deleteCategory(category.sysIdDanhMuc, $event)">
+              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div class="pagination d-flex justify-content-center align-items-center mt-3">
     <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
       Trước
@@ -62,7 +73,7 @@
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedCategory.sysIdCategoryProd ? "Chỉnh sửa danh mục" : "Thêm danh mục" }}
+            {{ selectedCategory.sysIdDanhMuc ? "Chỉnh sửa danh mục" : "Thêm danh mục" }}
           </h5>
           <button
             type="button"
@@ -75,34 +86,53 @@
         <div class="modal-body">
           <form>
             <div class="mb-3 d-none">
-              <label for="categoryId" class="form-label">Mã Danh Mục</label>
+              <label for="categoryId" class="form-label fs">Mã Danh Mục</label>
               <input
                 type="text"
                 class="form-control"
                 id="categoryId"
                 aria-describedby="categoryIdHelp"
-                v-model="selectedCategory.sysIdCategoryProd"
+                v-model="selectedCategory.sysIdDanhMuc"
               />
             </div>
             <div class="mb-3">
-              <label for="categoryName" class="form-label fw-bold">Tên danh mục</label>
-              <input
-                type="text"
-                class="form-control"
-                id="categoryName"
-                aria-describedby="categoryNameHelp"
-                v-model="selectedCategory.categoryName"
-              />
+              <div class="row">
+                <div class="col-6">
+                  <label for="tenDanhMuc" class="form-label fs fw-bold">Tên danh mục</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenDanhMuc"
+                    aria-describedby="categoryNameHelp"
+                    v-model="selectedCategory.tenDanhMuc"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="maKho" class="form-label fs fw-bold">Mã kho</label>
+                  <select class="form-select" id="maKho" v-model="selectedCategory.maKho">
+                    <option value="" disabled>Chọn kho</option>
+                    <option
+                      v-for="warehouse in warehouseStore.warehouses"
+                      :key="warehouse.maKho"
+                      :value="warehouse.maKho"
+                    >
+                      {{ warehouse.maKho }} - {{ warehouse.tenKho }}
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="categoryDescription" class="form-label fw-bold">Mô Tả</label>
+            <div>
+              <label for="categoryDescription" class="form-label fs fw-bold">Mô tả</label>
               <textarea
                 class="form-control"
                 id="categoryDescription"
+                rows="4"
                 aria-describedby="categoryDescriptionHelp"
-                v-model="selectedCategory.categoryDesc"
+                v-model="selectedCategory.moTa"
               ></textarea>
             </div>
+            <div class="mb-3"></div>
           </form>
         </div>
         <div class="modal-footer border-0">
@@ -114,8 +144,13 @@
           >
             Hủy
           </button>
-          <button type="button" class="btn btn-primary" @click="saveCategory">
-            {{ selectedCategory.sysIdCategoryProd ? "Cập nhật" : "Lưu" }}
+          <button
+            type="button"
+            class="btn btn-primary d-flex align-items-center"
+            @click="saveCategory"
+          >
+            <span class="material-symbols-outlined me-2">check</span>
+            {{ selectedCategory.sysIdDanhMuc ? "Cập nhật" : "Lưu" }}
           </button>
         </div>
       </div>
@@ -124,18 +159,22 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { useApiStore } from "../../../../store/apiStore.js";
+import { ref, reactive, onMounted, computed } from "vue";
+import { useApiStore } from "@/store/apiStore.js";
+import { useWarehouseStore } from "@/store/warehouseStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 
 const apiStore = useApiStore();
 const categories = ref([]);
+const warehouseStore = useWarehouseStore();
 const addCategoryBtn = ref(null);
+const searchQuery = ref("");
 const selectedCategory = reactive({
-  sysIdCategoryProd: "",
-  categoryName: "",
-  categoryDesc: "",
+  sysIdDanhMuc: "",
+  tenDanhMuc: "",
+  moTa: "",
+  maKho: "",
 });
 // pagination
 const currentPage = ref(0);
@@ -144,7 +183,12 @@ const pageSize = ref(10);
 
 onMounted(() => {
   getCategories();
+  fetchWarehouses();
 });
+
+const fetchWarehouses = async () => {
+  await warehouseStore.getWarehouses();
+};
 
 // Phân trang
 // const goToPage = (page) => {
@@ -170,44 +214,58 @@ const prevPage = () => {
 const getCategories = async () => {
   try {
     const response = await apiStore.get(
-      `category-product?page=${currentPage.value}&size=${pageSize.value}`
+      `category-products?page=${currentPage.value}&size=${pageSize.value}`
     );
-    categories.value = response.list;
-    console.log(response);
+    categories.value = response.data.list;
     totalPages.value = Math.ceil(response.total / pageSize.value);
   } catch (error) {
     console.error("Failed to fetch categories:", error);
   }
 };
 
+const filteredCategories = computed(() => {
+  return categories.value.filter(
+    (category) =>
+      category.sysIdDanhMuc.toString().includes(searchQuery.value.toUpperCase()) ||
+      category.tenDanhMuc.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
 // Lưu hoặc cập nhật danh mục
 const saveCategory = async () => {
   // Kiểm tra nếu tên danh mục trống
-  if (!selectedCategory.categoryName.trim()) {
+  if (!selectedCategory.tenDanhMuc.trim()) {
     showToastError("Tên danh mục không được để trống!");
     return;
   }
 
   // Kiểm tra nếu mô tả trống
-  if (!selectedCategory.categoryDesc.trim()) {
+  if (!selectedCategory.moTa.trim()) {
     showToastError("Mô tả danh mục không được để trống!");
+    return;
+  }
+  // Kiểm tra nếu chưa chọn kho
+  if (!selectedCategory.maKho) {
+    showToastError("Vui lòng chọn một kho!");
     return;
   }
 
   try {
     let response;
-    if (selectedCategory.sysIdCategoryProd) {
+    if (selectedCategory.sysIdDanhMuc) {
       // Nếu có ID, thực hiện cập nhật
-      response = await apiStore.post("category-product", {
-        sysIdCategoryProd: selectedCategory.sysIdCategoryProd,
-        categoryName: selectedCategory.categoryName,
-        categoryDesc: selectedCategory.categoryDesc,
+      response = await apiStore.post("category-products", {
+        sysIdDanhMuc: selectedCategory.sysIdDanhMuc,
+        tenDanhMuc: selectedCategory.tenDanhMuc,
+        moTa: selectedCategory.moTa,
+        maKho: selectedCategory.maKho,
       });
     } else {
       // Nếu không có ID, thực hiện thêm mới
-      response = await apiStore.post("category-product", {
-        categoryName: selectedCategory.categoryName,
-        categoryDesc: selectedCategory.categoryDesc,
+      response = await apiStore.post("category-products", {
+        tenDanhMuc: selectedCategory.tenDanhMuc,
+        moTa: selectedCategory.moTa,
+        maKho: selectedCategory.maKho,
       });
     }
 
@@ -239,7 +297,7 @@ const handleRowClick = (event) => {
 
   // Tìm danh mục có ID tương ứng trong danh sách 'categories'.
   const selectedCategoryValue = categories.value.find(
-    (category) => category.sysIdCategoryProd === parseInt(id)
+    (category) => category.sysIdDanhMuc === parseInt(id)
   );
 
   // Nếu tìm thấy danh mục có ID tương ứng.
@@ -260,7 +318,7 @@ const deleteCategory = async (id, event) => {
     text: "Bạn có chắc chắn muốn xóa danh mục này?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
+    confirmButtonColor: "#16a34a",
     cancelButtonText: "Hủy",
     cancelButtonColor: "#d33",
     confirmButtonText: "Xóa",
@@ -268,7 +326,7 @@ const deleteCategory = async (id, event) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`category-product/${id}`);
+      await apiStore.delete(`category-products/${id}`);
       await getCategories(); // Cập nhật lại danh sách danh mục sau khi xóa
       showToastSuccess("Danh mục đã được xóa");
     } catch (error) {
@@ -281,24 +339,14 @@ const deleteCategory = async (id, event) => {
 // Làm mới form nhập
 const btnResetForm_Click = () => {
   Object.assign(selectedCategory, {
-    sysIdCategoryProd: "",
-    categoryName: "",
-    categoryDesc: "",
+    sysIdDanhMuc: "",
+    tenDanhMuc: "",
+    moTa: "",
   });
 };
 </script>
 
 <style scoped>
-.container {
-  width: 50%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
-}
-/* th {
-  background-color: var(--primary-color);
-} */
 tr,
 td {
   border-bottom: 1px solid #dfdfdf;
@@ -308,33 +356,7 @@ td {
   cursor: pointer;
   vertical-align: middle;
 }
-input,
-textarea {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
-}
 .btn-danger {
-  padding: 6px 6px;
-}
-.btn-close {
-  box-shadow: none;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.1s;
-  &:hover,
-  &:active {
-    background-color: var(--secondary-color);
-    color: #fff;
-    padding: 8px;
-  }
+  padding: 10px 10px;
 }
 </style>

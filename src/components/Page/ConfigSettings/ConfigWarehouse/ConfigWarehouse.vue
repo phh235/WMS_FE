@@ -1,5 +1,14 @@
 <template>
   <div class="mb-3 d-flex justify-content-end align-items-center">
+    <div class="form-group fs has-search d-flex align-items-center me-3">
+      <span class="material-symbols-outlined form-control-feedback">search</span>
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Tìm kiếm kho hàng"
+        v-model="searchQuery"
+      />
+    </div>
     <button
       type="button"
       class="btn btn-primary d-flex align-items-center"
@@ -11,34 +20,43 @@
       Thêm kho hàng
     </button>
   </div>
-  <table class="table table-hover" @click="handleRowClick">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Tên kho hàng</th>
-        <th scope="col">Địa chỉ</th>
-        <th scope="col">Mô Tả</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="warehouse in warehouses"
-        :key="warehouse.sysIdWarehouse"
-        :data-id="warehouse.sysIdWarehouse"
-      >
-        <td scope="row">{{ warehouse.sysIdWarehouse }}</td>
-        <td>{{ warehouse.warehouseName }}</td>
-        <td>{{ warehouse.warehouseAddress }}</td>
-        <td>{{ warehouse.warehouseDesc }}</td>
-        <td class="text-center">
-          <button class="btn btn-danger" @click="deleteWarehouse(warehouse.sysIdWarehouse, $event)">
-            <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover" @dblclick="handleRowClick">
+      <thead>
+        <tr>
+          <th scope="col" class="d-none">ID</th>
+          <th scope="col">Mã kho</th>
+          <th scope="col">Tên kho hàng</th>
+          <th scope="col">Diện tích</th>
+          <th scope="col">Mô tả</th>
+          <th scope="col">User</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-if="filteredWarehouses.length === 0" style="text-align: center; font-style: italic">
+          <td colspan="10">Không tìm thấy kho hàng</td>
+        </tr>
+        <tr
+          v-for="warehouse in filteredWarehouses"
+          :key="warehouse.sysIdKho"
+          :data-id="warehouse.sysIdKho"
+        >
+          <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
+          <td>{{ warehouse.maKho }}</td>
+          <td>{{ warehouse.tenKho }}</td>
+          <td>{{ warehouse.dienTich }}</td>
+          <td>{{ warehouse.moTa }}</td>
+          <td>{{ warehouse.sysIdUser }}</td>
+          <td class="text-center">
+            <button class="btn btn-danger" @click="deleteWarehouse(warehouse.maKho, $event)">
+              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div class="pagination d-flex justify-content-center align-items-center mt-3">
     <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
       Trước
@@ -61,7 +79,7 @@
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedWarehouse.sysIdWarehouse ? "Chỉnh sửa kho hàng" : "Thêm kho hàng" }}
+            {{ selectedWarehouse.sysIdKho ? "Chỉnh sửa kho hàng" : "Thêm kho hàng" }}
           </h5>
           <button
             type="button"
@@ -73,43 +91,72 @@
         </div>
         <div class="modal-body">
           <form>
-            <div class="mb-3">
-              <label for="warehouseId" class="form-label fw-bold">Mã Kho hàng</label>
+            <!-- <div class="mb-3 d-none">
+              <label for="warehouseId" class="form-label fs fw-bold">SysIdKho</label>
               <input
                 type="text"
                 class="form-control"
                 id="warehouseId"
                 aria-describedby="warehouseIdHelp"
-                v-model="selectedWarehouse.sysIdWarehouse"
+                v-model="selectedWarehouse.sysIdKho"
               />
+            </div> -->
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-6">
+                  <label for="warehouseId" class="form-label fs fw-bold">Mã kho</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="warehouseId"
+                    aria-describedby="warehouseIdHelp"
+                    v-model="selectedWarehouse.maKho"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="tenKho" class="form-label fs fw-bold">Tên kho hàng</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenKho"
+                    aria-describedby="warehouseNameHelp"
+                    v-model="selectedWarehouse.tenKho"
+                  />
+                </div>
+              </div>
             </div>
             <div class="mb-3">
-              <label for="warehouseName" class="form-label fw-bold">Tên kho hàng</label>
-              <input
-                type="text"
-                class="form-control"
-                id="warehouseName"
-                aria-describedby="warehouseNameHelp"
-                v-model="selectedWarehouse.warehouseName"
-              />
+              <div class="row">
+                <div class="col-6">
+                  <label for="dienTich" class="form-label fs fw-bold">Diện tích</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="dienTich"
+                    aria-describedby="warehouseAdressHelp"
+                    v-model="selectedWarehouse.dienTich"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="sysIdUser" class="form-label fs fw-bold">ID User</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="sysIdUser"
+                    aria-describedby="warehouseAdressHelp"
+                    v-model="selectedWarehouse.sysIdUser"
+                  />
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="warehouseAddress" class="form-label fw-bold">Địa chỉ</label>
-              <input
-                type="text"
-                class="form-control"
-                id="warehouseAddress"
-                aria-describedby="warehouseAdressHelp"
-                v-model="selectedWarehouse.warehouseAddress"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="warehouseDescription" class="form-label fw-bold">Mô Tả</label>
+            <div>
+              <label for="warehouseDescription" class="form-label fs fw-bold">Mô Tả</label>
               <textarea
                 class="form-control"
                 id="warehouseDescription"
+                rows="4"
                 aria-describedby="warehouseDescriptionHelp"
-                v-model="selectedWarehouse.warehouseDesc"
+                v-model="selectedWarehouse.moTa"
               ></textarea>
             </div>
           </form>
@@ -123,8 +170,13 @@
           >
             Hủy
           </button>
-          <button type="button" class="btn btn-primary" @click="saveWarehouse">
-            {{ selectedWarehouse.sysIdWarehouse ? "Cập nhật" : "Lưu" }}
+          <button
+            type="button"
+            class="btn btn-primary d-flex align-items-center"
+            @click="saveWarehouse"
+          >
+            <span class="material-symbols-outlined me-2">check</span>
+            {{ selectedWarehouse.sysIdKho ? "Cập nhật" : "Lưu" }}
           </button>
         </div>
       </div>
@@ -133,19 +185,22 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { useApiStore } from "../../../../store/apiStore.js";
+import { ref, reactive, onMounted, computed } from "vue";
+import { useApiStore } from "@/store/apiStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 
 const apiStore = useApiStore();
 const warehouses = ref([]);
 const addWarehouseBtn = ref(null);
+const searchQuery = ref("");
 const selectedWarehouse = reactive({
-  sysIdWarehouse: "",
-  warehouseName: "",
-  warehouseAddress: "",
-  warehouseDesc: "",
+  sysIdKho: "",
+  maKho: "",
+  tenKho: "",
+  dienTich: "",
+  moTa: "",
+  sysIdUser: "",
 });
 // pagination
 const currentPage = ref(0);
@@ -182,54 +237,71 @@ const getWarehouses = async () => {
     const response = await apiStore.get(
       `warehouses?page=${currentPage.value}&size=${pageSize.value}`
     );
-    warehouses.value = response.list;
-    console.log(response);
+    warehouses.value = response.data.list;
     totalPages.value = Math.ceil(response.total / pageSize.value);
   } catch (error) {
     console.error("Failed to fetch warehouses:", error);
   }
 };
 
+const filteredWarehouses = computed(() => {
+  return warehouses.value.filter(
+    (warehouse) =>
+      warehouse.maKho.toString().includes(searchQuery.value.toUpperCase()) ||
+      warehouse.tenKho.toString().includes(searchQuery.value.toUpperCase()) ||
+      warehouse.moTa.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      warehouse.dienTich.toString().includes(searchQuery.value.toLowerCase())
+  );
+});
+
 // Lưu hoặc cập nhật kho hàng
 const saveWarehouse = async () => {
   // Kiểm tra nếu ID trống
-  if (!selectedWarehouse.sysIdWarehouse.trim()) {
-    showToastError("ID kho hàng không được để trống!");
+  if (!selectedWarehouse.maKho.trim()) {
+    showToastError("Mã kho hàng không được để trống!");
     return;
   }
   // Kiểm tra nếu tên kho hàng trống
-  if (!selectedWarehouse.warehouseName.trim()) {
+  if (!selectedWarehouse.tenKho.trim()) {
     showToastError("Tên kho hàng không được để trống!");
     return;
   }
+  // Kiểm tra nếu Diện tích trống
+  if (!selectedWarehouse.dienTich) {
+    showToastError("Diện tích kho hàng không được để trống!");
+    return;
+  }
   // Kiểm tra nếu mô tả trống
-  if (!selectedWarehouse.warehouseDesc.trim()) {
+  if (!selectedWarehouse.moTa.trim()) {
     showToastError("Mô tả kho hàng không được để trống!");
     return;
   }
-  // Kiểm tra nếu địa chỉ trống
-  if (!selectedWarehouse.warehouseAddress.trim()) {
-    showToastError("Địa chỉ kho hàng không được để trống!");
+  // Kiểm tra nếu userId trống
+  if (!selectedWarehouse.sysIdUser) {
+    showToastError("User ID không được để trống!");
     return;
   }
 
   try {
     let response;
-    if (selectedWarehouse.sysIdWarehouse) {
+    if (selectedWarehouse.sysIdKho) {
       // Nếu có ID, thực hiện cập nhật
       response = await apiStore.post("warehouses", {
-        sysIdWarehouse: selectedWarehouse.sysIdWarehouse,
-        warehouseName: selectedWarehouse.warehouseName,
-        warehouseAddress: selectedWarehouse.warehouseAddress,
-        warehouseDesc: selectedWarehouse.warehouseDesc,
+        sysIdKho: selectedWarehouse.sysIdKho,
+        maKho: selectedWarehouse.maKho,
+        tenKho: selectedWarehouse.tenKho,
+        dienTich: selectedWarehouse.dienTich,
+        moTa: selectedWarehouse.moTa,
+        sysIdUser: selectedWarehouse.sysIdUser,
       });
     } else {
       // Nếu không có ID, thực hiện thêm mới
       response = await apiStore.post("warehouses", {
-        sysIdWarehouse: selectedWarehouse.sysIdWarehouse,
-        warehouseName: selectedWarehouse.warehouseName,
-        warehouseAddress: selectedWarehouse.warehouseAddress,
-        warehouseDesc: selectedWarehouse.warehouseDesc,
+        maKho: selectedWarehouse.maKho,
+        tenKho: selectedWarehouse.tenKho,
+        dienTich: selectedWarehouse.dienTich,
+        moTa: selectedWarehouse.moTa,
+        sysIdUser: selectedWarehouse.sysIdUser,
       });
     }
 
@@ -260,7 +332,7 @@ const handleRowClick = (event) => {
   const id = row.getAttribute("data-id");
 
   // Tìm kho hàng có ID tương ứng trong danh sách 'warehouses'.
-  const selectedWarehouseValue = warehouses.value.find((warehouse) => warehouse.sysIdWarehouse);
+  const selectedWarehouseValue = warehouses.value.find((warehouse) => warehouse.sysIdKho == id);
 
   // Nếu tìm thấy kho hàng có ID tương ứng.
   if (selectedWarehouseValue) {
@@ -273,14 +345,14 @@ const handleRowClick = (event) => {
 };
 
 // Xóa kho hàng
-const deleteWarehouse = async (id, event) => {
+const deleteWarehouse = async (maKho, event) => {
   event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên dòng <tr>
   const swalConfirm = await Swal.fire({
     title: "Xóa kho hàng?",
     text: "Bạn có chắc chắn muốn xóa kho hàng này?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
+    confirmButtonColor: "#16a34a",
     cancelButtonText: "Hủy",
     cancelButtonColor: "#d33",
     confirmButtonText: "Xóa",
@@ -288,7 +360,7 @@ const deleteWarehouse = async (id, event) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`warehouses/${id}`);
+      await apiStore.delete(`warehouses/${maKho}`);
       await getWarehouses(); // Cập nhật lại danh sách kho hàng sau khi xóa
       showToastSuccess("Kho hàng đã được xóa");
     } catch (error) {
@@ -301,25 +373,17 @@ const deleteWarehouse = async (id, event) => {
 // Làm mới form nhập
 const btnResetForm_Click = () => {
   Object.assign(selectedWarehouse, {
-    sysIdWarehouse: "",
-    warehouseName: "",
-    warehouseAddress: "",
-    warehouseDesc: "",
+    sysIdKho: "",
+    maKho: "",
+    tenKho: "",
+    dienTich: "",
+    moTa: "",
+    sysIdUser: "",
   });
 };
 </script>
 
 <style scoped>
-.container {
-  width: 50%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
-}
-/* th {
-  background-color: var(--primary-color);
-} */
 tr,
 td {
   border-bottom: 1px solid #dfdfdf;
@@ -329,22 +393,8 @@ td {
   cursor: pointer;
   vertical-align: middle;
 }
-input,
-textarea {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
-}
 .btn-danger {
-  padding: 6px 6px;
+  padding: 10px 10px;
 }
 .btn-close {
   box-shadow: none;

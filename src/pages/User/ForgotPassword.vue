@@ -10,25 +10,16 @@
   </div>
   <div class="container d-flex justify-content-center">
     <div>
-      <h2 class="text-center mb-1 fw-bold" style="color: var(--main-text-color)">QUÊN MẬT KHẨU</h2>
+      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)">QUÊN MẬT KHẨU</h2>
       <h6 class="text-center mb-5">Vui lòng nhập email</h6>
       <form style="width: 23rem">
         <!-- Username input -->
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            id="email"
-            class="form-control"
-            placeholder="1"
-            required
-            v-model="email"
-          />
-          <label class="form-label" for="email" style="font-size: 14px">Email</label>
+        <div class="mb-3">
+          <label class="form-label fs" for="email">Email</label>
+          <input type="text" id="email" class="form-control" required v-model="email" />
         </div>
         <!-- Submit button -->
-        <button class="btn btn-login text-dark w-100 fw-bold" @click="forgotPassword">
-          Xác nhận
-        </button>
+        <button class="btn btn-login text-dark w-100" @click="forgotPassword">Xác nhận</button>
       </form>
     </div>
   </div>
@@ -79,19 +70,9 @@ const forgotPassword = async (event) => {
     border-bottom: 1.5px solid #171717;
   }
 }
-input {
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc;
-  &:focus,
-  &:active {
-    box-shadow: none;
-    /* border: 2px solid var(--primary-color-hover); */
-    border: 2px solid var(--border-input-color);
-  }
-}
-.form-control:focus + .form-label {
-  color: var(--main-text-color);
+
+.fs {
+  font-size: 14px;
+  font-weight: bold;
 }
 </style>

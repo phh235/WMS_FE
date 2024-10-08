@@ -46,7 +46,7 @@ export const apiService = {
       const response = await axios.post(`${BASE_URL}${url}`, data, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
-          "Content-Type": "application/form-data",
+          "Content-Type": "multipart/form-data",
         },
       });
       return response.data;

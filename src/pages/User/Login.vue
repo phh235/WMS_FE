@@ -1,35 +1,32 @@
 <template>
-  <div class="container d-flex justify-content-center">
+  <div class="container d-flex justify-content-center align-items-center">
     <div>
-      <h2 class="text-center mb-1 fw-bold" style="color: var(--main-text-color)">
+      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)">
         CHÀO MỪNG TRỞ LẠI
       </h2>
       <h6 class="text-center mb-5">Vui lòng đăng nhập để tiếp tục</h6>
       <form style="width: 23rem" @submit.prevent="handleLogin">
         <!-- Username input -->
-        <div class="form-floating mb-2">
-          <input
-            type="text"
-            id="username"
-            class="form-control"
-            placeholder="1"
-            v-model="username"
-          />
+        <div class="mb-2">
           <label class="form-label fs" for="username">Tên người dùng</label>
+          <input type="text" id="username" class="form-control" v-model="username" />
         </div>
         <!-- Password input -->
-        <div class="form-floating mb-2">
+        <div class="mb-2 password-container">
+          <label class="form-label fs" for="password">Mật khẩu</label>
           <input
-            type="password"
-            id="password"
             class="form-control"
-            placeholder="1"
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
             autocomplete
             v-model="password"
           />
-          <label class="form-label fs" for="password">Mật khẩu</label>
+          <span class="toggle-password" @click="toggleShowPassword">
+            <span v-if="showPassword" class="material-symbols-outlined"> visibility_off </span>
+            <span v-else class="material-symbols-outlined"> visibility </span>
+          </span>
         </div>
-        <div class="mb-2 text-end">
+        <div class="mb-3 text-end">
           <router-link to="/quen-mat-khau" class="forgot fs"> Quên mật khẩu? </router-link>
         </div>
         <!-- Submit button -->
@@ -63,6 +60,11 @@ const authStore = useAuthStore();
 const loading = ref(false);
 const username = ref("");
 const password = ref("");
+const showPassword = ref(false);
+
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+};
 
 const handleLogin = async () => {
   if (!username.value) {
@@ -87,35 +89,45 @@ const handleLogin = async () => {
 <style scoped>
 .forgot {
   color: #171717;
-  text-decoration: none;
-  transition: all 0.2s;
   font-weight: bold;
   &:hover {
-    color: #489a78;
+    color: var(--primary-color);
+    text-decoration: none;
   }
 }
 .fs {
   font-size: 14px;
-}
-input {
-  font-size: 15px;
-  border-radius: 8px;
-  border: 2px solid #dcdcdc;
-  &:focus,
-  &:active {
-    box-shadow: none;
-    border: 2px solid var(--primary-color-hover);
-  }
-}
-.form-control:focus + .form-label {
-  color: var(--main-text-color);
+  font-weight: bold;
 }
 .spinner-border {
   width: 1.2rem;
   height: 1.2rem;
 }
+
+.btn-login {
+  border-radius: calc(0.75rem - 2px);
+}
+
 .btn-login.loading {
   background-color: var(--primary-color);
+  color: #000;
+}
+
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 90%;
+  right: 15px;
+  transform: translateY(-90%);
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.toggle-password:hover {
   color: #000;
 }
 </style>

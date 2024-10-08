@@ -9,6 +9,6 @@
 </template>
 
 <script setup>
-import MenuBar from "@components/Header/MenuBar/index.vue";
+import MenuBar from "@components/Header/MenuBar/MenuBar.vue";
 import Cre from "@layouts/Cre/Cre.vue";
 </script>

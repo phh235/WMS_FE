@@ -39,6 +39,16 @@ export const useAuthStore = defineStore("auth", {
     checkAuth() {
       const token = localStorage.getItem("token");
       if (token) {
+        const tokenDecode = JSON.parse(atob(token.split(".")[1]));
+        const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại tính bằng giây
+
+        // Kiểm tra xem token đã hết hạn chưa
+        if (tokenDecode.exp && tokenDecode.exp < currentTime) {
+          showToastError("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
+          this.logout(); // Đăng xuất nếu token đã hết hạn
+          return false;
+        }
+
         this.setToken(token);
         return true;
       }
@@ -50,7 +60,7 @@ export const useAuthStore = defineStore("auth", {
       localStorage.removeItem("token");
       // delete axios.defaults.headers.common["Authorization"];
       showToastSuccess("Đã đăng xuất");
-      return router.push("/");
+      return router.push("/dang-nhap");
     },
   },
   getters: {
