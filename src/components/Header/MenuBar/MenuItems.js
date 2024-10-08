@@ -132,6 +132,28 @@ export default [
     },
   },
   {
+    path: "yeu-cau-mua-hang",
+    name: "yeu-cau-mua-hang",
+    component: () => import("@/components/Page/PurchaseRequest/PurchaseRequest.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Yêu cầu mua hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "dat-hang",
+    name: "dat-hang",
+    component: () => import("@/components/Page/PurchaseOrder/PurchaseOrder.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Đặt hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "cau-hinh",
     name: "cau-hinh",
     component: () => import("@components/Page/ConfigSettings/ConfigSettings.vue"),
@@ -166,18 +188,18 @@ export default [
           storeConfig: {},
         },
       },
-      {
-        path: "loai-kho",
-        name: "loai-kho",
-        component: () =>
-          import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouseType.vue"),
-        meta: {
-          requiresAuth: true,
-          headerTitle: "Cấu hình loại kho",
-          searchConfig: {},
-          storeConfig: {},
-        },
-      },
+      // {
+      //   path: "loai-kho",
+      //   name: "loai-kho",
+      //   component: () =>
+      //     import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouseType.vue"),
+      //   meta: {
+      //     requiresAuth: true,
+      //     headerTitle: "Cấu hình loại kho",
+      //     searchConfig: {},
+      //     storeConfig: {},
+      //   },
+      // },
       {
         path: "khu-vuc",
         name: "khu-vuc",

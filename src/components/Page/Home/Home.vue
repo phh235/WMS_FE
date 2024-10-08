@@ -1,193 +1,312 @@
 <template>
   <div class="container">
-    <div class="block p-4">
-      <div class="d-flex justify-content-end align-items-center mb-4">
-        <!-- <h1 class="h2 fw-bold">Yêu cầu mua hàng</h1> -->
-        <button class="btn btn-primary">Tạo yêu cầu mua hàng</button>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="fw-bold mb-3">Bảng điều khiển</h3>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+          <div class="tab-container mb-3 mb-md-0">
+            <button
+              v-for="tab in tabs"
+              :key="tab"
+              @click="activeTab = tab"
+              :class="['tab-button', { active: activeTab === tab }]"
+            >
+              {{ tab }}
+            </button>
+          </div>
+          <button class="btn btn-primary box-shadow d-flex align-items-center">
+            <span class="material-symbols-outlined me-2"> download </span>Tải báo cáo
+          </button>
+        </div>
       </div>
-      <div class="tab-container mb-4">
-        <button
-          v-for="tab in tabs"
-          :key="tab"
-          @click="activeTab = tab"
-          :class="['tab-button', { active: activeTab === tab }]"
-        >
-          {{ tab }}
-        </button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+      <div v-for="card in cardData" :key="card.title" class="col">
+        <div class="card box-shadow h-100">
+          <div class="card-body d-flex flex-column justify-content-between">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h6 class="card-subtitle fs">{{ card.title }}</h6>
+              <span class="material-symbols-outlined text-muted fs-5">{{ card.icon }}</span>
+            </div>
+            <h2 class="card-title mb-0 fw-bold fs-2">{{ card.value }}</h2>
+            <small class="text-success">{{ card.change }}</small>
+          </div>
+        </div>
       </div>
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="table-secondary">
-            <tr>
-              <th>ID</th>
-              <th>Người yêu cầu</th>
-              <th>Trạng thái</th>
-              <th>Ngày yêu cầu</th>
-              <th>Tổng tiền</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="order in filteredOrders" :key="order.id">
-              <td>{{ order.id }}</td>
-              <td>{{ order.requester }}</td>
-              <td>
-                <span :class="['badge', getBadgeClass(order.status)]">
-                  {{ order.status }}
+    </div>
+
+    <div class="row equal-height-row">
+      <div class="col-12 col-lg-8 mb-4 mb-lg-0">
+        <div class="card box-shadow h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold mb-4">Tổng quan biến động kho hàng</h5>
+            <div ref="chartRef" class="flex-grow-1 echarts"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="card box-shadow h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold">Giao dịch gần đây</h5>
+            <p class="card-text">5 giao dịch kho hàng gần nhất</p>
+            <ul class="list-group list-group-flush flex-grow-1 overflow-auto">
+              <li
+                v-for="transaction in recentTransactions"
+                :key="transaction.id"
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <div>
+                  <strong>{{ transaction.type }}</strong>
+                  <br />
+                  <small class="text-muted">{{ transaction.item }}</small>
+                </div>
+                <span
+                  :class="[
+                    'badge',
+                    'rounded-pill',
+                    transaction.type === 'Nhận' ? 'bg-success' : 'bg-primary',
+                  ]"
+                >
+                  {{ transaction.quantity }}
                 </span>
-              </td>
-              <td>{{ order.dateRequest }}</td>
-              <td>{{ order.total }}</td>
-            </tr>
-          </tbody>
-        </table>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import * as echarts from "echarts";
 
-const orders = ref([
+const chartRef = ref(null);
+const chart = ref(null);
+const activeTab = ref("Tất cả");
+const tabs = ["Tất cả", "Đã nhập", "Đã xuất"];
+
+const cardData = ref([
   {
-    id: "PO1",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã hủy",
-    total: "10.000 đ",
+    title: "Tổng giá trị kho hàng",
+    value: "230.520.004 ₫",
+    change: "+5,2% so với tháng trước",
+    icon: "inventory_2",
   },
   {
-    id: "PO2",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã duyệt",
-    total: "10.000 đ",
+    title: "Số lượng nhập kho",
+    value: "5.142",
+    change: "+12,3% so với tháng trước",
+    icon: "input",
   },
   {
-    id: "PO3",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã hủy",
-    total: "10.000 đ",
+    title: "Số lượng xuất kho",
+    value: "4.224",
+    change: "+8,7% so với tháng trước",
+    icon: "output",
   },
   {
-    id: "PO4",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã duyệt",
-    total: "10.000 đ",
-  },
-  {
-    id: "PO5",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã hủy",
-    total: "10.000 đ",
-  },
-  {
-    id: "PO6",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã duyệt",
-    total: "15.000 đ",
-  },
-  {
-    id: "PO7",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã duyệt",
-    total: "8.000 đ",
-  },
-  {
-    id: "PO8",
-    requester: "phh235",
-    dateRequest: "29/09/2024",
-    status: "Đã duyệt",
-    total: "20.000 đ",
+    title: "Số lượng hàng hiện tại",
+    value: "235",
+    change: "+3,5% so với tuần trước",
+    icon: "inventory",
   },
 ]);
 
-const activeTab = ref("Tất cả");
-const tabs = ["Tất cả", "Đã duyệt", "Đã hủy"];
+const recentTransactions = ref([
+  { id: 1, type: "Nhận", item: "Khoai tây", quantity: "+500" },
+  { id: 2, type: "Gửi", item: "Cà chua", quantity: "-200" },
+  { id: 3, type: "Nhận", item: "Khoai lang", quantity: "+300" },
+  { id: 4, type: "Gửi", item: "Hành tím", quantity: "-150" },
+  { id: 5, type: "Nhận", item: "Táo", quantity: "+1000" },
+]);
 
-const filteredOrders = computed(() => {
-  if (activeTab.value === "Tất cả") {
-    return orders.value;
-  } else {
-    return orders.value.filter((order) => order.status === activeTab.value);
-  }
+const initChart = () => {
+  chart.value = echarts.init(chartRef.value);
+  const option = {
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+        crossStyle: {
+          color: "#999",
+        },
+      },
+    },
+    legend: {
+      data: ["Nhận hàng", "Gửi hàng", "Thay đổi ròng"],
+      textStyle: {
+        fontFamily: "Google Sans",
+      },
+    },
+    grid: {
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      containLabel: true,
+    },
+    xAxis: [
+      {
+        type: "category",
+        data: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
+        axisPointer: {
+          type: "shadow",
+        },
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "Số lượng",
+        min: 0,
+        max: 6000,
+        interval: 1000,
+      },
+      {
+        type: "value",
+        name: "Thay đổi ròng",
+        min: -2000,
+        max: 2000,
+        interval: 1000,
+      },
+    ],
+    series: [
+      {
+        name: "Nhận hàng",
+        type: "bar",
+        data: [2500, 2800, 3200, 3600, 3100, 2900, 3400, 3800, 3500, 3700, 4000, 4200],
+        itemStyle: {
+          color: "#16a34a",
+        },
+      },
+      {
+        name: "Gửi hàng",
+        type: "bar",
+        data: [2300, 2500, 2900, 3300, 2800, 2700, 3100, 3500, 3200, 3400, 3600, 3800],
+        itemStyle: {
+          color: "#d0eddb",
+        },
+      },
+      {
+        name: "Thay đổi ròng",
+        type: "line",
+        yAxisIndex: 1,
+        data: [200, 300, 300, 300, 300, 200, 300, 300, 300, 300, 400, 400],
+      },
+    ],
+  };
+  chart.value.setOption(option);
+};
+
+const resizeHandler = () => {
+  chart.value && chart.value.resize();
+};
+
+onMounted(() => {
+  initChart();
+  window.addEventListener("resize", resizeHandler);
 });
 
-const getBadgeClass = (status) => {
-  switch (status) {
-    case "Đã duyệt":
-      return "bg-success";
-    case "Đã hủy":
-      return "bg-danger";
-    default:
-      return "bg-secondary";
-  }
-};
+onUnmounted(() => {
+  window.removeEventListener("resize", resizeHandler);
+  chart.value && chart.value.dispose();
+});
 </script>
 
 <style scoped>
-.block {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+.container-fluid {
+  padding: 20px;
 }
-td {
-  vertical-align: middle;
-  font-size: 14px;
+
+.card {
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
 }
-.bg-success {
-  font-size: 14px;
-  background-color: #effbf2 !important;
-  color: #1bbc60;
-  border: 1.5px solid #1bbc60;
-}
-.bg-danger {
-  font-size: 14px;
-  background-color: #faf0f0 !important;
-  color: #f68282;
-  border: 1.5px solid #f68282;
-}
-.badge {
-  padding: 5px 10px;
-  font-weight: 600;
-}
+
 .tab-container {
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  background-color: #f4f4f5;
+  border-radius: 12px;
   padding: 4px;
-  gap: 4px;
-  max-width: fit-content;
+  display: inline-flex;
 }
+
 .tab-button {
-  padding: 6px 12px;
+  padding: 4px 10px;
   border: none;
-  margin: 2px;
   background-color: transparent;
   color: #6c757d;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
-  &:hover {
-    background-color: #e9ecef;
-  }
 }
+
 .tab-button.active {
   background-color: white;
   color: #000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* .tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+} */
+
+.text-success {
+  color: var(--primary-color) !important;
+}
+
+.bg-success {
+  background-color: var(--primary-color) !important;
+}
+
+.fs {
+  font-size: 15px;
+}
+
+.equal-height-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.equal-height-row > [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.equal-height-row .card {
+  flex: 1;
+}
+
+.equal-height-row .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.equal-height-row .flex-grow-1 {
+  flex: 1 0 auto;
+}
+
+@media (max-width: 768px) {
+  .tab-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tab-button {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .echarts {
+    height: 300px;
   }
 }
-th {
-  background-color: #f8f9fa;
+@media (max-width: 1200px) {
+  .card-title {
+    font-size: 24px;
+  }
 }
 </style>

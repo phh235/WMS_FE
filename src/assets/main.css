@@ -2,26 +2,29 @@
   font-family: "Google Sans";
   src: url("fonts/GoogleSans-Regular.ttf") format("truetype");
 }
-.swal2-popup {
-  font-family: "Google Sans", sans-serif;
-}
 html,
 body,
 #app {
   height: 100%;
   width: 100%;
-  font-family: "Google Sans";
+  font-family: "Google San";
   font-weight: 500;
+}
+::selection {
+  color: #fff;
+  background: var(--primary-color);
 }
 body {
   width: 100%;
   height: 100%;
-  background-color: #fafafa !important;
+  /* background-color: #fafafa !important; */
+  background-color: #fff !important;
 }
 :root {
-  --primary-color: #72e3ad;
-  --primary-color-hover: #64d8a3;
-  --secondary-color: #f3f3f3;
+  --primary-color: #16a34a;
+  --primary-color-hover: #2dac5c;
+  /* --secondary-color: #f1f5f9; */
+  --secondary-color: #f2f2f2;
   --secondary-color-hover: #ededed;
   --secondary-color-border: #00000014;
   --secondary-color-border-hover: #c9c9c9;
@@ -29,90 +32,101 @@ body {
   --btn-logout-bg-hover: #fdd8d3;
   --btn-logout-border: #f3b0a2;
   --btn-logout-border-hover: #e54d2e;
-  --main-text-color: #489a78;
-  --border-input-color: #16b674bf;
+  --main-text-color: #16a34a;
+  --border-input-color: #16a34a;
 }
 .material-symbols-outlined {
   font-size: 17px;
 }
+.btn,
+.box-shadow {
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
+}
+.btn.btn-secondary,
+.box-shadow-sm,
+input,
+select,
+textarea {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
+}
+.btn.btn-danger {
+  border-radius: calc(0.75rem - 2px);
+}
 .btn.btn-login {
-  border: 1px solid var(--border-input-color);
+  border: none;
   font-weight: 500;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 6px;
-  padding: 10px 12px;
+  font-size: 15px;
+  border-radius: calc(0.75rem - 2px);
+  padding: 8px 12px;
   background-color: var(--primary-color);
-  color: #171717 !important;
+  color: #fff !important;
   outline: none;
   transition: all 0.2s;
   &:hover,
-  &:focus,
   &:active {
-    border: 1px solid #097c4f !important;
+    border: none;
     background-color: var(--primary-color-hover) !important;
   }
 }
 .btn.btn-primary {
-  border: 1px solid var(--border-input-color);
-  /* border: none; */
+  border: none;
   font-size: 14px;
-  border-radius: 6px;
+  border-radius: calc(0.75rem - 2px);
   padding: 8px 10px;
   background-color: var(--primary-color);
-  color: #171717 !important;
+  color: #fff !important;
   outline: none;
   transition: all 0.2s;
   &:hover,
-  &:focus,
   &:active {
-    border: 1px solid #097c4f !important;
-    /* border: none; */
+    border: none;
     background-color: var(--primary-color-hover) !important;
   }
 }
 .btn.btn-secondary {
-  border: 1px solid #e6e6e6;
-  /* border: none; */
+  border: 1px solid #e4e4e7;
   font-size: 14px;
-  border-radius: 6px;
+  border-radius: calc(0.75rem - 2px);
   padding: 8px 10px;
   background-color: #fff;
-  color: #171717 !important;
+  color: #000 !important;
   outline: none;
   transition: all 0.2s;
   &:hover,
   &:focus,
   &:active {
-    border: 1px solid #8f8f8f !important;
-    /* border: none; */
-    background-color: var(--secondary-color) !important;
+    border: 1px solid #e4e4e7 !important;
+    background-color: #f4f4f5 !important;
   }
 }
 .btn.btn-logout {
   text-decoration: none;
   padding: 8px;
-  /* background-color: var(--btn-logout-bg); */
+  font-size: 14px;
   color: #ef4444;
   border: none;
-  /* border: 2px solid var(--btn-logout-border); */
-  /* background-color: var(--btn-logout-bg-hover);
-  border: 2px solid var(--btn-logout-border-hover);
-  color: #171717; */
-  border-radius: 6px;
+  box-shadow: none;
+  border-radius: calc(0.75rem - 2px);
   transition: all 0.2s;
   &:hover,
-  &:focus,
   &:active {
-    background-color: #fef2f2;
-    color: #ef4444;
-    /* border: 2px solid var(--btn-logout-border-hover); */
-    /* color: #171717; */
+    background-color: #fef2f2 !important;
+    color: #ef4444 !important;
   }
 }
+
 .has-search .form-control {
-  padding-left: 2.375rem;
+  padding-left: 2.375rem !important;
 }
+
 .has-search .form-control-feedback {
   position: absolute;
   z-index: 2;
@@ -123,4 +137,88 @@ body {
   text-align: center;
   pointer-events: none;
   color: #aaa;
+}
+
+input,
+textarea,
+select {
+  padding: 0.5rem !important;
+  font-size: 14px !important;
+  border-radius: 13px !important;
+  border: 1.7px solid #e4e4e7 !important;
+  transition: all 0.2s !important;
+  &:focus,
+  &:active {
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04) !important;
+    border: 1.7px solid var(--border-input-color) !important;
+  }
+}
+
+.btn-close {
+  box-shadow: none !important;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.1s;
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: var(--secondary-color) !important;
+    color: #fff !important;
+    padding: 8px;
+  }
+}
+
+.modal .modal-content {
+  border-radius: 16px;
+  padding: 5px 10px;
+}
+
+.fs {
+  font-size: 14px !important;
+}
+
+/* SWAL CUSTOM CSS */
+
+.swal2-popup {
+  font-family: "Google Sans", sans-serif;
+  border-radius: 16px !important;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  border-radius: calc(0.75rem - 2px) !important;
+  font-size: 15px !important;
+  padding: 10px 14px !important;
+}
+
+.colored-toast.swal2-icon-success {
+  background-color: #a5dc86 !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+  background-color: #f8bb86 !important;
+}
+
+.colored-toast.swal2-icon-info {
+  background-color: #3fc3ee !important;
+}
+
+.colored-toast.swal2-icon-question {
+  background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+  color: white;
+}
+
+.colored-toast .swal2-close {
+  color: white;
+}
+
+.colored-toast .swal2-html-container {
+  color: white;
 }

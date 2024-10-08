@@ -1,5 +1,14 @@
 <template>
   <div class="mb-3 d-flex justify-content-end align-items-center">
+    <div class="form-group fs has-search d-flex align-items-center me-3">
+      <span class="material-symbols-outlined form-control-feedback">search</span>
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Tìm kiếm khu vực"
+        v-model="searchQuery"
+      />
+    </div>
     <button
       type="button"
       class="btn btn-primary d-flex align-items-center"
@@ -11,33 +20,37 @@
       Thêm khu vực
     </button>
   </div>
-  <table class="table table-hover" @click="handleRowClick">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Tên khu vực</th>
-        <th scope="col">Mô Tả</th>
-        <th scope="col">ID loại kho</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="zone in zones" :key="zone.sysIdWarehouseZone" :data-id="zone.sysIdWarehouseZone">
-        <td scope="row">{{ zone.sysIdWarehouseZone }}</td>
-        <td>{{ zone.warehouseZoneName }}</td>
-        <td>{{ zone.warehouseZoneDesc }}</td>
-        <td>{{ zone.sysIdWarehouseType }}</td>
-        <td class="text-center">
-          <button
-            class="btn btn-danger"
-            @click="deleteWarehouseZone(zone.sysIdWarehouseZone, $event)"
-          >
-            <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover" @dblclick="handleRowClick">
+      <thead>
+        <tr>
+          <th scope="col" class="d-none">ID</th>
+          <th scope="col">Mã khu vực</th>
+          <th scope="col">Tên khu vực</th>
+          <th scope="col">Mô tả</th>
+          <th scope="col">Mã kho</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-if="filteredZones.length === 0" style="text-align: center; font-style: italic">
+          <td colspan="10">Không tìm thấy khu vực</td>
+        </tr>
+        <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc">
+          <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
+          <td>{{ zone.maKhuVuc }}</td>
+          <td>{{ zone.tenKhuVuc }}</td>
+          <td>{{ zone.moTa }}</td>
+          <td>{{ zone.maKho }}</td>
+          <td class="text-center">
+            <button class="btn btn-danger" @click="deleteWarehouseZone(zone.maKhuVuc, $event)">
+              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div class="pagination d-flex justify-content-center align-items-center mt-3">
     <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
       Trước
@@ -60,55 +73,64 @@
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedWarehouseZone.sysIdWarehouseZone ? "Chỉnh sửa khu vực" : "Thêm khu vực" }}
+            {{ selectedWarehouseZone.sysIdKhuVuc ? "Chỉnh sửa khu vực" : "Thêm khu vực" }}
           </h5>
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            @click="btnResetForm_Click"
           ></button>
         </div>
         <div class="modal-body">
           <form>
             <div class="mb-3">
-              <label for="warehouseZoneId" class="form-label fw-bold">Mã Khu vực</label>
-              <input
-                type="text"
-                class="form-control"
-                id="warehouseZoneId"
-                aria-describedby="warehouseZoneIdHelp"
-                v-model="selectedWarehouseZone.sysIdWarehouseZone"
-              />
+              <div class="row">
+                <div class="col-6">
+                  <label for="maKhuVuc" class="form-label fs fw-bold">Mã khu vực</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="maKhuVuc"
+                    aria-describedby="maKhuVucHelp"
+                    v-model="selectedWarehouseZone.maKhuVuc"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="tenKhuVuc" class="form-label fs fw-bold">Tên khu vực</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenKhuVuc"
+                    aria-moTa="warehouseZoneNameHelp"
+                    v-model="selectedWarehouseZone.tenKhuVuc"
+                  />
+                </div>
+              </div>
             </div>
             <div class="mb-3">
-              <label for="warehouseZoneName" class="form-label fw-bold">Tên khu vực</label>
-              <input
-                type="text"
-                class="form-control"
-                id="warehouseZoneName"
-                aria-describedby="warehouseZoneNameHelp"
-                v-model="selectedWarehouseZone.warehouseZoneName"
-              />
+              <label for="maKho" class="form-label fs fw-bold">Mã kho</label>
+              <select class="form-select" id="maKho" v-model="selectedWarehouseZone.maKho">
+                <option value="" disabled>Chọn kho</option>
+                <option
+                  v-for="warehouse in warehouseStore.warehouses"
+                  :key="warehouse.maKho"
+                  :value="warehouse.maKho"
+                >
+                  {{ warehouse.maKho }} - {{ warehouse.tenKho }}
+                </option>
+              </select>
             </div>
             <div class="mb-3">
-              <label for="warehouseZoneDescription" class="form-label fw-bold">Mô Tả</label>
+              <label for="warehouseZoneDescription" class="form-label fs fw-bold">Mô tả</label>
               <textarea
                 class="form-control"
                 id="warehouseZoneDescription"
+                rows="4"
                 aria-describedby="warehouseZoneDescriptionHelp"
-                v-model="selectedWarehouseZone.warehouseZoneDesc"
+                v-model="selectedWarehouseZone.moTa"
               ></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="sysIdWarehouseType" class="form-label fw-bold">ID loại kho</label>
-              <input
-                type="text"
-                class="form-control"
-                id="sysIdWarehouseType"
-                aria-describedby="sysIdWarehouseTypeHelp"
-                v-model="selectedWarehouseZone.sysIdWarehouseType"
-              />
             </div>
           </form>
         </div>
@@ -121,8 +143,13 @@
           >
             Hủy
           </button>
-          <button type="button" class="btn btn-primary" @click="saveWarehouseZone">
-            {{ selectedWarehouseZone.sysIdWarehouseZone ? "Cập nhật" : "Lưu" }}
+          <button
+            type="button"
+            class="btn btn-primary d-flex align-items-center"
+            @click="saveWarehouseZone"
+          >
+            <span class="material-symbols-outlined me-2">check</span>
+            {{ selectedWarehouseZone.sysIdKhuVuc ? "Cập nhật" : "Lưu" }}
           </button>
         </div>
       </div>
@@ -131,19 +158,23 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { useApiStore } from "../../../../store/apiStore.js";
+import { ref, reactive, onMounted, computed } from "vue";
+import { useApiStore } from "@/store/apiStore.js";
+import { useWarehouseStore } from "@/store/warehouseStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 
 const apiStore = useApiStore();
 const zones = ref([]);
+const warehouseStore = useWarehouseStore();
 const addWarehouseZoneBtn = ref(null);
+const searchQuery = ref("");
 const selectedWarehouseZone = reactive({
-  sysIdWarehouseZone: "",
-  warehouseZoneName: "",
-  warehouseZoneDesc: "",
-  sysIdWarehouseType: "",
+  sysIdKhuVuc: "",
+  maKhuVuc: "",
+  tenKhuVuc: "",
+  moTa: "",
+  maKho: "",
 });
 // pagination
 const currentPage = ref(0);
@@ -152,13 +183,8 @@ const pageSize = ref(10);
 
 onMounted(() => {
   getWarehouseZone();
+  fetchWarehouses();
 });
-
-// Phân trang
-// const goToPage = (page) => {
-//   currentPage.value = page;
-//   getWarehouseZone();
-// };
 
 const nextPage = () => {
   if (currentPage.value < totalPages.value) {
@@ -174,65 +200,75 @@ const prevPage = () => {
   }
 };
 
-// Lấy khu vực sản phẩm
+const fetchWarehouses = async () => {
+  await warehouseStore.getWarehouses();
+};
+
 const getWarehouseZone = async () => {
   try {
-    const response = await apiStore.get(
-      `warehouse-zones?page=${currentPage.value}&size=${pageSize.value}`
-    );
-    zones.value = response.list;
-    console.log(response);
+    const response = await apiStore.get(`zones?page=${currentPage.value}&size=${pageSize.value}`);
+    zones.value = response.data.list;
     totalPages.value = Math.ceil(response.total / pageSize.value);
   } catch (error) {
     console.error("Failed to fetch zones:", error);
   }
 };
 
-// Lưu hoặc cập nhật khu vực
+const filteredZones = computed(() => {
+  return zones.value.filter(
+    (zone) =>
+      zone.maKhuVuc.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      zone.tenKhuVuc.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      zone.moTa.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      zone.maKho.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
 const saveWarehouseZone = async () => {
-  // Kiểm tra nếu tên khu vực trống
-  if (!selectedWarehouseZone.warehouseZoneName.trim()) {
+  if (!selectedWarehouseZone.maKhuVuc.trim()) {
+    showToastError("Mã khu vực không được để trống!");
+    return;
+  }
+  if (!selectedWarehouseZone.tenKhuVuc.trim()) {
     showToastError("Tên khu vực không được để trống!");
     return;
   }
-
-  // Kiểm tra nếu mô tả trống
-  if (!selectedWarehouseZone.warehouseZoneDesc.trim()) {
+  if (!selectedWarehouseZone.moTa.trim()) {
     showToastError("Mô tả khu vực không được để trống!");
+    return;
+  }
+  if (!selectedWarehouseZone.maKho) {
+    showToastError("Vui lòng chọn một kho!");
     return;
   }
 
   try {
     let response;
-    if (selectedWarehouseZone.sysIdWarehouseZone) {
-      // Nếu có ID, thực hiện cập nhật
-      response = await apiStore.post("warehouse-zones", {
-        sysIdWarehouseZone: selectedWarehouseZone.sysIdWarehouseZone,
-        warehouseZoneName: selectedWarehouseZone.warehouseZoneName,
-        warehouseZoneDesc: selectedWarehouseZone.warehouseZoneDesc,
-        sysIdWarehouseType: selectedWarehouseZone.sysIdWarehouseType,
+    if (selectedWarehouseZone.sysIdKhuVuc) {
+      response = await apiStore.post("zones", {
+        sysIdKhuVuc: selectedWarehouseZone.sysIdKhuVuc,
+        maKhuVuc: selectedWarehouseZone.maKhuVuc,
+        tenKhuVuc: selectedWarehouseZone.tenKhuVuc,
+        moTa: selectedWarehouseZone.moTa,
+        maKho: selectedWarehouseZone.maKho,
       });
     } else {
-      // Nếu không có ID, thực hiện thêm mới
-      response = await apiStore.post("warehouse-zones", {
-        sysIdWarehouseZone: selectedWarehouseZone.sysIdWarehouseZone,
-        warehouseZoneName: selectedWarehouseZone.warehouseZoneName,
-        warehouseZoneDesc: selectedWarehouseZone.warehouseZoneDesc,
-        sysIdWarehouseType: selectedWarehouseZone.sysIdWarehouseType,
+      response = await apiStore.post("zones", {
+        maKhuVuc: selectedWarehouseZone.maKhuVuc,
+        tenKhuVuc: selectedWarehouseZone.tenKhuVuc,
+        moTa: selectedWarehouseZone.moTa,
+        maKho: selectedWarehouseZone.maKho,
       });
     }
 
-    // Kiểm tra phản hồi từ API
     if (response) {
       await getWarehouseZone();
-      // Làm mới form
       btnResetForm_Click();
       addWarehouseZoneBtn.value.click();
       showToastSuccess("Lưu thành công");
     } else {
-      // console.error("Failed to save zone:", response);
       if (response && response.error) {
-        console.error("Error details:", response.error); // Ghi nhận chi tiết lỗi nếu có
+        console.error("Error details:", response.error);
       }
     }
   } catch (error) {
@@ -240,36 +276,24 @@ const saveWarehouseZone = async () => {
   }
 };
 
-// Điền dữ liệu vào form khi click vào dòng <tr></tr>
 const handleRowClick = (event) => {
-  // Lấy phần tử tr gần nhất từ sự kiện click hiện tại.
   const row = event.target.closest("tr");
-
-  // Lấy giá trị của thuộc tính 'data-id' từ <tr> đã được click.
   const id = row.getAttribute("data-id");
-
-  // Tìm khu vực có ID tương ứng trong danh sách 'zones'.
-  const selectedWarehouseZoneValue = zones.value.find((zone) => zone.sysIdWarehouseZone);
-
-  // Nếu tìm thấy khu vực có ID tương ứng.
+  const selectedWarehouseZoneValue = zones.value.find((zone) => zone.sysIdKhuVuc == id);
   if (selectedWarehouseZoneValue) {
-    // Sao chép dữ liệu của khu vực được chọn vào biến 'selectedWarehouseZone..
     Object.assign(selectedWarehouseZone, selectedWarehouseZoneValue);
-
-    // Tự động click vào nút 'Thêm khu vực' để mở modal chỉnh sửa thông tin khu vực.
     addWarehouseZoneBtn.value.click();
   }
 };
 
-// Xóa khu vực
 const deleteWarehouseZone = async (id, event) => {
-  event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên dòng <tr>
+  event.stopPropagation();
   const swalConfirm = await Swal.fire({
     title: "Xóa khu vực?",
     text: "Bạn có chắc chắn muốn xóa khu vực này?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
+    confirmButtonColor: "#16a34a",
     cancelButtonText: "Hủy",
     cancelButtonColor: "#d33",
     confirmButtonText: "Xóa",
@@ -277,8 +301,8 @@ const deleteWarehouseZone = async (id, event) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`warehouse-zones/${id}`);
-      await getWarehouseZone(); // Cập nhật lại danh sách khu vực sau khi xóa
+      await apiStore.delete(`zones/${id}`);
+      await getWarehouseZone();
       showToastSuccess("Khu vực đã được xóa");
     } catch (error) {
       console.error("Error while deleting zone:", error);
@@ -287,28 +311,18 @@ const deleteWarehouseZone = async (id, event) => {
   }
 };
 
-// Làm mới form nhập
 const btnResetForm_Click = () => {
   Object.assign(selectedWarehouseZone, {
-    sysIdWarehouseZone: "",
-    warehouseZoneName: "",
-    warehouseZoneDesc: "",
-    sysIdWarehouseType: "",
+    sysIdKhuVuc: "",
+    maKhuVuc: "",
+    tenKhuVuc: "",
+    moTa: "",
+    maKho: "",
   });
 };
 </script>
 
 <style scoped>
-.container {
-  width: 50%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
-}
-/* th {
-  background-color: var(--primary-color);
-} */
 tr,
 td {
   border-bottom: 1px solid #dfdfdf;
@@ -318,21 +332,18 @@ td {
   cursor: pointer;
   vertical-align: middle;
 }
-input,
-textarea {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
-}
 .btn-danger {
-  padding: 6px 6px;
+  padding: 10px 10px;
+}
+.btn-close {
+  box-shadow: none;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.1s;
+  &:hover,
+  &:active {
+    background-color: var(--secondary-color);
+    padding: 8px;
+  }
 }
 </style>

@@ -1,17 +1,17 @@
 <template>
   <div class="sub-content mb-3 d-flex">
-    <div class="form-group has-search d-flex align-items-center me-3">
+    <div class="form-group fs has-search d-flex align-items-center me-3">
       <span class="material-symbols-outlined form-control-feedback">search</span>
-      <input type="text" class="form-control" placeholder="Tìm phiếu nhập" />
+      <input type="search" class="form-control" placeholder="Tìm theo mã tham chiếu" v-model="searchQuery" />
     </div>
-    <select class="form-select" aria-label="Default select example">
+    <select class="form-select fs" aria-label="Default select example">
       <option value="" selected>Sắp xếp</option>
       <option value="name-asc">A-Z</option>
       <option value="name-desc">Z-A</option>
     </select>
   </div>
   <div class="table-responsive">
-    <table class="table table-bordered table-hover">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>Mã tham chiếu</th>
@@ -28,7 +28,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="inbound of inbounds" :key="inbound.id" style="cursor: pointer">
+        <tr v-if="filteredInbounds.length === 0" style="text-align: center; font-style: italic">
+          <td colspan="10">Không tìm thấy</td>
+        </tr>
+        <tr v-for="inbound of filteredInbounds" :key="inbound.id" style="cursor: pointer">
           <td>{{ inbound.id }}</td>
           <td>{{ inbound.from }}</td>
           <td>{{ inbound.to }}</td>
@@ -47,29 +50,30 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import inboundList from "@/components/Page/Inbound/inbound.json";
 
 const inbounds = ref(inboundList);
+const searchQuery = ref("");
+
+const filteredInbounds = computed(() => {
+  return inbounds.value.filter((inbound) =>
+    inbound.id.toString().includes(searchQuery.value.toUpperCase())
+  );
+});
 </script>
 
 <style scoped>
 .table {
   font-size: 14px;
 }
-.form-group,
 .form-select {
   width: 200px;
-  font-size: 14px;
 }
-input,
-select {
+.form-group {
+  width: 230px;
+}
+.fs {
   font-size: 14px;
-  border: 1px solid var(--secondary-color);
-  &:focus,
-  &:active {
-    border: 1px solid var(--secondary-color);
-    box-shadow: none;
-  }
 }
 </style>

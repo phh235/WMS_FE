@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <div class="col">
-      <div id="pie-chart"></div>
+    <div class="col-12 col-md-6">
+      <div id="pie-chart" style="width: 100%; height: 700px"></div>
     </div>
-    <div class="col">
-      <div id="doghnut-chart"></div>
+    <div class="col-12 col-md-6">
+      <div id="doghnut-chart" style="width: 100%; height: 700px"></div>
     </div>
   </div>
 </template>
@@ -58,14 +58,14 @@ onMounted(() => {
           },
         },
         data: [
-          { value: 40, name: "iPhone 13 Pro" },
-          { value: 38, name: "Samsung Galaxy Z Fold3" },
-          { value: 32, name: "MacBook Air M1" },
-          { value: 30, name: "Apple Watch Series 7" },
-          { value: 28, name: "Lenovo IdeaPad 5 Pro" },
-          { value: 26, name: "Huawei P40 Pro" },
-          { value: 22, name: "AirPods 4 Pro" },
-          { value: 18, name: "Google Pixel 6 Pro" },
+          { value: 40, name: "Gạo" },
+          { value: 38, name: "Ngô" },
+          { value: 32, name: "Khoai tây" },
+          { value: 30, name: "Cà phê" },
+          { value: 28, name: "Trái cây" },
+          { value: 26, name: "Rau xanh" },
+          { value: 22, name: "Chè" },
+          { value: 18, name: "Hạt điều" },
         ],
       },
     ],
@@ -115,11 +115,14 @@ onMounted(() => {
           show: false,
         },
         data: [
-          { value: 1048, name: "Điện thoại" },
-          { value: 735, name: "Laptop" },
-          { value: 580, name: "Máy tính bảng" },
-          { value: 484, name: "Tai nghe" },
-          { value: 300, name: "Đồng hồ" },
+          { value: 40, name: "Gạo" },
+          { value: 38, name: "Ngô" },
+          { value: 32, name: "Khoai tây" },
+          { value: 30, name: "Cà phê" },
+          { value: 28, name: "Trái cây" },
+          { value: 26, name: "Rau xanh" },
+          { value: 22, name: "Chè" },
+          { value: 18, name: "Hạt điều" },
         ],
       },
     ],
@@ -143,5 +146,11 @@ onBeforeUnmount(() => {
 #doghnut-chart {
   width: 100%;
   height: 700px;
+}
+@media (max-width: 768px) {
+  #pie-chart,
+  #doghnut-chart {
+    height: 200px;
+  }
 }
 </style>

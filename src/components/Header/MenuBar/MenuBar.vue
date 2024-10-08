@@ -1,14 +1,15 @@
 <template>
   <div style="background-color: #fff !important">
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-xl">
       <div class="container-fluid p-0">
         <router-link to="/inventory/tong-quan" class="navbar-brand">
           <img
             src="https://res.cloudinary.com/dnfccnxew/image/upload/v1727249885/fqzo9a6ok3qk4ykxnzxu.png"
-            width="30"
+            width="25"
             alt=""
             class="ms-2"
           />
+          <!-- <span class="ms-1 fw-bold" style="font-size: 17px">Inventory</span> -->
         </router-link>
         <button
           class="navbar-toggler"
@@ -38,7 +39,7 @@
             ></button>
           </div>
           <div class="offcanvas-body">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
               <div class="mobile-layout-end">
                 <div class="d-flex align-items-center">
                   <div class="dropdown">
@@ -117,7 +118,23 @@
                 </div>
               </div>
               <li class="nav-item d-flex align-items-center">
-                <router-link to="/inventory/tong-quan" class="nav-link">Tổng quan</router-link>
+                <router-link to="/inventory/tong-quan" class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2">home</span>Tổng quan</router-link
+                >
+              </li>
+              <li class="nav-item d-flex align-items-center">
+                <router-link
+                  to="/inventory/yeu-cau-mua-hang"
+                  class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2">request_page </span>Mua
+                  hàng</router-link
+                >
+              </li>
+              <li class="nav-item d-flex align-items-center">
+                <router-link to="/inventory/dat-hang" class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2">shopping_cart </span>Đặt
+                  hàng</router-link
+                >
               </li>
               <li class="nav-item dropdown">
                 <a
@@ -128,6 +145,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
+                  <span class="material-symbols-outlined me-2">history</span>
                   Hoạt động
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
@@ -139,7 +157,7 @@
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
                       <span class="fs">Nhập kho</span>
-                      <span class="material-symbols-outlined">download</span>
+                      <span class="material-symbols-outlined">input</span>
                     </router-link>
                   </li>
                   <li>
@@ -148,7 +166,7 @@
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
                       <span class="fs">Xuất kho</span>
-                      <span class="material-symbols-outlined">upload</span>
+                      <span class="material-symbols-outlined">output</span>
                     </router-link>
                   </li>
                   <li><hr class="dropdown-divider" /></li>
@@ -165,21 +183,32 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/san-pham" class="nav-link">Sản phẩm</router-link>
+                <router-link to="/inventory/san-pham" class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2"> nutrition </span>Sản
+                  phẩm</router-link
+                >
               </li>
               <!-- <li class="nav-item">
                 <router-link to="/inventory/quan-ly-kho" class="nav-link">Quản lý kho</router-link>
               </li> -->
               <li class="nav-item">
-                <router-link to="/inventory/quan-ly-tai-khoan" class="nav-link"
-                  >Quản lý tài khoản</router-link
+                <router-link
+                  to="/inventory/quan-ly-tai-khoan"
+                  class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2"> manage_accounts </span>Quản lý tài
+                  khoản</router-link
                 >
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/quan-ly-kho" class="nav-link">Quản lý kho</router-link>
+                <router-link to="/inventory/quan-ly-kho" class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2"> holiday_village </span>Quản lý
+                  kho</router-link
+                >
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/bao-cao" class="nav-link">Báo cáo</router-link>
+                <router-link to="/inventory/bao-cao" class="nav-link d-flex align-items-center"
+                  ><span class="material-symbols-outlined me-2"> flag </span>Báo cáo</router-link
+                >
               </li>
               <li class="nav-item dropdown">
                 <a
@@ -190,6 +219,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
+                  <span class="material-symbols-outlined me-2"> manufacturing </span>
                   Cấu hình
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
@@ -207,7 +237,7 @@
                       <span class="material-symbols-outlined">warehouse</span>
                     </router-link>
                   </li>
-                  <li>
+                  <!-- <li>
                     <router-link
                       to="/inventory/cau-hinh/loai-kho"
                       class="dropdown-item d-flex align-items-center justify-content-between"
@@ -216,7 +246,7 @@
                       <span class="text-dark fs">Loại kho</span>
                       <span class="material-symbols-outlined">format_list_bulleted</span>
                     </router-link>
-                  </li>
+                  </li> -->
                   <li>
                     <router-link
                       to="/inventory/cau-hinh/khu-vuc"
@@ -288,7 +318,6 @@
                         </div>
                       </router-link>
                     </li>
-
                     <!-- <li>
                       <router-link
                         to="/inventory/ngon-ngu"
@@ -401,7 +430,7 @@ const handleLogout = async () => {
 .nav-link {
   font-size: 14px;
   color: #000;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-right: 5px;
   transition: all 0.1s;
   padding: 8px !important;
@@ -415,20 +444,18 @@ const handleLogout = async () => {
 }
 .nav-link:hover {
   background-color: var(--secondary-color);
-  border-radius: 6px;
 }
 .dropdown-menu {
   padding: 8px;
-  border-radius: 14px;
+  border-radius: 16px;
 }
 .dropdown-item {
   font-size: 14px;
   padding: 8px;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: all 0.1s;
   &:hover {
     background-color: var(--secondary-color);
-    padding: 8px;
   }
   &:focus {
     color: #000;
@@ -456,6 +483,7 @@ input {
 .mobile-layout-end {
   display: none;
 }
+
 @media (max-width: 991.98px) {
   .offcanvas {
     width: 260px !important;
@@ -497,13 +525,22 @@ input {
     display: unset;
   }
   .nav-link {
-    font-size: 15px;
+    font-size: 16px;
+  }
+  .material-symbols-outlined {
+    font-size: 20px;
   }
   .fs {
-    font-size: 15px;
+    font-size: 14px;
   }
   .dropdown-menu {
     margin-bottom: 10px !important;
   }
 }
+.nav-item .material-symbols-outlined {
+  color: #94a3b8;
+}
+/* .nav-item:hover .material-symbols-outlined {
+  color: #64748b;
+} */
 </style>

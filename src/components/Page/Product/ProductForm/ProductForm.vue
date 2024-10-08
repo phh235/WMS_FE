@@ -1,131 +1,81 @@
 <template>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="image-upload-container">
-          <img
-            v-if="imagePreview"
-            :src="imagePreview"
-            alt="product img front"
-            class="product-image"
-          />
-          <div v-else class="placeholder-image">
-            <span>Chưa có ảnh</span>
+  <div class="container px-4">
+    <div class="row">
+      <div class="col-12 col-md-3 mb-4">
+        <div class="card box-shadow" style="border-radius: 16px; border: 1px solid #e4e4e7">
+          <div class="image-upload-container">
+            <img
+              v-if="imagePreview"
+              :src="imagePreview"
+              alt="product img front"
+              class="product-image"
+            />
+            <div v-else class="placeholder-image">
+              <span>Chưa có ảnh</span>
+            </div>
+            <input type="file" @change="onFileChange" class="file-input" id="imageUpload" />
+            <label
+              for="imageUpload"
+              class="upload-button btn btn-primary d-flex align-items-center fw-medium"
+              ><span class="material-symbols-outlined me-2"> upload </span>Chọn ảnh
+            </label>
           </div>
-          <input
-            type="file"
-            @change="onFileChange"
-            accept="image/*"
-            class="file-input"
-            id="imageUpload"
-          />
-          <label for="imageUpload" class="upload-button btn btn-primary"
-            >Chọn ảnh từ máy tính</label
-          >
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">cocoonvietnam</h5>
-          <p class="card-text">
-            Sản phẩm treatment dành cho tóc, phù hợp với tình trạng tóc rụng, tóc yếu, tóc thưa
-            mỏng. Sản phẩm có thành phần từ tinh dầu bưởi Việt Nam truyền thống, Xylishine, Vitamin
-            B5, Baicapil và Bisabolol.
-          </p>
         </div>
       </div>
-    </div>
-    <div class="col-md-9">
-      <div class="block p-4">
-        <div class="card">
-          <!-- Header -->
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Danh Mục Sản Phẩm</span>
-          </div>
-          <!-- Card body with 4 small boxes -->
-          <div class="card-body">
+      <div class="col-12 col-md-9">
+        <div class="block box-shadow p-4">
+          <div class="mb-3">
             <div class="row">
-              <!-- First box -->
-              <div class="col-6 col-md-3">
-                <div class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action"> Điện Thoại </a>
-                </div>
+              <div class="col-12 col-md-4 mb-3 d-none">
+                <label for="sysIdSanPham">Mã sản phẩm</label>
+                <input
+                  type="text"
+                  id="sysIdSanPham"
+                  class="form-control"
+                  v-model="productInfo.sysIdSanPham"
+                />
               </div>
-              <!-- Second box -->
-              <div class="col-6 col-md-3">
-                <div class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action"> Quần Áo </a>
-                </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="tenSanPham">Tên sản phẩm</label>
+                <input
+                  type="text"
+                  id="tenSanPham"
+                  class="form-control"
+                  v-model="productInfo.tenSanPham"
+                />
               </div>
-              <!-- Third box -->
-              <div class="col-6 col-md-3">
-                <div class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action"> Gia Dụng </a>
-                </div>
+              <div class="col-12 col-md-4 mb-3">
+                <label for="soLuongHienCo">Số lượng hiện có</label>
+                <input
+                  type="text"
+                  id="soLuongHienCo"
+                  class="form-control"
+                  v-model="productInfo.soLuongHienCo"
+                />
               </div>
-              <!-- Fourth box -->
-              <div class="col-6 col-md-3">
-                <div class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action"> Thực Phẩm </a>
-                </div>
-              </div>
-              <div class="col-6 col-md-3 mt-2">
-                <div class="list-group">
-                  <a href="#" class="list-group-item list-group-item-action"> Điện Tử </a>
-                </div>
+              <div class="col-12 col-md-4">
+                <label for="danhMuc">Danh mục</label>
+                <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
+                  <option value="" selected disabled>Chọn danh mục</option>
+                  <option
+                    v-for="category in categoryStore.categories"
+                    :key="category.sysIdDanhMuc"
+                    :value="category.sysIdDanhMuc"
+                  >
+                    {{ category.tenDanhMuc }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
-        </div>
-        <!-- product-details -->
-        <div class="card mt-3">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Chi Tiết Sản Phẩm</span>
+          <div class="mb-3">
+            <label for="moTa">Mô tả</label>
+            <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <!-- Product Name -->
-              <div class="col-6 col-md-6">
-                <div class="form-group">
-                  <label for="tenSanPham" class="form-label fw-bold">Tên sản phẩm</label>
-                  <input type="text" class="form-control" id="tenSanPham" />
-                </div>
-              </div>
-              <!-- Product Branch -->
-              <div class="col-6 col-md-6">
-                <div class="form-group">
-                  <label for="maSku" class="form-label fw-bold">Mã Sku</label>
-                  <input type="text" class="form-control" id="maSku" />
-                </div>
-              </div>
-              <!-- Product Branch -->
-              <div class="col-6 col-md-4 mt-3">
-                <div class="form-group">
-                  <label for="soLuongHienCo" class="form-label fw-bold">Số lượng hiện có</label>
-                  <input type="text" class="form-control" id="soLuongHienCo" />
-                </div>
-              </div>
-              <!-- Product Branch -->
-              <div class="col-6 col-md-4 mt-3">
-                <div class="form-group">
-                  <label for="chiPhi" class="form-label fw-bold">Chi phí</label>
-                  <input type="text" class="form-control" id="chiPhi" />
-                </div>
-              </div>
-              <div class="col-6 col-md-4 mt-3">
-                <div class="form-group">
-                  <label for="giaBan" class="form-label fw-bold">Giá bán</label>
-                  <input type="text" class="form-control" id="giaBan" />
-                </div>
-              </div>
-              <div class="col-6 col-md-4 mt-3">
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea1" class="form-label fw-bold">Mô tả</label>
-                  <textarea class="form-control" id="moTa" rows="3"></textarea>
-                </div>
-              </div>
-              <div class="d-flex justify-content-end mt-2">
-                <button class="btn btn-primary ms-auto" type="submit">Lưu</button>
-              </div>
-            </div>
+          <div class="d-flex justify-content-end mt-2">
+            <button class="btn btn-primary ms-auto d-flex align-items-center" @click="saveProduct">
+              <span class="material-symbols-outlined me-2"> check </span>Lưu
+            </button>
           </div>
         </div>
       </div>
@@ -134,13 +84,89 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, reactive } from "vue";
+import { useApiStore } from "@/store/apiStore.js";
+import { useCategoriesStore } from "@/store/categoryStore.js";
+import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { useRouter } from "vue-router";
 
 const imagePreview = ref(null);
-const productName = ref("");
-const productDescription = ref("");
-const selectedCategory = ref(null);
-const categories = ref(["Điện Thoại", "Quần Áo", "Gia Dụng", "Thực Phẩm", "Điện Tử"]);
+const apiStore = useApiStore();
+const categoryStore = useCategoriesStore();
+const router = useRouter();
+
+const productInfo = reactive({
+  tenSanPham: "",
+  soLuongHienCo: "",
+  moTa: "",
+  sysIdDanhMuc: "",
+  hinhAnh: "",
+});
+
+onMounted(() => {
+  fetchCategories();
+});
+
+const fetchCategories = async () => {
+  await categoryStore.getCategories();
+};
+
+const saveProduct = async () => {
+  // Validate form
+  if (!productInfo.tenSanPham) {
+    showToastError("Tên sản phẩm không được để trống.");
+    return;
+  }
+  if (!productInfo.soLuongHienCo) {
+    showToastError("Số lượng không được để trống.");
+    return;
+  }
+  if (!productInfo.sysIdDanhMuc) {
+    showToastError("Vui lòng chọn danh mục.");
+    return;
+  }
+  if (!productInfo.moTa) {
+    showToastError("Mô tả không được để trống.");
+    return;
+  }
+  // Kiểm tra số lượng hiện có phải là số
+  if (isNaN(productInfo.soLuongHienCo)) {
+    showToastError("Số lượng hiện có phải là một số.");
+    return;
+  }
+  // Kiểm tra xem đã chọn ảnh hay chưa
+  if (!imagePreview.value) {
+    showToastError("Vui lòng chọn ảnh sản phẩm.");
+    return;
+  }
+  try {
+    const formData = new FormData();
+
+    formData.append("tenSanPham", productInfo.tenSanPham);
+    formData.append("soLuongHienCo", productInfo.soLuongHienCo);
+    formData.append("moTa", productInfo.moTa);
+    formData.append("sysIdDanhMuc", productInfo.sysIdDanhMuc);
+
+    if (imagePreview.value) {
+      const file = await fetch(imagePreview.value).then((res) => res.blob());
+      formData.append("hinhAnh", file, productInfo.hinhAnh.name);
+    }
+
+    const response = await apiStore.postImage("products", formData);
+
+    if (response.status === 200) {
+      showToastSuccess("Lưu thành công");
+      setTimeout(() => {
+        router.push("/inventory/san-pham");
+      }, 1900);
+    } else {
+      showToastError("Lưu thất bại");
+    }
+  } catch (error) {
+    console.error("Failed to save products:", error);
+    showToastError("Có lỗi xảy ra khi lưu sản phẩm");
+  }
+};
 
 const onFileChange = (e) => {
   const file = e.target.files[0];
@@ -150,11 +176,10 @@ const onFileChange = (e) => {
       imagePreview.value = e.target.result;
     };
     reader.readAsDataURL(file);
-  }
-};
 
-const selectCategory = (category) => {
-  selectedCategory.value = category;
+    // Lưu tên tệp vào productInfo
+    productInfo.hinhAnh = file.name; // Lưu tên tệp
+  }
 };
 </script>
 
@@ -163,7 +188,7 @@ const selectCategory = (category) => {
   text-align: center;
   font-weight: bold;
   padding: 0.5rem;
-  background-color: #97bec6;
+  background-color: #d0eddb;
 }
 
 .image-upload-container {
@@ -178,14 +203,13 @@ const selectCategory = (category) => {
   width: 100%;
   height: 300px;
   object-fit: cover;
+  border-radius: 16px;
 }
 
 .placeholder-image {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
-  color: #666;
 }
 
 .file-input {
@@ -202,48 +226,14 @@ const selectCategory = (category) => {
   cursor: pointer;
 }
 
-.card-body {
-  text-align: center;
-}
-
-.card-title {
-  margin-top: 10px;
-}
-
-.form-group {
-  text-align: left;
-}
-
-input,
-textarea {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
-}
-
-.nav-link.active {
-  background-color: var(--primary-color);
-}
-.nav-link:hover {
-  background-color: var(--primary-color);
-}
-
-.list-group-item:focus {
-  border: 2px solid var(--primary-color);
+label {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .block {
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
 }
 </style>

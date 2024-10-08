@@ -1,13 +1,13 @@
 <template>
   <div class="container mt-4">
     <h4 class="fw-bold">Phiếu nhập</h4>
-    <div class="mb-3 block">
+    <div class="mb-3 block box-shadow">
       <div class="d-flex justify-content-between">
         <div class="row mb-3">
           <div class="col">
             <button class="btn btn-primary me-2">Đánh dấu việc cần làm</button>
             <button class="btn btn-secondary me-2">In nhãn</button>
-            <button class="btn btn-logout" @click="btnCancel">Hủy</button>
+            <button class="btn btn-danger" @click="btnCancel">Hủy</button>
           </div>
         </div>
 
@@ -71,7 +71,7 @@
         </div>
       </div> -->
     </div>
-    <div class="block">
+    <div class="block box-shadow">
       <div class="row mb-3">
         <div class="col">
           <nav>
@@ -328,23 +328,7 @@ const btnCancel = () => {
   padding: 1rem;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
   border: 1px solid #dfdfdf;
-}
-input,
-.form-select,
-textarea {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
 }
 .nav-link {
   color: #000;
@@ -355,19 +339,14 @@ textarea {
   background-color: #d3f8e4;
 }
 .nav-link.active {
-  color: #000;
+  color: #fff;
   background-color: var(--primary-color);
 }
 .form-label {
   font-weight: bold;
 }
-.btn-logout {
-  background-color: #fef2f2;
-  color: #ef4444 !important;
-  border: 1px solid #fef2f2;
+.btn-danger {
+  padding: 8px 10px;
   font-size: 14px;
-  &:hover {
-    border: 1px solid #c20000;
-  }
 }
 </style>

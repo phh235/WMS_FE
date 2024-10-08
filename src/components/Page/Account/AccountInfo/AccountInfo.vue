@@ -2,8 +2,7 @@
   <div class="app-container">
     <main class="content">
       <div class="settings-content">
-        <h2>Tổng quan tài khoản</h2>
-        <div class="profile-card d-flex align-items-center">
+        <div class="profile-card box-shadow d-flex align-items-center">
           <div
             class="profile-image-container"
             @mouseover="showCamera = true"
@@ -28,50 +27,59 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6">
-            <div class="info-card">
+          <div class="col-12 col-md-6">
+            <div class="info-card box-shadow">
               <div class="card-header">
                 <h3>Thông tin cơ bản</h3>
               </div>
               <div class="info-grid">
                 <div class="info-item">
-                  <label>Họ tên</label>
-                  <input type="text" value="Phan Huy Hoàng" />
+                  <label for="fullname" class="form-label">Họ tên</label>
+                  <input id="fullname" type="text" value="Phan Huy Hoàng" class="form-control" />
                 </div>
                 <div class="info-item">
-                  <label>Tên người dùng</label>
-                  <input type="text" value="phh235" />
+                  <label for="username" class="form-label">Tên người dùng</label>
+                  <input id="username" type="text" value="phh235" class="form-control" />
                 </div>
                 <div class="info-item">
-                  <label>Email</label>
-                  <input type="email" value="phanhuyhoang.dev@gmail.com" />
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    value="phanhuyhoang.dev@gmail.com"
+                    class="form-control"
+                  />
                 </div>
                 <div class="info-item">
-                  <label>Điện thoại</label>
-                  <input type="tel" value="0559 224 553" />
+                  <label for="phone" class="form-label">Điện thoại</label>
+                  <input id="phone" type="tel" value="0559224553" class="form-control" />
                 </div>
                 <div class="d-flex">
-                  <button class="btn btn-primary">Cập nhật</button>
+                  <button class="btn btn-primary d-flex align-items-center">
+                    <span class="material-symbols-outlined me-2"> sync </span>Cập nhật
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-6">
-            <div class="info-card">
+          <div class="col-12 col-md-6">
+            <div class="info-card box-shadow">
               <div class="card-header">
                 <h3>Đổi mật khẩu</h3>
               </div>
               <div class="info-grid">
                 <div class="info-item">
-                  <label>Mật khẩu</label>
-                  <input type="password" value="123" />
+                  <label for="password" class="form-label">Mật khẩu</label>
+                  <input id="password" type="password" value="123" class="form-control" />
                 </div>
                 <div class="info-item">
-                  <label>Nhập lại mật khẩu</label>
-                  <input type="password" value="123" />
+                  <label for="confirm-password" class="form-label">Nhập lại mật khẩu</label>
+                  <input id="confirm-password" type="password" value="123" class="form-control" />
                 </div>
                 <div class="d-flex">
-                  <button class="btn btn-primary">Cập nhật</button>
+                  <button class="btn btn-primary d-flex align-items-center">
+                    <span class="material-symbols-outlined me-2"> sync </span>Cập nhật
+                  </button>
                 </div>
               </div>
             </div>
@@ -131,8 +139,7 @@ h1 {
 .settings-container {
   display: flex;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
   border: 1px solid #00000014;
 }
 
@@ -148,12 +155,11 @@ h2 {
 }
 
 .profile-card {
-  margin-bottom: 2rem;
+  margin-bottom: 1.3rem;
   padding: 1rem;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
 }
 
 .profile-image {
@@ -173,23 +179,12 @@ h2 {
   font-size: 0.9rem;
 }
 
-.edit-btn {
-  background: none;
-  border: 1px solid #d9d9d9;
-  padding: 0.3rem 0.7rem;
-  border-radius: 4px;
-  cursor: pointer;
-  color: #666;
-  font-size: 0.9rem;
-}
-
 .info-card {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid #dfdfdf;
+  border: 1px solid #e4e4e7;
 }
 
 .card-header {
@@ -220,37 +215,10 @@ h2 {
 }
 
 .info-item label {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #000;
   margin-bottom: 0.3rem;
-}
-
-.info-item input {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 1px solid #dfdfdf;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
-}
-
-input {
-  padding: 0.5rem;
-  font-size: 15px;
-  border-radius: 8px;
-  /* border: 2px solid var(--secondary-color); */
-  border: 2px solid #dcdcdc !important;
-  transition: all 0.2s;
-  &:focus,
-  &:active {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04);
-    border: 2px solid var(--border-input-color) !important;
-  }
 }
 
 @media (max-width: 768px) {

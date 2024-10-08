@@ -21,6 +21,15 @@ export const useApiStore = defineStore("api", {
       }
     },
 
+    async postImage(url, data) {
+      try {
+        return await apiService.postImage(url, data);
+      } catch (error) {
+        console.error("Error posting data:", error);
+        throw error;
+      }
+    },
+
     async delete(url, id) {
       try {
         return await apiService.delete(`${url}`, id);
