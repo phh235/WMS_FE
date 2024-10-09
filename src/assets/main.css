@@ -7,7 +7,7 @@ body,
 #app {
   height: 100%;
   width: 100%;
-  font-family: "Google San";
+  font-family: "Google Sans";
   font-weight: 500;
 }
 ::selection {
