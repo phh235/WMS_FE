@@ -143,12 +143,36 @@ export default [
     },
   },
   {
+    path: "yeu-cau-mua-hang/them-moi",
+    name: "yeu-cau-mua-hang/them-moi",
+    component: () =>
+      import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Thêm yêu cầu mua hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "dat-hang",
     name: "dat-hang",
     component: () => import("@/components/Page/PurchaseOrder/PurchaseOrder.vue"),
     meta: {
       requiresAuth: true,
       headerTitle: "Đặt hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "tao-don-dat-hang",
+    name: "tao-don-dat-hang",
+    component: () =>
+      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderForm.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Tạo đơn đặt hàng",
       searchConfig: {},
       storeConfig: {},
     },

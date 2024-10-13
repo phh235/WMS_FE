@@ -9,10 +9,12 @@ const Toast = Swal.mixin({
   iconColor: "white",
   customClass: {
     popup: "colored-toast",
+    timerProgressBar: "colored-timer-progress-bar",
   },
   didOpen: (toast) => {
     toast.onmouseenter = Swal.stopTimer;
     toast.onmouseleave = Swal.resumeTimer;
+    toast.onclick = Swal.close;
   },
 });
 

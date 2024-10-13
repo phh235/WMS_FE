@@ -2,26 +2,16 @@
   <div class="mb-3 d-flex justify-content-end align-items-center">
     <div class="form-group fs has-search d-flex align-items-center me-3">
       <span class="material-symbols-outlined form-control-feedback">search</span>
-      <input
-        type="search"
-        class="form-control"
-        placeholder="Tìm kiếm khu vực"
-        v-model="searchQuery"
-      />
+      <input type="search" class="form-control" placeholder="Tìm kiếm khu vực" v-model="searchQuery" />
     </div>
-    <button
-      type="button"
-      class="btn btn-primary d-flex align-items-center"
-      ref="addWarehouseZoneBtn"
-      data-bs-toggle="modal"
-      data-bs-target="#warehouseZoneModal"
-    >
+    <button type="button" class="btn btn-primary d-flex align-items-center" ref="addWarehouseZoneBtn"
+      data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
       <span class="material-symbols-outlined me-2"> add </span>
       Thêm khu vực
     </button>
   </div>
   <div class="table-responsive">
-    <table class="table table-hover" @dblclick="handleRowClick">
+    <table class="table table-hover" @click="handleRowClick">
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
@@ -51,37 +41,16 @@
       </tbody>
     </table>
   </div>
-  <div class="pagination d-flex justify-content-center align-items-center mt-3">
-    <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
-      Trước
-    </button>
-    <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-    <button class="btn btn-primary ms-2" @click="nextPage" :disabled="currentPage === totalPages">
-      Sau
-    </button>
-  </div>
-  <div
-    class="modal fade"
-    id="warehouseZoneModal"
-    tabindex="-1"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="warehouseZoneModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedWarehouseZone.sysIdKhuVuc ? "Chỉnh sửa khu vực" : "Thêm khu vực" }}
           </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-            @click="btnResetForm_Click"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            @click="btnResetForm_Click"></button>
         </div>
         <div class="modal-body">
           <form>
@@ -89,23 +58,13 @@
               <div class="row">
                 <div class="col-6">
                   <label for="maKhuVuc" class="form-label fs fw-bold">Mã khu vực</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="maKhuVuc"
-                    aria-describedby="maKhuVucHelp"
-                    v-model="selectedWarehouseZone.maKhuVuc"
-                  />
+                  <input type="text" class="form-control" id="maKhuVuc" aria-describedby="maKhuVucHelp"
+                    v-model="selectedWarehouseZone.maKhuVuc" />
                 </div>
                 <div class="col-6">
                   <label for="tenKhuVuc" class="form-label fs fw-bold">Tên khu vực</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="tenKhuVuc"
-                    aria-moTa="warehouseZoneNameHelp"
-                    v-model="selectedWarehouseZone.tenKhuVuc"
-                  />
+                  <input type="text" class="form-control" id="tenKhuVuc" aria-moTa="warehouseZoneNameHelp"
+                    v-model="selectedWarehouseZone.tenKhuVuc" />
                 </div>
               </div>
             </div>
@@ -113,41 +72,23 @@
               <label for="maKho" class="form-label fs fw-bold">Mã kho</label>
               <select class="form-select" id="maKho" v-model="selectedWarehouseZone.maKho">
                 <option value="" disabled>Chọn kho</option>
-                <option
-                  v-for="warehouse in warehouseStore.warehouses"
-                  :key="warehouse.maKho"
-                  :value="warehouse.maKho"
-                >
+                <option v-for="warehouse in warehouseStore.warehouses" :key="warehouse.maKho" :value="warehouse.maKho">
                   {{ warehouse.maKho }} - {{ warehouse.tenKho }}
                 </option>
               </select>
             </div>
             <div class="mb-3">
               <label for="warehouseZoneDescription" class="form-label fs fw-bold">Mô tả</label>
-              <textarea
-                class="form-control"
-                id="warehouseZoneDescription"
-                rows="4"
-                aria-describedby="warehouseZoneDescriptionHelp"
-                v-model="selectedWarehouseZone.moTa"
-              ></textarea>
+              <textarea class="form-control" id="warehouseZoneDescription" rows="4"
+                aria-describedby="warehouseZoneDescriptionHelp" v-model="selectedWarehouseZone.moTa"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button
-            type="button"
-            class="btn btn-logout"
-            data-bs-dismiss="modal"
-            @click="btnResetForm_Click"
-          >
+          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
             Hủy
           </button>
-          <button
-            type="button"
-            class="btn btn-primary d-flex align-items-center"
-            @click="saveWarehouseZone"
-          >
+          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouseZone">
             <span class="material-symbols-outlined me-2">check</span>
             {{ selectedWarehouseZone.sysIdKhuVuc ? "Cập nhật" : "Lưu" }}
           </button>
@@ -185,20 +126,6 @@ onMounted(() => {
   getWarehouseZone();
   fetchWarehouses();
 });
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-    getWarehouseZone();
-  }
-};
-
-const prevPage = () => {
-  if (currentPage.value > 0) {
-    currentPage.value--;
-    getWarehouseZone();
-  }
-};
 
 const fetchWarehouses = async () => {
   await warehouseStore.getWarehouses();
@@ -327,19 +254,23 @@ tr,
 td {
   border-bottom: 1px solid #dfdfdf;
 }
+
 td {
   font-size: 14px;
   cursor: pointer;
   vertical-align: middle;
 }
+
 .btn-danger {
   padding: 10px 10px;
 }
+
 .btn-close {
   box-shadow: none;
   padding: 8px;
   border-radius: 6px;
   transition: all 0.1s;
+
   &:hover,
   &:active {
     background-color: var(--secondary-color);

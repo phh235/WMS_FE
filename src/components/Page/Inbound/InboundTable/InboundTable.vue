@@ -67,12 +67,15 @@ const filteredInbounds = computed(() => {
 .table {
   font-size: 14px;
 }
+
 .form-select {
   width: 200px;
 }
+
 .form-group {
   width: 230px;
 }
+
 .fs {
   font-size: 14px;
 }

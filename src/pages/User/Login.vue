@@ -14,13 +14,8 @@
         <!-- Password input -->
         <div class="mb-2 password-container">
           <label class="form-label fs" for="password">Mật khẩu</label>
-          <input
-            class="form-control"
-            :type="showPassword ? 'text' : 'password'"
-            id="password"
-            autocomplete
-            v-model="password"
-          />
+          <input class="form-control" :type="showPassword ? 'text' : 'password'" id="password" autocomplete
+            v-model="password" />
           <span class="toggle-password" @click="toggleShowPassword">
             <span v-if="showPassword" class="material-symbols-outlined"> visibility_off </span>
             <span v-else class="material-symbols-outlined"> visibility </span>
@@ -30,18 +25,8 @@
           <router-link to="/quen-mat-khau" class="forgot fs"> Quên mật khẩu? </router-link>
         </div>
         <!-- Submit button -->
-        <button
-          class="btn btn-login text-dark w-100"
-          type="submit"
-          :disabled="loading"
-          :class="{ loading: loading }"
-        >
-          <span
-            v-if="loading"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
+        <button class="btn btn-login text-dark w-100" type="submit" :disabled="loading" :class="{ loading: loading }">
+          <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           <span v-if="!loading">Đăng nhập</span>
         </button>
       </form>
@@ -90,15 +75,18 @@ const handleLogin = async () => {
 .forgot {
   color: #171717;
   font-weight: bold;
+
   &:hover {
     color: var(--primary-color);
     text-decoration: none;
   }
 }
+
 .fs {
   font-size: 14px;
   font-weight: bold;
 }
+
 .spinner-border {
   width: 1.2rem;
   height: 1.2rem;

@@ -5,13 +5,8 @@
         <span class="material-symbols-outlined form-control-feedback">search</span>
         <input type="search" class="form-control" placeholder="Tìm kiếm" v-model="searchQuery" />
       </div>
-      <button
-        type="button"
-        class="btn btn-primary d-flex align-items-center"
-        ref="addCategoryBtn"
-        data-bs-toggle="modal"
-        data-bs-target="#categoryModal"
-      >
+      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
+        data-bs-toggle="modal" data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
         Cấp tài khoản
       </button>
@@ -49,28 +44,16 @@
         </tbody>
       </table>
     </div>
-    <div
-      class="modal fade"
-      id="categoryModal"
-      tabindex="-1"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="exampleModalLabel">
               <!-- {{ sy.sysIdDanhMuc ? "Chỉnh sửa người dùng" : "Thêm người dùng" }} -->
-              Thêm người dùng
+              Cấp tài khoản
             </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form>
@@ -78,7 +61,7 @@
                 <label for="id">ID</label>
                 <input type="text" class="form-control" id="id" />
               </div>
-              <div class="mb-3">
+              <div class="mb-3 d-none">
                 <div class="row">
                   <div class="col-6">
                     <label for="username">Tên người dùng</label>
@@ -92,11 +75,11 @@
               </div>
               <div class="mb-3">
                 <div class="row">
-                  <div class="col-6">
+                  <div class="col-12">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" />
                   </div>
-                  <div class="col-6">
+                  <div class="col-6 d-none">
                     <label for="roleId">Vai trò</label>
                     <select class="form-select" id="roleId">
                       <option value="1">Admin</option>
@@ -108,16 +91,12 @@
             </form>
           </div>
           <div class="modal-footer border-0">
-            <button
-              type="button"
-              class="btn btn-logout"
-              data-bs-dismiss="modal"
-              @click="btnResetForm_Click"
-            >
+            <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
               Hủy
             </button>
-            <button type="button" class="btn btn-primary" @click="saveCategory">
-              <!-- {{ sy.sysIdDanhMuc ? "Cập nhật" : "Lưu" }} -->Lưu
+            <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
+              <span class="material-symbols-outlined me-2">check</span>
+              <!-- {{ sy.sysIdDanhMuc ? "Cập nhật" : "Lưu" }} -->Gửi mail
             </button>
           </div>
         </div>
@@ -188,23 +167,28 @@ const filteredUsers = computed(() => {
   border-radius: 16px;
   border: 1px solid #dfdfdf;
 }
+
 @media screen and (max-width: 1200px) {
   .container {
     width: 100%;
   }
 }
+
 tr,
 td {
   border-bottom: 1px solid #dfdfdf;
 }
+
 td {
   font-size: 14px;
   cursor: pointer;
   vertical-align: middle;
 }
+
 .btn-danger {
   padding: 6px 6px;
 }
+
 label {
   font-weight: bold;
   font-size: 14px;

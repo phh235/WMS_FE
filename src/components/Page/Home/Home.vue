@@ -5,12 +5,8 @@
         <h3 class="fw-bold mb-3">Bảng điều khiển</h3>
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
           <div class="tab-container mb-3 mb-md-0">
-            <button
-              v-for="tab in tabs"
-              :key="tab"
-              @click="activeTab = tab"
-              :class="['tab-button', { active: activeTab === tab }]"
-            >
+            <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
+              :class="['tab-button', { active: activeTab === tab }]">
               {{ tab }}
             </button>
           </div>
@@ -51,23 +47,18 @@
             <h5 class="card-title fw-bold">Giao dịch gần đây</h5>
             <p class="card-text">5 giao dịch kho hàng gần nhất</p>
             <ul class="list-group list-group-flush flex-grow-1 overflow-auto">
-              <li
-                v-for="transaction in recentTransactions"
-                :key="transaction.id"
-                class="list-group-item d-flex justify-content-between align-items-center"
-              >
+              <li v-for="transaction in recentTransactions" :key="transaction.id"
+                class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
                   <strong>{{ transaction.type }}</strong>
                   <br />
                   <small class="text-muted">{{ transaction.item }}</small>
                 </div>
-                <span
-                  :class="[
-                    'badge',
-                    'rounded-pill',
-                    transaction.type === 'Nhận' ? 'bg-success' : 'bg-primary',
-                  ]"
-                >
+                <span :class="[
+                  'badge',
+                  'rounded-pill',
+                  transaction.type === 'Nhận' ? 'bg-success' : 'bg-primary',
+                ]">
                   {{ transaction.quantity }}
                 </span>
               </li>
@@ -271,7 +262,7 @@ onUnmounted(() => {
   flex-wrap: wrap;
 }
 
-.equal-height-row > [class*="col-"] {
+.equal-height-row>[class*="col-"] {
   display: flex;
   flex-direction: column;
 }
@@ -304,6 +295,7 @@ onUnmounted(() => {
     height: 300px;
   }
 }
+
 @media (max-width: 1200px) {
   .card-title {
     font-size: 24px;

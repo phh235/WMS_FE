@@ -2,26 +2,16 @@
   <div class="mb-3 d-flex justify-content-end align-items-center">
     <div class="form-group fs has-search d-flex align-items-center me-3">
       <span class="material-symbols-outlined form-control-feedback">search</span>
-      <input
-        type="search"
-        class="form-control"
-        placeholder="Tìm kiếm kho hàng"
-        v-model="searchQuery"
-      />
+      <input type="search" class="form-control" placeholder="Tìm kiếm kho hàng" v-model="searchQuery" />
     </div>
-    <button
-      type="button"
-      class="btn btn-primary d-flex align-items-center"
-      ref="addWarehouseBtn"
-      data-bs-toggle="modal"
-      data-bs-target="#warehouseModal"
-    >
+    <button type="button" class="btn btn-primary d-flex align-items-center" ref="addWarehouseBtn" data-bs-toggle="modal"
+      data-bs-target="#warehouseModal">
       <span class="material-symbols-outlined me-2"> add </span>
       Thêm kho hàng
     </button>
   </div>
   <div class="table-responsive">
-    <table class="table table-hover" @dblclick="handleRowClick">
+    <table class="table table-hover" @click="handleRowClick">
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
@@ -37,11 +27,7 @@
         <tr v-if="filteredWarehouses.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">Không tìm thấy kho hàng</td>
         </tr>
-        <tr
-          v-for="warehouse in filteredWarehouses"
-          :key="warehouse.sysIdKho"
-          :data-id="warehouse.sysIdKho"
-        >
+        <tr v-for="warehouse in filteredWarehouses" :key="warehouse.sysIdKho" :data-id="warehouse.sysIdKho">
           <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
           <td>{{ warehouse.maKho }}</td>
           <td>{{ warehouse.tenKho }}</td>
@@ -57,37 +43,16 @@
       </tbody>
     </table>
   </div>
-  <div class="pagination d-flex justify-content-center align-items-center mt-3">
-    <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
-      Trước
-    </button>
-    <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-    <button class="btn btn-primary ms-2" @click="nextPage" :disabled="currentPage === totalPages">
-      Sau
-    </button>
-  </div>
-  <div
-    class="modal fade"
-    id="warehouseModal"
-    tabindex="-1"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="warehouseModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedWarehouse.sysIdKho ? "Chỉnh sửa kho hàng" : "Thêm kho hàng" }}
           </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-            @click="btnResetForm_Click"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            @click="btnResetForm_Click"></button>
         </div>
         <div class="modal-body">
           <form>
@@ -105,23 +70,13 @@
               <div class="row">
                 <div class="col-6">
                   <label for="warehouseId" class="form-label fs fw-bold">Mã kho</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="warehouseId"
-                    aria-describedby="warehouseIdHelp"
-                    v-model="selectedWarehouse.maKho"
-                  />
+                  <input type="text" class="form-control" id="warehouseId" aria-describedby="warehouseIdHelp"
+                    v-model="selectedWarehouse.maKho" />
                 </div>
                 <div class="col-6">
                   <label for="tenKho" class="form-label fs fw-bold">Tên kho hàng</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="tenKho"
-                    aria-describedby="warehouseNameHelp"
-                    v-model="selectedWarehouse.tenKho"
-                  />
+                  <input type="text" class="form-control" id="tenKho" aria-describedby="warehouseNameHelp"
+                    v-model="selectedWarehouse.tenKho" />
                 </div>
               </div>
             </div>
@@ -129,52 +84,28 @@
               <div class="row">
                 <div class="col-6">
                   <label for="dienTich" class="form-label fs fw-bold">Diện tích</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="dienTich"
-                    aria-describedby="warehouseAdressHelp"
-                    v-model="selectedWarehouse.dienTich"
-                  />
+                  <input type="text" class="form-control" id="dienTich" aria-describedby="warehouseAdressHelp"
+                    v-model="selectedWarehouse.dienTich" />
                 </div>
                 <div class="col-6">
                   <label for="sysIdUser" class="form-label fs fw-bold">ID User</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="sysIdUser"
-                    aria-describedby="warehouseAdressHelp"
-                    v-model="selectedWarehouse.sysIdUser"
-                  />
+                  <input type="text" class="form-control" id="sysIdUser" aria-describedby="warehouseAdressHelp"
+                    v-model="selectedWarehouse.sysIdUser" />
                 </div>
               </div>
             </div>
             <div>
               <label for="warehouseDescription" class="form-label fs fw-bold">Mô Tả</label>
-              <textarea
-                class="form-control"
-                id="warehouseDescription"
-                rows="4"
-                aria-describedby="warehouseDescriptionHelp"
-                v-model="selectedWarehouse.moTa"
-              ></textarea>
+              <textarea class="form-control" id="warehouseDescription" rows="4"
+                aria-describedby="warehouseDescriptionHelp" v-model="selectedWarehouse.moTa"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button
-            type="button"
-            class="btn btn-logout"
-            data-bs-dismiss="modal"
-            @click="btnResetForm_Click"
-          >
+          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
             Hủy
           </button>
-          <button
-            type="button"
-            class="btn btn-primary d-flex align-items-center"
-            @click="saveWarehouse"
-          >
+          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouse">
             <span class="material-symbols-outlined me-2">check</span>
             {{ selectedWarehouse.sysIdKho ? "Cập nhật" : "Lưu" }}
           </button>
@@ -204,32 +135,12 @@ const selectedWarehouse = reactive({
 });
 // pagination
 const currentPage = ref(0);
-const totalPages = ref(1);
-const pageSize = ref(10);
+const totalPages = ref(10);
+const pageSize = ref(100);
 
 onMounted(() => {
   getWarehouses();
 });
-
-// Phân trang
-// const goToPage = (page) => {
-//   currentPage.value = page;
-//   getWarehouses();
-// };
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-    getWarehouses();
-  }
-};
-
-const prevPage = () => {
-  if (currentPage.value > 0) {
-    currentPage.value--;
-    getWarehouses();
-  }
-};
 
 // Lấy kho hàng sản phẩm
 const getWarehouses = async () => {
@@ -388,23 +299,14 @@ tr,
 td {
   border-bottom: 1px solid #dfdfdf;
 }
+
 td {
   font-size: 14px;
   cursor: pointer;
   vertical-align: middle;
 }
+
 .btn-danger {
   padding: 10px 10px;
-}
-.btn-close {
-  box-shadow: none;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.1s;
-  &:hover,
-  &:active {
-    background-color: var(--secondary-color);
-    padding: 8px;
-  }
 }
 </style>

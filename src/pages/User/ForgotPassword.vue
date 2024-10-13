@@ -1,9 +1,6 @@
 <template>
   <div class="d-flex align-items-center justify-content-center mb-5">
-    <router-link
-      to="/dang-nhap"
-      class="btn btn-secondary d-flex align-items-center justify-content-center"
-    >
+    <router-link to="/dang-nhap" class="btn btn-secondary d-flex align-items-center justify-content-center">
       <span class="material-symbols-outlined me-2"> chevron_left </span>
       <span class="fw-bold">Đăng nhập</span>
     </router-link>
@@ -66,6 +63,7 @@ const forgotPassword = async (event) => {
 .forgot {
   color: #171717;
   text-decoration: none;
+
   &:hover {
     border-bottom: 1.5px solid #171717;
   }

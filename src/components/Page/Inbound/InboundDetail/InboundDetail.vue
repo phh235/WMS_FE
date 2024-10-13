@@ -14,12 +14,8 @@
         <div class="row mb-3">
           <div class="col">
             <div class="btn-group" role="group">
-              <button
-                v-for="(label, key) in statusOptions"
-                :key="key"
-                :class="['btn', status === key ? 'btn-primary' : 'btn-secondary']"
-                @click="status = key"
-              >
+              <button v-for="(label, key) in statusOptions" :key="key"
+                :class="['btn', status === key ? 'btn-primary' : 'btn-secondary']" @click="status = key">
                 {{ label }}
               </button>
             </div>
@@ -76,51 +72,22 @@
         <div class="col">
           <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <button
-                class="nav-link active"
-                id="nav-home-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-home"
-                type="button"
-                role="tab"
-                aria-controls="nav-home"
-                aria-selected="true"
-              >
+              <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                type="button" role="tab" aria-controls="nav-home" aria-selected="true">
                 Hoạt động
               </button>
-              <button
-                class="nav-link"
-                id="nav-profile-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-profile"
-                type="button"
-                role="tab"
-                aria-controls="nav-profile"
-                aria-selected="false"
-              >
+              <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
                 Thông tin bổ sung
               </button>
-              <button
-                class="nav-link"
-                id="nav-contact-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#nav-contact"
-                type="button"
-                role="tab"
-                aria-controls="nav-contact"
-                aria-selected="false"
-              >
+              <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                 Ghi chú
               </button>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
-            <div
-              class="tab-pane fade show active"
-              id="nav-home"
-              role="tabpanel"
-              aria-labelledby="nav-home-tab"
-            >
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
               <table class="table">
                 <thead>
                   <tr>
@@ -134,65 +101,31 @@
                 <tbody>
                   <tr v-for="(product, index) in products" :key="index">
                     <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Thêm sản phẩm"
-                        v-model="product.name"
-                      />
+                      <input type="text" class="form-control" placeholder="Thêm sản phẩm" v-model="product.name" />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Mô tả"
-                        v-model="product.description"
-                      />
+                      <input type="text" class="form-control" placeholder="Mô tả" v-model="product.description" />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Ngày theo kế hoạch"
-                        v-model="product.plannedDate"
-                      />
+                      <input type="text" class="form-control" placeholder="Ngày theo kế hoạch"
+                        v-model="product.plannedDate" />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Hạn chót"
-                        v-model="product.deadline"
-                      />
+                      <input type="text" class="form-control" placeholder="Hạn chót" v-model="product.deadline" />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Nhu cầu"
-                        v-model="product.requirement"
-                      />
+                      <input type="text" class="form-control" placeholder="Nhu cầu" v-model="product.requirement" />
                     </td>
                   </tr>
                   <button class="btn btn-primary ms-2 mt-3" @click="addNewProduct">Thêm</button>
                   <!-- Button trigger modal -->
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                  >
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Launch demo modal
                   </button>
                 </tbody>
               </table>
             </div>
-            <div
-              class="tab-pane fade"
-              id="nav-profile"
-              role="tabpanel"
-              aria-labelledby="nav-profile-tab"
-            >
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
               <div class="mt-3">
                 <h6 class="fw-bold">Thông tin khác</h6>
                 <p>
@@ -202,22 +135,11 @@
               </div>
               <div class="mt-3"></div>
             </div>
-            <div
-              class="tab-pane fade"
-              id="nav-contact"
-              role="tabpanel"
-              aria-labelledby="nav-contact-tab"
-            >
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
               <div class="mt-3">
                 <h6 for="note" class="fw-bold">Ghi chú</h6>
-                <textarea
-                  class="form-control"
-                  id="note"
-                  rows="5"
-                  style="width: 100%"
-                  placeholder="Ghi chú"
-                  v-model="newProduct.note"
-                ></textarea>
+                <textarea class="form-control" id="note" rows="5" style="width: 100%" placeholder="Ghi chú"
+                  v-model="newProduct.note"></textarea>
               </div>
             </div>
           </div>
@@ -225,24 +147,15 @@
       </div>
     </div>
     <!-- Modal -->
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-xl">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body"><ProductForm /></div>
+          <div class="modal-body">
+            <ProductForm />
+          </div>
         </div>
       </div>
     </div>
@@ -325,26 +238,30 @@ const btnCancel = () => {
 
 <style scoped>
 .block {
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 8px;
-  border: 1px solid #dfdfdf;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
 }
+
 .nav-link {
   color: #000;
   border: 1px solid #d3d3d3;
   font-size: 14px;
 }
+
 .nav-link:hover {
   background-color: #d3f8e4;
 }
+
 .nav-link.active {
   color: #fff;
   background-color: var(--primary-color);
 }
+
 .form-label {
   font-weight: bold;
 }
+
 .btn-danger {
   padding: 8px 10px;
   font-size: 14px;

@@ -3,7 +3,7 @@ import BlankLayout from "@layouts/BlankLayout.vue";
 import MenuItems from "@components/Header/MenuBar/MenuItems.js";
 import Login from "@pages/User/Login.vue";
 import { useAuthStore } from "@/store/auth";
-import { showToastWarning } from "@components/Toast/utils/toastHandle.js";
+import { showToastWarning, showToastLoading } from "@components/Toast/utils/toastHandle.js";
 
 export const routes = [
   {
@@ -63,25 +63,49 @@ export const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: routes,
+});
+
+// Chặn quay lại trang của trình duyệt
+router.afterEach((to) => {
+  if (to.path === "/dang-nhap") {
+    // Đẩy thêm một trạng thái mới để chặn việc quay lại
+    window.history.pushState(null, "", "/dang-nhap");
+  }
 });
 
 router.beforeEach((to, from, next) => {
-  // Update title when render component
+  const authStore = useAuthStore();
+
+  // Cập nhật title khi thay đổi component dựa trên headerTitle được cấu hình trong router(index.js)
   const title = to.meta.headerTitle || "Default Title";
   document.title = title;
 
-  const authStore = useAuthStore();
-
+  // Nếu trang yêu cầu xác thực
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!authStore.isLoggedIn) {
-      next({ name: "dang-nhap" });
-      showToastWarning("Vui lòng đăng nhập");
-    } else {
-      next();
+    const isAuthenticated = authStore.checkAuth(); // Gọi hàm kiểm tra xác thực
+
+    // Nếu không xác thực (token đã hết hạn hoặc không có token)
+    if (!isAuthenticated) {
+      // Kiểm tra xem token có tồn tại không
+      const token = localStorage.getItem("token");
+      if (token) {
+        // Nếu token tồn tại nhưng không hợp lệ, hiển thị thông báo "Phiên đăng nhập đã hết hạn"
+        showToastLoading("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
+      } else {
+        // Lưu URL hiện tại mà người dùng muốn truy cập
+        localStorage.setItem("redirectPath", to.fullPath);
+        // Nếu không có token, hiển thị thông báo "Vui lòng đăng nhập"
+        showToastWarning("Vui lòng đăng nhập để sử dụng!");
+        return next({ name: "dang-nhap" }); // Chuyển hướng đến trang đăng nhập
+      }
+      return next({ name: "dang-nhap" }); // Chuyển hướng đến trang đăng nhập
     }
+
+    // Nếu đã xác thực
+    next(); // Chuyển hướng bình thường
   } else {
-    next();
+    next(); // Chuyển hướng bình thường
   }
 });
 

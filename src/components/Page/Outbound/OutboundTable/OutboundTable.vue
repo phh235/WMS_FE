@@ -2,12 +2,7 @@
   <div class="sub-content mb-3 d-flex">
     <div class="form-group fs has-search d-flex align-items-center me-3">
       <span class="material-symbols-outlined form-control-feedback">search</span>
-      <input
-        type="search"
-        class="form-control"
-        placeholder="Tìm theo mã tham chiếu"
-        v-model="searchQuery"
-      />
+      <input type="search" class="form-control" placeholder="Tìm theo mã tham chiếu" v-model="searchQuery" />
     </div>
     <select class="form-select fs" aria-label="Default select example">
       <option value="" selected>Sắp xếp</option>
@@ -72,19 +67,24 @@ const filteredOutbounds = computed(() => {
 .table {
   font-size: 14px;
 }
+
 .form-select {
   width: 200px;
 }
+
 .form-group {
   width: 230px;
 }
+
 .fs {
   font-size: 14px;
 }
+
 input,
 select {
   font-size: 14px;
   border: 1px solid var(--secondary-color);
+
   &:focus,
   &:active {
     border: 1px solid var(--secondary-color);

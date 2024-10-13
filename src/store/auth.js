@@ -18,7 +18,13 @@ export const useAuthStore = defineStore("auth", {
         if (typeof response.data.accessToken) {
           this.setToken(response.data.accessToken);
 
-          const redirectPath = "/inventory";
+          // Kiểm tra nếu có đường dẫn được lưu lại trước đó
+          const redirectPath = localStorage.getItem("redirectPath") || "/inventory";
+
+          // Xóa đường dẫn đã lưu sau khi chuyển hướng
+          localStorage.removeItem("redirectPath");
+
+          showToastSuccess("Đăng nhập thành công");
           router.push(redirectPath);
         }
         return true;
@@ -26,7 +32,6 @@ export const useAuthStore = defineStore("auth", {
         showToastError("Đăng nhập thất bại");
       }
     },
-
     setToken(token) {
       this.token = token;
       localStorage.setItem("token", token);
@@ -44,8 +49,8 @@ export const useAuthStore = defineStore("auth", {
 
         // Kiểm tra xem token đã hết hạn chưa
         if (tokenDecode.exp && tokenDecode.exp < currentTime) {
-          showToastError("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
-          this.logout(); // Đăng xuất nếu token đã hết hạn
+          // showToastError("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
+          // this.logout(); // Đăng xuất nếu token đã hết hạn
           return false;
         }
 
@@ -58,6 +63,12 @@ export const useAuthStore = defineStore("auth", {
     logout() {
       this.token = null;
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("warehouses");
+      localStorage.removeItem("categories");
+      localStorage.removeItem("products");
+      // Xóa lịch sử trình duyệt để không thể quay lại trang trước khi đăng xuất
+      window.history.replaceState(null, "", "/dang-nhap");
       // delete axios.defaults.headers.common["Authorization"];
       showToastSuccess("Đã đăng xuất");
       return router.push("/dang-nhap");

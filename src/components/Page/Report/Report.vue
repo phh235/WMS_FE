@@ -137,7 +137,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", () => {});
+  window.removeEventListener("resize", () => { });
 });
 </script>
 
@@ -147,7 +147,9 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 700px;
 }
+
 @media (max-width: 768px) {
+
   #pie-chart,
   #doghnut-chart {
     height: 200px;
