@@ -1,36 +1,24 @@
 <template>
-  <div class="container">
-    <div class="d-flex mb-3 justify-content-end">
-      <div class="form-group fs has-search d-flex align-items-center me-3">
-        <span class="material-symbols-outlined form-control-feedback">search</span>
-        <input type="search" class="form-control" placeholder="Tìm kiếm sản phẩm" v-model="searchQuery" />
-      </div>
-      <select class="form-select fs" aria-label="Default select example" v-model="sortOption" @change="updateUrl">
-        <option value="" selected>Tất cả</option>
-        <option value="name-asc">A-Z</option>
-        <option value="name-desc">Z-A</option>
-        <option value="quantity-asc">Số lượng tăng dần</option>
-        <option value="quantity-desc">Số lượng giảm dần</option>
-      </select>
-    </div>
-
+  <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-md-3 mb-3">
         <div class="category-selector box-shadow">
           <select class="form-select w-100 d-md-none mb-3" v-model="selectedCategory">
-            <option value="" selected>Tất cả danh mục</option>
+            <option value="" selected>
+              {{ $t('Product.table.categories.title') }}
+            </option>
             <option v-for="category in categoryStore.categories" :key="category.id" :value="category.sysIdDanhMuc">
               {{ category.tenDanhMuc }}
             </option>
           </select>
 
           <ul class="list-group d-none d-md-block">
-            <li class="list-group-item border-0 d-flex align-items-center" @click="selectCategory('')"
+            <li class="list-group-item d-flex align-items-center" @click="selectCategory('')"
               :class="{ active: selectedCategory === '' }">
-              Tất cả danh mục
+              {{ $t('Product.table.categories.title') }}
             </li>
             <li v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
-              class="list-group-item border-0 d-flex align-items-center" @click="selectCategory(category.sysIdDanhMuc)"
+              class="list-group-item d-flex align-items-center" @click="selectCategory(category.sysIdDanhMuc)"
               :class="{ active: selectedCategory === category.sysIdDanhMuc }">
               {{ category.tenDanhMuc }}
             </li>
@@ -38,21 +26,48 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-9">
-        <div class="table-responsive box-shadow">
+      <div class="container col-12 col-md-9 box-shadow p-4">
+        <div class="d-flex mb-3 justify-content-end">
+          <div class="form-group fs has-search d-flex align-items-center me-2">
+            <span class="material-symbols-outlined form-control-feedback">search</span>
+            <input type="search" class="form-control" :placeholder="$t('Product.table.search_input')"
+              v-model="searchQuery" />
+          </div>
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByQuantityAsc">
+            <span class="material-symbols-outlined">swap_vert</span>
+          </button>
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByNameAsc">
+            <span class="material-symbols-outlined">sort_by_alpha</span>
+          </button>
+          <router-link to="/inventory/san-pham/them-moi" class="btn btn-primary d-flex align-items-center">
+            <span class="material-symbols-outlined me-2"> add </span>
+            {{ $t('Product.table.btn_save') }}
+          </router-link>
+        </div>
+        <div class="table-responsive">
           <table class="table table-hover">
             <thead>
               <tr>
-                <th>STT</th>
-                <th>Sản phẩm</th>
-                <th>Mô tả</th>
-                <th>Số lượng hiện có</th>
+                <th>
+                  {{ $t('Product.table.no') }}
+                </th>
+                <th>
+                  {{ $t('Product.table.product_name') }}
+                </th>
+                <th>
+                  {{ $t('Product.table.desc') }}
+                </th>
+                <th>
+                  {{ $t('Product.table.available_quantity') }}
+                </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-if="filteredProducts.length === 0" style="text-align: center; font-style: italic">
-                <td colspan="10">Không tìm thấy sản phẩm</td>
+                <td colspan="10">
+                  {{ $t('Product.table.not_available') }}
+                </td>
               </tr>
               <tr v-for="(product, index) in filteredProducts" :key="product.sysIdSanPham"
                 v-show="selectedCategory === '' || product.sysIdDanhMuc === selectedCategory"
@@ -60,7 +75,7 @@
                 <td>{{ index + 1 }}</td>
                 <td>
                   <div class="d-flex align-items-center">
-                    <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="70" height="70"
+                    <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="50" loading="lazy"
                       style="object-fit: cover; object-position: center" />
                     <div>
                       <div class="fw-bold">{{ product.tenSanPham }}</div>
@@ -81,15 +96,16 @@
               </tr>
             </tbody>
           </table>
-          <div class="pagination d-flex justify-content-center align-items-center mt-3">
-            <button class="btn btn-primary btn-sm me-2" @click="prevPage" :disabled="currentPage === 0">
-              Trước
-            </button>
-            <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-            <button class="btn btn-primary btn-sm ms-2" @click="nextPage" :disabled="currentPage === totalPages">
-              Sau
-            </button>
-          </div>
+        </div>
+        <div class="pagination d-flex justify-content-center align-items-center mt-3">
+          <button class="btn btn-primary btn-sm me-2" @click="prevPage" :disabled="currentPage === 0">
+            {{ $t('Product.table.pagination.prev') }}
+          </button>
+          <span class="mx-2"> {{ $t('Product.table.pagination.page') }}
+            {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
+          <button class="btn btn-primary btn-sm ms-2" @click="nextPage" :disabled="currentPage === totalPages">
+            {{ $t('Product.table.pagination.next') }}
+          </button>
         </div>
       </div>
     </div>
@@ -168,6 +184,29 @@ const filteredProducts = computed(() => {
   return filtered;
 });
 
+
+// Sắp xếp tăng dần, nếu ấn lần nữa thì đổi thành sắp xếp giảm dần, dùng if else kiểm tra 2 điều kiện
+const sortByNameAsc = () => {
+  if (sortOption.value === "name-asc") {
+    sortOption.value = "name-desc";
+  } else {
+    sortOption.value = "name-asc";
+  }
+  updateUrl();
+};
+
+// Sắp xếp tăng dần, nếu ấn lần nữa thì đổi thành sắp xếp giảm dần, dùng if else kiểm tra 2 điều kiện
+const sortByQuantityAsc = () => {
+  if (sortOption.value === "quantity-asc") {
+    sortOption.value = "quantity-desc";
+  } else {
+    sortOption.value = "quantity-asc";
+  }
+  updateUrl();
+};
+
+
+
 const updateUrl = () => {
   const baseUrl = window.location.pathname;
   const query = [];
@@ -234,6 +273,7 @@ function nextPage() {
 
 <style scoped>
 .container-fluid {
+  max-width: 1600px;
   padding: 15px;
 }
 
@@ -266,21 +306,31 @@ select:active {
 }
 
 .list-group-item {
+  border: none;
   margin: 5px;
   font-size: 14px;
-  padding: 10px;
+  padding: 12px;
+  transition: all .1s;
+  border-radius: calc(.75rem - 2px);
 }
 
 .list-group-item:hover {
   background-color: var(--secondary-color);
-  border-radius: 10px;
+  border-radius: calc(.75rem - 2px);
   cursor: pointer;
 }
 
 .list-group-item.active {
-  background-color: var(--secondary-color-hover);
-  border-radius: 10px;
-  color: #000;
+  background-color: var(--primary-color);
+  border-radius: calc(.75rem - 2px);
+  color: #fff;
+  margin: 5px;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
 }
 
 .category-selector {
@@ -290,7 +340,7 @@ select:active {
   border-radius: 8px;
 }
 
-.table-responsive {
+.container {
   background-color: #fff;
   border: 1px solid #dfdfdf;
   padding: 10px;

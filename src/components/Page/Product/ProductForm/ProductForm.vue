@@ -6,11 +6,11 @@
           <div class="image-upload-container">
             <img v-if="imagePreview" :src="imagePreview" alt="product img front" class="product-image" />
             <div v-else class="placeholder-image">
-              <span>Chưa có ảnh</span>
+              <span>{{ $tc('Product.form.no_image') }}</span>
             </div>
             <input type="file" @change="onFileChange" class="file-input" id="imageUpload" />
             <label for="imageUpload" class="upload-button btn btn-primary d-flex align-items-center fw-medium"><span
-                class="material-symbols-outlined me-2"> upload </span>Chọn ảnh
+                class="material-symbols-outlined me-2"> upload </span>{{ $tc('Product.form.btn_upload') }}
             </label>
           </div>
         </div>
@@ -24,17 +24,17 @@
                 <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
               </div>
               <div class="col-12 col-md-4 mb-3">
-                <label for="tenSanPham">Tên sản phẩm</label>
+                <label for="tenSanPham">{{ $tc('Product.form.product_name') }}</label>
                 <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
               </div>
               <div class="col-12 col-md-4 mb-3">
-                <label for="soLuongHienCo">Số lượng hiện có</label>
+                <label for="soLuongHienCo">{{ $tc('Product.form.available_quantity') }}</label>
                 <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
               </div>
               <div class="col-12 col-md-4">
-                <label for="danhMuc">Danh mục</label>
+                <label for="danhMuc">{{ $tc('Product.form.category.title') }}</label>
                 <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
-                  <option value="" selected disabled>Chọn danh mục</option>
+                  <option value="" selected disabled>{{ $tc('Product.form.category.option') }}</option>
                   <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
                     :value="category.sysIdDanhMuc">
                     {{ category.tenDanhMuc }}
@@ -44,12 +44,12 @@
             </div>
           </div>
           <div class="mb-0">
-            <label for="moTa">Mô tả</label>
+            <label for="moTa">{{ $tc('Product.form.desc') }}</label>
             <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
           </div>
           <div class="d-flex justify-content-end mt-3">
             <button class="btn btn-primary ms-auto d-flex align-items-center" @click="saveProduct">
-              <span class="material-symbols-outlined me-2"> check </span>Lưu
+              <span class="material-symbols-outlined me-2"> check </span>{{ $tc('Product.form.btn_save') }}
             </button>
           </div>
         </div>

@@ -1,0 +1,307 @@
+{
+  "Navbar": {
+    "menu_item": {
+      "home": "Trang chủ",
+      "pr": "Mua hàng",
+      "po": "Đặt hàng",
+      "activity": {
+        "label": "Hoạt động",
+        "sub_items": {
+          "small_1": "Điều chuyển",
+          "small_2": "Điều chỉnh",
+          "inbound": "Nhập kho",
+          "outbound": "Xuất kho",
+          "physical_warehouses": "Tồn kho vật lý"
+        }
+      },
+      "product": "Sản phẩm",
+      "account_management": "Quản lý tài khoản",
+      "warehouses_management": {
+        "label": "Quản lý kho",
+        "small": "Kho theo khu vực",
+        "sub_items": {
+          "normal": "Kho thường",
+          "cold": "Kho lạnh"
+        }
+      },
+      "report": "Báo cáo",
+      "config": {
+        "label": "Cấu hình",
+        "sub_items": {
+          "small_1": "Quản lý kho hàng",
+          "small_2": "Sản phẩm",
+          "warehouses": "Kho hàng",
+          "zones": "Khu vực",
+          "categories": "Danh mục"
+        }
+      },
+      "account": {
+        "sub_items": {
+          "small_1": "Tài khoản",
+          "logout": "Đăng xuất"
+        }
+      }
+    }
+  },
+  "Home": {
+    "headerTitle": "Tổng quan kho",
+    "dashboard": {
+      "title": "Bảng điều khiển",
+      "btn_download": "Tải xuống báo cáo",
+      "chart_title": "Tổng quan biến động kho hàng",
+      "recent_transaction": {
+        "label": "Giao dịch gần đây",
+        "small": "5 giao dịch gần đây"
+      },
+      "card": {},
+      "tabs": {
+        "all": "Tất cả",
+        "imported": "Đã nhập",
+        "exported": "Đã xuất"
+      }
+    }
+  },
+  "Swal": {
+    "login": {
+      "toast": {
+        "error": {
+          "title": "Đăng nhập thất bại",
+          "username_text": "Tên đăng nhập không được để trống",
+          "password_text": "Mật khẩu không được để trống",
+          "login_fail": "Đăng nhập thất bại"
+        },
+        "success": {
+          "title": "Đăng nhập thành công"
+        },
+        "info": {}
+      },
+      "swal": {
+        "error": {},
+        "success": {},
+        "info": {}
+      }
+    },
+    "logout": {
+      "toast": {
+        "error": {},
+        "success": {
+          "title": "Đăng xuất thành công"
+        },
+        "info": {}
+      },
+      "swal": {
+        "error": {},
+        "success": {},
+        "info": {}
+      }
+    },
+    "forgot": {
+      "toast": {
+        "error": {
+          "title": "Gửi email thất bại",
+          "text": "Email không được để trống"
+        },
+        "success": {
+          "title": "Gửi email thành công",
+          "text": "Vui lòng kiểm tra email để khôi phục mật khẩu"
+        },
+        "info": {
+          "title": "Đang chuyển hướng về trang đăng nhập",
+          "text": "Vui lòng đợi..."
+        }
+      }
+    }
+  },
+  "Login_forgot_form": {
+    "logo_title": "Quản lý kho hàng - WMS",
+    "login": {
+      "title": "Chào mừng bạn trở lại",
+      "small": "Vui lòng đăng nhập để tiếp tục",
+      "forgot_text": "Quên mật khẩu",
+      "btn_login": "Đăng nhập",
+      "label_username": "Tên đăng nhập",
+      "label_password": "Mật khẩu"
+    },
+    "forgot": {
+      "title": "Quên mật khẩu",
+      "small": "Vui lòng nhập email",
+      "btn_confirm": "Xác nhận",
+      "btn_login": "Quay lại đăng nhập"
+    }
+  },
+  "Purchase_request": {
+    "tabs": {
+      "all": "Tất cả",
+      "pending": "Đang xử lý",
+      "confirmed": "Đã xác nhận",
+      "canceled": "Đã hủy"
+    },
+    "search_input": {
+      "search_id": "Tìm theo mã yêu cầu",
+      "search_name": "Tìm theo người yêu cầu"
+    },
+    "btn_create": "Tạo yêu cầu mua hàng",
+    "table": {
+      "id": "Mã yêu cầu",
+      "name": "Người yêu cầu",
+      "status": "Trạng thái",
+      "date": "Ngày yêu cầu",
+      "detail": {
+        "title": "Chi tiết",
+        "order_detail": "Chi tiết đơn hàng: ",
+        "customer": "Khách hàng",
+        "product_detail": {
+          "title": "Chi tiết sản phẩm",
+          "product_name": "Tên sản phẩm",
+          "quantity": "Số lượng",
+          "price": "Giá",
+          "total": "Tổng tiền",
+          "total_price": "Tổng giá trị đơn hàng"
+        }
+      }
+    },
+    "form": {}
+  },
+  "Account_info": {
+    "title_info": "Thông tin cơ bản",
+    "title_password": "Đổi mật khẩu",
+    "label": {
+      "fullname": "Họ tên",
+      "username": "Tên người dùng",
+      "phone": "Số điện thoại",
+      "password": {
+        "old": "Mật khẩu cũ",
+        "new": "Mật khẩu mới",
+        "confirm": "Xác nhận mật khẩu mới"
+      }
+    },
+    "btn_update": "Cập nhật"
+  },
+  "Account_management": {
+    "search_input": "Tìm kiếm tài khoản...",
+    "btn_account": "Cấp tài khoản",
+    "no": "STT",
+    "username": "Tên người dùng",
+    "phone": "Số điện thoại",
+    "role": "Vai trò"
+  },
+  "Product": {
+    "table": {
+      "search_input": "Tìm kiếm sản phẩm",
+      "btn_save": "Thêm sản phẩm",
+      "no": "STT",
+      "product_name": "Sản phẩm",
+      "desc": "Mô tả",
+      "available_quantity": "Số lượng hiện có",
+      "not_available": "Không tìm thấy sản phẩm",
+      "categories": {
+        "title": "Tất cả danh mục"
+      },
+      "pagination": {
+        "next": "Sau",
+        "prev": "Trước",
+        "page": "Trang"
+      }
+    },
+    "form": {
+      "no_image": "Chưa có ảnh",
+      "btn_upload": "Chọn ảnh",
+      "btn_save": "Lưu",
+      "product_name": "Tên sản phẩm",
+      "available_quantity": "Số lượng hiện có",
+      "category": "Danh mục",
+      "desc": "Mô tả"
+    }
+  },
+  "Config_settings": {
+    "btn_action": "Hành động",
+    "btn_save": "Lưu",
+    "btn_update": "Cập nhật",
+    "btn_cancel": "Hủy",
+    "no": "STT",
+    "warehouses": {
+      "title_save": "Thêm kho hàng",
+      "title_edit": "Chỉnh sửa kho hàng",
+      "search_input": "Tìm kiếm kho hàng",
+      "btn_create": "Thêm kho hàng",
+      "warehouse_id": "Mã kho hàng",
+      "warehouse_name": "Tên kho hàng",
+      "warehouse_area": "Diện tích",
+      "warehouse_desc": "Mô tả",
+      "manager": "Người phụ trách",
+      "swal": {
+        "delete": {
+          "success": "Xóa kho hàng thành công",
+          "failed": "Xóa kho hàng thất bại",
+          "title": "Xóa kho hàng?",
+          "text": "Bạn có chắc chắn muốn xóa kho hàng này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "warehouse_id": "Mã kho hàng không được để trống!",
+          "warehouse_name": "Tên kho hàng không được để trống!",
+          "warehouse_area": "Diện tích hàng không được để trống!",
+          "manager": "Vui lòng chọn người dùng!"
+        }
+      }
+    },
+    "zones": {
+      "title_save": "Thêm khu vực",
+      "title_edit": "Chỉnh sửa khu vực",
+      "search_input": "Tìm kiếm khu vực...",
+      "zone_id": "Mã khu vực",
+      "zone_name": "Tên khu vực",
+      "zone_desc": "Mô tả",
+      "warehouse_id": "Mã kho",
+      "choose_warehouse": "Chọn kho",
+      "swal": {
+        "delete": {
+          "success": "Xóa khu vực thành công",
+          "failed": "Xóa khu vực thất bại",
+          "title": "Xóa khu vực?",
+          "text": "Bạn có chắc chắn muốn xóa khu vực này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "zone_id": "Mã khu vực không được để trống!",
+          "zone_name": "Tên khu vực không được để trống!",
+          "zone_desc": "Mô tả khu vực không được để trống!",
+          "warehouse_id": "Vui lòng chọn kho!"
+        }
+      }
+    },
+    "categories": {
+      "title_save": "Thêm danh mục",
+      "title_edit": "Chỉnh sửa danh mục",
+      "search_input": "Tìm kiếm danh mục...",
+      "category_name": "Tên danh mục",
+      "category_desc": "Mô tả",
+      "warehouse_id": "Kho",
+      "choose_warehouse": "Chọn kho",
+      "tabs": {
+        "all": "Tất cả",
+        "normal": "Kho thường",
+        "cold": "Kho lạnh"
+      },
+      "swal": {
+        "delete": {
+          "success": "Xóa danh mục thành công",
+          "failed": "Xóa danh mục thất bại",
+          "title": "Xóa danh mục?",
+          "text": "Bạn có chắc chắn muốn xóa danh mục này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "category_name": "Tên danh mục không được để trống!",
+          "warehouse_id": "Vui lòng chọn kho!"
+        }
+      }
+    }
+  }
+}

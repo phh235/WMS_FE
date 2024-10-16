@@ -10,7 +10,7 @@
       </button>
     </div>
     <div class="row">
-      <div class="col-12 col-md-4">
+      <!-- <div class="col-12 col-md-4">
         <div class="order-card box-shadow mt-3 p-3">
           <div class="order-header d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-center fw-bold">
@@ -19,8 +19,8 @@
           </div>
           <div class="order-body"></div>
         </div>
-      </div>
-      <div class="col-12 col-md-8">
+      </div> -->
+      <div class="col-12">
         <div class="order-card box-shadow mt-3 p-3" v-if="filteredOrders.length === 0">
           <div class="d-flex align-content-center justify-content-center">
             Không tìm thấy đơn đặt hàng
@@ -207,6 +207,10 @@ const orders = ref([
 </script>
 
 <style scoped>
+.container {
+  max-width: 1450px;
+}
+
 .order-card {
   background-color: #fff;
   overflow: hidden;
@@ -272,6 +276,18 @@ const orders = ref([
   background-color: var(--primary-color) !important;
 }
 
+.bg-danger {
+  background-color: #e74c3c !important;
+}
+
+.bg-info {
+  background-color: #3498db !important;
+}
+
+.bg-warning {
+  background-color: #f1c40f !important;
+}
+
 .text-primary {
   color: var(--primary-color) !important;
 }
@@ -292,12 +308,6 @@ const orders = ref([
 
   .progress-steps .step {
     font-size: 1rem;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .container {
-    max-width: 80%;
   }
 }
 </style>

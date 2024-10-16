@@ -1,0 +1,310 @@
+{
+  "Navbar": {
+    "menu_item": {
+      "home": "Dashboard",
+      "pr": "Requisition",
+      "po": "Orders",
+      "activity": {
+        "label": "Activities",
+        "sub_items": {
+          "small_1": "Transfer",
+          "small_2": "Configure",
+          "inbound": "Inbound",
+          "outbound": "Outbound",
+          "physical_warehouses": "Physical Inventory"
+        }
+      },
+      "product": "Products",
+      "account_management": "Account Management",
+      "warehouses_management": {
+        "label": "Warehouses Management",
+        "small": "Warehouse by Area",
+        "sub_items": {
+          "normal": "Normal Warehouse",
+          "cold": "Cold Warehouse"
+        }
+      },
+      "report": "Reports",
+      "config": {
+        "label": "Config",
+        "sub_items": {
+          "small_1": "Inventory",
+          "small_2": "Product",
+          "warehouses": "Warehouses",
+          "zones": "Zones",
+          "categories": "Categories"
+        }
+      },
+      "account": {
+        "sub_items": {
+          "small_1": "Account",
+          "logout": "Log out"
+        }
+      }
+    }
+  },
+  "Home": {
+    "headerTitle": "Dashboard",
+    "dashboard": {
+      "title": "Dashboard",
+      "btn_download": "Download report",
+      "chart_title": "Overview",
+      "recent_transaction": {
+        "label": "Recent transactions",
+        "small": "Last 5 warehouse transactions"
+      },
+      "card": {},
+      "tabs": {
+        "all": "All",
+        "imported": "Imported",
+        "exported": "Exported"
+      }
+    }
+  },
+  "Swal": {
+    "login": {
+      "toast": {
+        "error": {
+          "title": "Login failed",
+          "username_text": "Username field cannot be empty",
+          "password_text": "Password field cannot be empty",
+          "login_fail": "Login failed"
+        },
+        "success": {
+          "title": "Login successfully"
+        },
+        "info": {}
+      },
+      "swal": {
+        "error": {},
+        "success": {},
+        "info": {}
+      }
+    },
+    "logout": {
+      "toast": {
+        "error": {},
+        "success": {
+          "title": "Logout successfully"
+        },
+        "info": {}
+      },
+      "swal": {
+        "error": {},
+        "success": {},
+        "info": {}
+      }
+    },
+    "forgot": {
+      "toast": {
+        "error": {
+          "title": "Email failed to send",
+          "text": "Email field cannot be empty"
+        },
+        "success": {
+          "title": "Email send successfully",
+          "text": "Please check your email to recover your password."
+        },
+        "info": {
+          "title": "Redirecting to login page",
+          "text": "Please wait..."
+        }
+      }
+    }
+  },
+  "Login_forgot_form": {
+    "logo_title": "Warehouse Management System",
+    "login": {
+      "title": "Welcome back",
+      "small": "Please sign in to continue",
+      "forgot_text": "Forgot password",
+      "btn_login": "Sign In",
+      "label_username": "Username",
+      "label_password": "Password"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "small": "Please enter email",
+      "btn_confirm": "Send email",
+      "btn_login": "Back to log in"
+    }
+  },
+  "Purchase_request": {
+    "tabs": {
+      "all": "All",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "canceled": "Canceled"
+    },
+    "search_input": {
+      "search_id": "Find by request Id",
+      "search_name": "Find by requestor"
+    },
+    "btn_create": "Create purchase request",
+    "table": {
+      "id": "Request Id",
+      "name": "Requestor",
+      "status": "Status",
+      "date": "Date request",
+      "detail": {
+        "title": "Detail",
+        "order_detail": "Order detail: ",
+        "customer": "Customer",
+        "product_detail": {
+          "title": "Product detail",
+          "product_name": "Product name",
+          "quantity": "Quantity",
+          "price": "Price",
+          "total": "Total",
+          "total_price": "Total order price",
+          "form": {}
+        }
+      }
+    }
+  },
+  "Account_info": {
+    "title_info": "Account Information",
+    "title_password": "Change Password",
+    "label": {
+      "fullname": "Full name",
+      "username": "Username",
+      "phone": "Phone number",
+      "password": {
+        "old": "Old password",
+        "new": "New password",
+        "confirm": "Confirm new password"
+      }
+    },
+    "btn_update": "Update"
+  },
+  "Account_management": {
+    "search_input": "Search account...",
+    "btn_account": "Create an account",
+    "no": "No.",
+    "username": "Username",
+    "phone": "Phone number",
+    "role": "Role"
+  },
+  "Product": {
+    "table": {
+      "search_input": "Type to search...",
+      "btn_save": "Add new product",
+      "no": "No.",
+      "product_name": "Product",
+      "desc": "Description",
+      "available_quantity": "Available quantity",
+      "not_available": "Product not found",
+      "categories": {
+        "title": "All categories"
+      },
+      "pagination": {
+        "next": "Next",
+        "prev": "Prev",
+        "page": "Page"
+      }
+    },
+    "form": {
+      "no_image": "No image",
+      "btn_upload": "Upload image",
+      "btn_save": "Save",
+      "product_name": "Product name",
+      "available_quantity": "Available quantity",
+      "category": {
+        "title": "Category",
+        "option": "Choose category"
+      },
+      "desc": "Description"
+    }
+  },
+  "Config_settings": {
+    "btn_action": "Actions",
+    "btn_save": "Save",
+    "btn_update": "Update",
+    "btn_cancel": "Cancel",
+    "no": "No.",
+    "warehouses": {
+      "title_save": "Add warehouse",
+      "title_edit": "Edit warehouse",
+      "search_input": "Search warehouse...",
+      "btn_create": "Add warehouse",
+      "warehouse_id": "Warehouse Id",
+      "warehouse_name": "Warehouse name",
+      "warehouse_area": "Area",
+      "warehouse_desc": "Description",
+      "manager": "Manager",
+      "swal": {
+        "delete": {
+          "success": "Warehouse deleted successfully",
+          "failed": "Warehouse deleted failed",
+          "title": "Delete warehouse?",
+          "text": "Are you sure you want to delete this warehouse?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        },
+        "success": "Save successfully",
+        "validate": {
+          "warehouse_id": "Warehouse code field cannot be empty",
+          "warehouse_name": "Warehouse name field cannot be empty",
+          "warehouse_area": "Warehouse area field cannot be empty",
+          "manager": "Please choose a manager"
+        }
+      }
+    },
+    "zones": {
+      "title_save": "Add zone",
+      "title_edit": "Edit zone",
+      "search_input": "Search zone...",
+      "zone_id": "Zoner Id",
+      "zone_name": "Zone name",
+      "zone_desc": "Description",
+      "warehouse_id": "Warehouse Id",
+      "choose_warehouse": "Choose warehouse",
+      "swal": {
+        "delete": {
+          "success": "Delete zone successfully",
+          "failed": "Delete zone failed",
+          "title": "Delete zone?",
+          "text": "Are you sure you want to delete this zone?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        },
+        "success": "Saved successfully",
+        "validate": {
+          "zone_id": "Zone code cannot be empty!",
+          "zone_name": "Zone name cannot be empty!",
+          "zone_desc": "Zone description cannot be empty!",
+          "warehouse_id": "Please choose a warehouse!"
+        }
+      }
+    },
+    "categories": {
+      "title_save": "Add category",
+      "title_edit": "Edit category",
+      "search_input": "Search category...",
+      "category_name": "Category name",
+      "category_desc": "Description",
+      "warehouse_id": "Warehouse type",
+      "choose_warehouse": "Please choose warehouse",
+      "tabs": {
+        "all": "All",
+        "normal": "Normal warehouse",
+        "cold": "Cold warehouse"
+      },
+      "swal": {
+        "delete": {
+          "success": "Category deleted successfully",
+          "failed": "Category deleted failed",
+          "title": "Delete category?",
+          "text": "Are you sure you want to delete this category?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        },
+        "success": "Saved successfully",
+        "validate": {
+          "category_name": "Category name cannot be empty!",
+          "warehouse_id": "Please choose a warehouse!"
+        }
+      }
+    }
+  }
+}

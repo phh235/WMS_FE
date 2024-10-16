@@ -2,19 +2,30 @@
   <div class="container">
     <div class="block p-4 box-shadow">
       <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
-        <div class="tab-container justify-content-start mb-3 mb-md-0">
+        <div class="tab-container justify-content-start mb-2 mb-md-0">
           <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
             :class="['tab-button', { active: activeTab === tab }]">
             {{ tab }}
           </button>
         </div>
         <div class="d-flex flex-column flex-md-row align-items-center">
-          <div class="form-group fs has-search d-flex align-items-center me-3 mb-3 mb-md-0">
+          <div class="form-group fs has-search d-flex align-items-center me-2 mb-2 mb-md-0">
             <span class="material-symbols-outlined form-control-feedback">search</span>
-            <input type="search" class="form-control" placeholder="Tìm theo mã/người yêu cầu" v-model="searchQuery" />
+            <input type="search" class="form-control" :placeholder="$t('Purchase_request.search_input.search_id')"
+              v-model="searchQuery" />
           </div>
+          <div class="form-group fs has-search d-flex align-items-center me-2 mb-2 mb-md-0">
+            <span class="material-symbols-outlined form-control-feedback">search</span>
+            <input type="search" class="form-control" :placeholder="$t('Purchase_request.search_input.search_name')"
+              v-model="searchQueryByPeople" />
+          </div>
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByIdAsc"
+            style="width: 39.67px; height: 39.67px;">
+            <span class="material-symbols-outlined">swap_vert</span>
+          </button>
           <router-link to="yeu-cau-mua-hang/them-moi" class="btn btn-primary d-flex align-items-center">
-            <span class="material-symbols-outlined me-2"> add </span>Tạo yêu cầu mua hàng
+            <span class="material-symbols-outlined me-2"> add </span>
+            {{ $t('Purchase_request.btn_create') }}
           </router-link>
         </div>
       </div>
@@ -22,18 +33,18 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Mã yêu cầu</th>
-              <th>Người yêu cầu</th>
-              <th>Trạng thái</th>
-              <th>Ngày yêu cầu</th>
-              <th class="text-center">Chi tiết yêu cầu</th>
+              <th>{{ $t('Purchase_request.table.id') }}</th>
+              <th>{{ $t('Purchase_request.table.name') }}</th>
+              <th>{{ $t('Purchase_request.table.status') }}</th>
+              <th>{{ $t('Purchase_request.table.date') }}</th>
+              <th style="width: 200px;">{{ $t('Purchase_request.table.detail.title') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
-              <td colspan="10">Không tìm thấy yêu cầu mua hàng</td>
+              <td colspan="10">Không tìm thấy yêu cầu</td>
             </tr>
-            <tr v-for="purchase in filteredRequests" :key="purchase.sysIdYeuCauMuaHang" class="tr-hover">
+            <tr v-for="purchase in filteredRequests" :key="purchase.sysIdYeuCauMuaHang">
               <td>{{ purchase.maPR }}</td>
               <td>{{ purchase.nguoiYeuCau }}</td>
               <td>
@@ -42,8 +53,12 @@
                 </span>
               </td>
               <td>{{ purchase.ngayYeuCau }}</td>
-              <td class="text-center"><button class="btn btn-primary" @click="showDetail(purchase)">Xem chi
-                  tiết</button></td>
+              <td style="width: 200px;"><button class="btn btn-secondary d-flex align-items-center"
+                  @click="showDetail(purchase)">
+                  <span class="material-symbols-outlined me-2">info</span> {{ $t('Purchase_request.table.detail.title')
+                  }}
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -55,7 +70,8 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header border-0">
-            <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">Chi tiết đơn hàng:
+            <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
+              {{ $t('Purchase_request.table.detail.order_detail') }}
               <span style="color: var(--main-text-color);">{{ selectedPurchase.maPR }}</span>
             </h5>
             <button type="button" class="btn-close" @click="closeModal"></button>
@@ -64,15 +80,19 @@
             <!-- Hiển thị thông tin chi tiết đơn hàng -->
             <div class="row">
               <div class="col-6 col-md-2">
-                <label class="form-label">Mã yêu cầu:</label>
+                <label class="form-label">{{ $t('Purchase_request.table.id') }}</label>
                 <p class="fs">{{ selectedPurchase.maPR }}</p>
               </div>
-              <div class="col-12 col-md-2">
-                <label class="form-label">Khách hàng:</label>
+              <div class="col-6 col-md-2">
+                <label class="form-label">
+                  {{ $t('Purchase_request.table.detail.customer') }}
+                </label>
                 <p class="fs">{{ selectedPurchase.chiTietDonHang[0]?.tenKhachHang }}</p>
               </div>
               <div class="col-6 col-md-2">
-                <label class="form-label">Trạng thái:</label>
+                <label class="form-label">
+                  {{ $t('Purchase_request.table.status') }}
+                </label>
                 <p>
                   <span :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
                     {{ getStatusLabel(selectedPurchase.trangThai) }}
@@ -80,24 +100,29 @@
                 </p>
               </div>
               <div class="col-6 col-md-3">
-                <label class="form-label">Người yêu cầu:</label>
+                <label class="form-label">
+                  {{ $t('Purchase_request.table.name') }}
+                </label>
                 <p class="fs">{{ selectedPurchase.nguoiYeuCau }}</p>
               </div>
               <div class="col-6 col-md-3">
-                <label class="form-label">Ngày yêu cầu:</label>
+                <label class="form-label">
+                  {{ $t('Purchase_request.table.date') }}
+                </label>
                 <p class="fs">{{ selectedPurchase.ngayYeuCau }}</p>
               </div>
             </div>
             <hr />
-            <h5 class="fw-bold">Chi tiết sản phẩm</h5>
+            <h5 class="fw-bold"> {{ $t('Purchase_request.table.detail.product_detail.title') }}
+            </h5>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Giá</th>
-                    <th>Tổng tiền</th>
+                    <th> {{ $t('Purchase_request.table.detail.product_detail.product_name') }}</th>
+                    <th> {{ $t('Purchase_request.table.detail.product_detail.quantity') }}</th>
+                    <th> {{ $t('Purchase_request.table.detail.product_detail.price') }}</th>
+                    <th> {{ $t('Purchase_request.table.detail.product_detail.total') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -113,8 +138,9 @@
                   </tr>
                 </tbody>
               </table>
-              <p class="fw-bold float-end mt-2">Tổng giá trị đơn hàng: <span style="color: var(--main-text-color);">{{
-                totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+              <p class="fw-bold float-end mt-2"> {{ $t('Purchase_request.table.detail.product_detail.total_price') }}: <span
+                  style="color: var(--main-text-color);">{{
+                    totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
               </p>
             </div>
           </div>
@@ -131,13 +157,27 @@
 import { ref, computed, watch, onMounted, reactive } from "vue";
 import { useApiStore } from "@/store/apiStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const searchQuery = ref("");
+const searchQueryByPeople = ref("");
+const isModalVisible = ref(false);
 const purchases = ref([]);
 const apiStore = useApiStore();
-const activeTab = ref("Tất cả");
-const tabs = ["Tất cả", "Đang xử lý", "Đã xác nhận", "Đã hủy"];
-const isModalVisible = ref(false);
+// Tab
+const activeTab = ref(t('Purchase_request.tabs.all'));
+const tabs = computed(() => [t('Purchase_request.tabs.all'), t('Purchase_request.tabs.pending'), t('Purchase_request.tabs.confirmed'), t('Purchase_request.tabs.canceled')]);
+// Sort
+const sortOption = ref("");
+
+onMounted(() => {
+  getPurchaseRequests();
+})
+
+watch(tabs, (newTabs) => {
+  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
+});
 
 const selectedPurchase = reactive({
   sysIdYeuCauMuaHang: "",
@@ -154,9 +194,6 @@ const totalOrderValue = computed(() => {
   }, 0);
 });
 
-onMounted(() => {
-  getPurchaseRequests();
-})
 
 const getPurchaseRequests = async () => {
   try {
@@ -184,11 +221,11 @@ const closeModal = () => {
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
   switch (status) {
-    case "Đang xử lý":
+    case t('Purchase_request.tabs.pending'):
       return "DANG_XU_LY";
-    case "Đã xác nhận":
+    case t('Purchase_request.tabs.confirmed'):
       return "XAC_NHAN";
-    case "Đã hủy":
+    case t('Purchase_request.tabs.canceled'):
       return "DA_HUY";
     default:
       return status;
@@ -200,7 +237,7 @@ const filteredRequests = computed(() => {
   let filtered = purchases.value;
 
   // Lọc theo trạng thái nếu không phải tab "Tất cả"
-  if (activeTab.value !== "Tất cả") {
+  if (activeTab.value !== t('Purchase_request.tabs.all')) {
     filtered = filtered.filter((purchase) => purchase.trangThai === getStatusValue(activeTab.value));
   }
 
@@ -209,7 +246,14 @@ const filteredRequests = computed(() => {
     const searchLower = searchQuery.value.toLowerCase();
     filtered = filtered.filter(
       (purchase) =>
-        purchase.maPR.toLowerCase().includes(searchLower) ||
+        purchase.maPR.toLowerCase().includes(searchLower)
+    );
+  }
+
+  if (searchQueryByPeople.value) {
+    const searchLower = searchQueryByPeople.value.toLowerCase();
+    filtered = filtered.filter(
+      (purchase) =>
         purchase.nguoiYeuCau.toString().includes(searchLower)
     );
   }
@@ -217,7 +261,21 @@ const filteredRequests = computed(() => {
   return filtered;
 });
 
-// dùng watch để cập nhật URL khi activeTab thay đổi
+// Sort
+const sortByIdAsc = () => {
+  if (sortOption.value === "id-asc") {
+    sortOption.value = "id-desc";
+    // Sắp xếp giảm dần theo maPR
+    purchases.value.sort((a, b) => b.maPR.localeCompare(a.maPR));
+  } else {
+    sortOption.value = "id-asc";
+    // Sắp xếp tăng dần theo maPR
+    purchases.value.sort((a, b) => a.maPR.localeCompare(b.maPR));
+  }
+  updateUrl();
+};
+
+// Dùng watch để cập nhật URL khi activeTab thay đổi
 watch(activeTab, () => {
   updateUrl();
 });
@@ -229,14 +287,22 @@ watch(activeTab, () => {
  */
 const updateUrl = () => {
   const baseUrl = window.location.pathname;
-  const query = [];
+  const query = new URLSearchParams(window.location.search);
 
-  // Thêm tham số tab vào URL
-  if (activeTab.value && activeTab.value !== "Tất cả") {
-    query.push(`tab=${activeTab.value}`);
+  if (sortOption.value) {
+    query.set("sort", sortOption.value);
+  } else {
+    query.delete("sort");
   }
 
-  const queryString = query.length > 0 ? `?${query.join("&")}` : "";
+  // Thêm tham số tab vào URL
+  if (activeTab.value && activeTab.value !== "T t c") {
+    query.set("tab", activeTab.value);
+  } else {
+    query.delete("tab");
+  }
+
+  const queryString = query.toString() ? `?${query.toString()}` : "";
   window.history.replaceState({}, "", `${baseUrl}${queryString}`);
 };
 
@@ -256,11 +322,11 @@ const getBadgeClass = (trangThai) => {
 const getStatusLabel = (trangThai) => {
   switch (trangThai) {
     case "DANG_XU_LY":
-      return "Đang xử lý";
+      return t('Purchase_request.tabs.pending');
     case "XAC_NHAN":
-      return "Đã xác nhận";
+      return t('Purchase_request.tabs.confirmed');
     case "DA_HUY":
-      return "Đã hủy";
+      return t('Purchase_request.tabs.canceled');
     default:
       return trangThai;
   }
@@ -269,7 +335,7 @@ const getStatusLabel = (trangThai) => {
 
 <style scoped>
 .container {
-  max-width: 1300px;
+  max-width: 1400px;
 }
 
 .block {
@@ -340,16 +406,8 @@ td {
   }
 }
 
-td {
-  cursor: pointer;
-}
-
-.tr-hover:hover td {
-  background-color: var(--secondary-color);
-}
-
 .form-control {
-  width: 250px;
+  width: 220px;
 }
 
 .form-label {

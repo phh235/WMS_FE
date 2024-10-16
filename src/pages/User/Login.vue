@@ -2,18 +2,18 @@
   <div class="container d-flex justify-content-center align-items-center">
     <div>
       <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)">
-        CHÀO MỪNG TRỞ LẠI
+        {{ $t("Login_forgot_form.login.title") }}
       </h2>
-      <h6 class="text-center mb-5">Vui lòng đăng nhập để tiếp tục</h6>
-      <form style="width: 23rem" @submit.prevent="handleLogin">
+      <h6 class="text-center mb-5">{{ $t("Login_forgot_form.login.small") }}</h6>
+      <form style="width: 20rem; margin: auto;" @submit.prevent="handleLogin">
         <!-- Username input -->
         <div class="mb-2">
-          <label class="form-label fs" for="username">Tên người dùng</label>
+          <label class="form-label fs" for="username">{{ $t("Login_forgot_form.login.label_username") }}</label>
           <input type="text" id="username" class="form-control" v-model="username" />
         </div>
         <!-- Password input -->
         <div class="mb-2 password-container">
-          <label class="form-label fs" for="password">Mật khẩu</label>
+          <label class="form-label fs" for="password">{{ $t("Login_forgot_form.login.label_password") }}</label>
           <input class="form-control" :type="showPassword ? 'text' : 'password'" id="password" autocomplete
             v-model="password" />
           <span class="toggle-password" @click="toggleShowPassword">
@@ -21,13 +21,14 @@
             <span v-else class="material-symbols-outlined"> visibility </span>
           </span>
         </div>
-        <div class="mb-3 text-end">
-          <router-link to="/quen-mat-khau" class="forgot fs"> Quên mật khẩu? </router-link>
+        <div class="mb-2 text-end">
+          <router-link to="/quen-mat-khau" class="forgot fs"> {{ $t("Login_forgot_form.login.forgot_text") }}?
+          </router-link>
         </div>
         <!-- Submit button -->
         <button class="btn btn-login text-dark w-100" type="submit" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span v-if="!loading">Đăng nhập</span>
+          <span v-if="!loading">{{ $t("Login_forgot_form.login.btn_login") }}</span>
         </button>
       </form>
     </div>
@@ -36,11 +37,10 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/auth.js";
+import i18n from "@/lang/i18n";
 import { showToastError } from "@components/Toast/utils/toastHandle.js";
 
-const router = useRouter();
 const authStore = useAuthStore();
 const loading = ref(false);
 const username = ref("");
@@ -53,11 +53,11 @@ const toggleShowPassword = () => {
 
 const handleLogin = async () => {
   if (!username.value) {
-    showToastError("Đăng nhập thất bại!", "Tài khoản không được để trống");
+    showToastError(i18n.global.t("Swal.login.toast.error.title"), i18n.global.t("Swal.login.toast.error.username_text"));
     return;
   }
   if (!password.value) {
-    showToastError("Đăng nhập thất bại!", "Mật khẩu không được để trống");
+    showToastError(i18n.global.t("Swal.login.toast.error.title"), i18n.global.t("Swal.login.toast.error.password_text"));
     return;
   }
   loading.value = true;
@@ -75,10 +75,11 @@ const handleLogin = async () => {
 .forgot {
   color: #171717;
   font-weight: bold;
+  text-decoration: none;
 
   &:hover {
     color: var(--primary-color);
-    text-decoration: none;
+    border-bottom: 1.5px solid var(--primary-color)
   }
 }
 
@@ -90,10 +91,6 @@ const handleLogin = async () => {
 .spinner-border {
   width: 1.2rem;
   height: 1.2rem;
-}
-
-.btn-login {
-  border-radius: calc(0.75rem - 2px);
 }
 
 .btn-login.loading {

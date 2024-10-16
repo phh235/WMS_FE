@@ -1,26 +1,34 @@
 <template>
   <div class="container p-4 box-shadow">
     <div class="mb-3 d-flex justify-content-end align-items-center">
-      <div class="form-group fs has-search d-flex align-items-center me-3">
+      <div class="form-group fs has-search d-flex align-items-center me-2">
         <span class="material-symbols-outlined form-control-feedback">search</span>
-        <input type="search" class="form-control" placeholder="Tìm kiếm" v-model="searchQuery" />
+        <input type="search" class="form-control" :placeholder="$t('Account_management.search_input')"
+          v-model="searchQuery" />
       </div>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
         data-bs-toggle="modal" data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
-        Cấp tài khoản
+        {{ $t('Account_management.btn_account') }}
       </button>
     </div>
     <div class="table-responsive">
       <table class="table table-hover" @click="handleRowClick">
         <thead>
           <tr>
-            <th class="table-col-id">ID</th>
-            <th class="table-col-username">Tên người dùng</th>
+            <th class="table-col-id">
+              {{ $t('Account_management.no') }}
+            </th>
+            <th class="table-col-username">
+              {{ $t('Account_management.username') }}
+            </th>
             <th class="table-col-password d-none">Mật khẩu</th>
             <th class="table-col-email">Email</th>
-            <th class="table-col-email">SĐT</th>
-            <th class="table-col-roleId">Vai trò</th>
+            <th class="table-col-email">
+              {{ $t('Account_management.phone') }}
+            </th>
+            <th class="table-col-roleId"> {{ $t('Account_management.role') }}
+            </th>
             <th></th>
           </tr>
         </thead>
@@ -61,7 +69,7 @@
                 <label for="id">ID</label>
                 <input type="text" class="form-control" id="id" />
               </div>
-              <div class="mb-3 d-none">
+              <div class="mb-3">
                 <div class="row">
                   <div class="col-6">
                     <label for="username">Tên người dùng</label>
@@ -75,11 +83,11 @@
               </div>
               <div class="mb-3">
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-6">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" />
                   </div>
-                  <div class="col-6 d-none">
+                  <div class="col-6">
                     <label for="roleId">Vai trò</label>
                     <select class="form-select" id="roleId">
                       <option value="1">Admin</option>
@@ -95,8 +103,7 @@
               Hủy
             </button>
             <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
-              <span class="material-symbols-outlined me-2">check</span>
-              <!-- {{ sy.sysIdDanhMuc ? "Cập nhật" : "Lưu" }} -->Gửi mail
+              <span class="material-symbols-outlined me-2">check</span> Xác nhận
             </button>
           </div>
         </div>
@@ -162,7 +169,7 @@ const filteredUsers = computed(() => {
 
 <style scoped>
 .container {
-  width: 60%;
+  width: 70%;
   background-color: white;
   border-radius: 16px;
   border: 1px solid #dfdfdf;

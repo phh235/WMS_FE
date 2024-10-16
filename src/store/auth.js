@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import i18n from "@/lang/i18n";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: null,
+    language: localStorage.getItem("language") || "VI",
   }),
   actions: {
     async login(userCredentials) {
@@ -24,19 +26,20 @@ export const useAuthStore = defineStore("auth", {
           // Xóa đường dẫn đã lưu sau khi chuyển hướng
           localStorage.removeItem("redirectPath");
 
-          showToastSuccess("Đăng nhập thành công");
+          showToastSuccess(i18n.global.t("Swal.login.toast.success.title"));
           router.push(redirectPath);
         }
         return true;
       } catch (error) {
-        showToastError("Đăng nhập thất bại");
+        showToastError(i18n.global.t("Swal.login.toast.error.login_fail"));
       }
     },
     setToken(token) {
       this.token = token;
       localStorage.setItem("token", token);
+      // Decode JWT token to get username is logged in
       const tokenDecode = JSON.parse(atob(token.split(".")[1])).sub;
-      console.log(tokenDecode);
+      // console.log(tokenDecode);
       localStorage.setItem("user", JSON.stringify(tokenDecode));
       // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
@@ -70,8 +73,13 @@ export const useAuthStore = defineStore("auth", {
       // Xóa lịch sử trình duyệt để không thể quay lại trang trước khi đăng xuất
       window.history.replaceState(null, "", "/dang-nhap");
       // delete axios.defaults.headers.common["Authorization"];
-      showToastSuccess("Đã đăng xuất");
+      showToastSuccess(i18n.global.t("Swal.logout.toast.success.title"));
       return router.push("/dang-nhap");
+    },
+
+    setLanguage(lang) {
+      this.language = lang;
+      localStorage.setItem("language", lang); // Lưu vào localStorage
     },
   },
   getters: {
