@@ -1,32 +1,27 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-12 col-md-3 mb-3">
-        <div class="category-selector box-shadow">
-          <select class="form-select w-100 d-md-none mb-3" v-model="selectedCategory">
-            <option value="" selected>
-              {{ $t('Product.table.categories.title') }}
-            </option>
-            <option v-for="category in categoryStore.categories" :key="category.id" :value="category.sysIdDanhMuc">
-              {{ category.tenDanhMuc }}
-            </option>
-          </select>
-
-          <ul class="list-group d-none d-md-block">
-            <li class="list-group-item d-flex align-items-center" @click="selectCategory('')"
-              :class="{ active: selectedCategory === '' }">
-              {{ $t('Product.table.categories.title') }}
-            </li>
-            <li v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
-              class="list-group-item d-flex align-items-center" @click="selectCategory(category.sysIdDanhMuc)"
-              :class="{ active: selectedCategory === category.sysIdDanhMuc }">
-              {{ category.tenDanhMuc }}
-            </li>
-          </ul>
+      <div class="col-12 col-md-3 mb-3 px-md-3 p-0">
+        <div class="category-selector box-shadow p-2">
+          <div class="scrollable-wrapper">
+            <ul class="list-group d-flex flex-md-column flex-row flex-nowrap overflow-auto">
+              <li class="list-group-item flex-shrink-0 d-flex align-items-center px-3" @click="selectCategory('')"
+                :class="{ active: selectedCategory === '' }">
+                <span class="material-symbols-outlined me-2">open_in_new</span>
+                {{ $t('Product.table.categories.title') }}
+              </li>
+              <li v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
+                class="list-group-item flex-shrink-0 d-flex align-items-center px-3"
+                @click="selectCategory(category.sysIdDanhMuc)"
+                :class="{ active: selectedCategory === category.sysIdDanhMuc }">
+                <span class="material-symbols-outlined me-2">open_in_new</span>
+                {{ category.tenDanhMuc }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-
-      <div class="container col-12 col-md-9 box-shadow p-4">
+      <div class="col-12 col-md-9 box-shadow p-3">
         <div class="d-flex mb-3 justify-content-end">
           <div class="form-group fs has-search d-flex align-items-center me-2">
             <span class="material-symbols-outlined form-control-feedback">search</span>
@@ -45,7 +40,7 @@
           </router-link>
         </div>
         <div class="table-responsive">
-          <table class="table table-hover">
+          <table class="table">
             <thead>
               <tr>
                 <th>
@@ -60,7 +55,7 @@
                 <th>
                   {{ $t('Product.table.available_quantity') }}
                 </th>
-                <th></th>
+                <th class="text-center">{{ $t('Product.table.btn_action') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -88,7 +83,10 @@
                 </td>
                 <td>{{ product.moTa }}</td>
                 <td>{{ product.soLuongHienCo ? product.soLuongHienCo : 0 }} Kg</td>
-                <td>
+                <td class="text-center">
+                  <button class="btn btn-secondary btn-sm me-2">
+                    <span class="material-symbols-outlined d-flex align-items-center">edit</span>
+                  </button>
                   <button class="btn btn-danger btn-sm" @click="deleteProduct(product.sysIdSanPham)">
                     <span class="material-symbols-outlined d-flex align-items-center">delete</span>
                   </button>
@@ -137,13 +135,13 @@ onMounted(() => {
   categoryStore.getCategories();
 });
 
-const selectProduct = async (productId) => {
-  try {
-    await productStore.getProductById(productId);
-  } catch (error) {
-    showToastInfo("Không thể lấy thông tin sản phẩm.");
-  }
-};
+// const selectProduct = async (productId) => {
+//   try {
+//     await productStore.getProductById(productId);
+//   } catch (error) {
+//     showToastInfo("Không thể lấy thông tin sản phẩm.");
+//   }
+// };
 
 // getAll sản phẩm
 const getProducts = async () => {
@@ -336,18 +334,11 @@ select:active {
 .category-selector {
   background-color: #fff;
   border: 1px solid #dfdfdf;
-  padding: 10px;
   border-radius: 8px;
 }
 
-.container {
-  background-color: #fff;
-  border: 1px solid #dfdfdf;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.btn-danger {
+.btn-danger,
+.btn-secondary {
   padding: 10px 10px;
 }
 

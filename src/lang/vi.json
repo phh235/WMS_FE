@@ -189,6 +189,7 @@
     "table": {
       "search_input": "Tìm kiếm sản phẩm",
       "btn_save": "Thêm sản phẩm",
+      "btn_action": "Hành động",
       "no": "STT",
       "product_name": "Sản phẩm",
       "desc": "Mô tả",
@@ -209,7 +210,10 @@
       "btn_save": "Lưu",
       "product_name": "Tên sản phẩm",
       "available_quantity": "Số lượng hiện có",
-      "category": "Danh mục",
+      "category": {
+        "title": "Danh mục",
+        "option": "Chọn danh mục"
+      },
       "desc": "Mô tả"
     }
   },
