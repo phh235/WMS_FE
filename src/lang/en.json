@@ -189,6 +189,7 @@
     "table": {
       "search_input": "Type to search...",
       "btn_save": "Add new product",
+      "btn_action": "Actions",
       "no": "No.",
       "product_name": "Product",
       "desc": "Description",
