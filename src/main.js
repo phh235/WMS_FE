@@ -1,8 +1,9 @@
 import "@assets/main.css";
-import "@assets/reset.css";
+// import "@assets/reset.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import i18n from "./lang/i18n";
 import App from "./App.vue";
 import router from "./router";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,6 +14,7 @@ const app = createApp(App);
 const pinia = createPinia();
 app.use(router);
 app.use(pinia);
+app.use(i18n);
 
 const authStore = useAuthStore();
 authStore.checkAuth();

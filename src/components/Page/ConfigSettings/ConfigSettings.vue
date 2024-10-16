@@ -1,18 +1,19 @@
 <template>
-  <div class="container p-4 box-shadow">
+  <div class="container-fluid p-4 box-shadow">
     <router-view />
   </div>
 </template>
 
 <style scoped>
-.container {
-  width: 60%;
+.container-fluid {
+  width: 70%;
   background-color: white;
   border-radius: 16px;
   border: 1px solid #e4e4e7;
 }
+
 @media screen and (max-width: 1200px) {
-  .container {
+  .container-fluid {
     width: 100%;
   }
 }

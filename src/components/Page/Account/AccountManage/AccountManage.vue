@@ -1,31 +1,34 @@
 <template>
   <div class="container p-4 box-shadow">
     <div class="mb-3 d-flex justify-content-end align-items-center">
-      <div class="form-group fs has-search d-flex align-items-center me-3">
+      <div class="form-group fs has-search d-flex align-items-center me-2">
         <span class="material-symbols-outlined form-control-feedback">search</span>
-        <input type="search" class="form-control" placeholder="Tìm kiếm" v-model="searchQuery" />
+        <input type="search" class="form-control" :placeholder="$t('Account_management.search_input')"
+          v-model="searchQuery" />
       </div>
-      <button
-        type="button"
-        class="btn btn-primary d-flex align-items-center"
-        ref="addCategoryBtn"
-        data-bs-toggle="modal"
-        data-bs-target="#categoryModal"
-      >
+      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
+        data-bs-toggle="modal" data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
-        Cấp tài khoản
+        {{ $t('Account_management.btn_account') }}
       </button>
     </div>
     <div class="table-responsive">
       <table class="table table-hover" @click="handleRowClick">
         <thead>
           <tr>
-            <th class="table-col-id">ID</th>
-            <th class="table-col-username">Tên người dùng</th>
+            <th class="table-col-id">
+              {{ $t('Account_management.no') }}
+            </th>
+            <th class="table-col-username">
+              {{ $t('Account_management.username') }}
+            </th>
             <th class="table-col-password d-none">Mật khẩu</th>
             <th class="table-col-email">Email</th>
-            <th class="table-col-email">SĐT</th>
-            <th class="table-col-roleId">Vai trò</th>
+            <th class="table-col-email">
+              {{ $t('Account_management.phone') }}
+            </th>
+            <th class="table-col-roleId"> {{ $t('Account_management.role') }}
+            </th>
             <th></th>
           </tr>
         </thead>
@@ -49,28 +52,16 @@
         </tbody>
       </table>
     </div>
-    <div
-      class="modal fade"
-      id="categoryModal"
-      tabindex="-1"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="exampleModalLabel">
               <!-- {{ sy.sysIdDanhMuc ? "Chỉnh sửa người dùng" : "Thêm người dùng" }} -->
-              Thêm người dùng
+              Cấp tài khoản
             </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form>
@@ -108,16 +99,11 @@
             </form>
           </div>
           <div class="modal-footer border-0">
-            <button
-              type="button"
-              class="btn btn-logout"
-              data-bs-dismiss="modal"
-              @click="btnResetForm_Click"
-            >
+            <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
               Hủy
             </button>
-            <button type="button" class="btn btn-primary" @click="saveCategory">
-              <!-- {{ sy.sysIdDanhMuc ? "Cập nhật" : "Lưu" }} -->Lưu
+            <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
+              <span class="material-symbols-outlined me-2">check</span> Xác nhận
             </button>
           </div>
         </div>
@@ -183,28 +169,33 @@ const filteredUsers = computed(() => {
 
 <style scoped>
 .container {
-  width: 60%;
+  width: 70%;
   background-color: white;
   border-radius: 16px;
   border: 1px solid #dfdfdf;
 }
+
 @media screen and (max-width: 1200px) {
   .container {
     width: 100%;
   }
 }
+
 tr,
 td {
   border-bottom: 1px solid #dfdfdf;
 }
+
 td {
   font-size: 14px;
   cursor: pointer;
   vertical-align: middle;
 }
+
 .btn-danger {
   padding: 6px 6px;
 }
+
 label {
   font-weight: bold;
   font-size: 14px;

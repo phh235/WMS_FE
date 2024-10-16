@@ -2,34 +2,25 @@
   <div class="mb-3 d-flex justify-content-end align-items-center">
     <div class="form-group fs has-search d-flex align-items-center me-3">
       <span class="material-symbols-outlined form-control-feedback">search</span>
-      <input
-        type="search"
-        class="form-control"
-        placeholder="Tìm kiếm khu vực"
-        v-model="searchQuery"
-      />
+      <input type="search" class="form-control" :placeholder="$t('Config_settings.zones.search_input')"
+        v-model="searchQuery" />
     </div>
-    <button
-      type="button"
-      class="btn btn-primary d-flex align-items-center"
-      ref="addWarehouseZoneBtn"
-      data-bs-toggle="modal"
-      data-bs-target="#warehouseZoneModal"
-    >
+    <button type="button" class="btn btn-primary d-flex align-items-center" ref="addWarehouseZoneBtn"
+      data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
       <span class="material-symbols-outlined me-2"> add </span>
-      Thêm khu vực
+      {{ $t('Config_settings.zones.title_save') }}
     </button>
   </div>
   <div class="table-responsive">
-    <table class="table table-hover" @dblclick="handleRowClick">
+    <table class="table">
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
-          <th scope="col">Mã khu vực</th>
-          <th scope="col">Tên khu vực</th>
-          <th scope="col">Mô tả</th>
-          <th scope="col">Mã kho</th>
-          <th scope="col"></th>
+          <th scope="col">{{ $t('Config_settings.zones.zone_id') }}</th>
+          <th scope="col">{{ $t('Config_settings.zones.zone_name') }}</th>
+          <th scope="col">{{ $t('Config_settings.zones.zone_desc') }}</th>
+          <th scope="col">{{ $t('Config_settings.zones.warehouse_id') }}</th>
+          <th scope="col" class="text-center">{{ $t('Config_settings.btn_action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -43,6 +34,9 @@
           <td>{{ zone.moTa }}</td>
           <td>{{ zone.maKho }}</td>
           <td class="text-center">
+            <button class="btn btn-secondary me-2" @click="handleRowClick">
+              <span class="material-symbols-outlined d-flex align-items-center"> edit </span>
+            </button>
             <button class="btn btn-danger" @click="deleteWarehouseZone(zone.maKhuVuc, $event)">
               <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
             </button>
@@ -51,105 +45,59 @@
       </tbody>
     </table>
   </div>
-  <div class="pagination d-flex justify-content-center align-items-center mt-3">
-    <button class="btn btn-primary me-2" @click="prevPage" :disabled="currentPage === 0">
-      Trước
-    </button>
-    <span class="mx-2">Trang {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-    <button class="btn btn-primary ms-2" @click="nextPage" :disabled="currentPage === totalPages">
-      Sau
-    </button>
-  </div>
-  <div
-    class="modal fade"
-    id="warehouseZoneModal"
-    tabindex="-1"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="warehouseZoneModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedWarehouseZone.sysIdKhuVuc ? "Chỉnh sửa khu vực" : "Thêm khu vực" }}
+            {{ selectedWarehouseZone.sysIdKhuVuc ? $t("Config_settings.zones.title_edit")
+              : $t("Config_settings.zones.title_save") }}
           </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-            @click="btnResetForm_Click"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            @click="btnResetForm_Click"></button>
         </div>
         <div class="modal-body">
           <form>
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="maKhuVuc" class="form-label fs fw-bold">Mã khu vực</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="maKhuVuc"
-                    aria-describedby="maKhuVucHelp"
-                    v-model="selectedWarehouseZone.maKhuVuc"
-                  />
+                  <label for="maKhuVuc" class="form-label fs fw-bold">{{ $t('Config_settings.zones.zone_id') }}</label>
+                  <input type="text" class="form-control" id="maKhuVuc" aria-describedby="maKhuVucHelp"
+                    v-model="selectedWarehouseZone.maKhuVuc" />
                 </div>
                 <div class="col-6">
-                  <label for="tenKhuVuc" class="form-label fs fw-bold">Tên khu vực</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="tenKhuVuc"
-                    aria-moTa="warehouseZoneNameHelp"
-                    v-model="selectedWarehouseZone.tenKhuVuc"
-                  />
+                  <label for="tenKhuVuc" class="form-label fs fw-bold">{{ $t('Config_settings.zones.zone_name')
+                    }}</label>
+                  <input type="text" class="form-control" id="tenKhuVuc" aria-moTa="warehouseZoneNameHelp"
+                    v-model="selectedWarehouseZone.tenKhuVuc" />
                 </div>
               </div>
             </div>
             <div class="mb-3">
-              <label for="maKho" class="form-label fs fw-bold">Mã kho</label>
+              <label for="maKho" class="form-label fs fw-bold">{{ $t('Config_settings.zones.warehouse_id') }}</label>
               <select class="form-select" id="maKho" v-model="selectedWarehouseZone.maKho">
-                <option value="" disabled>Chọn kho</option>
-                <option
-                  v-for="warehouse in warehouseStore.warehouses"
-                  :key="warehouse.maKho"
-                  :value="warehouse.maKho"
-                >
+                <option value="" disabled>{{ $t('Config_settings.zones.choose_warehouse') }}</option>
+                <option v-for="warehouse in warehouseStore.warehouses" :key="warehouse.maKho" :value="warehouse.maKho">
                   {{ warehouse.maKho }} - {{ warehouse.tenKho }}
                 </option>
               </select>
             </div>
             <div class="mb-3">
-              <label for="warehouseZoneDescription" class="form-label fs fw-bold">Mô tả</label>
-              <textarea
-                class="form-control"
-                id="warehouseZoneDescription"
-                rows="4"
-                aria-describedby="warehouseZoneDescriptionHelp"
-                v-model="selectedWarehouseZone.moTa"
-              ></textarea>
+              <label for="warehouseZoneDescription" class="form-label fs fw-bold">{{
+                $t('Config_settings.zones.zone_desc') }}</label>
+              <textarea class="form-control" id="warehouseZoneDescription" rows="4"
+                aria-describedby="warehouseZoneDescriptionHelp" v-model="selectedWarehouseZone.moTa"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button
-            type="button"
-            class="btn btn-logout"
-            data-bs-dismiss="modal"
-            @click="btnResetForm_Click"
-          >
-            Hủy
+          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
+            {{ $t("Config_settings.btn_cancel") }}
           </button>
-          <button
-            type="button"
-            class="btn btn-primary d-flex align-items-center"
-            @click="saveWarehouseZone"
-          >
+          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouseZone">
             <span class="material-symbols-outlined me-2">check</span>
-            {{ selectedWarehouseZone.sysIdKhuVuc ? "Cập nhật" : "Lưu" }}
+            {{ selectedWarehouseZone.sysIdKhuVuc ? $t("Config_settings.btn_update") : $t("Config_settings.btn_save") }}
           </button>
         </div>
       </div>
@@ -163,6 +111,7 @@ import { useApiStore } from "@/store/apiStore.js";
 import { useWarehouseStore } from "@/store/warehouseStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
+import i18n from "@/lang/i18n";
 
 const apiStore = useApiStore();
 const zones = ref([]);
@@ -185,20 +134,6 @@ onMounted(() => {
   getWarehouseZone();
   fetchWarehouses();
 });
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-    getWarehouseZone();
-  }
-};
-
-const prevPage = () => {
-  if (currentPage.value > 0) {
-    currentPage.value--;
-    getWarehouseZone();
-  }
-};
 
 const fetchWarehouses = async () => {
   await warehouseStore.getWarehouses();
@@ -226,19 +161,19 @@ const filteredZones = computed(() => {
 
 const saveWarehouseZone = async () => {
   if (!selectedWarehouseZone.maKhuVuc.trim()) {
-    showToastError("Mã khu vực không được để trống!");
+    showToastError(i18n.global.t("Config_settings.zones.swal.validate.zone_id"));
     return;
   }
   if (!selectedWarehouseZone.tenKhuVuc.trim()) {
-    showToastError("Tên khu vực không được để trống!");
+    showToastError(i18n.global.t("Config_settings.zones.swal.validate.zone_name"));
     return;
   }
-  if (!selectedWarehouseZone.moTa.trim()) {
-    showToastError("Mô tả khu vực không được để trống!");
-    return;
-  }
+  // if (!selectedWarehouseZone.moTa.trim()) {
+  //   showToastError("Mô tả khu vực không được để trống!");
+  //   return;
+  // }
   if (!selectedWarehouseZone.maKho) {
-    showToastError("Vui lòng chọn một kho!");
+    showToastError(i18n.global.t("Config_settings.zones.swal.validate.warehouse_id"));
     return;
   }
 
@@ -265,7 +200,7 @@ const saveWarehouseZone = async () => {
       await getWarehouseZone();
       btnResetForm_Click();
       addWarehouseZoneBtn.value.click();
-      showToastSuccess("Lưu thành công");
+      showToastSuccess(i18n.global.t("Config_settings.zones.swal.success"));
     } else {
       if (response && response.error) {
         console.error("Error details:", response.error);
@@ -286,24 +221,23 @@ const handleRowClick = (event) => {
   }
 };
 
-const deleteWarehouseZone = async (id, event) => {
-  event.stopPropagation();
+const deleteWarehouseZone = async (id) => {
   const swalConfirm = await Swal.fire({
-    title: "Xóa khu vực?",
-    text: "Bạn có chắc chắn muốn xóa khu vực này?",
+    title: i18n.global.t("Config_settings.zones.swal.delete.title"),
+    text: i18n.global.t("Config_settings.zones.swal.delete.text"),
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
-    cancelButtonText: "Hủy",
+    cancelButtonText: i18n.global.t("Config_settings.zones.swal.delete.cancel"),
     cancelButtonColor: "#d33",
-    confirmButtonText: "Xóa",
+    confirmButtonText: i18n.global.t("Config_settings.zones.swal.delete.confirm"),
   });
 
   if (swalConfirm.isConfirmed) {
     try {
       await apiStore.delete(`zones/${id}`);
       await getWarehouseZone();
-      showToastSuccess("Khu vực đã được xóa");
+      showToastSuccess(i18n.global.t("Config_settings.zones.swal.delete.success"));
     } catch (error) {
       console.error("Error while deleting zone:", error);
       showToastError("Xóa khu vực thất bại. Vui lòng thử lại");
@@ -327,19 +261,23 @@ tr,
 td {
   border-bottom: 1px solid #dfdfdf;
 }
+
 td {
   font-size: 14px;
-  cursor: pointer;
   vertical-align: middle;
 }
-.btn-danger {
+
+.btn-danger,
+.btn-secondary {
   padding: 10px 10px;
 }
+
 .btn-close {
   box-shadow: none;
   padding: 8px;
   border-radius: 6px;
   transition: all 0.1s;
+
   &:hover,
   &:active {
     background-color: var(--secondary-color);

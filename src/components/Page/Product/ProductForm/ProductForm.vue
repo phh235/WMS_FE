@@ -4,77 +4,52 @@
       <div class="col-12 col-md-3 mb-4">
         <div class="card box-shadow" style="border-radius: 16px; border: 1px solid #e4e4e7">
           <div class="image-upload-container">
-            <img
-              v-if="imagePreview"
-              :src="imagePreview"
-              alt="product img front"
-              class="product-image"
-            />
+            <img v-if="imagePreview" :src="imagePreview" alt="product img front" class="product-image" />
             <div v-else class="placeholder-image">
-              <span>Chưa có ảnh</span>
+              <span>{{ $tc('Product.form.no_image') }}</span>
             </div>
             <input type="file" @change="onFileChange" class="file-input" id="imageUpload" />
-            <label
-              for="imageUpload"
-              class="upload-button btn btn-primary d-flex align-items-center fw-medium"
-              ><span class="material-symbols-outlined me-2"> upload </span>Chọn ảnh
+            <label for="imageUpload" class="upload-button btn btn-primary d-flex align-items-center fw-medium"><span
+                class="material-symbols-outlined me-2"> upload </span>{{ $tc('Product.form.btn_upload') }}
             </label>
           </div>
         </div>
       </div>
       <div class="col-12 col-md-9">
         <div class="block box-shadow p-4">
-          <div class="mb-3">
+          <div class="mb-0">
             <div class="row">
               <div class="col-12 col-md-4 mb-3 d-none">
                 <label for="sysIdSanPham">Mã sản phẩm</label>
-                <input
-                  type="text"
-                  id="sysIdSanPham"
-                  class="form-control"
-                  v-model="productInfo.sysIdSanPham"
-                />
+                <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
               </div>
               <div class="col-12 col-md-4 mb-3">
-                <label for="tenSanPham">Tên sản phẩm</label>
-                <input
-                  type="text"
-                  id="tenSanPham"
-                  class="form-control"
-                  v-model="productInfo.tenSanPham"
-                />
+                <label for="tenSanPham">{{ $tc('Product.form.product_name') }}</label>
+                <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
               </div>
               <div class="col-12 col-md-4 mb-3">
-                <label for="soLuongHienCo">Số lượng hiện có</label>
-                <input
-                  type="text"
-                  id="soLuongHienCo"
-                  class="form-control"
-                  v-model="productInfo.soLuongHienCo"
-                />
+                <label for="soLuongHienCo">{{ $tc('Product.form.available_quantity') }}</label>
+                <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
               </div>
               <div class="col-12 col-md-4">
-                <label for="danhMuc">Danh mục</label>
+                <label for="danhMuc">{{ $tc('Product.form.category.title') }}</label>
                 <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
-                  <option value="" selected disabled>Chọn danh mục</option>
-                  <option
-                    v-for="category in categoryStore.categories"
-                    :key="category.sysIdDanhMuc"
-                    :value="category.sysIdDanhMuc"
-                  >
+                  <option value="" selected disabled>{{ $tc('Product.form.category.option') }}</option>
+                  <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
+                    :value="category.sysIdDanhMuc">
                     {{ category.tenDanhMuc }}
                   </option>
                 </select>
               </div>
             </div>
           </div>
-          <div class="mb-3">
-            <label for="moTa">Mô tả</label>
+          <div class="mb-0">
+            <label for="moTa">{{ $tc('Product.form.desc') }}</label>
             <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
           </div>
-          <div class="d-flex justify-content-end mt-2">
+          <div class="d-flex justify-content-end mt-3">
             <button class="btn btn-primary ms-auto d-flex align-items-center" @click="saveProduct">
-              <span class="material-symbols-outlined me-2"> check </span>Lưu
+              <span class="material-symbols-outlined me-2"> check </span>{{ $tc('Product.form.btn_save') }}
             </button>
           </div>
         </div>
@@ -84,15 +59,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import { useApiStore } from "@/store/apiStore.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
+import { useProductStore } from "@/store/productStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useRouter } from "vue-router";
 
 const imagePreview = ref(null);
 const apiStore = useApiStore();
 const categoryStore = useCategoriesStore();
+const productStore = useProductStore();
 const router = useRouter();
 
 const productInfo = reactive({
@@ -104,12 +81,15 @@ const productInfo = reactive({
 });
 
 onMounted(() => {
-  fetchCategories();
+  categoryStore.getCategories();
 });
 
-const fetchCategories = async () => {
-  await categoryStore.getCategories();
-};
+watch(() => productStore.selectedProduct, (newProduct) => {
+  if (newProduct) {
+    Object.assign(productInfo, newProduct);
+    imagePreview.value = newProduct.hinhAnhUrl;
+  }
+}, { deep: true });
 
 const saveProduct = async () => {
   // Validate form

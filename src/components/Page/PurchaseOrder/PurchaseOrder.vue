@@ -1,16 +1,16 @@
 <template>
-  <div class="container-fluid py-0 px-5">
+  <div class="container">
     <div class="d-flex justify-content-end">
       <div class="form-group fs has-search d-flex align-items-center me-3">
         <span class="material-symbols-outlined form-control-feedback">search</span>
         <input type="search" class="form-control" placeholder="Tìm kiếm" v-model="searchQuery" />
       </div>
-      <button class="btn btn-primary d-flex align-items-center">
+      <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
         <span class="material-symbols-outlined me-2">add</span>Tạo đơn đặt hàng
       </button>
     </div>
     <div class="row">
-      <div class="col-3">
+      <!-- <div class="col-12 col-md-4">
         <div class="order-card box-shadow mt-3 p-3">
           <div class="order-header d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-center fw-bold">
@@ -19,19 +19,15 @@
           </div>
           <div class="order-body"></div>
         </div>
-      </div>
-      <div class="col-9">
+      </div> -->
+      <div class="col-12">
         <div class="order-card box-shadow mt-3 p-3" v-if="filteredOrders.length === 0">
           <div class="d-flex align-content-center justify-content-center">
             Không tìm thấy đơn đặt hàng
           </div>
         </div>
-        <div
-          class="order-card box-shadow mt-3 p-3"
-          v-for="order in filteredOrders"
-          :key="order.id"
-          style="cursor: pointer"
-        >
+        <div class="order-card box-shadow mt-3 p-3" v-for="order in filteredOrders" :key="order.id"
+          style="cursor: pointer">
           <div class="order-header d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-center fw-bold">
               <h5 class="me-5 fs fw-bold">
@@ -62,22 +58,13 @@
               </div>
             </div>
             <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                :class="getProgressBarClass(order.status)"
+              <div class="progress-bar" role="progressbar" :class="getProgressBarClass(order.status)"
                 :style="{ width: `${getProgressPercentage(order.status)}%` }"
-                :aria-valuenow="getProgressPercentage(order.status)"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
+                :aria-valuenow="getProgressPercentage(order.status)" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <div class="progress-steps">
               <div class="step" v-for="(step, index) in progressSteps" :key="index">
-                <span
-                  class="material-symbols-outlined"
-                  :class="getStepIconClass(order.status, index)"
-                >
+                <span class="material-symbols-outlined" :class="getStepIconClass(order.status, index)">
                   {{ step }}
                 </span>
               </div>
@@ -91,10 +78,26 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-xl">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <button type="button" class="btn btn-secondary d-flex align-items-center" data-bs-dismiss="modal"
+            aria-label="Close"> <span class="material-symbols-outlined me-2 icon"> chevron_left </span>
+            Quay lại
+          </button>
+        </div>
+        <div class="modal-body p-0 container-fluid vh-100">
+          <PurchaseOrderForm />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
+import PurchaseOrderForm from "./PurchaseOrderForm/PurchaseOrderForm.vue";
 const searchQuery = ref("");
 
 const filteredOrders = computed(() => {
@@ -204,6 +207,10 @@ const orders = ref([
 </script>
 
 <style scoped>
+.container {
+  max-width: 1450px;
+}
+
 .order-card {
   background-color: #fff;
   overflow: hidden;
@@ -223,6 +230,7 @@ const orders = ref([
   color: #6c757d;
   font-size: 0.875rem;
 }
+
 .order-info {
   font-size: 0.875rem;
   color: #6c757d;
@@ -268,9 +276,22 @@ const orders = ref([
   background-color: var(--primary-color) !important;
 }
 
+.bg-danger {
+  background-color: #e74c3c !important;
+}
+
+.bg-info {
+  background-color: #3498db !important;
+}
+
+.bg-warning {
+  background-color: #f1c40f !important;
+}
+
 .text-primary {
   color: var(--primary-color) !important;
 }
+
 @media screen and (max-width: 768.98px) {
   .fs {
     font-size: calc(1rem - 2px);
@@ -287,11 +308,6 @@ const orders = ref([
 
   .progress-steps .step {
     font-size: 1rem;
-  }
-}
-@media screen and (min-width: 992px) {
-  .container {
-    max-width: 65%;
   }
 }
 </style>

@@ -1,21 +1,20 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h3 class="fw-bold mb-3">Bảng điều khiển</h3>
+        <h3 class="fw-bold mb-3">
+          {{ $t('Home.dashboard.title') }}
+        </h3>
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
           <div class="tab-container mb-3 mb-md-0">
-            <button
-              v-for="tab in tabs"
-              :key="tab"
-              @click="activeTab = tab"
-              :class="['tab-button', { active: activeTab === tab }]"
-            >
+            <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
+              :class="['tab-button', { active: activeTab === tab }]">
               {{ tab }}
             </button>
           </div>
           <button class="btn btn-primary box-shadow d-flex align-items-center">
-            <span class="material-symbols-outlined me-2"> download </span>Tải báo cáo
+            <span class="material-symbols-outlined me-2"> download </span>
+            {{ $t('Home.dashboard.btn_download') }}
           </button>
         </div>
       </div>
@@ -40,7 +39,7 @@
       <div class="col-12 col-lg-8 mb-4 mb-lg-0">
         <div class="card box-shadow h-100">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title fw-bold mb-4">Tổng quan biến động kho hàng</h5>
+            <h5 class="card-title fw-bold mb-4">{{ $t('Home.dashboard.chart_title') }}</h5>
             <div ref="chartRef" class="flex-grow-1 echarts"></div>
           </div>
         </div>
@@ -48,26 +47,21 @@
       <div class="col-12 col-lg-4">
         <div class="card box-shadow h-100">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title fw-bold">Giao dịch gần đây</h5>
-            <p class="card-text">5 giao dịch kho hàng gần nhất</p>
+            <h5 class="card-title fw-bold">{{ $t('Home.dashboard.recent_transaction.label') }}</h5>
+            <p class="card-text">{{ $t('Home.dashboard.recent_transaction.small') }}</p>
             <ul class="list-group list-group-flush flex-grow-1 overflow-auto">
-              <li
-                v-for="transaction in recentTransactions"
-                :key="transaction.id"
-                class="list-group-item d-flex justify-content-between align-items-center"
-              >
+              <li v-for="transaction in recentTransactions" :key="transaction.id"
+                class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
                   <strong>{{ transaction.type }}</strong>
                   <br />
                   <small class="text-muted">{{ transaction.item }}</small>
                 </div>
-                <span
-                  :class="[
-                    'badge',
-                    'rounded-pill',
-                    transaction.type === 'Nhận' ? 'bg-success' : 'bg-primary',
-                  ]"
-                >
+                <span :class="[
+                  'badge',
+                  'rounded-pill',
+                  transaction.type === 'Nhận' ? 'bg-success' : 'bg-primary',
+                ]">
                   {{ transaction.quantity }}
                 </span>
               </li>
@@ -80,13 +74,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import * as echarts from "echarts";
+import { useI18n } from 'vue-i18n';
 
 const chartRef = ref(null);
 const chart = ref(null);
-const activeTab = ref("Tất cả");
-const tabs = ["Tất cả", "Đã nhập", "Đã xuất"];
+const { t } = useI18n();
+
+const activeTab = ref(t('Home.dashboard.tabs.all'));
+
+const tabs = computed(() => [
+  t('Home.dashboard.tabs.all'),
+  t('Home.dashboard.tabs.imported'),
+  t('Home.dashboard.tabs.exported'),
+]);
+
+watch(tabs, (newTabs) => {
+  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
+});
 
 const cardData = ref([
   {
@@ -217,7 +223,7 @@ onUnmounted(() => {
 
 <style scoped>
 .container-fluid {
-  padding: 20px;
+  max-width: 1600px;
 }
 
 .card {
@@ -271,7 +277,7 @@ onUnmounted(() => {
   flex-wrap: wrap;
 }
 
-.equal-height-row > [class*="col-"] {
+.equal-height-row>[class*="col-"] {
   display: flex;
   flex-direction: column;
 }
@@ -304,9 +310,14 @@ onUnmounted(() => {
     height: 300px;
   }
 }
+
 @media (max-width: 1200px) {
   .card-title {
     font-size: 24px;
   }
+}
+
+.bg-primary {
+  background-color: #3498db !important;
 }
 </style>

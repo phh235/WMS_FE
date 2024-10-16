@@ -7,10 +7,8 @@
       <div class="warehouse-block box-shadow">
         <div class="row">
           <div class="col-12 col-md-6 mb-3" v-for="warehouse in warehouses" :key="warehouse.type">
-            <router-link
-              :to="warehouse.link"
-              class="warehouse-card box-shadow d-flex justify-content-center align-items-center"
-            >
+            <router-link :to="warehouse.link"
+              class="warehouse-card box-shadow d-flex justify-content-center align-items-center">
               <h3 class="fw-bold">{{ warehouse.name }}</h3>
               <span class="material-symbols-outlined ms-5">{{ warehouse.icon }}</span>
             </router-link>
@@ -46,13 +44,14 @@ const warehouses = ref([
   color: inherit;
   border-radius: 16px;
   border: 1px solid #e4e4e7;
+/* 
   &:hover {
     background-color: #f8f9fa;
     color: #fff;
     background-image: url("https://res.cloudinary.com/dnfccnxew/image/upload/v1725710674/aepjhdbiizkukw60fhuf.png");
     background-size: cover;
     background-repeat: no-repeat;
-  }
+  } */
 }
 
 .material-symbols-outlined {

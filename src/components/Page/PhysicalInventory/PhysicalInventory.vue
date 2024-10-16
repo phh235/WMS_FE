@@ -23,13 +23,8 @@
         <tbody>
           <tr v-for="(inbound, index) in inbounds" :key="inbound.id" style="cursor: pointer">
             <td v-for="(value, key) in inbound" :key="key" @click="startEditing(index, key)">
-              <input
-                v-if="editingCell.rowIndex === index && editingCell.key === key"
-                v-model="inbound[key]"
-                @keyup.enter="finishEditing"
-                @blur="finishEditing"
-                ref="editInput"
-              />
+              <input v-if="editingCell.rowIndex === index && editingCell.key === key" v-model="inbound[key]"
+                @keyup.enter="finishEditing" @blur="finishEditing" ref="editInput" />
               <span v-else>{{ value }}</span>
             </td>
             <td><button class="btn btn-secondary">Lịch sử</button></td>

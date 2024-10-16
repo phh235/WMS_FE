@@ -1,25 +1,25 @@
 <template>
-  <div class="d-flex align-items-center justify-content-center mb-5">
-    <router-link
-      to="/dang-nhap"
-      class="btn btn-secondary d-flex align-items-center justify-content-center"
-    >
+  <div class="d-flex align-items-center justify-content-center mb-4">
+    <router-link to="/dang-nhap" class="btn btn-secondary d-flex align-items-center justify-content-center">
       <span class="material-symbols-outlined me-2"> chevron_left </span>
-      <span class="fw-bold">Đăng nhập</span>
+      <span class="fw-bold"> {{ $t("Login_forgot_form.forgot.btn_login") }}
+      </span>
     </router-link>
   </div>
   <div class="container d-flex justify-content-center">
     <div>
-      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)">QUÊN MẬT KHẨU</h2>
-      <h6 class="text-center mb-5">Vui lòng nhập email</h6>
-      <form style="width: 23rem">
-        <!-- Username input -->
+      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)"> {{
+        $t("Login_forgot_form.forgot.title") }}</h2>
+      <h6 class="text-center mb-5"> {{ $t("Login_forgot_form.forgot.small") }}</h6>
+      <form style="width: 20rem; margin: auto" @submit.prevent="handleForgotPassword">
         <div class="mb-3">
           <label class="form-label fs" for="email">Email</label>
-          <input type="text" id="email" class="form-control" required v-model="email" />
+          <input type="text" id="email" class="form-control" v-model="email" />
         </div>
-        <!-- Submit button -->
-        <button class="btn btn-login text-dark w-100" @click="forgotPassword">Xác nhận</button>
+        <button type="submit" class="btn btn-login text-dark w-100" :disabled="loading" :class="{ loading: loading }">
+          <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span v-if="!loading">{{ $t("Login_forgot_form.forgot.btn_confirm") }}</span>
+        </button>
       </form>
     </div>
   </div>
@@ -28,51 +28,49 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { showToastError, showToastInfo, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import i18n from "@/lang/i18n";
 
 const router = useRouter();
+const loading = ref(false);
 const email = ref("");
-import Toast from "@components/Toast/toast.js";
 
-const forgotPassword = async (event) => {
-  event.preventDefault();
-
-  if (email.value == "") {
-    Toast.fire({
-      icon: "error",
-      title: "Gửi email thất bại",
-      text: "Vui lòng không để trống email",
-    });
-  } else {
-    Toast.fire({
-      icon: "success",
-      title: "Gửi mail thành công",
-      text: "Vui lòng kiểm tra email để khôi phục mật khẩu",
-    }).then(() => {
-      Toast.fire({
-        icon: "info",
-        title: "Đang chuyển hướng về trang đăng nhập",
-        timer: 2000,
-      }).then(() => {
-        setTimeout(function () {
-          router.push("/dang-nhap");
-        }, 0);
-      });
-    });
+const handleForgotPassword = async () => {
+  if (!email.value) {
+    showToastError(i18n.global.t("Swal.forgot.toast.error.title"), i18n.global.t("Swal.forgot.toast.error.text"));
+    return;
+  }
+  loading.value = true;
+  try {
+    // call api thì dùng await để thực thi /disable - loading/ của button
+    showToastSuccess(i18n.global.t("Swal.forgot.toast.success.title"), i18n.global.t("Swal.forgot.toast.success.text"))
+    setTimeout(function () {
+      showToastInfo(i18n.global.t("Swal.forgot.toast.info.title"), i18n.global.t("Swal.forgot.toast.info.text"));
+      setTimeout(function () {
+        router.push("/dang-nhap");
+      }, 2000);
+    }, 2000);
+  } catch (error) {
+    console.log("Error:", error);
+  } finally {
+    loading.value = false;
   }
 };
 </script>
 
 <style scoped>
-.forgot {
-  color: #171717;
-  text-decoration: none;
-  &:hover {
-    border-bottom: 1.5px solid #171717;
-  }
-}
-
 .fs {
   font-size: 14px;
   font-weight: bold;
+}
+
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.btn-login.loading {
+  background-color: var(--primary-color);
+  color: #000;
 }
 </style>
