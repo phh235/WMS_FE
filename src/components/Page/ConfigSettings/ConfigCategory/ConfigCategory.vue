@@ -1,6 +1,6 @@
 <template>
   <div class="mb-4 d-flex justify-content-between align-items-center">
-    <div class="tab-container justify-content-start mb-3 mb-md-0">
+    <div class="tab-container justify-content-start mb-3 mb-md-0 col-12">
       <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
         :class="['tab-button', { active: activeTab === tab }]">
         {{ tab }}
@@ -24,7 +24,7 @@
       <thead>
         <tr>
           <th scope="col">{{ $t('Config_settings.no') }}</th>
-          <th scope="col">{{ $t('Config_settings.categories.category_name') }}</th>
+          <th scope="col" class="sticky">{{ $t('Config_settings.categories.category_name') }}</th>
           <th scope="col">{{ $t('Config_settings.categories.category_desc') }}</th>
           <th scope="col" class="text-center">{{ $t('Config_settings.btn_action') }}</th>
         </tr>
@@ -35,7 +35,7 @@
         </tr>
         <tr v-for="category in filteredCategories" :key="category.sysIdDanhMuc" :data-id="category.sysIdDanhMuc">
           <td scope="row">{{ category.sysIdDanhMuc }}</td>
-          <td>{{ category.tenDanhMuc }}</td>
+          <td class="sticky">{{ category.tenDanhMuc }}</td>
           <td>{{ category.moTa }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="handleRowClick">
@@ -173,92 +173,57 @@ const getCategories = async () => {
   }
 };
 
-const getStatusValue = (status) => {
-  switch (status) {
-    case t('Config_settings.categories.tabs.normal'):
-      return "KHO001";
-    case t('Config_settings.categories.tabs.cold'):
-      return "KHO002";
-    default:
-      return status;
-  }
-};
+const getStatusValue = (status) =>
+  ({ [t("Config_settings.categories.tabs.normal")]: "KHO001", [t("Config_settings.categories.tabs.cold")]: "KHO002" }[status] || status);
 
 // Cập nhật danh sách tab dựa trên mã kho có trong danh mục
 const updateTabs = () => {
   const uniqueWarehouses = [...new Set(categories.value.map(category => category.maKho))];
-  console.log(uniqueWarehouses);
   tabs.value = [t('Config_settings.categories.tabs.all'), ...uniqueWarehouses];
 };
 
 const filteredCategories = computed(() => {
-  let filtered = categories.value;
-
-  // Lọc theo mã kho
-  if (activeTab.value !== t('Config_settings.categories.tabs.all')) {
-    filtered = filtered.filter(category => category.maKho === getStatusValue(activeTab.value));
-  }
-
-  // Lọc theo tìm kiếm
-  return filtered.filter(
-    (category) =>
+  return categories.value
+    .filter(category => category.maKho === getStatusValue(activeTab.value) || activeTab.value === t('Config_settings.categories.tabs.all'))
+    .filter(category => (
       category.sysIdDanhMuc.toString().includes(searchQuery.value.toUpperCase()) ||
       category.tenDanhMuc.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       category.maKho.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+    ));
 });
 
-// Lưu hoặc cập nhật danh mục
 const saveCategory = async () => {
-  // Kiểm tra nếu tên danh mục trống
   if (!selectedCategory.tenDanhMuc.trim()) {
     showToastError(i18n.global.t("Config_settings.categories.swal.validate.category_name"));
     return;
   }
 
-  // // Kiểm tra nếu mô tả trống
-  // if (!selectedCategory.moTa.trim()) {
-  //   showToastError("Mô tả danh mục không được để trống!");
-  //   return;
-  // }
-
-  // Kiểm tra nếu chưa chọn kho
   if (!selectedCategory.maKho) {
     showToastError(i18n.global.t("Config_settings.categories.swal.validate.warehouse_id"));
     return;
   }
 
   try {
-    let response;
-    if (selectedCategory.sysIdDanhMuc) {
-      // Nếu có ID, thực hiện cập nhật
-      response = await apiStore.post("category-products", {
-        sysIdDanhMuc: selectedCategory.sysIdDanhMuc,
-        tenDanhMuc: selectedCategory.tenDanhMuc,
-        moTa: selectedCategory.moTa,
-        maKho: selectedCategory.maKho,
-      });
-    } else {
-      // Nếu không có ID, thực hiện thêm mới
-      response = await apiStore.post("category-products", {
-        tenDanhMuc: selectedCategory.tenDanhMuc,
-        moTa: selectedCategory.moTa,
-        maKho: selectedCategory.maKho,
-      });
-    }
+    const categoryData = {
+      tenDanhMuc: selectedCategory.tenDanhMuc,
+      moTa: selectedCategory.moTa,
+      maKho: selectedCategory.maKho,
+    };
 
-    // Kiểm tra phản hồi từ API
+    const response = selectedCategory.sysIdDanhMuc
+      ? await apiStore.post("category-products", {
+        ...categoryData,
+        sysIdDanhMuc: selectedCategory.sysIdDanhMuc,
+      })
+      : await apiStore.post("category-products", categoryData);
+
     if (response) {
       await getCategories();
-      // Làm mới form
       btnResetForm_Click();
       addCategoryBtn.value.click();
       showToastSuccess(i18n.global.t("Config_settings.categories.swal.success"));
-    } else {
-      // console.error("Failed to save category:", response);
-      if (response && response.error) {
-        console.error("Error details:", response.error); // Ghi nhận chi tiết lỗi nếu có
-      }
+    } else if (response?.error) {
+      console.error("Error details:", response.error);
     }
   } catch (error) {
     console.error("Error while saving category:", error);
@@ -266,24 +231,16 @@ const saveCategory = async () => {
 };
 
 // Điền dữ liệu vào form khi click vào dòng <tr></tr>
-const handleRowClick = (event) => {
-  // Lấy phần tử tr gần nhất từ sự kiện click hiện tại.
-  const row = event.target.closest("tr");
+const handleRowClick = ({ target }) => {
+  const row = target.closest("tr");
+  const id = row?.getAttribute("data-id");
 
-  // Lấy giá trị của thuộc tính 'data-id' từ <tr> đã được click.
-  const id = row.getAttribute("data-id");
-
-  // Tìm danh mục có ID tương ứng trong danh sách 'categories'.
   const selectedCategoryValue = categories.value.find(
-    (category) => category.sysIdDanhMuc === parseInt(id)
+    (category) => category.sysIdDanhMuc === Number(id)
   );
 
-  // Nếu tìm thấy danh mục có ID tương ứng.
   if (selectedCategoryValue) {
-    // Sao chép dữ liệu của danh mục được chọn vào biến 'selectedCategory'.
     Object.assign(selectedCategory, selectedCategoryValue);
-
-    // Tự động click vào nút 'Thêm danh mục' để mở modal chỉnh sửa thông tin danh mục.
     addCategoryBtn.value.click();
   }
 };

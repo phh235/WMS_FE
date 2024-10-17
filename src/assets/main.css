@@ -36,6 +36,12 @@ body {
   --btn-logout-border-hover: #e54d2e;
   --main-text-color: #16a34a;
   --border-input-color: #16a34a;
+
+  /* shadow */
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
 }
 
 .material-symbols-outlined {
@@ -44,10 +50,6 @@ body {
 
 .btn,
 .box-shadow {
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
 }
@@ -196,11 +198,7 @@ select {
 .swal2-cancel {
   border-radius: calc(0.75rem - 2px) !important;
   font-size: 15px !important;
-  padding: 10px 18px !important;
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  padding: 12px 18px !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
 }
@@ -260,4 +258,11 @@ td {
 
 small {
   color: #71717a;
+}
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 999;
 }

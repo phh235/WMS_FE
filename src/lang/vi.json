@@ -202,6 +202,15 @@
         "next": "Sau",
         "prev": "Trước",
         "page": "Trang"
+      },
+      "swal": {
+        "success": "Sản phẩm đã được xóa",
+        "confirmDelete": {
+          "title": "Xóa sản phẩm?",
+          "text": "Bạn có chắc chắn muốn xóa sản phẩm này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        }
       }
     },
     "form": {
@@ -214,7 +223,17 @@
         "title": "Danh mục",
         "option": "Chọn danh mục"
       },
-      "desc": "Mô tả"
+      "desc": "Mô tả",
+      "swal": {
+        "success": "Lưu sản phẩm thành công",
+        "validate": {
+          "product_name": "Vui lòng nhập tên sản phẩm",
+          "available_quantity": "Vui lòng nhập số lượng hiện có",
+          "available_quantity_number": "Số lượng hiện có phải là số",
+          "choose_category": "Vui lòng chọn danh mục",
+          "image": "Chưa chọn ảnh sản phẩm"
+        }
+      }
     }
   },
   "Config_settings": {

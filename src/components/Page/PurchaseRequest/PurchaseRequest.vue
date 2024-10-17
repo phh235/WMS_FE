@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="block p-4 box-shadow">
+  <div class="container-fluid">
+    <div class="block p-3 box-shadow">
       <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
         <div class="tab-container justify-content-start mb-2 mb-md-0">
           <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
@@ -19,7 +19,7 @@
             <input type="search" class="form-control" :placeholder="$t('Purchase_request.search_input.search_name')"
               v-model="searchQueryByPeople" />
           </div>
-          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByIdAsc"
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById"
             style="width: 39.67px; height: 39.67px;">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
@@ -33,7 +33,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th>{{ $t('Purchase_request.table.id') }}</th>
+              <th class="sticky">{{ $t('Purchase_request.table.id') }}</th>
               <th>{{ $t('Purchase_request.table.name') }}</th>
               <th>{{ $t('Purchase_request.table.status') }}</th>
               <th>{{ $t('Purchase_request.table.date') }}</th>
@@ -45,7 +45,7 @@
               <td colspan="10">Không tìm thấy yêu cầu</td>
             </tr>
             <tr v-for="purchase in filteredRequests" :key="purchase.sysIdYeuCauMuaHang">
-              <td>{{ purchase.maPR }}</td>
+              <td class="sticky">{{ purchase.maPR }}</td>
               <td>{{ purchase.nguoiYeuCau }}</td>
               <td>
                 <span :class="['badge', getBadgeClass(purchase.trangThai)]">
@@ -138,9 +138,9 @@
                   </tr>
                 </tbody>
               </table>
-              <p class="fw-bold float-end mt-2"> {{ $t('Purchase_request.table.detail.product_detail.total_price') }}: <span
-                  style="color: var(--main-text-color);">{{
-                    totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+              <p class="fw-bold float-end mt-2"> {{ $t('Purchase_request.table.detail.product_detail.total_price') }}:
+                <span style="color: var(--main-text-color);">{{
+                  totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
               </p>
             </div>
           </div>
@@ -175,6 +175,7 @@ onMounted(() => {
   getPurchaseRequests();
 })
 
+// dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
 watch(tabs, (newTabs) => {
   activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
 });
@@ -220,58 +221,26 @@ const closeModal = () => {
 
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
-  switch (status) {
-    case t('Purchase_request.tabs.pending'):
-      return "DANG_XU_LY";
-    case t('Purchase_request.tabs.confirmed'):
-      return "XAC_NHAN";
-    case t('Purchase_request.tabs.canceled'):
-      return "DA_HUY";
-    default:
-      return status;
-  }
+  const statusMap = {
+    [t('Purchase_request.tabs.pending')]: "DANG_XU_LY",
+    [t('Purchase_request.tabs.confirmed')]: "XAC_NHAN",
+    [t('Purchase_request.tabs.canceled')]: "DA_HUY",
+  };
+
+  return statusMap[status] || status;
 };
 
-// Tạo computed để lọc danh sách yêu cầu
 const filteredRequests = computed(() => {
-  let filtered = purchases.value;
-
-  // Lọc theo trạng thái nếu không phải tab "Tất cả"
-  if (activeTab.value !== t('Purchase_request.tabs.all')) {
-    filtered = filtered.filter((purchase) => purchase.trangThai === getStatusValue(activeTab.value));
-  }
-
-  // Lọc theo ID hoặc người yêu cầu nếu có từ khóa tìm kiếm
-  if (searchQuery.value) {
-    const searchLower = searchQuery.value.toLowerCase();
-    filtered = filtered.filter(
-      (purchase) =>
-        purchase.maPR.toLowerCase().includes(searchLower)
-    );
-  }
-
-  if (searchQueryByPeople.value) {
-    const searchLower = searchQueryByPeople.value.toLowerCase();
-    filtered = filtered.filter(
-      (purchase) =>
-        purchase.nguoiYeuCau.toString().includes(searchLower)
-    );
-  }
-
-  return filtered;
+  return purchases.value
+    .filter(purchase => activeTab.value === t('Purchase_request.tabs.all') || purchase.trangThai === getStatusValue(activeTab.value))
+    .filter(purchase => !searchQuery.value || purchase.maPR.toLowerCase().includes(searchQuery.value.toLowerCase()))
+    .filter(purchase => !searchQueryByPeople.value || purchase.nguoiYeuCau.toString().includes(searchQueryByPeople.value.toLowerCase()));
 });
 
 // Sort
-const sortByIdAsc = () => {
-  if (sortOption.value === "id-asc") {
-    sortOption.value = "id-desc";
-    // Sắp xếp giảm dần theo maPR
-    purchases.value.sort((a, b) => b.maPR.localeCompare(a.maPR));
-  } else {
-    sortOption.value = "id-asc";
-    // Sắp xếp tăng dần theo maPR
-    purchases.value.sort((a, b) => a.maPR.localeCompare(b.maPR));
-  }
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  purchases.value.sort((a, b) => sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR));
   updateUrl();
 };
 
@@ -286,56 +255,49 @@ watch(activeTab, () => {
  * - Xóa tham số tab khỏi URL
  */
 const updateUrl = () => {
-  const baseUrl = window.location.pathname;
-  const query = new URLSearchParams(window.location.search);
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
 
   if (sortOption.value) {
-    query.set("sort", sortOption.value);
+    params.set("sort", sortOption.value);
   } else {
-    query.delete("sort");
+    params.delete("sort");
   }
 
-  // Thêm tham số tab vào URL
   if (activeTab.value && activeTab.value !== "T t c") {
-    query.set("tab", activeTab.value);
+    params.set("tab", activeTab.value);
   } else {
-    query.delete("tab");
+    params.delete("tab");
   }
 
-  const queryString = query.toString() ? `?${query.toString()}` : "";
-  window.history.replaceState({}, "", `${baseUrl}${queryString}`);
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
 };
 
-const getBadgeClass = (trangThai) => {
-  switch (trangThai) {
-    case "DANG_XU_LY":
-      return "bg-warning";
-    case "XAC_NHAN":
-      return "bg-success";
-    case "DA_HUY":
-      return "bg-danger";
-    default:
-      return "bg-secondary";
-  }
+const getBadgeClass = (status) => {
+  const statusMap = {
+    DANG_XU_LY: "bg-warning",
+    XAC_NHAN: "bg-success",
+    DA_HUY: "bg-danger",
+  };
+
+  return statusMap[status] || "bg-secondary";
 };
 
-const getStatusLabel = (trangThai) => {
-  switch (trangThai) {
-    case "DANG_XU_LY":
-      return t('Purchase_request.tabs.pending');
-    case "XAC_NHAN":
-      return t('Purchase_request.tabs.confirmed');
-    case "DA_HUY":
-      return t('Purchase_request.tabs.canceled');
-    default:
-      return trangThai;
-  }
+const getStatusLabel = (status) => {
+  const statusMap = {
+    DANG_XU_LY: t("Purchase_request.tabs.pending"),
+    XAC_NHAN: t("Purchase_request.tabs.confirmed"),
+    DA_HUY: t("Purchase_request.tabs.canceled"),
+  };
+
+  return statusMap[status] || status;
 };
 </script>
 
 <style scoped>
-.container {
-  max-width: 1400px;
+.container-fluid {
+  max-width: 1350px;
 }
 
 .block {

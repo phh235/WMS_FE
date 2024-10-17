@@ -16,7 +16,7 @@
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
-          <th scope="col">{{ $t('Config_settings.zones.zone_id') }}</th>
+          <th scope="col" class="sticky">{{ $t('Config_settings.zones.zone_id') }}</th>
           <th scope="col">{{ $t('Config_settings.zones.zone_name') }}</th>
           <th scope="col">{{ $t('Config_settings.zones.zone_desc') }}</th>
           <th scope="col">{{ $t('Config_settings.zones.warehouse_id') }}</th>
@@ -29,7 +29,7 @@
         </tr>
         <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc">
           <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
-          <td>{{ zone.maKhuVuc }}</td>
+          <td class="sticky">{{ zone.maKhuVuc }}</td>
           <td>{{ zone.tenKhuVuc }}</td>
           <td>{{ zone.moTa }}</td>
           <td>{{ zone.maKho }}</td>
@@ -150,12 +150,12 @@ const getWarehouseZone = async () => {
 };
 
 const filteredZones = computed(() => {
-  return zones.value.filter(
-    (zone) =>
-      zone.maKhuVuc.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      zone.tenKhuVuc.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      zone.moTa.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      zone.maKho.toLowerCase().includes(searchQuery.value.toLowerCase())
+  const query = searchQuery.value.toLowerCase();
+  return zones.value.filter(zone =>
+    zone.maKhuVuc.toLowerCase().includes(query) ||
+    zone.tenKhuVuc.toLowerCase().includes(query) ||
+    zone.moTa.toLowerCase().includes(query) ||
+    zone.maKho.toLowerCase().includes(query)
   );
 });
 
@@ -164,47 +164,36 @@ const saveWarehouseZone = async () => {
     showToastError(i18n.global.t("Config_settings.zones.swal.validate.zone_id"));
     return;
   }
+
   if (!selectedWarehouseZone.tenKhuVuc.trim()) {
     showToastError(i18n.global.t("Config_settings.zones.swal.validate.zone_name"));
     return;
   }
-  // if (!selectedWarehouseZone.moTa.trim()) {
-  //   showToastError("Mô tả khu vực không được để trống!");
-  //   return;
-  // }
+
   if (!selectedWarehouseZone.maKho) {
     showToastError(i18n.global.t("Config_settings.zones.swal.validate.warehouse_id"));
     return;
   }
 
   try {
-    let response;
-    if (selectedWarehouseZone.sysIdKhuVuc) {
-      response = await apiStore.post("zones", {
-        sysIdKhuVuc: selectedWarehouseZone.sysIdKhuVuc,
-        maKhuVuc: selectedWarehouseZone.maKhuVuc,
-        tenKhuVuc: selectedWarehouseZone.tenKhuVuc,
-        moTa: selectedWarehouseZone.moTa,
-        maKho: selectedWarehouseZone.maKho,
-      });
-    } else {
-      response = await apiStore.post("zones", {
-        maKhuVuc: selectedWarehouseZone.maKhuVuc,
-        tenKhuVuc: selectedWarehouseZone.tenKhuVuc,
-        moTa: selectedWarehouseZone.moTa,
-        maKho: selectedWarehouseZone.maKho,
-      });
-    }
+    const zoneData = {
+      maKhuVuc: selectedWarehouseZone.maKhuVuc,
+      tenKhuVuc: selectedWarehouseZone.tenKhuVuc,
+      moTa: selectedWarehouseZone.moTa,
+      maKho: selectedWarehouseZone.maKho,
+    };
+
+    const response = selectedWarehouseZone.sysIdKhuVuc
+      ? await apiStore.post("zones", { ...zoneData, sysIdKhuVuc: selectedWarehouseZone.sysIdKhuVuc })
+      : await apiStore.post("zones", zoneData);
 
     if (response) {
       await getWarehouseZone();
       btnResetForm_Click();
       addWarehouseZoneBtn.value.click();
       showToastSuccess(i18n.global.t("Config_settings.zones.swal.success"));
-    } else {
-      if (response && response.error) {
-        console.error("Error details:", response.error);
-      }
+    } else if (response?.error) {
+      console.error("Error details:", response.error);
     }
   } catch (error) {
     console.error("Error while saving zone:", error);
@@ -214,7 +203,11 @@ const saveWarehouseZone = async () => {
 const handleRowClick = (event) => {
   const row = event.target.closest("tr");
   const id = row.getAttribute("data-id");
-  const selectedWarehouseZoneValue = zones.value.find((zone) => zone.sysIdKhuVuc == id);
+
+  const selectedWarehouseZoneValue = zones.value.find(
+    (zone) => zone.sysIdKhuVuc == id
+  );
+
   if (selectedWarehouseZoneValue) {
     Object.assign(selectedWarehouseZone, selectedWarehouseZoneValue);
     addWarehouseZoneBtn.value.click();

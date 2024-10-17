@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid p-4 box-shadow">
+  <div class="container-fluid p-3 box-shadow">
     <router-view />
   </div>
 </template>

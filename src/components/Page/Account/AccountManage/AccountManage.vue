@@ -157,10 +157,12 @@ const roleFilter = ref("");
 
 // Lọc người dùng theo tìm kiếm và role
 const filteredUsers = computed(() => {
+  const query = searchQuery.value.toLowerCase();
   return users.value.filter((user) => {
     const matchesSearchQuery =
-      user.username.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.value.toLowerCase());
+      user.username.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query) ||
+      user.phoneNumber.toString().includes(query);
     const matchesRole = roleFilter.value === "" || user.roleId.toString() === roleFilter.value;
     return matchesSearchQuery && matchesRole;
   });
