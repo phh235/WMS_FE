@@ -1,6 +1,44 @@
+:root {
+  --background-color: #fff;
+  --primary-color: #16a34a;
+  --primary-color-hover: #2dac5c;
+  --secondary-color: #f4f4f5;
+  --secondary-color-hover: #ededed;
+  --secondary-color-border: #00000014;
+  --secondary-color-border-hover: #c9c9c9;
+  --btn-logout-bg: #fef2f2;
+  --btn-logout-color: #ef4444;
+  --btn-primary-color: #fff;
+  --main-text-color: #16a34a;
+  --border-input-color: #16a34a;
+  --border-main-color: #e4e4e7;
+  --text-light-color: #fff;
+
+  /* tabs */
+  --tab-button-bg: #6c757d;
+
+  --nav-link-color: #000;
+  --nav-link-hover: #f4f4f5;
+
+  /* shadow */
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+}
+
 @font-face {
   font-family: "Google Sans";
   src: url("fonts/GoogleSans-Regular.ttf") format("truetype");
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
 html,
@@ -10,38 +48,20 @@ body,
   width: 100%;
   font-family: "Google Sans";
   font-weight: 500;
+  background-color: var(--background-color) !important;
+  transition: all 0.2s ease;
 }
 
 ::selection {
-  color: #fff;
+  color: var(--text-light-color);
   background: var(--primary-color);
 }
 
 body {
   width: 100%;
   height: 100%;
-  background-color: #fff !important;
-}
-
-:root {
-  --primary-color: #16a34a;
-  --primary-color-hover: #2dac5c;
-  --secondary-color: #f4f4f5;
-  --secondary-color-hover: #ededed;
-  --secondary-color-border: #00000014;
-  --secondary-color-border-hover: #c9c9c9;
-  --btn-logout-bg: #fff0ee;
-  --btn-logout-bg-hover: #fdd8d3;
-  --btn-logout-border: #f3b0a2;
-  --btn-logout-border-hover: #e54d2e;
-  --main-text-color: #16a34a;
-  --border-input-color: #16a34a;
-
-  /* shadow */
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  background-color: var(--background-color) !important;
+  transition: all 0.2s ease;
 }
 
 .material-symbols-outlined {
@@ -76,9 +96,9 @@ textarea {
   border-radius: calc(0.75rem - 2px);
   padding: 8px 12px;
   background-color: var(--primary-color);
-  color: #fff !important;
+  color: var(---text-light-color) !important;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   &:hover,
   &:active {
     border: none;
@@ -92,9 +112,9 @@ textarea {
   border-radius: calc(0.75rem - 2px);
   padding: 8px 10px;
   background-color: var(--primary-color);
-  color: #fff !important;
+  color: var(--btn-primary-color) !important;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   &:hover,
   &:active {
     border: none;
@@ -103,18 +123,18 @@ textarea {
 }
 
 .btn.btn-secondary {
-  border: 1.5px solid #e4e4e7;
+  border: 1.5px solid var(--border-main-color);
   font-size: 14px;
   border-radius: calc(0.75rem - 2px);
   padding: 8px 10px;
-  background-color: #fff;
-  color: #171717 !important;
+  background-color: var(--background-color);
+  color: var(--nav-link-color) !important;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   &:hover,
   &:active {
-    border: 1.5px solid #e4e4e7 !important;
-    background-color: #f4f4f5 !important;
+    border: 1.5px solid var(--border-main-color) !important;
+    background-color: var(--secondary-color-hover) !important;
   }
 }
 
@@ -126,7 +146,7 @@ textarea {
   border: none;
   box-shadow: none;
   border-radius: calc(0.75rem - 2px);
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   &:hover,
   &:active {
     background-color: #fef2f2 !important;
@@ -264,5 +284,24 @@ small {
   position: -webkit-sticky;
   position: sticky;
   left: 0;
+  z-index: 99;
+}
+
+.navbar-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   z-index: 999;
+}
+
+.swal2-loader {
+  border: 0.25em solid rgba(0, 0, 0, 0.1);
+  border-left-color: #c2e0f4;
+  animation: swal2-rotate 1.2s linear infinite;
+}
+
+@keyframes swal2-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }

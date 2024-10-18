@@ -60,7 +60,7 @@
 
 <script setup>
 import { ref, onMounted, reactive, watch } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
 import { useProductStore } from "@/store/productStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
@@ -70,7 +70,7 @@ import i18n from "@/lang/i18n";
 
 const { t } = useI18n();
 const imagePreview = ref(null);
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 const categoryStore = useCategoriesStore();
 const productStore = useProductStore();
 const router = useRouter();

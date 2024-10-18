@@ -31,6 +31,8 @@ import Cre from "@layouts/Cre/Cre.vue";
 <style scoped>
 .container-fluid {
   overflow: hidden;
+  background-color: var(--background-color);
+  transition: all 0.2s ease;
 }
 
 /* .container-fluid {

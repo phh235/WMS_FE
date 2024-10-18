@@ -146,6 +146,19 @@
       "name": "Requestor",
       "status": "Status",
       "date": "Date request",
+      "action": "Actions",
+      "li_edit": "Edit",
+      "li_cancel": "Cancel",
+      "swal": {
+        "delete": {
+          "success": "Request successfully cancelled",
+          "failed": "Request failed to cancel",
+          "title": "Cancel request?",
+          "text": "Are you sure you want to cancel this request?",
+          "cancel": "Cancel",
+          "confirm": "OK"
+        }
+      },
       "detail": {
         "title": "Detail",
         "order_detail": "Order detail: ",

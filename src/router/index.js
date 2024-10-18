@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import BlankLayout from "@layouts/BlankLayout.vue";
 import MenuItems from "@components/Header/MenuBar/MenuItems.js";
 import Login from "@pages/User/Login.vue";
-import { useAuthStore } from "@/store/auth";
-import { showToastWarning, showToastLoading } from "@components/Toast/utils/toastHandle.js";
+import { useAuthStore } from "@/store/authStore";
+import { showToastWarning, showToastLoading } from "@/components/Toast/utils/toastHandle";
 
 export const routes = [
   {

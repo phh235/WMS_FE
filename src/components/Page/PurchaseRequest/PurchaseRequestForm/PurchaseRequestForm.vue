@@ -104,10 +104,10 @@ import { ref, computed, onMounted, reactive } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
 import { useRouter } from "vue-router";
 import ProductForm from '../../Product/ProductForm/ProductForm.vue';
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 const productStore = useProductStore();
 const router = useRouter();
 const isLoading = ref(false);

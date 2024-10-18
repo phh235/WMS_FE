@@ -119,7 +119,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed, watch } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { useWarehouseStore } from "@/store/warehouseStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
@@ -128,7 +128,7 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 const categories = ref([]);
 const warehouseStore = useWarehouseStore();
 // Tab

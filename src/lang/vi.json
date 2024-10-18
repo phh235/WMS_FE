@@ -146,6 +146,19 @@
       "name": "Người yêu cầu",
       "status": "Trạng thái",
       "date": "Ngày yêu cầu",
+      "action": "Hành động",
+      "li_edit": "Chỉnh sửa",
+      "li_cancel": "Hủy",
+      "swal": {
+        "delete": {
+          "success": "Hủy yêu cầu thành công",
+          "failed": "Hủy yêu cầu thất bại",
+          "title": "Hủy yêu cầu?",
+          "text": "Bạn có chắc chắn muốn hủy yêu cầu này?",
+          "cancel": "Hủy",
+          "confirm": "OK"
+        }
+      },
       "detail": {
         "title": "Chi tiết",
         "order_detail": "Chi tiết đơn hàng: ",

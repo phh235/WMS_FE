@@ -128,12 +128,12 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 const warehouses = ref([]);
 const addWarehouseBtn = ref(null);
 const searchQuery = ref("");

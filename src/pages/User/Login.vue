@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useAuthStore } from "@/store/auth.js";
+import { useAuthStore } from "@/store/authStore.js";
 import i18n from "@/lang/i18n";
 import { showToastError } from "@components/Toast/utils/toastHandle.js";
 

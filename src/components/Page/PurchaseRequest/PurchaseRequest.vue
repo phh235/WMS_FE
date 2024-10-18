@@ -37,7 +37,7 @@
               <th>{{ $t('Purchase_request.table.name') }}</th>
               <th>{{ $t('Purchase_request.table.status') }}</th>
               <th>{{ $t('Purchase_request.table.date') }}</th>
-              <th style="width: 200px;">{{ $t('Purchase_request.table.detail.title') }}</th>
+              <th style="width: 200px;" class="text-center">{{ $t('Purchase_request.table.action') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -53,11 +53,31 @@
                 </span>
               </td>
               <td>{{ purchase.ngayYeuCau }}</td>
-              <td style="width: 200px;"><button class="btn btn-secondary d-flex align-items-center"
-                  @click="showDetail(purchase)">
-                  <span class="material-symbols-outlined me-2">info</span> {{ $t('Purchase_request.table.detail.title')
-                  }}
+              <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
+                <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
+                  <span class="material-symbols-outlined">visibility</span>
                 </button>
+                <div class="dropdown" style="display: inline-block;">
+                  <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="material-symbols-outlined">more_vert</span>
+                  </button>
+                  <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                        {{ $t('Purchase_request.table.li_edit') }}
+                        <span class="material-symbols-outlined">edit_square</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                        @click="cancelPR">
+                        {{ $t('Purchase_request.table.li_cancel') }}
+                        <span class="material-symbols-outlined">cancel</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -155,16 +175,18 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, reactive } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useI18n } from "vue-i18n";
+import i18n from "@/lang/i18n";
+import Swal from "sweetalert2";
 
 const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
 const purchases = ref([]);
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 // Tab
 const activeTab = ref(t('Purchase_request.tabs.all'));
 const tabs = computed(() => [t('Purchase_request.tabs.all'), t('Purchase_request.tabs.pending'), t('Purchase_request.tabs.confirmed'), t('Purchase_request.tabs.canceled')]);
@@ -189,6 +211,7 @@ const selectedPurchase = reactive({
   chiTietDonHang: []
 })
 
+// Tính tổng giá trị (số lượng * giá)
 const totalOrderValue = computed(() => {
   return selectedPurchase.chiTietDonHang.reduce((total, item) => {
     return total + (parseFloat(item.tongChiPhi) || 0);
@@ -202,6 +225,31 @@ const getPurchaseRequests = async () => {
     purchases.value = response.data;
   } catch (error) {
     console.error("Failed to fetch purchase requests:", error);
+  }
+};
+
+
+// Hủy yêu cầu - udpate status DA_HUY
+const cancelPR = async () => {
+  const swalConfirm = await Swal.fire({
+    title: i18n.global.t("Purchase_request.table.swal.delete.title"),
+    text: i18n.global.t("Purchase_request.table.swal.delete.text"),
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonText: i18n.global.t("Purchase_request.table.swal.delete.cancel"),
+    cancelButtonColor: "#d33",
+    confirmButtonText: i18n.global.t("Purchase_request.table.swal.delete.confirm"),
+  });
+
+  if (swalConfirm.isConfirmed) {
+    try {
+      await apiStore.put(`purchase-requests/${selectedPurchase.sysIdYeuCauMuaHang}`, { trangThai: "DA_HUY" });
+      showToastSuccess(t('Purchase_request.table.swal.delete.success'));
+      getPurchaseRequests();
+    } catch (error) {
+      showToastError(t('Purchase_request.table.swal.delete.failed'));
+    }
   }
 };
 
@@ -301,9 +349,9 @@ const getStatusLabel = (status) => {
 }
 
 .block {
-  background-color: #fff;
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 
 td {
@@ -339,7 +387,7 @@ td {
 }
 
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   max-width: fit-content;
@@ -349,7 +397,7 @@ td {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-bg);
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 10px;
@@ -358,14 +406,10 @@ td {
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
-
-  &:hover {
-    background-color: white;
-  }
 }
 
 .form-control {
@@ -389,6 +433,56 @@ td {
 @media screen and (max-width: 768px) {
   .block {
     padding: 15px 10px !important;
+  }
+}
+
+.btn-secondary,
+.btn-danger {
+  padding: 10px;
+}
+
+.btn-secondary {
+  background-color: #fff !important;
+  border: 1.5px solid #e4e4e7 !important;
+
+  &:focus,
+  &:active {
+    background-color: #fff !important;
+    border: 1.5px solid #e4e4e7 !important;
+  }
+}
+
+.dropdown-menu {
+  min-width: 140px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
+}
+
+.dropdown-item {
+  font-size: 14px;
+  padding: 8px;
+  border-radius: calc(.75rem - 2px);
+  transition: all 0.1s;
+
+  &:hover {
+    background-color: var(--secondary-color);
+  }
+
+  &:focus {
+    color: #000;
+  }
+}
+
+.btn-logout {
+  color: #ef4444;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #ef4444;
+    background-color: #fef2f2;
+    cursor: pointer;
   }
 }
 </style>
