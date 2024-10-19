@@ -18,7 +18,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Mã tham chiếu</th>
+            <th class="sticky">Mã tham chiếu</th>
             <th>Từ</th>
             <th>Đến</th>
             <th>Liên hệ</th>
@@ -36,7 +36,7 @@
             <td colspan="10">Không tìm thấy</td>
           </tr>
           <tr v-for="outbound of filteredOutbounds" :key="outbound.id" style="cursor: pointer">
-            <td>{{ outbound.id }}</td>
+            <td class="sticky">{{ outbound.id }}</td>
             <td>{{ outbound.from }}</td>
             <td>{{ outbound.to }}</td>
             <td>{{ outbound.contact }}</td>

@@ -28,10 +28,10 @@
             <input type="search" class="form-control" :placeholder="$t('Product.table.search_input')"
               v-model="searchQuery" />
           </div>
-          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByQuantityAsc">
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByQuantity">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
-          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByNameAsc">
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
             <span class="material-symbols-outlined">sort_by_alpha</span>
           </button>
           <router-link to="/inventory/san-pham/them-moi" class="btn btn-primary d-flex align-items-center">
@@ -46,7 +46,7 @@
                 <th>
                   {{ $t('Product.table.no') }}
                 </th>
-                <th>
+                <th class="sticky">
                   {{ $t('Product.table.product_name') }}
                 </th>
                 <th>
@@ -68,7 +68,7 @@
                 v-show="selectedCategory === '' || product.sysIdDanhMuc === selectedCategory"
                 @dblclick="selectProduct(product.sysIdSanPham)">
                 <td>{{ index + 1 }}</td>
-                <td>
+                <td class="sticky">
                   <div class="d-flex align-items-center">
                     <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="50" loading="lazy"
                       style="object-fit: cover; object-position: center" />
@@ -99,7 +99,7 @@
           <button class="btn btn-primary btn-sm me-2" @click="prevPage" :disabled="currentPage === 0">
             {{ $t('Product.table.pagination.prev') }}
           </button>
-          <span class="mx-2"> {{ $t('Product.table.pagination.page') }}
+          <span class="mx-2" style="color: var(--nav-link-color);"> {{ $t('Product.table.pagination.page') }}
             {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
           <button class="btn btn-primary btn-sm ms-2" @click="nextPage" :disabled="currentPage === totalPages">
             {{ $t('Product.table.pagination.next') }}
@@ -112,13 +112,16 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
 import { useProductStore } from "@/store/productStore.js";
 import { showToastSuccess, showToastError, showToastInfo } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
+import { useI18n } from "vue-i18n";
+import i18n from "@/lang/i18n";
 
-const apiStore = useApiStore();
+const { t } = useI18n();
+const apiStore = useApiServices();
 const categoryStore = useCategoriesStore();
 const productStore = useProductStore();
 
@@ -156,92 +159,88 @@ const getProducts = async () => {
   }
 };
 
+// Lọc sản phẩm theo từ khóa (searchQuery)
 const filteredProducts = computed(() => {
-  // Lọc sản phẩm trước
-
-  // Call api
   let filtered = products.value.filter((product) => {
-    const nameMatches = product.tenSanPham.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const descriptionMatches = product.moTa.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const query = searchQuery.value.toLowerCase();
+    const nameMatches = product.tenSanPham.toLowerCase().includes(query);
+    const descriptionMatches = product.moTa.toLowerCase().includes(query);
     const quantityMatches = product.soLuongHienCo.toString().includes(searchQuery.value);
 
     return nameMatches || descriptionMatches || quantityMatches;
   });
 
-  // Sắp xếp sản phẩm theo lựa chọn của người dùng
   if (sortOption.value === "name-asc") {
     filtered.sort((a, b) => a.tenSanPham.localeCompare(b.tenSanPham)); // A-Z
   } else if (sortOption.value === "name-desc") {
     filtered.sort((a, b) => b.tenSanPham.localeCompare(a.tenSanPham)); // Z-A
   } else if (sortOption.value === "quantity-asc") {
-    filtered.sort((a, b) => a.soLuongHienCo - b.soLuongHienCo); // Số lượng tăng dần
+    filtered.sort((a, b) => a.soLuongHienCo - b.soLuongHienCo); // Quantity ascending
   } else if (sortOption.value === "quantity-desc") {
-    filtered.sort((a, b) => b.soLuongHienCo - a.soLuongHienCo); // Số lượng giảm dần
+    filtered.sort((a, b) => b.soLuongHienCo - a.soLuongHienCo); // Quantity descending
   }
 
   return filtered;
 });
 
 
-// Sắp xếp tăng dần, nếu ấn lần nữa thì đổi thành sắp xếp giảm dần, dùng if else kiểm tra 2 điều kiện
-const sortByNameAsc = () => {
-  if (sortOption.value === "name-asc") {
-    sortOption.value = "name-desc";
-  } else {
-    sortOption.value = "name-asc";
-  }
+// Sắp xếp tăng dần, dùng toán tử 3 ngồi để kiểm tra điều kiện clickAgain
+const toggleSortByName = () => {
+  sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
   updateUrl();
 };
 
-// Sắp xếp tăng dần, nếu ấn lần nữa thì đổi thành sắp xếp giảm dần, dùng if else kiểm tra 2 điều kiện
-const sortByQuantityAsc = () => {
-  if (sortOption.value === "quantity-asc") {
-    sortOption.value = "quantity-desc";
-  } else {
-    sortOption.value = "quantity-asc";
-  }
-  updateUrl();
-};
+// Sắp xếp tăng dần, dùng toán tử 3 ngồi để kiểm tra điều kiện clickAgain
+const toggleSortByQuantity = () =>
+  (sortOption.value = sortOption.value === "quantity-asc" ? "quantity-desc" : "quantity-asc");
 
-
-
+/**
+ * Cập nhật URL hiện tại
+ * - Thêm tham số sort vào URL
+ * - Xóa tham số sort khỏi URL
+ * - Thêm tham số category vào URL
+ * - Xóa tham số category khỏi URL
+ */
 const updateUrl = () => {
-  const baseUrl = window.location.pathname;
-  const query = [];
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
 
-  // Thêm tham số sắp xếp vào URL nếu có
   if (sortOption.value) {
-    query.push(`sort=${sortOption.value}`);
+    params.set("sort", sortOption.value);
+  } else {
+    params.delete("sort");
   }
 
-  // Thêm tham số danh mục vào URL nếu có
   if (selectedCategory.value) {
-    query.push(`category=${selectedCategory.value}`);
+    params.set("category", selectedCategory.value);
+  } else {
+    params.delete("category");
   }
 
-  const queryString = query.length > 0 ? `?${query.join("&")}` : "";
-  window.history.replaceState({}, "", `${baseUrl}${queryString}`);
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
 };
+
 
 // Xóa sản phẩm
 const deleteProduct = async (id, event) => {
   // event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên dòng <tr>
   const swalConfirm = await Swal.fire({
-    title: "Xóa sản phẩm?",
-    text: "Bạn có chắc chắn muốn xóa sản phẩm này?",
+    title: i18n.global.t("Product.table.swal.confirmDelete.title"),
+    text: i18n.global.t("Product.table.swal.confirmDelete.text"),
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
-    cancelButtonText: "Hủy",
+    cancelButtonText: i18n.global.t("Product.table.swal.confirmDelete.cancel"),
     cancelButtonColor: "#d33",
-    confirmButtonText: "Xóa",
+    confirmButtonText: i18n.global.t("Product.table.swal.confirmDelete.confirm"),
   });
 
   if (swalConfirm.isConfirmed) {
     try {
       await apiStore.delete(`products/${id}`);
       await getProducts(); // Cập nhật lại danh sách sản phẩm sau khi xóa
-      showToastSuccess("Sản phẩm đã được xóa");
+      showToastSuccess(i18n.global.t("Product.table.swal.success"));
     } catch (error) {
       console.error("Error while deleting category:", error);
       showToastError("Xóa sản phẩm thất bại. Vui lòng thử lại");
@@ -305,9 +304,9 @@ select:active {
 
 .list-group-item {
   border: none;
-  margin: 5px;
+  margin: 3px 5px;
   font-size: 14px;
-  padding: 12px;
+  padding: 14px 10px;
   transition: all .1s;
   border-radius: calc(.75rem - 2px);
 }
@@ -322,18 +321,14 @@ select:active {
   background-color: var(--primary-color);
   border-radius: calc(.75rem - 2px);
   color: #fff;
-  margin: 5px;
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  margin: 3px 5px;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
 }
 
 .category-selector {
-  background-color: #fff;
-  border: 1px solid #dfdfdf;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-main-color) !important;
   border-radius: 8px;
 }
 
@@ -355,5 +350,10 @@ select:active {
 .box-shadow {
   border-radius: 16px;
   border: 1px solid #e4e4e7;
+}
+
+.btn-primary:disabled,
+.btn-primary[disabled] {
+  background-color: var(--primary-color);
 }
 </style>

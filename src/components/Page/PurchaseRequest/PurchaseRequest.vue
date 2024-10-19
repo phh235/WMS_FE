@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="block p-4 box-shadow">
+  <div class="container-fluid">
+    <div class="block p-3 box-shadow">
       <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
         <div class="tab-container justify-content-start mb-2 mb-md-0">
           <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
@@ -19,7 +19,7 @@
             <input type="search" class="form-control" :placeholder="$t('Purchase_request.search_input.search_name')"
               v-model="searchQueryByPeople" />
           </div>
-          <button class="btn btn-secondary d-flex align-items-center me-2" @click="sortByIdAsc"
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById"
             style="width: 39.67px; height: 39.67px;">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
@@ -33,11 +33,11 @@
         <table class="table">
           <thead>
             <tr>
-              <th>{{ $t('Purchase_request.table.id') }}</th>
+              <th class="sticky">{{ $t('Purchase_request.table.id') }}</th>
               <th>{{ $t('Purchase_request.table.name') }}</th>
               <th>{{ $t('Purchase_request.table.status') }}</th>
               <th>{{ $t('Purchase_request.table.date') }}</th>
-              <th style="width: 200px;">{{ $t('Purchase_request.table.detail.title') }}</th>
+              <th style="width: 200px;" class="text-center">{{ $t('Purchase_request.table.action') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,7 +45,7 @@
               <td colspan="10">Không tìm thấy yêu cầu</td>
             </tr>
             <tr v-for="purchase in filteredRequests" :key="purchase.sysIdYeuCauMuaHang">
-              <td>{{ purchase.maPR }}</td>
+              <td class="sticky">{{ purchase.maPR }}</td>
               <td>{{ purchase.nguoiYeuCau }}</td>
               <td>
                 <span :class="['badge', getBadgeClass(purchase.trangThai)]">
@@ -53,11 +53,31 @@
                 </span>
               </td>
               <td>{{ purchase.ngayYeuCau }}</td>
-              <td style="width: 200px;"><button class="btn btn-secondary d-flex align-items-center"
-                  @click="showDetail(purchase)">
-                  <span class="material-symbols-outlined me-2">info</span> {{ $t('Purchase_request.table.detail.title')
-                  }}
+              <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
+                <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
+                  <span class="material-symbols-outlined">visibility</span>
                 </button>
+                <div class="dropdown" style="display: inline-block;">
+                  <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="material-symbols-outlined">more_vert</span>
+                  </button>
+                  <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                        {{ $t('Purchase_request.table.li_edit') }}
+                        <span class="material-symbols-outlined">edit_square</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                        @click="cancelPR">
+                        {{ $t('Purchase_request.table.li_cancel') }}
+                        <span class="material-symbols-outlined">cancel</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -138,9 +158,9 @@
                   </tr>
                 </tbody>
               </table>
-              <p class="fw-bold float-end mt-2"> {{ $t('Purchase_request.table.detail.product_detail.total_price') }}: <span
-                  style="color: var(--main-text-color);">{{
-                    totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+              <p class="fw-bold float-end mt-2"> {{ $t('Purchase_request.table.detail.product_detail.total_price') }}:
+                <span style="color: var(--main-text-color);">{{
+                  totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
               </p>
             </div>
           </div>
@@ -155,16 +175,18 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, reactive } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useI18n } from "vue-i18n";
+import i18n from "@/lang/i18n";
+import Swal from "sweetalert2";
 
 const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
 const purchases = ref([]);
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 // Tab
 const activeTab = ref(t('Purchase_request.tabs.all'));
 const tabs = computed(() => [t('Purchase_request.tabs.all'), t('Purchase_request.tabs.pending'), t('Purchase_request.tabs.confirmed'), t('Purchase_request.tabs.canceled')]);
@@ -175,6 +197,7 @@ onMounted(() => {
   getPurchaseRequests();
 })
 
+// dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
 watch(tabs, (newTabs) => {
   activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
 });
@@ -188,6 +211,7 @@ const selectedPurchase = reactive({
   chiTietDonHang: []
 })
 
+// Tính tổng giá trị (số lượng * giá)
 const totalOrderValue = computed(() => {
   return selectedPurchase.chiTietDonHang.reduce((total, item) => {
     return total + (parseFloat(item.tongChiPhi) || 0);
@@ -201,6 +225,31 @@ const getPurchaseRequests = async () => {
     purchases.value = response.data;
   } catch (error) {
     console.error("Failed to fetch purchase requests:", error);
+  }
+};
+
+
+// Hủy yêu cầu - udpate status DA_HUY
+const cancelPR = async () => {
+  const swalConfirm = await Swal.fire({
+    title: i18n.global.t("Purchase_request.table.swal.delete.title"),
+    text: i18n.global.t("Purchase_request.table.swal.delete.text"),
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonText: i18n.global.t("Purchase_request.table.swal.delete.cancel"),
+    cancelButtonColor: "#d33",
+    confirmButtonText: i18n.global.t("Purchase_request.table.swal.delete.confirm"),
+  });
+
+  if (swalConfirm.isConfirmed) {
+    try {
+      await apiStore.put(`purchase-requests/${selectedPurchase.sysIdYeuCauMuaHang}`, { trangThai: "DA_HUY" });
+      showToastSuccess(t('Purchase_request.table.swal.delete.success'));
+      getPurchaseRequests();
+    } catch (error) {
+      showToastError(t('Purchase_request.table.swal.delete.failed'));
+    }
   }
 };
 
@@ -220,58 +269,26 @@ const closeModal = () => {
 
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
-  switch (status) {
-    case t('Purchase_request.tabs.pending'):
-      return "DANG_XU_LY";
-    case t('Purchase_request.tabs.confirmed'):
-      return "XAC_NHAN";
-    case t('Purchase_request.tabs.canceled'):
-      return "DA_HUY";
-    default:
-      return status;
-  }
+  const statusMap = {
+    [t('Purchase_request.tabs.pending')]: "DANG_XU_LY",
+    [t('Purchase_request.tabs.confirmed')]: "XAC_NHAN",
+    [t('Purchase_request.tabs.canceled')]: "DA_HUY",
+  };
+
+  return statusMap[status] || status;
 };
 
-// Tạo computed để lọc danh sách yêu cầu
 const filteredRequests = computed(() => {
-  let filtered = purchases.value;
-
-  // Lọc theo trạng thái nếu không phải tab "Tất cả"
-  if (activeTab.value !== t('Purchase_request.tabs.all')) {
-    filtered = filtered.filter((purchase) => purchase.trangThai === getStatusValue(activeTab.value));
-  }
-
-  // Lọc theo ID hoặc người yêu cầu nếu có từ khóa tìm kiếm
-  if (searchQuery.value) {
-    const searchLower = searchQuery.value.toLowerCase();
-    filtered = filtered.filter(
-      (purchase) =>
-        purchase.maPR.toLowerCase().includes(searchLower)
-    );
-  }
-
-  if (searchQueryByPeople.value) {
-    const searchLower = searchQueryByPeople.value.toLowerCase();
-    filtered = filtered.filter(
-      (purchase) =>
-        purchase.nguoiYeuCau.toString().includes(searchLower)
-    );
-  }
-
-  return filtered;
+  return purchases.value
+    .filter(purchase => activeTab.value === t('Purchase_request.tabs.all') || purchase.trangThai === getStatusValue(activeTab.value))
+    .filter(purchase => !searchQuery.value || purchase.maPR.toLowerCase().includes(searchQuery.value.toLowerCase()))
+    .filter(purchase => !searchQueryByPeople.value || purchase.nguoiYeuCau.toString().includes(searchQueryByPeople.value.toLowerCase()));
 });
 
 // Sort
-const sortByIdAsc = () => {
-  if (sortOption.value === "id-asc") {
-    sortOption.value = "id-desc";
-    // Sắp xếp giảm dần theo maPR
-    purchases.value.sort((a, b) => b.maPR.localeCompare(a.maPR));
-  } else {
-    sortOption.value = "id-asc";
-    // Sắp xếp tăng dần theo maPR
-    purchases.value.sort((a, b) => a.maPR.localeCompare(b.maPR));
-  }
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  purchases.value.sort((a, b) => sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR));
   updateUrl();
 };
 
@@ -286,62 +303,55 @@ watch(activeTab, () => {
  * - Xóa tham số tab khỏi URL
  */
 const updateUrl = () => {
-  const baseUrl = window.location.pathname;
-  const query = new URLSearchParams(window.location.search);
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
 
   if (sortOption.value) {
-    query.set("sort", sortOption.value);
+    params.set("sort", sortOption.value);
   } else {
-    query.delete("sort");
+    params.delete("sort");
   }
 
-  // Thêm tham số tab vào URL
   if (activeTab.value && activeTab.value !== "T t c") {
-    query.set("tab", activeTab.value);
+    params.set("tab", activeTab.value);
   } else {
-    query.delete("tab");
+    params.delete("tab");
   }
 
-  const queryString = query.toString() ? `?${query.toString()}` : "";
-  window.history.replaceState({}, "", `${baseUrl}${queryString}`);
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
 };
 
-const getBadgeClass = (trangThai) => {
-  switch (trangThai) {
-    case "DANG_XU_LY":
-      return "bg-warning";
-    case "XAC_NHAN":
-      return "bg-success";
-    case "DA_HUY":
-      return "bg-danger";
-    default:
-      return "bg-secondary";
-  }
+const getBadgeClass = (status) => {
+  const statusMap = {
+    DANG_XU_LY: "bg-warning",
+    XAC_NHAN: "bg-success",
+    DA_HUY: "bg-danger",
+  };
+
+  return statusMap[status] || "bg-secondary";
 };
 
-const getStatusLabel = (trangThai) => {
-  switch (trangThai) {
-    case "DANG_XU_LY":
-      return t('Purchase_request.tabs.pending');
-    case "XAC_NHAN":
-      return t('Purchase_request.tabs.confirmed');
-    case "DA_HUY":
-      return t('Purchase_request.tabs.canceled');
-    default:
-      return trangThai;
-  }
+const getStatusLabel = (status) => {
+  const statusMap = {
+    DANG_XU_LY: t("Purchase_request.tabs.pending"),
+    XAC_NHAN: t("Purchase_request.tabs.confirmed"),
+    DA_HUY: t("Purchase_request.tabs.canceled"),
+  };
+
+  return statusMap[status] || status;
 };
 </script>
 
 <style scoped>
-.container {
-  max-width: 1400px;
+.container-fluid {
+  max-width: 1350px;
 }
 
 .block {
-  background-color: #fff;
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 
 td {
@@ -377,7 +387,7 @@ td {
 }
 
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   max-width: fit-content;
@@ -387,23 +397,19 @@ td {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
-
-  &:hover {
-    background-color: white;
-  }
 }
 
 .form-control {
@@ -427,6 +433,56 @@ td {
 @media screen and (max-width: 768px) {
   .block {
     padding: 15px 10px !important;
+  }
+}
+
+.btn-secondary,
+.btn-danger {
+  padding: 10px;
+}
+
+.btn-secondary {
+  background-color: var(--background-color) !important;
+  border: 1.5px solid var(--border-main-color) !important;
+
+  &:focus,
+  &:active {
+    background-color: var(--background-color) !important;
+    border: 1.5px solid var(--border-main-color) !important;
+  }
+}
+
+.dropdown-menu {
+  min-width: 140px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid #e4e4e7;
+}
+
+.dropdown-item {
+  font-size: 14px;
+  padding: 8px;
+  border-radius: calc(.75rem - 2px);
+  transition: all 0.1s;
+
+  &:hover {
+    background-color: var(--secondary-color);
+  }
+
+  &:focus {
+    color: #000;
+  }
+}
+
+.btn-logout {
+  color: #ef4444;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #ef4444;
+    background-color: #fef2f2;
+    cursor: pointer;
   }
 }
 </style>

@@ -1,4 +1,4 @@
-import Toast from "@components/Toast/toast.js";
+import Toast from "@/components/Toast/toast";
 import Swal from "sweetalert2";
 
 export const showToastInfo = (message, text) => {

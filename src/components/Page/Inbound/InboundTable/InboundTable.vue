@@ -18,7 +18,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Mã tham chiếu</th>
+            <th class="sticky">Mã tham chiếu</th>
             <th>Từ</th>
             <th>Đến</th>
             <th>Liên hệ</th>
@@ -36,7 +36,7 @@
             <td colspan="10">Không tìm thấy</td>
           </tr>
           <tr v-for="inbound of filteredInbounds" :key="inbound.id" style="cursor: pointer">
-            <td>{{ inbound.id }}</td>
+            <td class="sticky">{{ inbound.id }}</td>
             <td>{{ inbound.from }}</td>
             <td>{{ inbound.to }}</td>
             <td>{{ inbound.contact }}</td>

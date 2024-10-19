@@ -157,10 +157,12 @@ const roleFilter = ref("");
 
 // Lọc người dùng theo tìm kiếm và role
 const filteredUsers = computed(() => {
+  const query = searchQuery.value.toLowerCase();
   return users.value.filter((user) => {
     const matchesSearchQuery =
-      user.username.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.value.toLowerCase());
+      user.username.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query) ||
+      user.phoneNumber.toString().includes(query);
     const matchesRole = roleFilter.value === "" || user.roleId.toString() === roleFilter.value;
     return matchesSearchQuery && matchesRole;
   });
@@ -170,20 +172,15 @@ const filteredUsers = computed(() => {
 <style scoped>
 .container {
   width: 70%;
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 1px solid #dfdfdf;
+  border: 1px solid var(--border-main-color);
 }
 
 @media screen and (max-width: 1200px) {
   .container {
     width: 100%;
   }
-}
-
-tr,
-td {
-  border-bottom: 1px solid #dfdfdf;
 }
 
 td {

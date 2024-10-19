@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h3 class="fw-bold mb-3">
+        <h3 class="fw-bold mb-3" style="color: var(--nav-link-color);">
           {{ $t('Home.dashboard.title') }}
         </h3>
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
@@ -13,7 +13,8 @@
             </button>
           </div>
           <button class="btn btn-primary box-shadow d-flex align-items-center">
-            <span class="material-symbols-outlined me-2"> download </span>
+            <span class="material-symbols-outlined me-2"> download
+            </span>
             {{ $t('Home.dashboard.btn_download') }}
           </button>
         </div>
@@ -50,12 +51,12 @@
             <h5 class="card-title fw-bold">{{ $t('Home.dashboard.recent_transaction.label') }}</h5>
             <p class="card-text">{{ $t('Home.dashboard.recent_transaction.small') }}</p>
             <ul class="list-group list-group-flush flex-grow-1 overflow-auto">
-              <li v-for="transaction in recentTransactions" :key="transaction.id"
+              <li v-for=" transaction in recentTransactions" :key="transaction.id"
                 class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                  <strong>{{ transaction.type }}</strong>
+                  <strong style="color: var(--nav-link-color);">{{ transaction.type }}</strong>
                   <br />
-                  <small class="text-muted">{{ transaction.item }}</small>
+                  <small>{{ transaction.item }}</small>
                 </div>
                 <span :class="[
                   'badge',
@@ -227,12 +228,25 @@ onUnmounted(() => {
 }
 
 .card {
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
   border-radius: 16px;
 }
 
+.card,
+.card-body {
+  background-color: var(--background-color);
+  border-radius: 16px;
+}
+
+.card-subtitle,
+.card-title,
+.card-text {
+  background-color: var(--background-color);
+  color: var(--text-select);
+}
+
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   display: inline-flex;
@@ -242,18 +256,19 @@ onUnmounted(() => {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
 }
 
 /* .tab-button:hover {
@@ -319,5 +334,9 @@ onUnmounted(() => {
 
 .bg-primary {
   background-color: #3498db !important;
+}
+
+.list-group-item {
+  background-color: var(--background-color) !important;
 }
 </style>

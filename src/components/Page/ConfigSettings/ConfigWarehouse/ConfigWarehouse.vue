@@ -16,7 +16,7 @@
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
-          <th scope="col">{{ $t('Config_settings.warehouses.warehouse_id') }}</th>
+          <th scope="col" class="sticky">{{ $t('Config_settings.warehouses.warehouse_id') }}</th>
           <th scope="col">{{ $t('Config_settings.warehouses.warehouse_name') }}</th>
           <th scope="col">{{ $t('Config_settings.warehouses.warehouse_area') }}</th>
           <th scope="col">{{ $t('Config_settings.warehouses.warehouse_desc') }}</th>
@@ -30,7 +30,7 @@
         </tr>
         <tr v-for="warehouse in filteredWarehouses" :key="warehouse.sysIdKho" :data-id="warehouse.sysIdKho">
           <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
-          <td>{{ warehouse.maKho }}</td>
+          <td class="sticky">{{ warehouse.maKho }}</td>
           <td>{{ warehouse.tenKho }}</td>
           <td>{{ warehouse.dienTich }}</td>
           <td>{{ warehouse.moTa }}</td>
@@ -128,12 +128,12 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 const warehouses = ref([]);
 const addWarehouseBtn = ref(null);
 const searchQuery = ref("");
@@ -168,80 +168,62 @@ const getWarehouses = async () => {
 };
 
 const filteredWarehouses = computed(() => {
+  const queryUpper = searchQuery.value.toUpperCase();
+  const queryLower = searchQuery.value.toLowerCase();
   return warehouses.value.filter(
     (warehouse) =>
-      warehouse.maKho.toString().includes(searchQuery.value.toUpperCase()) ||
-      warehouse.tenKho.toString().includes(searchQuery.value.toUpperCase()) ||
-      warehouse.moTa.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      warehouse.dienTich.toString().includes(searchQuery.value.toLowerCase())
+      warehouse.maKho.toString().includes(queryUpper) ||
+      warehouse.tenKho.toString().includes(queryUpper) ||
+      warehouse.moTa.toLowerCase().includes(queryLower) ||
+      warehouse.dienTich.toString().includes(queryLower)
   );
 });
 
 // Lưu hoặc cập nhật kho hàng
 const saveWarehouse = async () => {
-  // Kiểm tra nếu ID trống
   if (!selectedWarehouse.maKho.trim()) {
     showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.warehouse_id"));
     return;
   }
-  // Kiểm tra nếu tên kho hàng trống
+
   if (!selectedWarehouse.tenKho.trim()) {
     showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.warehouse_name"));
     return;
   }
-  // Kiểm tra nếu Diện tích trống
+
   if (!selectedWarehouse.dienTich) {
     showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.warehouse_area"));
     return;
   }
 
-  // // Kiểm tra nếu mô tả trống
-  // if (!selectedWarehouse.moTa.trim()) {
-  //   showToastError("Mô tả kho hàng không được để trống!");
-  //   return;
-  // }
-
-  // Kiểm tra nếu userId trống
   if (!selectedWarehouse.sysIdUser) {
     showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.manager"));
     return;
   }
 
   try {
-    let response;
-    if (selectedWarehouse.sysIdKho) {
-      // Nếu có ID, thực hiện cập nhật
-      response = await apiStore.post("warehouses", {
-        sysIdKho: selectedWarehouse.sysIdKho,
-        maKho: selectedWarehouse.maKho,
-        tenKho: selectedWarehouse.tenKho,
-        dienTich: selectedWarehouse.dienTich,
-        moTa: selectedWarehouse.moTa,
-        sysIdUser: selectedWarehouse.sysIdUser,
-      });
-    } else {
-      // Nếu không có ID, thực hiện thêm mới
-      response = await apiStore.post("warehouses", {
-        maKho: selectedWarehouse.maKho,
-        tenKho: selectedWarehouse.tenKho,
-        dienTich: selectedWarehouse.dienTich,
-        moTa: selectedWarehouse.moTa,
-        sysIdUser: selectedWarehouse.sysIdUser,
-      });
-    }
+    const warehouseData = {
+      maKho: selectedWarehouse.maKho,
+      tenKho: selectedWarehouse.tenKho,
+      dienTich: selectedWarehouse.dienTich,
+      moTa: selectedWarehouse.moTa,
+      sysIdUser: selectedWarehouse.sysIdUser,
+    };
 
-    // Kiểm tra phản hồi từ API
+    const response = selectedWarehouse.sysIdKho
+      ? await apiStore.post("warehouses", {
+        ...warehouseData,
+        sysIdKho: selectedWarehouse.sysIdKho,
+      })
+      : await apiStore.post("warehouses", warehouseData);
+
     if (response) {
       await getWarehouses();
-      // Làm mới form
       btnResetForm_Click();
       addWarehouseBtn.value.click();
       showToastSuccess(i18n.global.t("Config_settings.warehouses.swal.success"));
-    } else {
-      // console.error("Failed to save warehouse:", response);
-      if (response && response.error) {
-        console.error("Error details:", response.error); // Ghi nhận chi tiết lỗi nếu có
-      }
+    } else if (response?.error) {
+      console.error("Error details:", response.error);
     }
   } catch (error) {
     console.error("Error while saving warehouse:", error);
@@ -249,22 +231,16 @@ const saveWarehouse = async () => {
 };
 
 // Điền dữ liệu vào form khi click vào dòng <tr></tr>
-const handleRowClick = (event) => {
-  // Lấy phần tử tr gần nhất từ sự kiện click hiện tại.
-  const row = event.target.closest("tr");
+const handleRowClick = ({ target }) => {
+  const row = target.closest("tr");
+  const id = row?.getAttribute("data-id");
 
-  // Lấy giá trị của thuộc tính 'data-id' từ <tr> đã được click.
-  const id = row.getAttribute("data-id");
+  const selectedWarehouseValue = warehouses.value.find(
+    (warehouse) => warehouse.sysIdKho === Number(id)
+  );
 
-  // Tìm kho hàng có ID tương ứng trong danh sách 'warehouses'.
-  const selectedWarehouseValue = warehouses.value.find((warehouse) => warehouse.sysIdKho == id);
-
-  // Nếu tìm thấy kho hàng có ID tương ứng.
   if (selectedWarehouseValue) {
-    // Sao chép dữ liệu của kho hàng được chọn vào biến 'selectedWarehouse'.
     Object.assign(selectedWarehouse, selectedWarehouseValue);
-
-    // Tự động click vào nút 'Thêm kho hàng' để mở modal chỉnh sửa thông tin kho hàng.
     addWarehouseBtn.value.click();
   }
 };
