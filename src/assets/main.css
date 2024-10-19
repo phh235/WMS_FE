@@ -13,7 +13,7 @@
   --border-input-color: #16a34a;
   --border-main-color: #e4e4e7;
   --text-light-color: #fff;
-  --text-select: #000;
+  --text-select: #fff;
   --input-bg: #fff;
 
   /* tabs */
@@ -46,7 +46,7 @@
   --tab-button-bg: #09090b;
   --tab-button-text: #d9d9d9;
   --text-light-color: #000;
-  --text-select: #fff;
+  --text-select: #000;
   --input-bg: #3c4043;
 }
 

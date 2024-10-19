@@ -27,7 +27,9 @@
           <div class="card-body d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h6 class="card-subtitle fs">{{ card.title }}</h6>
-              <span class="material-symbols-outlined text-muted fs-5">{{ card.icon }}</span>
+              <span class="material-symbols-outlined text-muted fs-5"
+                style="color: var(--nav-link-color) !important;">{{ card.icon
+                }}</span>
             </div>
             <h2 class="card-title mb-0 fw-bold fs-2">{{ card.value }}</h2>
             <small class="text-success">{{ card.change }}</small>
@@ -141,11 +143,15 @@ const initChart = () => {
           color: "#999",
         },
       },
+      textStyle: {
+        color: "var(--nav-link-color)",
+      },
     },
     legend: {
       data: ["Nhận hàng", "Gửi hàng", "Thay đổi ròng"],
       textStyle: {
         fontFamily: "Google Sans",
+        color: "var(--nav-link-color)",
       },
     },
     grid: {
@@ -161,6 +167,11 @@ const initChart = () => {
         axisPointer: {
           type: "shadow",
         },
+        axisLabel: {
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
+        },
       },
     ],
     yAxis: [
@@ -170,6 +181,11 @@ const initChart = () => {
         min: 0,
         max: 6000,
         interval: 1000,
+        axisLabel: {
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
+        },
       },
       {
         type: "value",
@@ -177,6 +193,11 @@ const initChart = () => {
         min: -2000,
         max: 2000,
         interval: 1000,
+        axisLabel: {
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
+        },
       },
     ],
     series: [
@@ -186,6 +207,13 @@ const initChart = () => {
         data: [2500, 2800, 3200, 3600, 3100, 2900, 3400, 3800, 3500, 3700, 4000, 4200],
         itemStyle: {
           color: "#16a34a",
+        },
+        label: {
+          show: true,
+          position: "top",
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
         },
       },
       {
@@ -242,7 +270,7 @@ onUnmounted(() => {
 .card-title,
 .card-text {
   background-color: var(--background-color);
-  color: var(--text-select);
+  color: var(--nav-link-color);
 }
 
 .tab-container {

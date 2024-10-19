@@ -112,9 +112,10 @@ const handleLogin = async () => {
   cursor: pointer;
   color: #666;
   transition: all 0.2s;
-}
+  user-select: none;
 
-.toggle-password:hover {
-  color: var(--text-light-color);
+  &:hover {
+    color: var(--nav-link-color);
+  }
 }
 </style>

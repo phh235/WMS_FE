@@ -367,7 +367,7 @@ const toggleLightDarkMode = () => {
 .sub-nav {
   min-height: 35px !important;
   max-height: 35px !important;
-  box-shadow: inset 0 -1px rgba(228, 228, 231, 1);
+  border-bottom: 1.5px solid var(--border-main-color);
 }
 
 .navbar {
