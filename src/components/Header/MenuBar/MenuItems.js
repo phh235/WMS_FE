@@ -4,7 +4,7 @@ export default [
     name: "tong-quan",
     component: () => import("@/components/Page/Home/Home.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Tổng quan kho",
       searchConfig: {},
       storeConfig: {},
@@ -15,7 +15,7 @@ export default [
     name: "quan-ly-kho",
     component: () => import("@/components/Page/WarehouseManagement/WarehouseManagement.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý kho",
       searchConfig: {},
       storeConfig: {},
@@ -26,7 +26,7 @@ export default [
     name: "thong-tin-tai-khoan",
     component: () => import("@/components/Page/Account/AccountInfo/AccountInfo.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Thông tin tài khoản",
       searchConfig: {},
       storeConfig: {},
@@ -37,7 +37,7 @@ export default [
     name: "quan-ly-tai-khoan",
     component: () => import("@/components/Page/Account/AccountManage/AccountManage.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý tài khoản",
       searchConfig: {},
       storeConfig: {},
@@ -48,7 +48,7 @@ export default [
     name: "san-pham",
     component: () => import("@components/Page/Product/ProductTable/ProductTable.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -59,7 +59,7 @@ export default [
     name: "them-moi",
     component: () => import("@components/Page/Product/ProductForm/ProductForm.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -70,7 +70,7 @@ export default [
     name: "nhap",
     component: () => import("@components/Page/Inbound/InboundTable/InboundTable.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Nhập kho",
       searchConfig: {},
       storeConfig: {},
@@ -81,7 +81,7 @@ export default [
     name: "tao-phieu-nhap",
     component: () => import("@components/Page/Inbound/InboundDetail/InboundDetail.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý nhập kho",
       searchConfig: {},
       storeConfig: {},
@@ -92,7 +92,7 @@ export default [
     name: "xuat",
     component: () => import("@components/Page/Outbound/OutboundTable/OutboundTable.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Xuất kho",
       searchConfig: {},
       storeConfig: {},
@@ -103,7 +103,7 @@ export default [
     name: "tao-phieu-xuat",
     component: () => import("@components/Page/Outbound/OutboundDetail/OutboundDetail.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Quản lý xuất kho",
       searchConfig: {},
       storeConfig: {},
@@ -114,7 +114,7 @@ export default [
     name: "ton-kho-vat-ly",
     component: () => import("@components/Page/PhysicalInventory/PhysicalInventory.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Hàng tồn kho vật lý",
       searchConfig: {},
       storeConfig: {},
@@ -125,7 +125,7 @@ export default [
     name: "bao-cao",
     component: () => import("@/components/Page/Report/Report.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Báo cáo",
       searchConfig: {},
       storeConfig: {},
@@ -136,7 +136,7 @@ export default [
     name: "yeu-cau-mua-hang",
     component: () => import("@/components/Page/PurchaseRequest/PurchaseRequest.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Yêu cầu mua hàng",
       searchConfig: {},
       storeConfig: {},
@@ -148,7 +148,7 @@ export default [
     component: () =>
       import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Thêm yêu cầu mua hàng",
       searchConfig: {},
       storeConfig: {},
@@ -159,7 +159,7 @@ export default [
     name: "dat-hang",
     component: () => import("@/components/Page/PurchaseOrder/PurchaseOrder.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Đặt hàng",
       searchConfig: {},
       storeConfig: {},
@@ -171,7 +171,7 @@ export default [
     component: () =>
       import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderForm.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Tạo đơn đặt hàng",
       searchConfig: {},
       storeConfig: {},
@@ -182,7 +182,7 @@ export default [
     name: "cau-hinh",
     component: () => import("@components/Page/ConfigSettings/ConfigSettings.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
       headerTitle: "Danh mục sản phẩm",
       searchConfig: {},
       storeConfig: {},
@@ -194,7 +194,7 @@ export default [
         component: () =>
           import("@components/Page/ConfigSettings/ConfigCategory/ConfigCategory.vue"),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           headerTitle: "Cấu hình danh mục",
           searchConfig: {},
           storeConfig: {},
@@ -206,7 +206,7 @@ export default [
         component: () =>
           import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouse.vue"),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           headerTitle: "Cấu hình kho hàng",
           searchConfig: {},
           storeConfig: {},
@@ -218,7 +218,7 @@ export default [
       //   component: () =>
       //     import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouseType.vue"),
       //   meta: {
-      //     requiresAuth: false,
+      //     requiresAuth: true,
       //     headerTitle: "Cấu hình loại kho",
       //     searchConfig: {},
       //     storeConfig: {},
@@ -230,7 +230,7 @@ export default [
         component: () =>
           import("@components/Page/ConfigSettings/ConfigWarehouseZone/ConfigWarehouseZone.vue"),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
           headerTitle: "Cấu hình khu vực",
           searchConfig: {},
           storeConfig: {},
