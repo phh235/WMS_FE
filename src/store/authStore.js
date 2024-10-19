@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError } from "@/components/Toast/utils/toastHandle";
 import i18n from "@/lang/i18n";
 
 export const useAuthStore = defineStore("auth", {
@@ -50,10 +50,8 @@ export const useAuthStore = defineStore("auth", {
         const tokenDecode = JSON.parse(atob(token.split(".")[1]));
         const currentTime = Math.floor(Date.now() / 1000); // Thời gian hiện tại tính bằng giây
 
-        // Kiểm tra xem token đã hết hạn chưa
+        // Kiểm tra xem token thời gian hết hạn
         if (tokenDecode.exp && tokenDecode.exp < currentTime) {
-          // showToastError("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
-          // this.logout(); // Đăng xuất nếu token đã hết hạn
           return false;
         }
 

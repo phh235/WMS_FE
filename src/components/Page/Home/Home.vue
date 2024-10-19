@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h3 class="fw-bold mb-3">
+        <h3 class="fw-bold mb-3" style="color: var(--nav-link-color);">
           {{ $t('Home.dashboard.title') }}
         </h3>
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
@@ -13,7 +13,8 @@
             </button>
           </div>
           <button class="btn btn-primary box-shadow d-flex align-items-center">
-            <span class="material-symbols-outlined me-2"> download </span>
+            <span class="material-symbols-outlined me-2"> download
+            </span>
             {{ $t('Home.dashboard.btn_download') }}
           </button>
         </div>
@@ -26,7 +27,9 @@
           <div class="card-body d-flex flex-column justify-content-between">
             <div class="d-flex justify-content-between align-items-start mb-2">
               <h6 class="card-subtitle fs">{{ card.title }}</h6>
-              <span class="material-symbols-outlined text-muted fs-5">{{ card.icon }}</span>
+              <span class="material-symbols-outlined text-muted fs-5"
+                style="color: var(--nav-link-color) !important;">{{ card.icon
+                }}</span>
             </div>
             <h2 class="card-title mb-0 fw-bold fs-2">{{ card.value }}</h2>
             <small class="text-success">{{ card.change }}</small>
@@ -50,12 +53,12 @@
             <h5 class="card-title fw-bold">{{ $t('Home.dashboard.recent_transaction.label') }}</h5>
             <p class="card-text">{{ $t('Home.dashboard.recent_transaction.small') }}</p>
             <ul class="list-group list-group-flush flex-grow-1 overflow-auto">
-              <li v-for="transaction in recentTransactions" :key="transaction.id"
+              <li v-for=" transaction in recentTransactions" :key="transaction.id"
                 class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                  <strong>{{ transaction.type }}</strong>
+                  <strong style="color: var(--nav-link-color);">{{ transaction.type }}</strong>
                   <br />
-                  <small class="text-muted">{{ transaction.item }}</small>
+                  <small>{{ transaction.item }}</small>
                 </div>
                 <span :class="[
                   'badge',
@@ -140,11 +143,15 @@ const initChart = () => {
           color: "#999",
         },
       },
+      textStyle: {
+        color: "var(--nav-link-color)",
+      },
     },
     legend: {
       data: ["Nhận hàng", "Gửi hàng", "Thay đổi ròng"],
       textStyle: {
         fontFamily: "Google Sans",
+        color: "var(--nav-link-color)",
       },
     },
     grid: {
@@ -160,6 +167,11 @@ const initChart = () => {
         axisPointer: {
           type: "shadow",
         },
+        axisLabel: {
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
+        },
       },
     ],
     yAxis: [
@@ -169,6 +181,11 @@ const initChart = () => {
         min: 0,
         max: 6000,
         interval: 1000,
+        axisLabel: {
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
+        },
       },
       {
         type: "value",
@@ -176,6 +193,11 @@ const initChart = () => {
         min: -2000,
         max: 2000,
         interval: 1000,
+        axisLabel: {
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
+        },
       },
     ],
     series: [
@@ -185,6 +207,13 @@ const initChart = () => {
         data: [2500, 2800, 3200, 3600, 3100, 2900, 3400, 3800, 3500, 3700, 4000, 4200],
         itemStyle: {
           color: "#16a34a",
+        },
+        label: {
+          show: true,
+          position: "top",
+          textStyle: {
+            color: "var(--nav-link-color)",
+          },
         },
       },
       {
@@ -227,12 +256,25 @@ onUnmounted(() => {
 }
 
 .card {
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
   border-radius: 16px;
 }
 
+.card,
+.card-body {
+  background-color: var(--background-color);
+  border-radius: 16px;
+}
+
+.card-subtitle,
+.card-title,
+.card-text {
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
+}
+
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   display: inline-flex;
@@ -242,18 +284,19 @@ onUnmounted(() => {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
 }
 
 /* .tab-button:hover {
@@ -319,5 +362,9 @@ onUnmounted(() => {
 
 .bg-primary {
   background-color: #3498db !important;
+}
+
+.list-group-item {
+  background-color: var(--background-color) !important;
 }
 </style>

@@ -2,21 +2,21 @@
   <div class="container px-4">
     <div class="row">
       <div class="col-12 col-md-3 mb-4">
-        <div class="card box-shadow" style="border-radius: 16px; border: 1px solid #e4e4e7">
+        <div class="block box-shadow">
           <div class="image-upload-container">
             <img v-if="imagePreview" :src="imagePreview" alt="product img front" class="product-image" />
             <div v-else class="placeholder-image">
-              <span>{{ $tc('Product.form.no_image') }}</span>
+              <span style="color: var(--nav-link-color);">{{ $t('Product.form.no_image') }}</span>
             </div>
             <input type="file" @change="onFileChange" class="file-input" id="imageUpload" />
             <label for="imageUpload" class="upload-button btn btn-primary d-flex align-items-center fw-medium"><span
-                class="material-symbols-outlined me-2"> upload </span>{{ $tc('Product.form.btn_upload') }}
+                class="material-symbols-outlined me-2"> upload </span>{{ $t('Product.form.btn_upload') }}
             </label>
           </div>
         </div>
       </div>
       <div class="col-12 col-md-9">
-        <div class="block box-shadow p-4">
+        <div class="block box-shadow p-3">
           <div class="mb-0">
             <div class="row">
               <div class="col-12 col-md-4 mb-3 d-none">
@@ -24,17 +24,17 @@
                 <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
               </div>
               <div class="col-12 col-md-4 mb-3">
-                <label for="tenSanPham">{{ $tc('Product.form.product_name') }}</label>
+                <label for="tenSanPham">{{ $t('Product.form.product_name') }}</label>
                 <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
               </div>
               <div class="col-12 col-md-4 mb-3">
-                <label for="soLuongHienCo">{{ $tc('Product.form.available_quantity') }}</label>
+                <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }}</label>
                 <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
               </div>
               <div class="col-12 col-md-4">
-                <label for="danhMuc">{{ $tc('Product.form.category.title') }}</label>
+                <label for="danhMuc">{{ $t('Product.form.category.title') }}</label>
                 <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
-                  <option value="" selected disabled>{{ $tc('Product.form.category.option') }}</option>
+                  <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
                   <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
                     :value="category.sysIdDanhMuc">
                     {{ category.tenDanhMuc }}
@@ -44,12 +44,12 @@
             </div>
           </div>
           <div class="mb-0">
-            <label for="moTa">{{ $tc('Product.form.desc') }}</label>
+            <label for="moTa">{{ $t('Product.form.desc') }}</label>
             <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
           </div>
           <div class="d-flex justify-content-end mt-3">
             <button class="btn btn-primary ms-auto d-flex align-items-center" @click="saveProduct">
-              <span class="material-symbols-outlined me-2"> check </span>{{ $tc('Product.form.btn_save') }}
+              <span class="material-symbols-outlined me-2"> check </span>{{ $t('Product.form.btn_save') }}
             </button>
           </div>
         </div>
@@ -60,14 +60,17 @@
 
 <script setup>
 import { ref, onMounted, reactive, watch } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
+import { useApiServices } from "@/services/apiService.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
 import { useProductStore } from "@/store/productStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import i18n from "@/lang/i18n";
 
+const { t } = useI18n();
 const imagePreview = ref(null);
-const apiStore = useApiStore();
+const apiStore = useApiServices();
 const categoryStore = useCategoriesStore();
 const productStore = useProductStore();
 const router = useRouter();
@@ -94,29 +97,26 @@ watch(() => productStore.selectedProduct, (newProduct) => {
 const saveProduct = async () => {
   // Validate form
   if (!productInfo.tenSanPham) {
-    showToastError("Tên sản phẩm không được để trống.");
+    showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
     return;
   }
   if (!productInfo.soLuongHienCo) {
-    showToastError("Số lượng không được để trống.");
+    showToastError(i18n.global.t("Product.form.swal.validate.available_quantity"));
     return;
   }
   if (!productInfo.sysIdDanhMuc) {
-    showToastError("Vui lòng chọn danh mục.");
+    showToastError(i18n.global.t("Product.form.swal.validate.choose_category"));
     return;
   }
-  if (!productInfo.moTa) {
-    showToastError("Mô tả không được để trống.");
-    return;
-  }
+
   // Kiểm tra số lượng hiện có phải là số
   if (isNaN(productInfo.soLuongHienCo)) {
-    showToastError("Số lượng hiện có phải là một số.");
+    showToastError(i18n.global.t("Product.form.swal.validate.available_quantity_number"));
     return;
   }
   // Kiểm tra xem đã chọn ảnh hay chưa
   if (!imagePreview.value) {
-    showToastError("Vui lòng chọn ảnh sản phẩm.");
+    showToastError(i18n.global.t("Product.form.swal.validate.image"));
     return;
   }
   try {
@@ -135,10 +135,8 @@ const saveProduct = async () => {
     const response = await apiStore.postImage("products", formData);
 
     if (response.status === 200) {
-      showToastSuccess("Lưu thành công");
-      setTimeout(() => {
-        router.push("/inventory/san-pham");
-      }, 1900);
+      showToastSuccess(i18n.global.t("Product.form.swal.success"));
+      router.push("/inventory/san-pham");
     } else {
       showToastError("Lưu thất bại");
     }
@@ -172,10 +170,12 @@ const onFileChange = (e) => {
 }
 
 .image-upload-container {
+  background-color: var(--background-color);
   position: relative;
   width: 100%;
   height: 300px;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .product-image,
@@ -183,7 +183,6 @@ const onFileChange = (e) => {
   width: 100%;
   height: 300px;
   object-fit: cover;
-  border-radius: 16px;
 }
 
 .placeholder-image {
@@ -209,11 +208,12 @@ const onFileChange = (e) => {
 label {
   font-size: 14px;
   font-weight: bold;
+  color: var(--nav-link-color);
 }
 
 .block {
-  background-color: #fff;
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 </style>

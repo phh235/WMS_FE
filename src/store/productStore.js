@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useApiStore } from "@/store/apiStore.js";
-import { showToastError } from "@components/Toast/utils/toastHandle.js";
+import { useApiServices } from "@/services/apiService.js";
+import { showToastError } from "@/components/Toast/utils/toastHandle";
 
 // Utility function để load dữ liệu từ localStorage
 const loadFromLocalStorage = (key, defaultValue) => {
@@ -16,7 +16,7 @@ const saveToLocalStorage = (key, value) => {
 
 export const useProductStore = defineStore("products", () => {
   const products = ref(loadFromLocalStorage("products", [])); // Load từ localStorage
-  const apiStore = useApiStore();
+  const apiStore = useApiServices();
 
   const getProducts = async () => {
     // Nếu dữ liệu đã có trong localStorage thì không cần gọi lại API

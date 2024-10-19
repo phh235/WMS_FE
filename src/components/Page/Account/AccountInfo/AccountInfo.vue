@@ -8,7 +8,7 @@
               <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
                 class="rounded-4 img-fluid mb-3" width="150" loading="lazy" />
             </div>
-            <h5 class="mt-1 fw-bold">Phan Huy Hoàng</h5>
+            <h5 class="mt-1 fw-bold" style="color: var(--label-color);">Phan Huy Hoàng</h5>
             <div class="d-flex justify-content-center mb-2">
               <span class="badge bg-primary"
                 style="background-color: var(--primary-color) !important; border-radius: 8px">Admin</span>
@@ -122,13 +122,18 @@ const passwordChange = reactive({
 </script>
 
 <style scoped>
+.card {
+  background-color: var(--background-color);
+}
+
 .form-label {
   font-weight: bold;
+  color: var(--nav-link-color);
 }
 
 .card {
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 
 @media screen and (max-width: 2000px) {

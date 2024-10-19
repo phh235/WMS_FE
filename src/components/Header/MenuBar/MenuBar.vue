@@ -1,21 +1,23 @@
 <template>
-  <div style="background-color: #fff !important">
+  <div style="background-color: var(--background-color)!important">
     <nav class="navbar navbar-expand-xxl">
       <div class="container-fluid p-0">
         <router-link to="/inventory/tong-quan" class="navbar-brand">
           <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" width="40"
             alt="" class="ms-2 rounded-4" />
-          <!-- <span class="ms-1 fw-bold" style="font-size: 17px">Inventory</span> -->
         </router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
           aria-controls="staticBackdrop" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="material-symbols-outlined">side_navigation</span>
+          <span class="material-symbols-outlined" style="transform: rotate(180deg); color:
+            var(--nav-link-color);">side_navigation</span>
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel">Quản lý tồn kho</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"
-              style="box-shadow: none"></button>
+            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel" style="color: var(--nav-link-color);">Quản lý
+              tồn kho</h5>
+            <!-- <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
+            <span class="material-symbols-outlined text-muted custom-close" data-bs-dismiss="offcanvas"
+              aria-label="Close" style="transform: rotate(180deg);">side_navigation</span>
           </div>
           <div class="offcanvas-body">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -26,7 +28,7 @@
                       data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="Avatar"
                         style="border-radius: 5px" width="30" />
-                      <span class="ms-2 text-dark fw-bold">Phan Huy Hoàng</span>
+                      <span class="ms-2 fw-bold">Phan Huy Hoàng</span>
                       <span class="material-symbols-outlined ms-2">unfold_more</span>
                     </button>
                     <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton">
@@ -35,10 +37,10 @@
                         <router-link to="/inventory/thong-tin-tai-khoan"
                           class="dropdown-item d-flex align-items-center mb-1" aria-expanded="false">
                           <div class="d-flex flex-column">
-                            <span class="text-dark fs mb-1 fw-bold">Phan Huy Hoàng
+                            <span class="fs mb-1 fw-bold">Phan Huy Hoàng
                               <span class="badge ms-1 float-end box-shadow" style="
                                   background-color: var(--primary-color) !important;
-                                  color: #fff !important;
+                                  color: var(--text-light-color) !important;
                                   font-size: 13px;
                                   border-radius: 8px;
                                 ">Admin</span></span>
@@ -46,16 +48,6 @@
                           </div>
                         </router-link>
                       </li>
-                      <!-- <li>
-                        <router-link
-                          to="/inventory/ngon-ngu"
-                          class="dropdown-item d-flex align-items-center justify-content-between"
-                          aria-expanded="false"
-                        >
-                          <span class="text-dark fs">Ngôn ngữ</span>
-                          <span class="material-symbols-outlined">language</span>
-                        </router-link>
-                      </li> -->
                       <li>
                         <hr class="dropdown-divider" />
                       </li>
@@ -136,17 +128,18 @@
                   {{ $t('Navbar.menu_item.product') }}
                 </router-link>
               </li>
-              <!-- <li class="nav-item">
-                <router-link to="/inventory/quan-ly-kho" class="nav-link">Quản lý kho</router-link>
-              </li> -->
               <li class="nav-item">
                 <router-link to="/inventory/quan-ly-tai-khoan" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> manage_accounts </span>
                   {{ $t('Navbar.menu_item.account_management') }}
                 </router-link>
               </li>
+              <li class="nav-item">
+                <router-link to="/inventory/quan-ly-kho" class="nav-link d-flex align-items-center"><span
+                    class="material-symbols-outlined me-2">holiday_village</span>Quản lý kho</router-link>
+              </li>
               <!-- multi dropdown menu | kho - khu vuc  -->
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="material-symbols-outlined me-2">holiday_village</span>
@@ -176,7 +169,7 @@
                     </router-link>
                   </li>
                 </ul>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <router-link to="/inventory/bao-cao" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> flag </span>
@@ -197,7 +190,7 @@
                   <li>
                     <router-link to="/inventory/cau-hinh/kho-hang"
                       class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
-                      <span class="text-dark fs">
+                      <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.warehouses') }}
                       </span>
                       <span class="material-symbols-outlined">warehouse</span>
@@ -209,7 +202,7 @@
                       class="dropdown-item d-flex align-items-center justify-content-between"
                       aria-expanded="false"
                     >
-                      <span class="text-dark fs">Loại kho</span>
+                      <span class="fs">Loại kho</span>
                       <span class="material-symbols-outlined">format_list_bulleted</span>
                     </router-link>
                   </li> -->
@@ -231,7 +224,7 @@
                   <li>
                     <router-link to="/inventory/cau-hinh/danh-muc"
                       class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
-                      <span class="text-dark fs">
+                      <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.categories') }}
                       </span>
                       <span class="material-symbols-outlined">category</span>
@@ -241,6 +234,12 @@
               </li>
             </ul>
             <div class="d-flex align-items-center justify-content-center me-2">
+              <button class="btn btn-secondary d-flex align-items-center me-2"
+                style="padding: 9px; transition: all 0.2s;" @click="toggleLightDarkMode">
+                <span class="material-symbols-outlined">
+                  {{ isLightMode ? 'light_mode' : 'dark_mode' }}
+                </span>
+              </button>
               <div class="tab-container">
                 <button v-for="tab in tabs" :key="tab" @click="changeLanguage(tab)"
                   :class="['tab-button', { active: activeTab === tab }]">
@@ -266,7 +265,7 @@
                       <router-link to="/inventory/thong-tin-tai-khoan"
                         class="dropdown-item d-flex align-items-center mb-1" aria-expanded="false">
                         <div class="d-flex flex-column">
-                          <span class="text-dark fs mb-1 fw-bold">Phan Huy Hoàng
+                          <span class="fs mb-1 fw-bold">Phan Huy Hoàng
                             <span class="badge ms-1 float-end box-shadow" style="
                                 background-color: var(--primary-color) !important;
                                 color: #fff !important;
@@ -298,21 +297,24 @@
       </div>
     </nav>
     <div class="sub-nav d-flex justify-content-center">
-      <span style="font-size: 16px; font-weight: bold">{{ headerTitle }}</span>
+      <span style="font-size: 16px; font-weight: bold; color: var(--nav-link-color)">{{ headerTitle }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watchEffect, onMounted } from "vue";
+import { ref, computed, watchEffect, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useAuthStore } from "@/store/auth.js";
+import { useAuthStore } from "@/store/authStore.js";
 import { useI18n } from "vue-i18n";
+import { useLocalStorage } from "@vueuse/core";
+import { updateTheme } from "@/theme/themeManager";
 
 const { t, locale } = useI18n()
 const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
+const isLightMode = useLocalStorage('isLightMode', true);
 
 const tabs = ["VI", "EN"];
 const activeTab = ref("VI");
@@ -346,6 +348,15 @@ const handleLogout = async () => {
     console.error(error);
   }
 };
+
+watch(isLightMode, (newValue) => {
+  updateTheme(newValue)
+}, { immediate: true })
+
+const toggleLightDarkMode = () => {
+  isLightMode.value = !isLightMode.value;
+  applyTheme(isLightMode.value);
+}
 </script>
 
 <style scoped>
@@ -356,7 +367,7 @@ const handleLogout = async () => {
 .sub-nav {
   min-height: 35px !important;
   max-height: 35px !important;
-  box-shadow: inset 0 -1px rgba(228, 228, 231, 1);
+  border-bottom: 1.5px solid var(--border-main-color);
 }
 
 .navbar {
@@ -365,12 +376,22 @@ const handleLogout = async () => {
 
 .nav-link {
   font-size: 14px;
-  color: #000;
+  color: var(--nav-link-color) !important;
   border-radius: calc(.75rem - 2px);
   margin-right: 5px;
   transition: all 0.1s;
   padding: 8px !important;
   line-height: 24px;
+
+  &:hover {
+    color: var(--nav-link-color);
+    background-color: var(--nav-link-hover);
+  }
+
+  &:focus,
+  &:active {
+    color: var(--nav-link-color);
+  }
 }
 
 .navbar-brand,
@@ -380,15 +401,12 @@ const handleLogout = async () => {
   height: 40px;
 }
 
-.nav-link:hover {
-  background-color: var(--secondary-color);
-}
-
 .dropdown-menu {
   min-width: 190px;
   padding: 8px;
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-main-color);
 }
 
 .dropdown-item {
@@ -396,13 +414,17 @@ const handleLogout = async () => {
   padding: 8px;
   border-radius: calc(.75rem - 2px);
   transition: all 0.1s;
+  color: var(--nav-link-color);
 
   &:hover {
     background-color: var(--secondary-color);
+    color: var(--nav-link-color);
   }
 
-  &:focus {
-    color: #000;
+  &:focus,
+  &:active {
+    background-color: var(--secondary-color);
+    color: var(--nav-link-color);
   }
 }
 
@@ -412,17 +434,6 @@ const handleLogout = async () => {
   &:focus,
   &:active {
     box-shadow: none;
-  }
-}
-
-input {
-  font-size: 14px;
-  border: 1px solid #dee2e6;
-
-  &:focus,
-  &:active {
-    box-shadow: none;
-    border: 1px solid #dee2e6;
   }
 }
 
@@ -437,11 +448,8 @@ input {
 @media screen and (max-width: 1400px) {
   .offcanvas {
     width: 300px !important;
+    background-color: var(--background-color);
     transition: all 0.3s ease-in-out;
-  }
-
-  .btn-close {
-    padding-right: 10px !important;
   }
 
   .offcanvas-body .nav-link {
@@ -465,8 +473,7 @@ input {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-    background-color: #fef2f2;
-    color: #ef4444;
+    color: var(--btn-logout-color);
   }
 
   .logout-text {
@@ -499,17 +506,18 @@ input {
   }
 
   .tab-button {
-    padding: 6px 50px !important;
+    padding: 6px 35px !important;
     max-width: fit-content;
   }
 }
 
 .nav-item .material-symbols-outlined {
   color: #94a3b8;
+  transition: all 0.2s ease;
 }
 
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   max-width: fit-content;
@@ -519,25 +527,27 @@ input {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow);
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
 
   &:hover {
-    background-color: white;
+    background-color: var(--background-color)
   }
+}
+
+.custom-close {
+  position: absolute;
+  top: 1rem;
+  color: var(--nav-link-color) !important;
+  right: 1rem;
+  cursor: pointer;
 }
 </style>

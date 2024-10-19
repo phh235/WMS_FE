@@ -146,6 +146,19 @@
       "name": "Requestor",
       "status": "Status",
       "date": "Date request",
+      "action": "Actions",
+      "li_edit": "Edit",
+      "li_cancel": "Cancel",
+      "swal": {
+        "delete": {
+          "success": "Request successfully cancelled",
+          "failed": "Request failed to cancel",
+          "title": "Cancel request?",
+          "text": "Are you sure you want to cancel this request?",
+          "cancel": "Cancel",
+          "confirm": "OK"
+        }
+      },
       "detail": {
         "title": "Detail",
         "order_detail": "Order detail: ",
@@ -202,6 +215,15 @@
         "next": "Next",
         "prev": "Prev",
         "page": "Page"
+      },
+      "swal": {
+        "success": "Product has been deleted",
+        "confirmDelete": {
+          "title": "Delete product?",
+          "text": "Are you sure you want to delete this product?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        }
       }
     },
     "form": {
@@ -214,7 +236,17 @@
         "title": "Category",
         "option": "Choose category"
       },
-      "desc": "Description"
+      "desc": "Description",
+      "swal": {
+        "success": "Product saved successfully",
+        "validate": {
+          "product_name": "Please enter product name",
+          "available_quantity": "Please enter available quantity",
+          "available_quantity_number": "Available quantity must be a number",
+          "choose_category": "Please select a category",
+          "image": "No product image selected"
+        }
+      }
     }
   },
   "Config_settings": {

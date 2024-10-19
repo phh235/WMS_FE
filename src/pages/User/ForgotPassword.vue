@@ -10,13 +10,13 @@
     <div>
       <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)"> {{
         $t("Login_forgot_form.forgot.title") }}</h2>
-      <h6 class="text-center mb-5"> {{ $t("Login_forgot_form.forgot.small") }}</h6>
+      <h6 class="text-center mb-5" style="color: var(--nav-link-color);"> {{ $t("Login_forgot_form.forgot.small") }}</h6>
       <form style="width: 20rem; margin: auto" @submit.prevent="handleForgotPassword">
         <div class="mb-3">
           <label class="form-label fs" for="email">Email</label>
           <input type="text" id="email" class="form-control" v-model="email" />
         </div>
-        <button type="submit" class="btn btn-login text-dark w-100" :disabled="loading" :class="{ loading: loading }">
+        <button type="submit" class="btn btn-login w-100" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           <span v-if="!loading">{{ $t("Login_forgot_form.forgot.btn_confirm") }}</span>
         </button>
@@ -59,6 +59,10 @@ const handleForgotPassword = async () => {
 </script>
 
 <style scoped>
+.form-label {
+  color: var(--label-color);
+}
+
 .fs {
   font-size: 14px;
   font-weight: bold;
@@ -71,6 +75,6 @@ const handleForgotPassword = async () => {
 
 .btn-login.loading {
   background-color: var(--primary-color);
-  color: #000;
+  color: var(--text-light-color);
 }
 </style>
