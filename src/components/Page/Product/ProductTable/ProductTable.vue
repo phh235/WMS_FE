@@ -99,7 +99,7 @@
           <button class="btn btn-primary btn-sm me-2" @click="prevPage" :disabled="currentPage === 0">
             {{ $t('Product.table.pagination.prev') }}
           </button>
-          <span class="mx-2"> {{ $t('Product.table.pagination.page') }}
+          <span class="mx-2" style="color: var(--nav-link-color);"> {{ $t('Product.table.pagination.page') }}
             {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
           <button class="btn btn-primary btn-sm ms-2" @click="nextPage" :disabled="currentPage === totalPages">
             {{ $t('Product.table.pagination.next') }}
@@ -327,8 +327,8 @@ select:active {
 }
 
 .category-selector {
-  background-color: #fff;
-  border: 1px solid #dfdfdf;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-main-color) !important;
   border-radius: 8px;
 }
 

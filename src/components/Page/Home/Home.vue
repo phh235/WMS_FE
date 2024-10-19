@@ -12,9 +12,8 @@
               {{ tab }}
             </button>
           </div>
-          <button class="btn btn-primary box-shadow d-flex align-items-center"
-            style="color: var(--btn-primary-color) !important;">
-            <span class="material-symbols-outlined me-2" style="color: var(--btn-primary-color) !important;"> download
+          <button class="btn btn-primary box-shadow d-flex align-items-center">
+            <span class="material-symbols-outlined me-2"> download
             </span>
             {{ $t('Home.dashboard.btn_download') }}
           </button>
@@ -55,9 +54,9 @@
               <li v-for=" transaction in recentTransactions" :key="transaction.id"
                 class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                  <strong>{{ transaction.type }}</strong>
+                  <strong style="color: var(--nav-link-color);">{{ transaction.type }}</strong>
                   <br />
-                  <small class="text-muted">{{ transaction.item }}</small>
+                  <small>{{ transaction.item }}</small>
                 </div>
                 <span :class="[
                   'badge',
@@ -240,8 +239,10 @@ onUnmounted(() => {
 }
 
 .card-subtitle,
-.card-title {
-  color: var(--text-light-color) !important;
+.card-title,
+.card-text {
+  background-color: var(--background-color);
+  color: var(--text-select);
 }
 
 .tab-container {
@@ -255,7 +256,7 @@ onUnmounted(() => {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: var(--tab-button-bg);
+  color: var(--tab-button-text);
   cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 10px;
@@ -335,7 +336,7 @@ onUnmounted(() => {
   background-color: #3498db !important;
 }
 
-.list-group {
-  background-color: var(--background-color);
+.list-group-item {
+  background-color: var(--background-color) !important;
 }
 </style>

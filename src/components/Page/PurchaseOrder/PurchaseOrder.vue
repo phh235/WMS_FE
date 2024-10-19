@@ -28,7 +28,7 @@
           style="cursor: pointer">
           <div class="order-header d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-center fw-bold">
-              <h5 class="me-5 fs fw-bold">
+              <h5 class="me-5 fs fw-bold" style="color: var(--nav-link-color);">
                 <span class="me-2">{{ order.id }}</span> |
                 <span class="ms-2">{{ order.product }}</span>
               </h5>
@@ -67,8 +67,8 @@
                 </span>
               </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <small class="text-muted">{{ order.date }}</small>
+            <div class="d-flex justify-content-between align-items-center mt-2" style="color: var(--nav-link-color);">
+              <small>{{ order.date }}</small>
               <strong>{{ order.price }} đ</strong>
             </div>
           </div>
@@ -78,7 +78,7 @@
   </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen modal-xl">
-      <div class="modal-content">
+      <div class="modal-content" style="background-color: var(--background-color);">
         <div class="modal-header border-0">
           <button type="button" class="btn btn-secondary d-flex align-items-center" data-bs-dismiss="modal"
             aria-label="Close"> <span class="material-symbols-outlined me-2 icon"> chevron_left </span>
@@ -216,10 +216,10 @@ const orders = ref([
 }
 
 .order-card {
-  background-color: #fff;
+  background-color: var(--background-color);
   overflow: hidden;
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 
 .order-header {
@@ -231,13 +231,13 @@ const orders = ref([
 }
 
 .order-user {
-  color: #6c757d;
+  color: var(--nav-link-color);
   font-size: 0.875rem;
 }
 
 .order-info {
   font-size: 0.875rem;
-  color: #6c757d;
+  color: var(--nav-link-color);
   display: flex;
   align-items: center;
 }
@@ -316,7 +316,7 @@ const orders = ref([
 }
 
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   max-width: fit-content;
@@ -326,26 +326,22 @@ const orders = ref([
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
   --tw-ring-offset-shadow: 0 0 #0000;
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
-
-  &:hover {
-    background-color: white;
-  }
 }
 </style>

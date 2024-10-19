@@ -4,7 +4,7 @@
       <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)">
         {{ $t("Login_forgot_form.login.title") }}
       </h2>
-      <h6 class="text-center mb-5">{{ $t("Login_forgot_form.login.small") }}</h6>
+      <h6 class="text-center mb-5" style="color: var(--nav-link-color);">{{ $t("Login_forgot_form.login.small") }}</h6>
       <form style="width: 20rem; margin: auto;" @submit.prevent="handleLogin">
         <!-- Username input -->
         <div class="mb-2">
@@ -26,7 +26,7 @@
           </router-link>
         </div>
         <!-- Submit button -->
-        <button class="btn btn-login text-dark w-100" type="submit" :disabled="loading" :class="{ loading: loading }">
+        <button class="btn btn-login w-100" type="submit" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           <span v-if="!loading">{{ $t("Login_forgot_form.login.btn_login") }}</span>
         </button>
@@ -73,14 +73,17 @@ const handleLogin = async () => {
 
 <style scoped>
 .forgot {
-  color: #171717;
+  color: var(--label-color);
   font-weight: bold;
   text-decoration: none;
 
   &:hover {
     color: var(--primary-color);
-    border-bottom: 1.5px solid var(--primary-color)
   }
+}
+
+.form-label {
+  color: var(--label-color);
 }
 
 .fs {
@@ -95,7 +98,6 @@ const handleLogin = async () => {
 
 .btn-login.loading {
   background-color: var(--primary-color);
-  color: #000;
 }
 
 .password-container {
@@ -113,6 +115,6 @@ const handleLogin = async () => {
 }
 
 .toggle-password:hover {
-  color: #000;
+  color: var(--text-light-color);
 }
 </style>

@@ -397,9 +397,9 @@ td {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: var(--tab-button-bg);
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
@@ -442,13 +442,13 @@ td {
 }
 
 .btn-secondary {
-  background-color: #fff !important;
-  border: 1.5px solid #e4e4e7 !important;
+  background-color: var(--background-color) !important;
+  border: 1.5px solid var(--border-main-color) !important;
 
   &:focus,
   &:active {
-    background-color: #fff !important;
-    border: 1.5px solid #e4e4e7 !important;
+    background-color: var(--background-color) !important;
+    border: 1.5px solid var(--border-main-color) !important;
   }
 }
 

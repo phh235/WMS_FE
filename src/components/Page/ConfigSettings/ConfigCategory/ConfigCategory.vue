@@ -298,7 +298,7 @@ td {
 }
 
 .tab-container {
-  background-color: #f4f4f5;
+  background-color: var(--secondary-color);
   border-radius: 12px;
   padding: 4px;
   max-width: fit-content;
@@ -308,22 +308,18 @@ td {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: #6c757d;
+  color: var(--tab-button-text);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
 }
 
 .tab-button.active {
-  background-color: white;
-  color: #000;
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);
-
-  &:hover {
-    background-color: white;
-  }
 }
 </style>

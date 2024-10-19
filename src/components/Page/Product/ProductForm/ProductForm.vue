@@ -2,11 +2,11 @@
   <div class="container px-4">
     <div class="row">
       <div class="col-12 col-md-3 mb-4">
-        <div class="card box-shadow" style="border-radius: 16px; border: 1px solid #e4e4e7">
+        <div class="block box-shadow">
           <div class="image-upload-container">
             <img v-if="imagePreview" :src="imagePreview" alt="product img front" class="product-image" />
             <div v-else class="placeholder-image">
-              <span>{{ $t('Product.form.no_image') }}</span>
+              <span style="color: var(--nav-link-color);">{{ $t('Product.form.no_image') }}</span>
             </div>
             <input type="file" @change="onFileChange" class="file-input" id="imageUpload" />
             <label for="imageUpload" class="upload-button btn btn-primary d-flex align-items-center fw-medium"><span
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col-12 col-md-9">
-        <div class="block box-shadow p-4">
+        <div class="block box-shadow p-3">
           <div class="mb-0">
             <div class="row">
               <div class="col-12 col-md-4 mb-3 d-none">
@@ -170,10 +170,12 @@ const onFileChange = (e) => {
 }
 
 .image-upload-container {
+  background-color: var(--background-color);
   position: relative;
   width: 100%;
   height: 300px;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .product-image,
@@ -181,7 +183,6 @@ const onFileChange = (e) => {
   width: 100%;
   height: 300px;
   object-fit: cover;
-  border-radius: 16px;
 }
 
 .placeholder-image {
@@ -207,11 +208,12 @@ const onFileChange = (e) => {
 label {
   font-size: 14px;
   font-weight: bold;
+  color: var(--nav-link-color);
 }
 
 .block {
-  background-color: #fff;
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 </style>

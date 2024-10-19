@@ -28,7 +28,8 @@
       </div>
 
       <div class="table-responsive p-md-3">
-        <button type="button" class="btn btn-secondary d-flex align-items-center" @click="addProduct">
+        <button type="button" class="btn btn-secondary d-flex align-items-center" @click="addProduct"
+          style="transition: all 0.2s;">
           <span class="material-symbols-outlined me-2">add</span>Thêm sản phẩm
         </button>
         <table class="table">
@@ -63,10 +64,13 @@
               <td>
                 <input v-model="product.ngayNhap" type="date" class="form-control" />
               </td>
-              <td class="d-flex justify-content-center td-action">
-                <button type="button" class="btn btn-danger d-flex align-items-center" @click="removeProduct(index)">
-                  <span class="material-symbols-outlined">delete_sweep</span>
-                </button>
+              <td class="td-action">
+                <div class="d-flex align-items-center justify-content-center"><button type="button"
+                    class="btn btn-danger  d-flex justify-content-center align-items-center"
+                    @click="removeProduct(index)">
+                    <span class="material-symbols-outlined">delete_sweep</span>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -78,7 +82,8 @@
             <span v-else class="material-symbols-outlined me-2">check</span>
             Xác nhận
           </button>
-          <h5 class="fw-bold">Tổng tiền: <span style="color: var(--primary-color);">{{ totalCost.toLocaleString() }}
+          <h5 class="fw-bold" style="color: var(--label-color);">Tổng tiền: <span
+              style="color: var(--primary-color);">{{ totalCost.toLocaleString() }}
               đ</span></h5>
         </div>
       </div>
@@ -200,12 +205,13 @@ const handleSubmit = async () => {
 <style scoped>
 .container-fluid {
   max-width: 1200px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
   border-radius: 16px;
 }
 
 .form-label {
   font-weight: bold;
+  color: var(--label-color);
 }
 
 input[type='date'] {

@@ -8,11 +8,13 @@
         </router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
           aria-controls="staticBackdrop" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="material-symbols-outlined" style="transform: rotate(180deg);">side_navigation</span>
+          <span class="material-symbols-outlined" style="transform: rotate(180deg); color:
+            var(--nav-link-color);">side_navigation</span>
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel">Quản lý tồn kho</h5>
+            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel" style="color: var(--nav-link-color);">Quản lý
+              tồn kho</h5>
             <!-- <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
             <span class="material-symbols-outlined text-muted custom-close" data-bs-dismiss="offcanvas"
               aria-label="Close" style="transform: rotate(180deg);">side_navigation</span>
@@ -232,14 +234,12 @@
               </li>
             </ul>
             <div class="d-flex align-items-center justify-content-center me-2">
-              <button class="btn btn-secondary d-flex align-items-center" style="padding: 8px;"
-                @click="toggleLightDarkMode">
+              <button class="btn btn-secondary d-flex align-items-center me-2"
+                style="padding: 9px; transition: all 0.2s;" @click="toggleLightDarkMode">
                 <span class="material-symbols-outlined">
                   {{ isLightMode ? 'light_mode' : 'dark_mode' }}
                 </span>
               </button>
-            </div>
-            <div class="d-flex align-items-center justify-content-center me-2">
               <div class="tab-container">
                 <button v-for="tab in tabs" :key="tab" @click="changeLanguage(tab)"
                   :class="['tab-button', { active: activeTab === tab }]">
@@ -355,6 +355,7 @@ watch(isLightMode, (newValue) => {
 
 const toggleLightDarkMode = () => {
   isLightMode.value = !isLightMode.value;
+  applyTheme(isLightMode.value);
 }
 </script>
 
@@ -413,14 +414,16 @@ const toggleLightDarkMode = () => {
   padding: 8px;
   border-radius: calc(.75rem - 2px);
   transition: all 0.1s;
-  color: var(--text-light-color);
+  color: var(--nav-link-color);
 
   &:hover {
     background-color: var(--secondary-color);
-    color: var(--text-light-color);
+    color: var(--nav-link-color);
   }
 
-  &:focus {
+  &:focus,
+  &:active {
+    background-color: var(--secondary-color);
     color: var(--nav-link-color);
   }
 }
@@ -445,6 +448,7 @@ const toggleLightDarkMode = () => {
 @media screen and (max-width: 1400px) {
   .offcanvas {
     width: 300px !important;
+    background-color: var(--background-color);
     transition: all 0.3s ease-in-out;
   }
 
@@ -502,7 +506,7 @@ const toggleLightDarkMode = () => {
   }
 
   .tab-button {
-    padding: 6px 50px !important;
+    padding: 6px 35px !important;
     max-width: fit-content;
   }
 }
@@ -523,7 +527,7 @@ const toggleLightDarkMode = () => {
   padding: 4px 10px;
   border: none;
   background-color: transparent;
-  color: var(--tab-button-bg);
+  color: var(--tab-button-text);
   cursor: pointer;
   transition: all 0.2s ease;
   border-radius: 10px;
@@ -542,6 +546,7 @@ const toggleLightDarkMode = () => {
 .custom-close {
   position: absolute;
   top: 1rem;
+  color: var(--nav-link-color) !important;
   right: 1rem;
   cursor: pointer;
 }

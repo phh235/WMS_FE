@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4">
-    <h4 class="fw-bold">Phiếu nhập</h4>
+    <h4 class="fw-bold" style="color: var(--primary-color);">Phiếu nhập</h4>
     <div class="mb-3 block box-shadow">
       <div class="d-flex justify-content-between">
         <div class="row mb-3">
@@ -127,17 +127,17 @@
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
               <div class="mt-3">
-                <h6 class="fw-bold">Thông tin khác</h6>
-                <p>
+                <h6 class="fw-bold" style="color: var(--label-color);">Thông tin khác</h6>
+                <p style="color: var(--label-color);">
                   Người phụ trách:
-                  <span style="color: var(--main-text-color); font-weight: bold">phh235</span>
+                  <span style="color: var(--primary-color); font-weight: bold">phh235</span>
                 </p>
               </div>
               <div class="mt-3"></div>
             </div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
               <div class="mt-3">
-                <h6 for="note" class="fw-bold">Ghi chú</h6>
+                <h6 for="note" class="fw-bold" style="color: var(--label-color);">Ghi chú</h6>
                 <textarea class="form-control" id="note" rows="5" style="width: 100%" placeholder="Ghi chú"
                   v-model="newProduct.note"></textarea>
               </div>
@@ -240,26 +240,23 @@ const btnCancel = () => {
 .block {
   padding: 1.5rem;
   border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid var(--border-main-color);
 }
 
 .nav-link {
-  color: #000;
+  color: var(--nav-link-color);
   border: 1px solid #d3d3d3;
   font-size: 14px;
 }
 
-.nav-link:hover {
-  background-color: #d3f8e4;
-}
-
 .nav-link.active {
-  color: #fff;
+  color: var(--nav-link-color);
   background-color: var(--primary-color);
 }
 
 .form-label {
   font-weight: bold;
+  color: var(--label-color);
 }
 
 .btn-danger {

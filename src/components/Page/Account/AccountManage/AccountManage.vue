@@ -172,20 +172,15 @@ const filteredUsers = computed(() => {
 <style scoped>
 .container {
   width: 70%;
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 1px solid #dfdfdf;
+  border: 1px solid var(--border-main-color);
 }
 
 @media screen and (max-width: 1200px) {
   .container {
     width: 100%;
   }
-}
-
-tr,
-td {
-  border-bottom: 1px solid #dfdfdf;
 }
 
 td {

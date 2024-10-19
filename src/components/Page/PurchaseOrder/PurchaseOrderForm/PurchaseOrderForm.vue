@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid px-5">
     <div class="head mb-4">
-      <h2 class="text-center fw-bold">Tạo đơn đặt hàng</h2>
-      <h5 class="text-center fw-bold" style="color: #71717a;">{{ steps[currentStep] }}</h5>
+      <h2 class="text-center fw-bold" style="color: var(--nav-link-color)">Tạo đơn đặt hàng</h2>
+      <h5 class="text-center fw-bold" style="color: var(--nav-link-color)">{{ steps[currentStep] }}</h5>
     </div>
 
     <div class="row justify-content-center">
@@ -159,7 +159,7 @@ const submitForm = async () => {
 }
 
 .nav-link {
-  color: #000;
+  color: var(--nav-link-color);
   border-radius: calc(1rem - 2px);
   padding: 12px;
   font-size: 15px;
@@ -172,6 +172,7 @@ const submitForm = async () => {
 
 .form-label {
   font-weight: bold;
+  color: var(--label-color);
 }
 
 @media screen and (max-width: 768px) {
