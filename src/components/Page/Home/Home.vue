@@ -31,7 +31,7 @@
                 style="color: var(--nav-link-color) !important;">{{ card.icon
                 }}</span>
             </div>
-            <h2 class="card-title mb-0 fw-bold fs-2">{{ card.value }}</h2>
+            <h2 class="card-title mb-0 fw-bold fs-2" style="font-family: Bricolage Grotesque;">{{ card.value }}</h2>
             <small class="text-success">{{ card.change }}</small>
           </div>
         </div>

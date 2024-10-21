@@ -17,41 +17,45 @@
       </div>
       <div class="col-12 col-md-9">
         <div class="block box-shadow p-3">
-          <div class="mb-0">
-            <div class="row">
-              <div class="col-12 col-md-4 mb-3 d-none">
-                <label for="sysIdSanPham">Mã sản phẩm</label>
-                <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
-              </div>
-              <div class="col-12 col-md-4 mb-3">
-                <label for="tenSanPham">{{ $t('Product.form.product_name') }}</label>
-                <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
-              </div>
-              <div class="col-12 col-md-4 mb-3">
-                <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }}</label>
-                <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
-              </div>
-              <div class="col-12 col-md-4">
-                <label for="danhMuc">{{ $t('Product.form.category.title') }}</label>
-                <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
-                  <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
-                  <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
-                    :value="category.sysIdDanhMuc">
-                    {{ category.tenDanhMuc }}
-                  </option>
-                </select>
+          <form @submit.prevent="saveProduct">
+            <div class="mb-0">
+              <div class="row">
+                <div class="col-12 col-md-4 mb-3 d-none">
+                  <label for="sysIdSanPham">Mã sản phẩm</label>
+                  <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                  <label for="tenSanPham">{{ $t('Product.form.product_name') }}</label>
+                  <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }}</label>
+                  <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
+                </div>
+                <div class="col-12 col-md-4">
+                  <label for="danhMuc">{{ $t('Product.form.category.title') }}</label>
+                  <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
+                    <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
+                    <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
+                      :value="category.sysIdDanhMuc">
+                      {{ category.tenDanhMuc }}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="mb-0">
-            <label for="moTa">{{ $t('Product.form.desc') }}</label>
-            <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
-          </div>
-          <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-primary ms-auto d-flex align-items-center" @click="saveProduct">
-              <span class="material-symbols-outlined me-2"> check </span>{{ $t('Product.form.btn_save') }}
-            </button>
-          </div>
+            <div class="mb-0">
+              <label for="moTa">{{ $t('Product.form.desc') }}</label>
+              <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+              <button :disabled="isLoading" type="submit" class="btn btn-primary ms-auto d-flex align-items-center">
+                <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+                  aria-hidden="true"></span>
+                <span v-else class="material-symbols-outlined me-2"> check </span>{{ $t('Product.form.btn_save') }}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -70,12 +74,14 @@ import i18n from "@/lang/i18n";
 
 const { t } = useI18n();
 const imagePreview = ref(null);
+const isLoading = ref(false);
 const apiStore = useApiServices();
 const categoryStore = useCategoriesStore();
 const productStore = useProductStore();
 const router = useRouter();
 
 const productInfo = reactive({
+  sysIdSanPham: "",
   tenSanPham: "",
   soLuongHienCo: "",
   moTa: "",
@@ -83,8 +89,28 @@ const productInfo = reactive({
   hinhAnh: "",
 });
 
+const getProductById = async (id) => {
+  try {
+    const response = await apiStore.get(`products/${id}`);
+    if (response.status === 200) {
+      const product = response.data;
+      Object.assign(productInfo, product);
+      imagePreview.value = product.hinhAnhUrl; // Hiển thị hình ảnh nếu có
+    } else {
+      showToastError(t("Product.form.swal.error.product_not_found"));
+    }
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    showToastError(t("Product.form.swal.error.fetch"));
+  }
+};
+
 onMounted(() => {
   categoryStore.getCategories();
+  const { id } = router.currentRoute.value.params; // Lấy ID từ route param
+  if (id) {
+    getProductById(id); // Gọi API để lấy chi tiết sản phẩm
+  }
 });
 
 watch(() => productStore.selectedProduct, (newProduct) => {
@@ -119,6 +145,7 @@ const saveProduct = async () => {
     showToastError(i18n.global.t("Product.form.swal.validate.image"));
     return;
   }
+  isLoading.value = true;
   try {
     const formData = new FormData();
 
@@ -128,10 +155,13 @@ const saveProduct = async () => {
     formData.append("sysIdDanhMuc", productInfo.sysIdDanhMuc);
 
     if (imagePreview.value) {
-      const file = await fetch(imagePreview.value).then((res) => res.blob());
+      const file = await fetch(imagePreview.value, { mode: 'no-cors' }).then((res) => res.blob());
       formData.append("hinhAnh", file, productInfo.hinhAnh.name);
     }
 
+    if (productInfo.sysIdSanPham) {
+      formData.append("sysIdSanPham", productInfo.sysIdSanPham);
+    }
     const response = await apiStore.postImage("products", formData);
 
     if (response.status === 200) {
@@ -143,6 +173,8 @@ const saveProduct = async () => {
   } catch (error) {
     console.error("Failed to save products:", error);
     showToastError("Có lỗi xảy ra khi lưu sản phẩm");
+  } finally {
+    isLoading.value = false;
   }
 };
 
@@ -159,6 +191,9 @@ const onFileChange = (e) => {
     productInfo.hinhAnh = file.name; // Lưu tên tệp
   }
 };
+
+const { params } = router.currentRoute.value;
+console.log(params?.id);
 </script>
 
 <style scoped>
@@ -215,5 +250,15 @@ label {
   background-color: var(--background-color);
   border-radius: 16px;
   border: 1px solid var(--border-main-color);
+}
+
+.btn-primary:disabled,
+.btn-primary[disabled] {
+  background-color: var(--primary-color);
+}
+
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 </style>

@@ -15,7 +15,7 @@
         }
       },
       "product": "Sản phẩm",
-      "account_management": "Quản lý tài khoản",
+      "AccountManagement": "Quản lý tài khoản",
       "warehouses_management": {
         "label": "Quản lý kho",
         "small": "Kho theo khu vực",
@@ -112,7 +112,7 @@
       }
     }
   },
-  "Login_forgot_form": {
+  "LoginForgotForm": {
     "logo_title": "Quản lý kho hàng - WMS",
     "login": {
       "title": "Chào mừng bạn trở lại",
@@ -129,7 +129,7 @@
       "btn_login": "Quay lại đăng nhập"
     }
   },
-  "Purchase_request": {
+  "PurchaseRequest": {
     "tabs": {
       "all": "Tất cả",
       "pending": "Đang xử lý",
@@ -140,6 +140,7 @@
       "search_id": "Tìm theo mã yêu cầu",
       "search_name": "Tìm theo người yêu cầu"
     },
+    "not_found": "Không tìm thấy yêu cầu",
     "btn_create": "Tạo yêu cầu mua hàng",
     "table": {
       "id": "Mã yêu cầu",
@@ -175,7 +176,7 @@
     },
     "form": {}
   },
-  "Account_info": {
+  "AccountInfo": {
     "title_info": "Thông tin cơ bản",
     "title_password": "Đổi mật khẩu",
     "label": {
@@ -190,7 +191,7 @@
     },
     "btn_update": "Cập nhật"
   },
-  "Account_management": {
+  "AccountManagement": {
     "search_input": "Tìm kiếm tài khoản...",
     "btn_account": "Cấp tài khoản",
     "no": "STT",
@@ -249,13 +250,14 @@
       }
     }
   },
-  "Config_settings": {
+  "ConfigSettings": {
     "btn_action": "Hành động",
     "btn_save": "Lưu",
     "btn_update": "Cập nhật",
     "btn_cancel": "Hủy",
     "no": "STT",
     "warehouses": {
+      "not_found": "Không tìm thấy kho hàng",
       "title_save": "Thêm kho hàng",
       "title_edit": "Chỉnh sửa kho hàng",
       "search_input": "Tìm kiếm kho hàng",
@@ -284,6 +286,7 @@
       }
     },
     "zones": {
+      "not_found": "Không tìm thấy khu vực",
       "title_save": "Thêm khu vực",
       "title_edit": "Chỉnh sửa khu vực",
       "search_input": "Tìm kiếm khu vực...",
@@ -311,6 +314,7 @@
       }
     },
     "categories": {
+      "not_found": "Không tìm thấy danh mục",
       "title_save": "Thêm danh mục",
       "title_edit": "Chỉnh sửa danh mục",
       "search_input": "Tìm kiếm danh mục...",
@@ -338,6 +342,44 @@
           "warehouse_id": "Vui lòng chọn kho!"
         }
       }
+    }
+  },
+  "Inbound": {
+    "title": "Nhập kho",
+    "search_input": "Tìm kiếm nhập kho...",
+    "btn_create_inbound": "Tạo phiếu nhập",
+    "not_found": "Không tìm thấy",
+    "table": {
+      "reference_code": "Mã tham chiếu",
+      "from": "Từ",
+      "to": "Đến",
+      "contact": "Liên hệ",
+      "person_in_charge": "Người phụ trách",
+      "plan_date": "Ngày theo kế hoạch",
+      "condition": "Tình trạng",
+      "effective_date": "Ngày hiệu lực",
+      "expiry_date": "Ngày hết hạn",
+      "order_late": "Đơn hàng chậm trễ của",
+      "status": "Trạng thái"
+    }
+  },
+  "Outbound": {
+    "title": "Xuất kho",
+    "search_input": "Tìm kiếm xuất kho...",
+    "btn_create_outbound": "Tạo phiếu xuất",
+    "not_found": "Không tìm thấy",
+    "table": {
+      "reference_code": "Mã tham chiếu",
+      "from": "Từ",
+      "to": "Đến",
+      "contact": "Liên hệ",
+      "person_in_charge": "Người phụ trách",
+      "plan_date": "Ngày theo kế hoạch",
+      "condition": "Tình trạng",
+      "effective_date": "Ngày hiệu lực",
+      "expiry_date": "Ngày hết hạn",
+      "order_late": "Đơn hàng chậm trễ của",
+      "status": "Trạng thái"
     }
   }
 }

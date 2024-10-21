@@ -8,7 +8,8 @@
               <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
                 class="rounded-4 img-fluid mb-3" width="150" loading="lazy" />
             </div>
-            <h5 class="mt-1 fw-bold" style="color: var(--label-color);">Phan Huy Hoàng</h5>
+            <h5 class="mt-1 fw-bold" style="color: var(--label-color); font-family: Bricolage Grotesque;">Phan Huy Hoàng
+            </h5>
             <div class="d-flex justify-content-center mb-2">
               <span class="badge bg-primary"
                 style="background-color: var(--primary-color) !important; border-radius: 8px">Admin</span>
@@ -19,13 +20,14 @@
       <div class="col-lg-8">
         <div class="card mb-4 box-shadow p-4">
           <div class="card-body">
-            <h5 class="mb-4 fw-bold" style="color: var(--primary-color)">
-              {{ $t("Account_info.title_info") }}
+            <h5 class="mb-4 fw-bold"
+              style="color: var(--primary-color); font-family: Bricolage Grotesque; font-size: 23px">
+              {{ $t("AccountInfo.title_info") }}
             </h5>
             <form @submit.prevent="updateBasicInfo">
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
-                  <label for="fullname" class="form-label">{{ $t("Account_info.label.fullname") }}</label>
+                  <label for="fullname" class="form-label">{{ $t("AccountInfo.label.fullname") }}</label>
                 </div>
                 <div class="col-sm-8">
                   <input id="fullname" v-model="basicInfo.fullname" type="text" class="form-control" />
@@ -33,7 +35,7 @@
               </div>
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
-                  <label for="username" class="form-label">{{ $t("Account_info.label.username") }}</label>
+                  <label for="username" class="form-label">{{ $t("AccountInfo.label.username") }}</label>
                 </div>
                 <div class="col-sm-8">
                   <input id="username" v-model="basicInfo.username" type="text" class="form-control" />
@@ -49,7 +51,7 @@
               </div>
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
-                  <label for="phone" class="form-label">{{ $t("Account_info.label.phone") }}</label>
+                  <label for="phone" class="form-label">{{ $t("AccountInfo.label.phone") }}</label>
                 </div>
                 <div class="col-sm-8">
                   <input id="phone" v-model="basicInfo.phone" type="tel" class="form-control" />
@@ -57,18 +59,20 @@
               </div>
               <button type="submit" class="btn btn-primary d-flex align-items-center">
                 <span class="material-symbols-outlined me-2">sync</span>
-                {{ $t("Account_info.btn_update") }}
+                {{ $t("AccountInfo.btn_update") }}
               </button>
             </form>
           </div>
         </div>
         <div class="card box-shadow p-4">
           <div class="card-body">
-            <h5 class="mb-4 fw-bold" style="color: var(--primary-color)">{{ $t("Account_info.title_password") }}</h5>
+            <h5 class="mb-4 fw-bold"
+              style="color: var(--primary-color); font-family: Bricolage Grotesque; font-size: 23px">{{
+                $t("AccountInfo.title_password") }}</h5>
             <form @submit.prevent="changePassword">
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
-                  <label for="oldPassword" class="form-label">{{ $t("Account_info.label.password.old") }}</label>
+                  <label for="oldPassword" class="form-label">{{ $t("AccountInfo.label.password.old") }}</label>
                 </div>
                 <div class="col-sm-8">
                   <input id="oldPassword" v-model="passwordChange.oldPassword" type="password" class="form-control" />
@@ -76,7 +80,7 @@
               </div>
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
-                  <label for="newPassword" class="form-label">{{ $t("Account_info.label.password.new") }}</label>
+                  <label for="newPassword" class="form-label">{{ $t("AccountInfo.label.password.new") }}</label>
                 </div>
                 <div class="col-sm-8">
                   <input id="newPassword" v-model="passwordChange.newPassword" type="password" class="form-control" />
@@ -84,7 +88,7 @@
               </div>
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
-                  <label for="confirmPassword" class="form-label">{{ $t("Account_info.label.password.confirm")
+                  <label for="confirmPassword" class="form-label">{{ $t("AccountInfo.label.password.confirm")
                     }}</label>
                 </div>
                 <div class="col-sm-8">
@@ -94,7 +98,7 @@
               </div>
               <button type="submit" class="btn btn-primary d-flex align-items-center">
                 <span class="material-symbols-outlined me-2">sync</span>
-                {{ $t("Account_info.btn_update") }}
+                {{ $t("AccountInfo.btn_update") }}
               </button>
             </form>
           </div>
@@ -129,6 +133,7 @@ const passwordChange = reactive({
 .form-label {
   font-weight: bold;
   color: var(--nav-link-color);
+  font-size: 15px;
 }
 
 .card {

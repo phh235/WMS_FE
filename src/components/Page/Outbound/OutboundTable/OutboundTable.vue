@@ -3,37 +3,36 @@
     <div class="mb-4 d-flex justify-content-end">
       <div class="form-group fs has-search d-flex align-items-center me-2">
         <span class="material-symbols-outlined form-control-feedback">search</span>
-        <input type="search" class="form-control" placeholder="Tìm theo mã tham chiếu" v-model="searchQuery" />
+        <input type="search" class="form-control" :placeholder="$t('Outbound.search_input')" v-model="searchQuery" />
       </div>
-      <select class="form-select fs me-2" aria-label="Default select example">
-        <option value="" selected>Sắp xếp</option>
-        <option value="name-asc">A-Z</option>
-        <option value="name-desc">Z-A</option>
-      </select>
+      <button class="btn btn-secondary d-flex align-items-center me-2"><span
+          class="material-symbols-outlined">swap_vert</span></button>
+      <button class="btn btn-secondary d-flex align-items-center me-2"><span
+          class="material-symbols-outlined">person</span></button>
       <router-link to="/inventory/nhap/tao-phieu-xuat" class="btn btn-primary d-flex align-items-center">
-        <span class="material-symbols-outlined me-2"> add </span> Tạo phiếu xuất
+        <span class="material-symbols-outlined me-2"> add </span> {{ $t('Outbound.btn_create_outbound') }}
       </router-link>
     </div>
     <div class="table-responsive">
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="sticky">Mã tham chiếu</th>
-            <th>Từ</th>
-            <th>Đến</th>
-            <th>Liên hệ</th>
-            <th>Người phụ trách</th>
-            <th>Ngày theo kế hoạch</th>
-            <th>Tình trạng</th>
-            <th>Ngày hiệu lực</th>
-            <th>Hết hạn</th>
-            <th>Đơn hàng chậm trễ của</th>
-            <th>Trạng thái</th>
+            <th class="sticky">{{ $t('Outbound.table.reference_code') }}</th>
+            <th>{{ $t('Outbound.table.from') }}</th>
+            <th>{{ $t('Outbound.table.to') }}</th>
+            <th>{{ $t('Outbound.table.contact') }}</th>
+            <th>{{ $t('Outbound.table.person_in_charge') }}</th>
+            <th>{{ $t('Outbound.table.plan_date') }}</th>
+            <th>{{ $t('Outbound.table.condition') }}</th>
+            <th>{{ $t('Outbound.table.effective_date') }}</th>
+            <th>{{ $t('Outbound.table.expiry_date') }}</th>
+            <th>{{ $t('Outbound.table.order_late') }}</th>
+            <th>{{ $t('Outbound.table.status') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="filteredOutbounds.length === 0" style="text-align: center; font-style: italic">
-            <td colspan="10">Không tìm thấy</td>
+            <td colspan="10">{{ $t('Outbound.not_found') }}</td>
           </tr>
           <tr v-for="outbound of filteredOutbounds" :key="outbound.id" style="cursor: pointer">
             <td class="sticky">{{ outbound.id }}</td>

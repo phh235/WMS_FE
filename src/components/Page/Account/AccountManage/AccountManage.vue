@@ -3,13 +3,13 @@
     <div class="mb-3 d-flex justify-content-end align-items-center">
       <div class="form-group fs has-search d-flex align-items-center me-2">
         <span class="material-symbols-outlined form-control-feedback">search</span>
-        <input type="search" class="form-control" :placeholder="$t('Account_management.search_input')"
+        <input type="search" class="form-control" :placeholder="$t('AccountManagement.search_input')"
           v-model="searchQuery" />
       </div>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
         data-bs-toggle="modal" data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
-        {{ $t('Account_management.btn_account') }}
+        {{ $t('AccountManagement.btn_account') }}
       </button>
     </div>
     <div class="table-responsive">
@@ -17,17 +17,17 @@
         <thead>
           <tr>
             <th class="table-col-id">
-              {{ $t('Account_management.no') }}
+              {{ $t('AccountManagement.no') }}
             </th>
             <th class="table-col-username">
-              {{ $t('Account_management.username') }}
+              {{ $t('AccountManagement.username') }}
             </th>
             <th class="table-col-password d-none">Mật khẩu</th>
             <th class="table-col-email">Email</th>
             <th class="table-col-email">
-              {{ $t('Account_management.phone') }}
+              {{ $t('AccountManagement.phone') }}
             </th>
-            <th class="table-col-roleId"> {{ $t('Account_management.role') }}
+            <th class="table-col-roleId"> {{ $t('AccountManagement.role') }}
             </th>
             <th></th>
           </tr>

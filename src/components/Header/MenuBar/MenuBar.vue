@@ -28,7 +28,7 @@
                       data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="Avatar"
                         style="border-radius: 5px" width="30" />
-                      <span class="ms-2 fw-bold">Phan Huy Hoàng</span>
+                      <span class="ms-2 fw-bold" style="color: var(--nav-link-color);">Phan Huy Hoàng</span>
                       <span class="material-symbols-outlined ms-2">unfold_more</span>
                     </button>
                     <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton">
@@ -131,7 +131,7 @@
               <li class="nav-item">
                 <router-link to="/inventory/quan-ly-tai-khoan" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> manage_accounts </span>
-                  {{ $t('Navbar.menu_item.account_management') }}
+                  {{ $t('Navbar.menu_item.AccountManagement') }}
                 </router-link>
               </li>
               <li class="nav-item">
@@ -232,10 +232,66 @@
                   </li>
                 </ul>
               </li>
+              <li class="nav-item notification">
+                <div class="dropdown">
+                  <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false" style="padding: 9px; transition: all 0.2s ease;">
+                    <span class="material-symbols-outlined">
+                      notifications
+                    </span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="dropdownMenuButton"
+                    style="width: 260px;">
+                    <div class="card box-shadow">
+                      <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                          <li v-for="notification in notifications" :key="notification.id"
+                            class="list-group-item d-flex align-items-center px-3">
+                            <span :class="['material-symbols-outlined me-3', getStatusClass(notification.status)]">
+                              {{ getStatusIcon(notification.status) }}
+                            </span>
+                            <div>
+                              <div class="fw-bold">{{ notification.title }}</div>
+                              <small>{{ notification.time }}</small>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
             </ul>
             <div class="d-flex align-items-center justify-content-center me-2">
+              <div class="dropdown notifications">
+                <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-expanded="false" style="padding: 9px; transition: all 0.2s ease;">
+                  <span class="material-symbols-outlined">
+                    notifications
+                  </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="dropdownMenuButton"
+                  style="width: 350px;">
+                  <div class="card box-shadow">
+                    <div class="card-body p-0">
+                      <ul class="list-group list-group-flush">
+                        <li v-for="notification in notifications" :key="notification.id"
+                          class="list-group-item d-flex align-items-center px-3">
+                          <span :class="['material-symbols-outlined me-3', getStatusClass(notification.status)]">
+                            {{ getStatusIcon(notification.status) }}
+                          </span>
+                          <div>
+                            <div class="fw-bold">{{ notification.title }}</div>
+                            <small>{{ notification.time }}</small>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <button class="btn btn-secondary d-flex align-items-center me-2"
-                style="padding: 9px; transition: all 0.2s;" @click="toggleLightDarkMode">
+                style="padding: 9px; transition: all 0.2s ease;" @click="toggleLightDarkMode">
                 <span class="material-symbols-outlined">
                   {{ isLightMode ? 'light_mode' : 'dark_mode' }}
                 </span>
@@ -319,6 +375,43 @@ const isLightMode = useLocalStorage('isLightMode', true);
 const tabs = ["VI", "EN"];
 const activeTab = ref("VI");
 
+const activeTabNoti = ref('Inbox');
+
+const notifications = ref([
+  { id: 1, title: "PO đã xác nhận yêu cầu của bạn", time: "1 giờ trước", status: "success" },
+  { id: 2, title: "Có yêu cầu của PR cần xác nhận", time: "1 giờ trước", status: "warning" },
+  { id: 3, title: "PO đã xác nhận yêu cầu của bạn", time: "2 giờ trước", status: "success" },
+  { id: 4, title: "PO yêu cầu bạn chỉnh sửa lại yêu cầu", time: "2 giờ trước", status: "warning" },
+  { id: 5, title: "PO đã hủy yêu cầu của bạn", time: "3 giờ trước", status: "cancel" },
+  { id: 6, title: "PO đã hủy yêu cầu của bạn", time: "4 giờ trước", status: "cancel" },
+]);
+
+const getStatusClass = (status) => {
+  switch (status) {
+    case 'success':
+      return 'text-success';
+    case 'warning':
+      return 'text-warning';
+    case 'cancel':
+      return 'text-danger';
+    default:
+      return 'text-secondary';
+  }
+};
+
+const getStatusIcon = (status) => {
+  switch (status) {
+    case 'success':
+      return 'check_circle';
+    case 'warning':
+      return 'warning';
+    case 'cancel':
+      return 'cancel';
+    default:
+      return 'info';
+  }
+};
+
 const changeLanguage = (tab) => {
   activeTab.value = tab;
   locale.value = tab === "VI" ? "vi" : "en";
@@ -355,7 +448,7 @@ watch(isLightMode, (newValue) => {
 
 const toggleLightDarkMode = () => {
   isLightMode.value = !isLightMode.value;
-  applyTheme(isLightMode.value);
+  updateTheme(isLightMode.value);
 }
 </script>
 
@@ -379,7 +472,7 @@ const toggleLightDarkMode = () => {
   color: var(--nav-link-color) !important;
   border-radius: calc(.75rem - 2px);
   margin-right: 5px;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
   padding: 8px !important;
   line-height: 24px;
 
@@ -413,7 +506,7 @@ const toggleLightDarkMode = () => {
   font-size: 14px;
   padding: 8px;
   border-radius: calc(.75rem - 2px);
-  transition: all 0.1s;
+  transition: all 0.2s ease;
   color: var(--nav-link-color);
 
   &:hover {
@@ -445,11 +538,15 @@ const toggleLightDarkMode = () => {
   display: none;
 }
 
+.notification {
+  display: none;
+}
+
 @media screen and (max-width: 1400px) {
   .offcanvas {
     width: 300px !important;
     background-color: var(--background-color);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
   .offcanvas-body .nav-link {
@@ -487,6 +584,14 @@ const toggleLightDarkMode = () => {
 
   .mobile-layout-end {
     display: unset;
+  }
+
+  .notification {
+    display: unset;
+  }
+
+  .notifications {
+    display: none;
   }
 
   .nav-link {
@@ -537,6 +642,8 @@ const toggleLightDarkMode = () => {
 .tab-button.active {
   background-color: var(--background-color);
   color: var(--nav-link-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
 
   &:hover {
     background-color: var(--background-color)
@@ -549,5 +656,41 @@ const toggleLightDarkMode = () => {
   color: var(--nav-link-color) !important;
   right: 1rem;
   cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: var(--background-color) !important;
+  border: 1.5px solid var(--border-main-color) !important;
+
+  &:focus,
+  &:active {
+    background-color: var(--background-color) !important;
+    border: 1.5px solid var(--border-main-color) !important;
+  }
+}
+
+.card {
+  border: none;
+  outline: none;
+}
+
+.card,
+.list-group {
+  border-radius: 16px;
+}
+
+.card,
+.list-group-item {
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
+}
+
+.list-group-item {
+  border: 1px solid var(--border-main-color);
+
+  &:hover {
+    background-color: var(--secondary-color);
+    cursor: pointer;
+  }
 }
 </style>

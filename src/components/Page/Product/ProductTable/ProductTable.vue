@@ -23,11 +23,7 @@
       </div>
       <div class="col-12 col-md-9 box-shadow p-3">
         <div class="d-flex mb-3 justify-content-end">
-          <div class="form-group fs has-search d-flex align-items-center me-2">
-            <span class="material-symbols-outlined form-control-feedback">search</span>
-            <input type="search" class="form-control" :placeholder="$t('Product.table.search_input')"
-              v-model="searchQuery" />
-          </div>
+          <SearchInput v-model="searchQuery" :placeholder="$t('Product.table.search_input')" />
           <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByQuantity">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
@@ -73,7 +69,7 @@
                     <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="50" loading="lazy"
                       style="object-fit: cover; object-position: center" />
                     <div>
-                      <div class="fw-bold">{{ product.tenSanPham }}</div>
+                      <div class="fw-bold" style="color: var(--nav-link-color);">{{ product.tenSanPham }}</div>
                       <div class="badge text-dark d-none"
                         style="background-color: var(--secondary-color-border); border-radius: 3px">
                         {{ product.sysIdDanhMuc }}
@@ -84,9 +80,10 @@
                 <td>{{ product.moTa }}</td>
                 <td>{{ product.soLuongHienCo ? product.soLuongHienCo : 0 }} Kg</td>
                 <td class="text-center">
-                  <button class="btn btn-secondary btn-sm me-2">
-                    <span class="material-symbols-outlined d-flex align-items-center">edit</span>
-                  </button>
+                  <router-link class="btn btn-secondary btn-sm me-2"
+                    :to="{ name: 'san-pham/chinh-sua/:id', params: { id: product.sysIdSanPham } }">
+                    <span class=" material-symbols-outlined d-flex align-items-center">edit_square</span>
+                  </router-link>
                   <button class="btn btn-danger btn-sm" @click="deleteProduct(product.sysIdSanPham)">
                     <span class="material-symbols-outlined d-flex align-items-center">delete</span>
                   </button>
@@ -112,6 +109,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
 import { useProductStore } from "@/store/productStore.js";
@@ -119,6 +117,9 @@ import { showToastSuccess, showToastError, showToastInfo } from "@components/Toa
 import Swal from "sweetalert2";
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
+import SearchInput from "@/components/Common/Search/SearchInput.vue";
+
+
 
 const { t } = useI18n();
 const apiStore = useApiServices();
@@ -159,15 +160,20 @@ const getProducts = async () => {
   }
 };
 
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 // Lọc sản phẩm theo từ khóa (searchQuery)
 const filteredProducts = computed(() => {
-  let filtered = products.value.filter((product) => {
-    const query = searchQuery.value.toLowerCase();
-    const nameMatches = product.tenSanPham.toLowerCase().includes(query);
-    const descriptionMatches = product.moTa.toLowerCase().includes(query);
-    const quantityMatches = product.soLuongHienCo.toString().includes(searchQuery.value);
+  const query = removeAccents(searchQuery.value.toLowerCase());
 
-    return nameMatches || descriptionMatches || quantityMatches;
+  let filtered = products.value.filter((product) => {
+    return (
+      removeAccents(product.tenSanPham.toLowerCase()).includes(query) ||
+      removeAccents(product.moTa.toLowerCase()).includes(query) ||
+      product.soLuongHienCo.toString().includes(searchQuery.value)
+    );
   });
 
   if (sortOption.value === "name-asc") {
@@ -307,12 +313,14 @@ select:active {
   margin: 3px 5px;
   font-size: 14px;
   padding: 14px 10px;
-  transition: all .1s;
+  transition: all .2s ease;
   border-radius: calc(.75rem - 2px);
+  background-color: var(--secondary-color);
+  color: var(--nav-link-color);
 }
 
 .list-group-item:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color-hover);
   border-radius: calc(.75rem - 2px);
   cursor: pointer;
 }

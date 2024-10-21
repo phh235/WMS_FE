@@ -5,7 +5,7 @@
       class="mb-4 top-0 start-0 position-absolute p-2 d-flex align-items-center justify-content-center user-select-none">
       <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" alt="Logo WMS"
         width="45" class="me-2 rounded-4" />
-      <p class="h6 fw-bold mt-2" style="color: var(--nav-link-color);"> {{ $t("Login_forgot_form.logo_title") }}
+      <p class="h6 fw-bold mt-2" style="color: var(--nav-link-color);"> {{ $t("LoginForgotForm.logo_title") }}
       </p>
     </div>
     <div class="row d-flex align-items-center justify-content-center vh-100">

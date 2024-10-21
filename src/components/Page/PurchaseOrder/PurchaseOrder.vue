@@ -101,8 +101,8 @@ import { useI18n } from "vue-i18n";
 
 const searchQuery = ref("");
 const { t } = useI18n();
-const activeTab = ref(t('Purchase_request.tabs.all'));
-const tabs = computed(() => [t('Purchase_request.tabs.all'), t('Purchase_request.tabs.pending'), t('Purchase_request.tabs.confirmed'), t('Purchase_request.tabs.canceled')]);
+const activeTab = ref(t('PurchaseRequest.tabs.all'));
+const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.pending'), t('PurchaseRequest.tabs.confirmed'), t('PurchaseRequest.tabs.canceled')]);
 
 const filteredOrders = computed(() => {
   return orders.value.filter((order) => {

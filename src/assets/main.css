@@ -16,6 +16,11 @@
   --text-select: #fff;
   --input-bg: #fff;
 
+  /* Status */
+  --bg-success: #effbf2;
+  --bg-danger: #faf0f0;
+  --bg-warning: #faf5ef;
+
   /* tabs */
   --tab-button-bg: #6c757d;
   --tab-button-text: #52525b;
@@ -48,6 +53,11 @@
   --text-light-color: #000;
   --text-select: #000;
   --input-bg: #3c4043;
+  --btn-logout-bg: #303134;
+  --btn-primary-color: #171717;
+  --bg-success: #1c2e2d;
+  --bg-danger: #2e212d;
+  --bg-warning: #2d2c2e;
 }
 
 @font-face {
@@ -90,6 +100,7 @@ body {
 
 .material-symbols-outlined {
   font-size: 17px;
+  transition: none !important;
 }
 
 .btn,
@@ -137,6 +148,7 @@ textarea {
   background-color: var(--primary-color);
   color: var(--btn-primary-color) !important;
   outline: none;
+  transition: all 0.2s ease !important;
   &:hover,
   &:active {
     border: none;
@@ -152,6 +164,7 @@ textarea {
   background-color: var(--background-color);
   color: var(--nav-link-color) !important;
   outline: none;
+  transition: all 0.2s ease !important;
   &:hover,
   &:active {
     border: 1.5px solid var(--border-main-color) !important;
@@ -169,7 +182,7 @@ textarea {
   border-radius: calc(0.75rem - 2px);
   &:hover,
   &:active {
-    background-color: #fef2f2 !important;
+    background-color: var(--btn-logout-bg) !important;
     color: var(--btn-logout-color) !important;
   }
 }
@@ -203,9 +216,9 @@ select {
   font-size: 14px !important;
   border-radius: 13px !important;
   border: 1.5px solid var(--border-main-color) !important;
-  background-color: var(--input-bg) !important;
+  background-color: var(--background-color) !important;
   color: var(--nav-link-color) !important;
-  transition: all 0.2s !important;
+  transition: all 0.2s ease !important;
   &:focus,
   &:active {
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.04) !important;
@@ -217,7 +230,8 @@ select {
   box-shadow: none !important;
   border-radius: 50px !important;
   transition: all 0.1s;
-  border: 2px solid #fff !important;
+  color: var(--nav-link-color) !important;
+  border: 2px solid var(--primary-color) !important;
   /* &:hover, */
   &:focus,
   &:active {
@@ -228,6 +242,8 @@ select {
 .modal .modal-content {
   border-radius: 16px;
   padding: 5px 10px;
+  background-color: var(--background-color);
+  color: var(--nav-link-color);
 }
 
 .fs {
@@ -237,10 +253,12 @@ select {
 /* SWAL CUSTOM CSS */
 .swal2-popup {
   font-family: "Google Sans", sans-serif;
-  border-radius: 10px !important;
+  border-radius: 16px !important;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
   overflow: hidden;
   cursor: pointer;
+  background-color: var(--background-color) !important;
+  color: var(--nav-link-color);
 }
 
 .swal2-confirm,

@@ -2,15 +2,16 @@
   <div class="d-flex align-items-center justify-content-center mb-4">
     <router-link to="/dang-nhap" class="btn btn-secondary d-flex align-items-center justify-content-center">
       <span class="material-symbols-outlined me-2"> chevron_left </span>
-      <span class="fw-bold"> {{ $t("Login_forgot_form.forgot.btn_login") }}
+      <span class="fw-bold"> {{ $t("LoginForgotForm.forgot.btn_login") }}
       </span>
     </router-link>
   </div>
   <div class="container d-flex justify-content-center">
     <div>
-      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)"> {{
-        $t("Login_forgot_form.forgot.title") }}</h2>
-      <h6 class="text-center mb-5" style="color: var(--nav-link-color);"> {{ $t("Login_forgot_form.forgot.small") }}</h6>
+      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color); font-family: Bricolage Grotesque;"> {{
+        $t("LoginForgotForm.forgot.title") }}</h2>
+      <h6 class="text-center mb-5" style="color: var(--nav-link-color);"> {{ $t("LoginForgotForm.forgot.small") }}
+      </h6>
       <form style="width: 20rem; margin: auto" @submit.prevent="handleForgotPassword">
         <div class="mb-3">
           <label class="form-label fs" for="email">Email</label>
@@ -18,7 +19,7 @@
         </div>
         <button type="submit" class="btn btn-login w-100" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span v-if="!loading">{{ $t("Login_forgot_form.forgot.btn_confirm") }}</span>
+          <span v-if="!loading">{{ $t("LoginForgotForm.forgot.btn_confirm") }}</span>
         </button>
       </form>
     </div>

@@ -15,7 +15,7 @@
         }
       },
       "product": "Products",
-      "account_management": "Account Management",
+      "AccountManagement": "Account Management",
       "warehouses_management": {
         "label": "Warehouses Management",
         "small": "Warehouse by Area",
@@ -44,7 +44,7 @@
     }
   },
   "Home": {
-    "headerTitle": "Dashboard",
+    "headerTitle": "Overview",
     "dashboard": {
       "title": "Dashboard",
       "btn_download": "Download report",
@@ -112,7 +112,7 @@
       }
     }
   },
-  "Login_forgot_form": {
+  "LoginForgotForm": {
     "logo_title": "Warehouse Management System",
     "login": {
       "title": "Welcome back",
@@ -129,7 +129,7 @@
       "btn_login": "Back to sign in"
     }
   },
-  "Purchase_request": {
+  "PurchaseRequest": {
     "tabs": {
       "all": "All",
       "pending": "Pending",
@@ -140,6 +140,7 @@
       "search_id": "Find by request Id",
       "search_name": "Find by requestor"
     },
+    "not_found": "Request not found",
     "btn_create": "Create purchase request",
     "table": {
       "id": "Request Id",
@@ -175,7 +176,7 @@
       }
     }
   },
-  "Account_info": {
+  "AccountInfo": {
     "title_info": "Account Information",
     "title_password": "Change Password",
     "label": {
@@ -190,7 +191,7 @@
     },
     "btn_update": "Update"
   },
-  "Account_management": {
+  "AccountManagement": {
     "search_input": "Search account...",
     "btn_account": "Create an account",
     "no": "No.",
@@ -249,13 +250,14 @@
       }
     }
   },
-  "Config_settings": {
+  "ConfigSettings": {
     "btn_action": "Actions",
     "btn_save": "Save",
     "btn_update": "Update",
     "btn_cancel": "Cancel",
     "no": "No.",
     "warehouses": {
+      "not_found": "Warehouse not found",
       "title_save": "Add warehouse",
       "title_edit": "Edit warehouse",
       "search_input": "Search warehouse...",
@@ -284,6 +286,7 @@
       }
     },
     "zones": {
+      "not_found": "Zone not found",
       "title_save": "Add zone",
       "title_edit": "Edit zone",
       "search_input": "Search zone...",
@@ -311,6 +314,7 @@
       }
     },
     "categories": {
+      "not_found": "Category not found",
       "title_save": "Add category",
       "title_edit": "Edit category",
       "search_input": "Search category...",
@@ -338,6 +342,44 @@
           "warehouse_id": "Please choose a warehouse!"
         }
       }
+    }
+  },
+  "Inbound": {
+    "title": "Inbound",
+    "search_input": "Search for inbound...",
+    "btn_create_inbound": "Create inbound",
+    "not_found": "Not found",
+    "table": {
+      "reference_code": "Reference code",
+      "from": "From",
+      "to": "To",
+      "contact": "Contact",
+      "person_in_charge": "Person in charge",
+      "plan_date": "Plan date",
+      "condition": "Condition",
+      "effective_date": "Effective date",
+      "expiry_date": "Expiry date",
+      "order_late": "Delayed order of",
+      "status": "Status"
+    }
+  },
+  "Outbound": {
+    "title": "Outbound",
+    "search_input": "Search for outbound...",
+    "btn_create_outbound": "Create outbound",
+    "not_found": "Not found",
+    "table": {
+      "reference_code": "Reference code",
+      "from": "From",
+      "to": "To",
+      "contact": "Contact",
+      "person_in_charge": "Person in charge",
+      "plan_date": "Plan date",
+      "condition": "Condition",
+      "effective_date": "Effective date",
+      "expiry_date": "Expiry date",
+      "order_late": "Delayed order of",
+      "status": "Status"
     }
   }
 }

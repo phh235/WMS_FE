@@ -1,19 +1,19 @@
 <template>
   <div class="container d-flex justify-content-center align-items-center">
     <div>
-      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color)">
-        {{ $t("Login_forgot_form.login.title") }}
+      <h2 class="text-center mb-1 fw-bold" style="color: var(--primary-color); font-family: Bricolage Grotesque;">
+        {{ $t("LoginForgotForm.login.title") }}
       </h2>
-      <h6 class="text-center mb-5" style="color: var(--nav-link-color);">{{ $t("Login_forgot_form.login.small") }}</h6>
+      <h6 class="text-center mb-5" style="color: var(--nav-link-color);">{{ $t("LoginForgotForm.login.small") }}</h6>
       <form style="width: 20rem; margin: auto;" @submit.prevent="handleLogin">
         <!-- Username input -->
         <div class="mb-2">
-          <label class="form-label fs" for="username">{{ $t("Login_forgot_form.login.label_username") }}</label>
+          <label class="form-label fs" for="username">{{ $t("LoginForgotForm.login.label_username") }}</label>
           <input type="text" id="username" class="form-control" v-model="username" />
         </div>
         <!-- Password input -->
         <div class="mb-2 password-container">
-          <label class="form-label fs" for="password">{{ $t("Login_forgot_form.login.label_password") }}</label>
+          <label class="form-label fs" for="password">{{ $t("LoginForgotForm.login.label_password") }}</label>
           <input class="form-control" :type="showPassword ? 'text' : 'password'" id="password" autocomplete
             v-model="password" />
           <span class="toggle-password" @click="toggleShowPassword">
@@ -22,13 +22,13 @@
           </span>
         </div>
         <div class="mb-2 text-end">
-          <router-link to="/quen-mat-khau" class="forgot fs"> {{ $t("Login_forgot_form.login.forgot_text") }}?
+          <router-link to="/quen-mat-khau" class="forgot fs"> {{ $t("LoginForgotForm.login.forgot_text") }}?
           </router-link>
         </div>
         <!-- Submit button -->
         <button class="btn btn-login w-100" type="submit" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span v-if="!loading">{{ $t("Login_forgot_form.login.btn_login") }}</span>
+          <span v-if="!loading">{{ $t("LoginForgotForm.login.btn_login") }}</span>
         </button>
       </form>
     </div>

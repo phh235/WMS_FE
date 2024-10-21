@@ -110,7 +110,7 @@ import { useProductStore } from "@/store/productStore.js";
 import { useRouter } from "vue-router";
 import ProductForm from '../../Product/ProductForm/ProductForm.vue';
 import { useApiServices } from "@/services/apiService.js";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError, showToastInfo } from "@components/Toast/utils/toastHandle.js";
 
 const apiStore = useApiServices();
 const productStore = useProductStore();
@@ -192,6 +192,9 @@ const handleSubmit = async () => {
     let response;
     response = await apiStore.post("purchase-requests/save", submitData);
     showToastSuccess('Tạo yêu cầu mua hàng thành công!');
+    setTimeout(() => {
+      showToastInfo('Đã gửi mail cho phòng Purchase Order');
+    }, 2000);
     router.push("/inventory/yeu-cau-mua-hang");
   } catch (error) {
     console.error('Error submitting purchase request:', error);
@@ -237,9 +240,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 .spinner-border {
-  width: 1rem;
-  height: 1rem;
-  border-width: 0.1em;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .btn-danger {

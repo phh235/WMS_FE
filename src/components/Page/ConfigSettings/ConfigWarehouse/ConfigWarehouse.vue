@@ -1,14 +1,10 @@
 <template>
   <div class="mb-3 d-flex justify-content-end align-items-center">
-    <div class="form-group fs has-search d-flex align-items-center me-2">
-      <span class="material-symbols-outlined form-control-feedback">search</span>
-      <input type="search" class="form-control" :placeholder="$t('Config_settings.warehouses.search_input')"
-        v-model="searchQuery" />
-    </div>
+    <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.warehouses.search_input')" />
     <button type="button" class="btn btn-primary d-flex align-items-center" ref="addWarehouseBtn" data-bs-toggle="modal"
       data-bs-target="#warehouseModal">
       <span class="material-symbols-outlined me-2"> add </span>
-      {{ $t('Config_settings.warehouses.btn_create') }}
+      {{ $t('ConfigSettings.warehouses.btn_create') }}
     </button>
   </div>
   <div class="table-responsive">
@@ -16,17 +12,17 @@
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
-          <th scope="col" class="sticky">{{ $t('Config_settings.warehouses.warehouse_id') }}</th>
-          <th scope="col">{{ $t('Config_settings.warehouses.warehouse_name') }}</th>
-          <th scope="col">{{ $t('Config_settings.warehouses.warehouse_area') }}</th>
-          <th scope="col">{{ $t('Config_settings.warehouses.warehouse_desc') }}</th>
-          <th scope="col">{{ $t('Config_settings.warehouses.manager') }}</th>
-          <th scope="col" class="text-center">{{ $t('Config_settings.btn_action') }}</th>
+          <th scope="col" class="sticky">{{ $t('ConfigSettings.warehouses.warehouse_id') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_name') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_area') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_desc') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.warehouses.manager') }}</th>
+          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="filteredWarehouses.length === 0" style="text-align: center; font-style: italic">
-          <td colspan="10">Không tìm thấy kho hàng</td>
+          <td colspan="10">{{ $t('ConfigSettings.warehouses.not_found') }}</td>
         </tr>
         <tr v-for="warehouse in filteredWarehouses" :key="warehouse.sysIdKho" :data-id="warehouse.sysIdKho">
           <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
@@ -37,7 +33,7 @@
           <td>{{ warehouse.sysIdUser }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="handleRowClick">
-              <span class="material-symbols-outlined d-flex align-items-center"> edit </span>
+              <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>
             </button>
             <button class="btn btn-danger" @click="deleteWarehouse(warehouse.maKho, $event)">
               <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
@@ -53,8 +49,8 @@
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedWarehouse.sysIdKho ? $t('Config_settings.warehouses.title_edit')
-              : $t('Config_settings.warehouses.title_save') }}
+            {{ selectedWarehouse.sysIdKho ? $t('ConfigSettings.warehouses.title_edit')
+              : $t('ConfigSettings.warehouses.title_save') }}
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm_Click"></button>
@@ -75,13 +71,13 @@
               <div class="row">
                 <div class="col-6">
                   <label for="warehouseId" class="form-label fs fw-bold">{{
-                    $t('Config_settings.warehouses.warehouse_id') }}</label>
+                    $t('ConfigSettings.warehouses.warehouse_id') }}</label>
                   <input type="text" class="form-control" id="warehouseId" aria-describedby="warehouseIdHelp"
                     v-model="selectedWarehouse.maKho" />
                 </div>
                 <div class="col-6">
                   <label for="tenKho" class="form-label fs fw-bold">
-                    {{ $t('Config_settings.warehouses.warehouse_name') }}
+                    {{ $t('ConfigSettings.warehouses.warehouse_name') }}
                   </label>
                   <input type="text" class="form-control" id="tenKho" aria-describedby="warehouseNameHelp"
                     v-model="selectedWarehouse.tenKho" />
@@ -91,13 +87,13 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="dienTich" class="form-label fs fw-bold">{{ $t('Config_settings.warehouses.warehouse_area')
+                  <label for="dienTich" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.warehouse_area')
                     }}</label>
                   <input type="text" class="form-control" id="dienTich" aria-describedby="warehouseAdressHelp"
                     v-model="selectedWarehouse.dienTich" />
                 </div>
                 <div class="col-6">
-                  <label for="sysIdUser" class="form-label fs fw-bold">{{ $t('Config_settings.warehouses.manager')
+                  <label for="sysIdUser" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.manager')
                     }}</label>
                   <input type="text" class="form-control" id="sysIdUser" aria-describedby="warehouseAdressHelp"
                     v-model="selectedWarehouse.sysIdUser" />
@@ -106,7 +102,7 @@
             </div>
             <div>
               <label for="warehouseDescription" class="form-label fs fw-bold">{{
-                $t('Config_settings.warehouses.warehouse_desc') }}</label>
+                $t('ConfigSettings.warehouses.warehouse_desc') }}</label>
               <textarea class="form-control" id="warehouseDescription" rows="4"
                 aria-describedby="warehouseDescriptionHelp" v-model="selectedWarehouse.moTa"></textarea>
             </div>
@@ -114,11 +110,11 @@
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
-            {{ $t('Config_settings.btn_cancel') }}
+            {{ $t('ConfigSettings.btn_cancel') }}
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouse">
             <span class="material-symbols-outlined me-2">check</span>
-            {{ selectedWarehouse.sysIdKho ? $t('Config_settings.btn_update') : $t('Config_settings.btn_save') }}
+            {{ selectedWarehouse.sysIdKho ? $t('ConfigSettings.btn_update') : $t('ConfigSettings.btn_save') }}
           </button>
         </div>
       </div>
@@ -132,6 +128,7 @@ import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
+import SearchInput from "@/components/Common/Search/SearchInput.vue";
 
 const apiStore = useApiServices();
 const warehouses = ref([]);
@@ -167,37 +164,42 @@ const getWarehouses = async () => {
   }
 };
 
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 const filteredWarehouses = computed(() => {
-  const queryUpper = searchQuery.value.toUpperCase();
-  const queryLower = searchQuery.value.toLowerCase();
+  const queryUpper = removeAccents(searchQuery.value.toUpperCase());
+  const queryLower = removeAccents(searchQuery.value.toLowerCase());
   return warehouses.value.filter(
     (warehouse) =>
-      warehouse.maKho.toString().includes(queryUpper) ||
-      warehouse.tenKho.toString().includes(queryUpper) ||
-      warehouse.moTa.toLowerCase().includes(queryLower) ||
+      removeAccents(warehouse.maKho.toString()).includes(queryUpper) ||
+      removeAccents(warehouse.tenKho.toString()).includes(queryUpper) ||
+      removeAccents(warehouse.moTa.toLowerCase()).includes(queryLower) ||
       warehouse.dienTich.toString().includes(queryLower)
   );
 });
 
+
 // Lưu hoặc cập nhật kho hàng
 const saveWarehouse = async () => {
   if (!selectedWarehouse.maKho.trim()) {
-    showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.warehouse_id"));
+    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.warehouse_id"));
     return;
   }
 
   if (!selectedWarehouse.tenKho.trim()) {
-    showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.warehouse_name"));
+    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.warehouse_name"));
     return;
   }
 
   if (!selectedWarehouse.dienTich) {
-    showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.warehouse_area"));
+    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.warehouse_area"));
     return;
   }
 
   if (!selectedWarehouse.sysIdUser) {
-    showToastError(i18n.global.t("Config_settings.warehouses.swal.validate.manager"));
+    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.manager"));
     return;
   }
 
@@ -221,7 +223,7 @@ const saveWarehouse = async () => {
       await getWarehouses();
       btnResetForm_Click();
       addWarehouseBtn.value.click();
-      showToastSuccess(i18n.global.t("Config_settings.warehouses.swal.success"));
+      showToastSuccess(i18n.global.t("ConfigSettings.warehouses.swal.success"));
     } else if (response?.error) {
       console.error("Error details:", response.error);
     }
@@ -248,24 +250,24 @@ const handleRowClick = ({ target }) => {
 // Xóa kho hàng
 const deleteWarehouse = async (maKho) => {
   const swalConfirm = await Swal.fire({
-    title: i18n.global.t("Config_settings.warehouses.swal.delete.title"),
-    text: i18n.global.t("Config_settings.warehouses.swal.delete.text"),
+    title: i18n.global.t("ConfigSettings.warehouses.swal.delete.title"),
+    text: i18n.global.t("ConfigSettings.warehouses.swal.delete.text"),
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
-    cancelButtonText: i18n.global.t("Config_settings.warehouses.swal.delete.cancel"),
+    cancelButtonText: i18n.global.t("ConfigSettings.warehouses.swal.delete.cancel"),
     cancelButtonColor: "#d33",
-    confirmButtonText: i18n.global.t("Config_settings.warehouses.swal.delete.confirm"),
+    confirmButtonText: i18n.global.t("ConfigSettings.warehouses.swal.delete.confirm"),
   });
 
   if (swalConfirm.isConfirmed) {
     try {
       await apiStore.delete(`warehouses/${maKho}`);
       await getWarehouses(); // Cập nhật lại danh sách kho hàng sau khi xóa
-      showToastSuccess(i18n.global.t("Config_settings.warehouses.swal.delete.success"));
+      showToastSuccess(i18n.global.t("ConfigSettings.warehouses.swal.delete.success"));
     } catch (error) {
       console.error("Error while deleting warehouse:", error);
-      showToastError(i18n.global.t("Config_settings.warehouses.swal.delete.failed"));
+      showToastError(i18n.global.t("ConfigSettings.warehouses.swal.delete.failed"));
     }
   }
 };

@@ -1,39 +1,35 @@
 <template>
   <div class="container-fluid box-shadow p-4">
     <div class="mb-4 d-flex justify-content-end">
-      <div class="form-group fs has-search d-flex align-items-center me-2">
-        <span class="material-symbols-outlined form-control-feedback">search</span>
-        <input type="search" class="form-control" placeholder="Tìm theo mã tham chiếu" v-model="searchQuery" />
-      </div>
-      <select class="form-select fs me-2" aria-label="Default select example">
-        <option value="" selected>Sắp xếp</option>
-        <option value="name-asc">A-Z</option>
-        <option value="name-desc">Z-A</option>
-      </select>
+      <SearchInput v-model="searchQuery" :placeholder="$t('Inbound.search_input')" />
+      <button class="btn btn-secondary d-flex align-items-center me-2"><span
+          class="material-symbols-outlined">swap_vert</span></button>
+      <button class="btn btn-secondary d-flex align-items-center me-2"><span
+          class="material-symbols-outlined">person</span></button>
       <router-link to="/inventory/nhap/tao-phieu-nhap" class="btn btn-primary d-flex align-items-center">
-        <span class="material-symbols-outlined me-2"> add </span> Tạo phiếu nhập
+        <span class="material-symbols-outlined me-2"> add </span> {{ $t('Inbound.btn_create_inbound') }}
       </router-link>
     </div>
     <div class="table-responsive">
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="sticky">Mã tham chiếu</th>
-            <th>Từ</th>
-            <th>Đến</th>
-            <th>Liên hệ</th>
-            <th>Người phụ trách</th>
-            <th>Ngày theo kế hoạch</th>
-            <th>Tình trạng</th>
-            <th>Ngày hiệu lực</th>
-            <th>Hết hạn</th>
-            <th>Đơn hàng chậm trễ của</th>
-            <th>Trạng thái</th>
+            <th class="sticky">{{ $t('Inbound.table.reference_code') }}</th>
+            <th>{{ $t('Inbound.table.from') }}</th>
+            <th>{{ $t('Inbound.table.to') }}</th>
+            <th>{{ $t('Inbound.table.contact') }}</th>
+            <th>{{ $t('Inbound.table.person_in_charge') }}</th>
+            <th>{{ $t('Inbound.table.plan_date') }}</th>
+            <th>{{ $t('Inbound.table.condition') }}</th>
+            <th>{{ $t('Inbound.table.effective_date') }}</th>
+            <th>{{ $t('Inbound.table.expiry_date') }}</th>
+            <th>{{ $t('Inbound.table.order_late') }}</th>
+            <th>{{ $t('Inbound.table.status') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="filteredInbounds.length === 0" style="text-align: center; font-style: italic">
-            <td colspan="10">Không tìm thấy</td>
+            <td colspan="10">{{ $t('Inbound.not_found') }}</td>
           </tr>
           <tr v-for="inbound of filteredInbounds" :key="inbound.id" style="cursor: pointer">
             <td class="sticky">{{ inbound.id }}</td>
@@ -57,6 +53,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import inboundList from "@/components/Page/Inbound/inbound.json";
+import SearchInput from "@/components/Common/Search/SearchInput.vue";
 
 const inbounds = ref(inboundList);
 const searchQuery = ref("");
