@@ -191,8 +191,8 @@ export default [
     },
   },
   {
-    path: "tao-don-dat-hang",
-    name: "tao-don-dat-hang",
+    path: "dat-hang/tao-don-dat-hang",
+    name: "dat-hang/tao-don-dat-hang",
     component: () =>
       import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderForm.vue"),
     meta: {

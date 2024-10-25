@@ -163,6 +163,7 @@
           "product_name": "Product name",
           "quantity": "Quantity",
           "price": "Price",
+          "date": "Expected date",
           "total": "Total",
           "total_price": "Total order price",
           "form": {}

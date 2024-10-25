@@ -163,6 +163,7 @@
           "product_name": "Tên sản phẩm",
           "quantity": "Số lượng",
           "price": "Giá",
+          "date": "Ngày nhập",
           "total": "Tổng tiền",
           "total_price": "Tổng giá trị đơn hàng"
         }

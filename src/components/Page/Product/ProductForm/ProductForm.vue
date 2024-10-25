@@ -25,15 +25,18 @@
                   <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="tenSanPham">{{ $t('Product.form.product_name') }} <span class="text-danger">*</span></label>
+                  <label for="tenSanPham">{{ $t('Product.form.product_name') }} <span
+                      class="text-danger">*</span></label>
                   <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }} <span class="text-danger">*</span></label>
+                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }} <span
+                      class="text-danger">*</span></label>
                   <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
                 </div>
                 <div class="col-12 col-md-4">
-                  <label for="danhMuc">{{ $t('Product.form.category.title') }} <span class="text-danger">*</span></label>
+                  <label for="danhMuc">{{ $t('Product.form.category.title') }} <span
+                      class="text-danger">*</span></label>
                   <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
                     <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
                     <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
@@ -97,19 +100,18 @@ const getProductById = async (id) => {
       Object.assign(productInfo, product);
       imagePreview.value = product.hinhAnhUrl; // Hiển thị hình ảnh nếu có
     } else {
-      showToastError(t("Product.form.swal.error.product_not_found"));
+      // showToastError(t("Product.form.swal.error.product_not_found"));
     }
   } catch (error) {
     console.error("Error fetching product:", error);
-    showToastError(t("Product.form.swal.error.fetch"));
   }
 };
 
-onMounted(() => {
-  categoryStore.getCategories();
+onMounted(async () => {
+  await categoryStore.getCategories();
   const { id } = router.currentRoute.value.params; // Lấy ID từ route param
   if (id) {
-    getProductById(id); // Gọi API để lấy chi tiết sản phẩm
+    await getProductById(id); // Gọi API để lấy chi tiết sản phẩm
   }
 });
 

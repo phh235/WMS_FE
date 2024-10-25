@@ -190,7 +190,7 @@ td {
 }
 
 .btn-danger {
-  padding: 6px 6px;
+  padding: 10px;
 }
 
 label {

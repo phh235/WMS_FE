@@ -287,16 +287,6 @@ const btnResetForm = () => {
 </script>
 
 <style scoped>
-tr,
-td {
-  border-bottom: 1px solid #dfdfdf;
-}
-
-td {
-  font-size: 0.875rem;
-  vertical-align: middle;
-}
-
 .btn-danger,
 .btn-secondary {
   padding: 10px 10px;

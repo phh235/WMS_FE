@@ -218,7 +218,8 @@ button {
 .btn.btn-primary,
 .btn.btn-login,
 .btn.btn-secondary,
-.btn.btn-logout {
+.btn.btn-logout
+.btn-danger {
   font-size: 0.875rem;
   padding: 8px 10px;
   border-radius: calc(0.825rem - 1px);

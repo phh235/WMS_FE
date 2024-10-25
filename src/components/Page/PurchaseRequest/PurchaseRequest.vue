@@ -149,6 +149,7 @@
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
+                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.date') }}</th>
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
                   </tr>
                 </thead>
@@ -159,6 +160,7 @@
                     <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
                       <span class="currency-symbol">&#8363;</span>
                     </td>
+                    <td>{{ item.ngayNhap }}</td>
                     <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
                       <span class="currency-symbol">&#8363;</span>
                     </td>
