@@ -23,11 +23,7 @@
       </div>
       <div class="col-12 col-md-9 box-shadow p-3">
         <div class="d-flex mb-3 justify-content-end">
-          <div class="form-group fs has-search d-flex align-items-center me-2">
-            <span class="material-symbols-outlined form-control-feedback">search</span>
-            <input type="search" class="form-control" :placeholder="$t('Product.table.search_input')"
-              v-model="searchQuery" />
-          </div>
+          <SearchInput v-model="searchQuery" :placeholder="$t('Product.table.search_input')" />
           <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByQuantity">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
@@ -43,37 +39,27 @@
           <table class="table">
             <thead>
               <tr>
-                <th>
-                  {{ $t('Product.table.no') }}
-                </th>
-                <th class="sticky">
-                  {{ $t('Product.table.product_name') }}
-                </th>
-                <th>
-                  {{ $t('Product.table.desc') }}
-                </th>
-                <th>
-                  {{ $t('Product.table.available_quantity') }}
-                </th>
-                <th class="text-center">{{ $t('Product.table.btn_action') }}</th>
+                <th class="td-id">{{ $t('Product.table.no') }}</th>
+                <th class="sticky td-name">{{ $t('Product.table.product_name') }}</th>
+                <th class="td-desc">{{ $t('Product.table.desc') }}</th>
+                <th class="td-quantity">{{ $t('Product.table.available_quantity') }}</th>
+                <th class="text-center td-action">{{ $t('Product.table.btn_action') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="filteredProducts.length === 0" style="text-align: center; font-style: italic">
-                <td colspan="10">
+              <tr v-if="paginatedProducts.length === 0" style="text-align: center; font-style: italic">
+                <td colspan="5">
                   {{ $t('Product.table.not_available') }}
                 </td>
               </tr>
-              <tr v-for="(product, index) in filteredProducts" :key="product.sysIdSanPham"
-                v-show="selectedCategory === '' || product.sysIdDanhMuc === selectedCategory"
-                @dblclick="selectProduct(product.sysIdSanPham)">
-                <td>{{ index + 1 }}</td>
-                <td class="sticky">
+              <tr v-for="product in paginatedProducts" :key="product.sysIdSanPham">
+                <td class="td-id">{{ product.sysIdSanPham }}</td>
+                <td class="sticky td-name">
                   <div class="d-flex align-items-center">
                     <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="50" loading="lazy"
                       style="object-fit: cover; object-position: center" />
                     <div>
-                      <div class="fw-bold">{{ product.tenSanPham }}</div>
+                      <div class="fw-bold" style="color: var(--nav-link-color);">{{ product.tenSanPham }}</div>
                       <div class="badge text-dark d-none"
                         style="background-color: var(--secondary-color-border); border-radius: 3px">
                         {{ product.sysIdDanhMuc }}
@@ -81,12 +67,13 @@
                     </div>
                   </div>
                 </td>
-                <td>{{ product.moTa }}</td>
-                <td>{{ product.soLuongHienCo ? product.soLuongHienCo : 0 }} Kg</td>
-                <td class="text-center">
-                  <button class="btn btn-secondary btn-sm me-2">
-                    <span class="material-symbols-outlined d-flex align-items-center">edit</span>
-                  </button>
+                <td class="td-desc">{{ product.moTa }}</td>
+                <td class="td-quantity">{{ product.soLuongHienCo ? product.soLuongHienCo : 0 }} Kg</td>
+                <td class="text-center td-action">
+                  <router-link class="btn btn-secondary btn-sm me-2"
+                    :to="{ name: 'san-pham/chinh-sua/:id', params: { id: product.sysIdSanPham } }">
+                    <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
+                  </router-link>
                   <button class="btn btn-danger btn-sm" @click="deleteProduct(product.sysIdSanPham)">
                     <span class="material-symbols-outlined d-flex align-items-center">delete</span>
                   </button>
@@ -95,15 +82,9 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination d-flex justify-content-center align-items-center mt-3">
-          <button class="btn btn-primary btn-sm me-2" @click="prevPage" :disabled="currentPage === 0">
-            {{ $t('Product.table.pagination.prev') }}
-          </button>
-          <span class="mx-2" style="color: var(--nav-link-color);"> {{ $t('Product.table.pagination.page') }}
-            {{ currentPage + 1 }} / {{ totalPages + 1 }}</span>
-          <button class="btn btn-primary btn-sm ms-2" @click="nextPage" :disabled="currentPage === totalPages">
-            {{ $t('Product.table.pagination.next') }}
-          </button>
+        <div class="d-flex justify-content-center">
+          <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+            @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
         </div>
       </div>
     </div>
@@ -111,13 +92,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
 import { useProductStore } from "@/store/productStore.js";
-import { showToastSuccess, showToastError, showToastInfo } from "@components/Toast/utils/toastHandle.js";
-import Swal from "sweetalert2";
 import { useI18n } from "vue-i18n";
+import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
+import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 
 const { t } = useI18n();
@@ -127,80 +110,87 @@ const productStore = useProductStore();
 
 const products = ref([]);
 const selectedCategory = ref("");
-const currentPage = ref(0);
-const totalPages = ref(2);
-const pageSize = ref(20);
 const searchQuery = ref("");
 const sortOption = ref("");
+const currentPage = ref(1);
+const pageSize = ref(5);
 
 onMounted(() => {
   getProducts();
   categoryStore.getCategories();
 });
 
-// const selectProduct = async (productId) => {
-//   try {
-//     await productStore.getProductById(productId);
-//   } catch (error) {
-//     showToastInfo("Không thể lấy thông tin sản phẩm.");
-//   }
-// };
-
-// getAll sản phẩm
 const getProducts = async () => {
   try {
-    const response = await apiStore.get(
-      `products?page=${currentPage.value}&size=${pageSize.value}`
-    );
+    const response = await apiStore.get("products?page=0&size=100");
     products.value = response.data.list;
-    totalPages.value = Math.ceil(response.total / pageSize.value);
   } catch (error) {
     console.error("Failed to fetch products:", error);
   }
 };
 
-// Lọc sản phẩm theo từ khóa (searchQuery)
-const filteredProducts = computed(() => {
-  let filtered = products.value.filter((product) => {
-    const query = searchQuery.value.toLowerCase();
-    const nameMatches = product.tenSanPham.toLowerCase().includes(query);
-    const descriptionMatches = product.moTa.toLowerCase().includes(query);
-    const quantityMatches = product.soLuongHienCo.toString().includes(searchQuery.value);
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
 
-    return nameMatches || descriptionMatches || quantityMatches;
+const filteredProducts = computed(() => {
+  const query = removeAccents(searchQuery.value.toLowerCase());
+
+  let filtered = products.value.filter((product) => {
+    const matchesCategory = selectedCategory.value === "" || product.sysIdDanhMuc === selectedCategory.value;
+    const matchesSearch =
+      removeAccents(product.tenSanPham.toLowerCase()).includes(query) ||
+      removeAccents(product.moTa.toLowerCase()).includes(query) ||
+      product.soLuongHienCo.toString().includes(searchQuery.value);
+
+    return matchesCategory && matchesSearch;
   });
 
   if (sortOption.value === "name-asc") {
-    filtered.sort((a, b) => a.tenSanPham.localeCompare(b.tenSanPham)); // A-Z
+    filtered.sort((a, b) => a.tenSanPham.localeCompare(b.tenSanPham));
   } else if (sortOption.value === "name-desc") {
-    filtered.sort((a, b) => b.tenSanPham.localeCompare(a.tenSanPham)); // Z-A
+    filtered.sort((a, b) => b.tenSanPham.localeCompare(a.tenSanPham));
   } else if (sortOption.value === "quantity-asc") {
-    filtered.sort((a, b) => a.soLuongHienCo - b.soLuongHienCo); // Quantity ascending
+    filtered.sort((a, b) => a.soLuongHienCo - b.soLuongHienCo);
   } else if (sortOption.value === "quantity-desc") {
-    filtered.sort((a, b) => b.soLuongHienCo - a.soLuongHienCo); // Quantity descending
+    filtered.sort((a, b) => b.soLuongHienCo - a.soLuongHienCo);
   }
 
   return filtered;
 });
 
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredProducts.value.slice(start, end);
+});
 
-// Sắp xếp tăng dần, dùng toán tử 3 ngồi để kiểm tra điều kiện clickAgain
+const totalPages = computed(() => {
+  return Math.ceil(filteredProducts.value.length / pageSize.value);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+watch([selectedCategory, searchQuery], () => {
+  currentPage.value = 1;
+});
+
+const handleItemsPerPageChange = (newItemsPerPage) => {
+  pageSize.value = newItemsPerPage;
+  currentPage.value = 1; // Reset to first page when changing items per page
+};
+
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
   updateUrl();
 };
 
-// Sắp xếp tăng dần, dùng toán tử 3 ngồi để kiểm tra điều kiện clickAgain
-const toggleSortByQuantity = () =>
-  (sortOption.value = sortOption.value === "quantity-asc" ? "quantity-desc" : "quantity-asc");
+const toggleSortByQuantity = () => {
+  sortOption.value = sortOption.value === "quantity-asc" ? "quantity-desc" : "quantity-asc";
+};
 
-/**
- * Cập nhật URL hiện tại
- * - Thêm tham số sort vào URL
- * - Xóa tham số sort khỏi URL
- * - Thêm tham số category vào URL
- * - Xóa tham số category khỏi URL
- */
 const updateUrl = () => {
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
@@ -221,10 +211,7 @@ const updateUrl = () => {
   window.history.replaceState({}, "", url.toString());
 };
 
-
-// Xóa sản phẩm
-const deleteProduct = async (id, event) => {
-  // event.stopPropagation(); // Ngăn chặn sự kiện click truyền lên dòng <tr>
+const deleteProduct = async (id) => {
   const swalConfirm = await Swal.fire({
     title: i18n.global.t("Product.table.swal.confirmDelete.title"),
     text: i18n.global.t("Product.table.swal.confirmDelete.text"),
@@ -232,14 +219,14 @@ const deleteProduct = async (id, event) => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("Product.table.swal.confirmDelete.cancel"),
-    cancelButtonColor: "#d33",
+    cancelButtonColor: "#ef4444",
     confirmButtonText: i18n.global.t("Product.table.swal.confirmDelete.confirm"),
   });
 
   if (swalConfirm.isConfirmed) {
     try {
       await apiStore.delete(`products/${id}`);
-      await getProducts(); // Cập nhật lại danh sách sản phẩm sau khi xóa
+      await getProducts();
       showToastSuccess(i18n.global.t("Product.table.swal.success"));
     } catch (error) {
       console.error("Error while deleting category:", error);
@@ -248,24 +235,10 @@ const deleteProduct = async (id, event) => {
   }
 };
 
-function selectCategory(category) {
+const selectCategory = (category) => {
   selectedCategory.value = category;
   updateUrl();
-}
-
-function prevPage() {
-  if (currentPage.value > 0) {
-    currentPage.value--;
-    getProducts();
-  }
-}
-
-function nextPage() {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-    getProducts();
-  }
-}
+};
 </script>
 
 <style scoped>
@@ -275,7 +248,7 @@ function nextPage() {
 }
 
 .table {
-  font-size: 14px;
+  font-size: 0.875rem;
   width: 100%;
 }
 
@@ -290,7 +263,7 @@ function nextPage() {
 
 input,
 select {
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid var(--secondary-color);
 }
 
@@ -305,21 +278,23 @@ select:active {
 .list-group-item {
   border: none;
   margin: 3px 5px;
-  font-size: 14px;
-  padding: 14px 10px;
-  transition: all .1s;
-  border-radius: calc(.75rem - 2px);
+  font-size: 0.875rem;
+  padding: 0.875rem 10px;
+  transition: all .2s ease;
+  border-radius: 0.625rem;
+  background-color: var(--secondary-color);
+  color: var(--nav-link-color);
 }
 
 .list-group-item:hover {
-  background-color: var(--secondary-color);
-  border-radius: calc(.75rem - 2px);
+  background-color: var(--secondary-color-hover);
+  border-radius: 0.625rem;
   cursor: pointer;
 }
 
 .list-group-item.active {
   background-color: var(--primary-color);
-  border-radius: calc(.75rem - 2px);
+  border-radius: 0.625rem;
   color: #fff;
   margin: 3px 5px;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
@@ -339,7 +314,7 @@ select:active {
 
 @media (max-width: 768px) {
   th {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   td {
@@ -348,12 +323,32 @@ select:active {
 }
 
 .box-shadow {
-  border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border-radius: 1rem;
+  border: 1px solid var(--border-main-color);
 }
 
 .btn-primary:disabled,
 .btn-primary[disabled] {
   background-color: var(--primary-color);
+}
+
+.td-id {
+  width: 40px;
+}
+
+.td-name {
+  width: 400px;
+}
+
+.td-desc {
+  width: 300px;
+}
+
+.td-quantity {
+  width: 200px;
+}
+
+.td-action {
+  width: 150px;
 }
 </style>

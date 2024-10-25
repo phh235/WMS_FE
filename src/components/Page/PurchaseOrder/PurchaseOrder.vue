@@ -101,8 +101,8 @@ import { useI18n } from "vue-i18n";
 
 const searchQuery = ref("");
 const { t } = useI18n();
-const activeTab = ref(t('Purchase_request.tabs.all'));
-const tabs = computed(() => [t('Purchase_request.tabs.all'), t('Purchase_request.tabs.pending'), t('Purchase_request.tabs.confirmed'), t('Purchase_request.tabs.canceled')]);
+const activeTab = ref(t('PurchaseRequest.tabs.all'));
+const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.pending'), t('PurchaseRequest.tabs.confirmed'), t('PurchaseRequest.tabs.canceled')]);
 
 const filteredOrders = computed(() => {
   return orders.value.filter((order) => {
@@ -218,16 +218,16 @@ const orders = ref([
 .order-card {
   background-color: var(--background-color);
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 
 .order-header {
-  padding: 0px 16px;
+  padding: 0px 1rem;
 }
 
 .order-body {
-  padding: 6px 16px;
+  padding: 6px 1rem;
 }
 
 .order-user {
@@ -313,35 +313,5 @@ const orders = ref([
   .progress-steps .step {
     font-size: 1rem;
   }
-}
-
-.tab-container {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 4px;
-  max-width: fit-content;
-}
-
-.tab-button {
-  padding: 4px 10px;
-  border: none;
-  background-color: transparent;
-  color: var(--tab-button-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.tab-button.active {
-  background-color: var(--background-color);
-  color: var(--nav-link-color);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow);
 }
 </style>
