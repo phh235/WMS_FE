@@ -173,7 +173,7 @@ const filteredUsers = computed(() => {
 .container {
   width: 70%;
   background-color: var(--background-color);
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 
@@ -184,7 +184,7 @@ const filteredUsers = computed(() => {
 }
 
 td {
-  font-size: 14px;
+  font-size: 0.875rem;
   cursor: pointer;
   vertical-align: middle;
 }
@@ -195,6 +195,6 @@ td {
 
 label {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 </style>

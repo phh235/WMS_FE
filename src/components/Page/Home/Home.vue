@@ -5,18 +5,27 @@
         <h3 class="fw-bold mb-3" style="color: var(--nav-link-color);">
           {{ $t('Home.dashboard.title') }}
         </h3>
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-          <div class="tab-container mb-3 mb-md-0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="tab-container justify-content-start mb-3 mb-md-0">
             <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
               :class="['tab-button', { active: activeTab === tab }]">
               {{ tab }}
             </button>
           </div>
-          <button class="btn btn-primary box-shadow d-flex align-items-center">
-            <span class="material-symbols-outlined me-2"> download
-            </span>
-            {{ $t('Home.dashboard.btn_download') }}
-          </button>
+          <div class="d-flex flex-column flex-md-row">
+            <VueDatePicker v-model="date" week-picker placeholder="Tìm theo tuần" class="me-2"
+              style="max-width: 200px;" />
+            <VueDatePicker v-model="date" range placeholder="Tìm theo ngày" class="me-2" style="max-width: 200px;" />
+            <VueDatePicker v-model="month" range month-picker auto-apply placeholder="Tìm theo tháng" class="me-2"
+              style="max-width: 200px;" />
+            <VueDatePicker v-model="year" year-picker range auto-apply placeholder="Tìm theo năm" class="me-2"
+              style="max-width: 200px;" />
+            <button class="btn btn-primary box-shadow d-flex align-items-center">
+              <span class="material-symbols-outlined me-2"> download
+              </span>
+              {{ $t('Home.dashboard.btn_download') }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -31,7 +40,7 @@
                 style="color: var(--nav-link-color) !important;">{{ card.icon
                 }}</span>
             </div>
-            <h2 class="card-title mb-0 fw-bold fs-2" style="font-family: Bricolage Grotesque;">{{ card.value }}</h2>
+            <h2 class="card-title mb-0 fw-bold fs-2">{{ card.value }}</h2>
             <small class="text-success">{{ card.change }}</small>
           </div>
         </div>
@@ -80,6 +89,11 @@
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import * as echarts from "echarts";
 import { useI18n } from 'vue-i18n';
+import VueDatePicker from '@vuepic/vue-datepicker';
+
+const date = ref([]);
+const month = ref([]);
+const year = ref(new Date().getFullYear());
 
 const chartRef = ref(null);
 const chart = ref(null);
@@ -257,13 +271,13 @@ onUnmounted(() => {
 
 .card {
   border: 1px solid var(--border-main-color);
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .card,
 .card-body {
   background-color: var(--background-color);
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .card-subtitle,
@@ -272,36 +286,6 @@ onUnmounted(() => {
   background-color: var(--background-color);
   color: var(--nav-link-color);
 }
-
-.tab-container {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 4px;
-  display: inline-flex;
-}
-
-.tab-button {
-  padding: 4px 10px;
-  border: none;
-  background-color: transparent;
-  color: var(--tab-button-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.tab-button.active {
-  background-color: var(--background-color);
-  color: var(--nav-link-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow);
-}
-
-/* .tab-button:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-} */
 
 .text-success {
   color: var(--primary-color) !important;

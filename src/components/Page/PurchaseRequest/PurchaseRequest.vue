@@ -1,18 +1,19 @@
 <template>
-  <div class="container-fluid">
-    <div class="block p-3 box-shadow">
-      <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-4">
-        <div class="tab-container justify-content-start mb-2 mb-md-0">
-          <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
-            :class="['tab-button', { active: activeTab === tab }]">
-            {{ tab }}
-          </button>
-        </div>
-        <div class="d-flex flex-column flex-md-row align-items-center">
+  <div class="container-fluid box-shadow p-3">
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-3">
+      <div class="tab-container justify-content-start mb-2 mb-md-0">
+        <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
+          :class="['tab-button', { active: activeTab === tab }]">
+          {{ tab }}
+        </button>
+      </div>
+      <div class="d-flex flex-column flex-md-row align-items-center">
+        <div class="d-flex mb-2 mb-md-0">
           <SearchInput v-model="searchQuery" :placeholder="$t('PurchaseRequest.search_input.search_id')" />
           <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
-          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById"
-            style="width: 39.67px; height: 39.67px;">
+        </div>
+        <div class="d-flex">
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
           <router-link to="yeu-cau-mua-hang/them-moi" class="btn btn-primary d-flex align-items-center">
@@ -21,62 +22,74 @@
           </router-link>
         </div>
       </div>
-      <div class="table-responsive">
-        <table class="table mb-5">
-          <thead>
-            <tr>
-              <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
-              <th>{{ $t('PurchaseRequest.table.name') }}</th>
-              <th>{{ $t('PurchaseRequest.table.status') }}</th>
-              <th>{{ $t('PurchaseRequest.table.date') }}</th>
-              <th style="width: 200px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
-              <td colspan="10">{{ $t('PurchaseRequest.not_found') }}</td>
-            </tr>
-            <tr v-for="purchase in filteredRequests" :key="purchase.sysIdYeuCauMuaHang">
-              <td class="sticky">{{ purchase.maPR }}</td>
-              <td>{{ purchase.fullName }}</td>
-              <td>
-                <span :class="['badge', getBadgeClass(purchase.trangThai)]">
-                  {{ getStatusLabel(purchase.trangThai) }}
-                </span>
-              </td>
-              <td>{{ purchase.ngayYeuCau }}</td>
-              <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
-                <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
-                <div class="dropdown" style="display: inline-block;">
-                  <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="material-symbols-outlined">more_vert</span>
-                  </button>
-                  <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                    <li>
-                      <router-link :to="{ name: 'yeu-cau-mua-hang/chinh-sua/:id', params: { id: purchase.maPR } }"
-                        class="dropdown-item d-flex align-items-center justify-content-between">
-                        {{ $t('PurchaseRequest.table.li_edit') }}
-                        <span class="material-symbols-outlined">edit_square</span>
-                      </router-link>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
-                        @click="cancelPR">
-                        {{ $t('PurchaseRequest.table.li_cancel') }}
-                        <span class="material-symbols-outlined">cancel</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
+    <div class="table-responsive">
+      <div class="d-flex justify-content-end mb-3">
+        <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
+        <VueDatePicker v-model="date" week-picker auto-apply :enable-time-picker="false" :teleport="true"
+          :auto-position="true" locale="vi" style="max-width: 320px;" placeholder="Tìm theo tuần" />
+        <!-- <VueDatePicker v-model="date" range :teleport="true" :auto-position="true" locale="vi" style="max-width: 320px;"
+          placeholder="Tìm theo khoảng ngày" /> -->
+      </div>
+      <table class="table mb-3">
+        <thead>
+          <tr>
+            <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
+            <th>{{ $t('PurchaseRequest.table.name') }}</th>
+            <th>{{ $t('PurchaseRequest.table.status') }}</th>
+            <th>{{ $t('PurchaseRequest.table.date') }}</th>
+            <th style="width: 200px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
+            <td colspan="10">{{ $t('PurchaseRequest.not_found') }}</td>
+          </tr>
+          <tr v-for="purchase in paginatedPurchases" :key="purchase.sysIdYeuCauMuaHang">
+            <td class="sticky">{{ purchase.maPR }}</td>
+            <td>{{ purchase.fullName }}</td>
+            <td>
+              <span :class="['badge', getBadgeClass(purchase.trangThai)]">
+                {{ getStatusLabel(purchase.trangThai) }}
+              </span>
+            </td>
+            <td>{{ purchase.ngayYeuCau }}</td>
+            <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+              <div class="dropdown" style="display: inline-block;">
+                <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="material-symbols-outlined">more_vert</span>
+                </button>
+                <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <router-link :to="{ name: 'yeu-cau-mua-hang/chinh-sua/:id', params: { id: purchase.maPR } }"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      {{ $t('PurchaseRequest.table.li_edit') }}
+                      <span class="material-symbols-outlined">edit_square</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                      @click="cancelPR">
+                      {{ $t('PurchaseRequest.table.li_cancel') }}
+                      <span class="material-symbols-outlined">cancel</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
+
     <!-- Modal để hiển thị chi tiết đơn hàng -->
     <div v-if="isModalVisible" class="modal fade show" tabindex="-1" style="display: block;"
       aria-labelledby="purchaseDetailModalLabel" aria-hidden="true">
@@ -85,9 +98,10 @@
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
               {{ $t('PurchaseRequest.table.detail.order_detail') }}
-              <span style="color: var(--main-text-color);">{{ selectedPurchase.maPR }}</span>
+              <span style="color: var(--primary-color);">{{ selectedPurchase.maPR }}</span>
             </h5>
-            <button type="button" class="btn-close" @click="closeModal"></button>
+            <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
+              @click="closeModal">close</span>
           </div>
           <div class="modal-body">
             <!-- Hiển thị thông tin chi tiết đơn hàng -->
@@ -152,7 +166,7 @@
                 </tbody>
               </table>
               <p class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
-                <span style="color: var(--main-text-color);">{{
+                <span style="color: var(--primary-color);">{{
                   totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
               </p>
             </div>
@@ -175,7 +189,13 @@ import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
 import Swal from "sweetalert2";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import VueDatePicker from "@vuepic/vue-datepicker"
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
+const date = ref(new Date());
+// Pagination
+const currentPage = ref(1);
+const pageSize = ref(5);
 const router = useRouter();
 const { t } = useI18n();
 const searchQuery = ref("");
@@ -233,7 +253,7 @@ const cancelPR = async () => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.cancel"),
-    cancelButtonColor: "#d33",
+    cancelButtonColor: "#ef4444",
     confirmButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.confirm"),
   });
 
@@ -288,9 +308,38 @@ const filteredRequests = computed(() => {
     )
     .filter(purchase =>
       !searchQueryByPeople.value || removeAccents(purchase.fullName.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
-    );
+    )
+    .filter(purchase => {
+      const purchaseDate = new Date(purchase.ngayYeuCau);
+      if (Array.isArray(date.value) && date.value.length === 2) {
+        const [startDate, endDate] = date.value;
+        return purchaseDate >= new Date(startDate) && purchaseDate <= new Date(endDate);
+      } else if (date.value) {
+        return purchaseDate.toDateString() === new Date(date.value).toDateString();
+      }
+      return true;
+    });
 });
 
+
+const paginatedPurchases = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredRequests.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredRequests.value.length / pageSize.value);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (newItemsPerPage) => {
+  pageSize.value = newItemsPerPage;
+  currentPage.value = 1; // Reset to first page when changing items per page
+};
 
 // Sort
 const toggleSortById = () => {
@@ -352,36 +401,33 @@ const getStatusLabel = (status) => {
 
 <style scoped>
 .container-fluid {
-  max-width: 1350px;
-}
-
-.block {
+  max-width: 1400px;
   background-color: var(--background-color);
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 
 td {
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .bg-success {
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: var(--bg-success) !important;
   color: var(--primary-color-hover);
   border: 1.4px solid var(--primary-color);
 }
 
 .bg-danger {
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: var(--bg-danger) !important;
   color: #dc3545;
   border: 1.4px solid #dc3545;
 }
 
 .bg-warning {
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: var(--bg-warning) !important;
   color: #fe961f;
   border: 1.4px solid #fe961f;
@@ -393,32 +439,6 @@ td {
   font-weight: 500;
 }
 
-.tab-container {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 4px;
-  max-width: fit-content;
-}
-
-.tab-button {
-  padding: 4px 10px;
-  border: none;
-  background-color: transparent;
-  color: var(--tab-button-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.tab-button.active {
-  background-color: var(--background-color);
-  color: var(--nav-link-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow);
-}
-
 .form-control {
   width: 220px;
 }
@@ -428,7 +448,7 @@ td {
 }
 
 .fs {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .currency-symbol {
@@ -462,15 +482,15 @@ td {
 .dropdown-menu {
   min-width: 140px;
   padding: 8px;
-  border-radius: 16px;
+  border-radius: 1rem;
   background-color: var(--background-color);
   border: 1px solid var(--border-main-color);
 }
 
 .dropdown-item {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 8px;
-  border-radius: calc(.75rem - 2px);
+  border-radius: 0.625rem;
   transition: all 0.1s;
   color: var(--nav-link-color);
 

@@ -8,11 +8,11 @@
               <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
                 class="rounded-4 img-fluid mb-3" width="150" loading="lazy" />
             </div>
-            <h5 class="mt-1 fw-bold" style="color: var(--label-color); font-family: Bricolage Grotesque;">Phan Huy Hoàng
+            <h5 class="mt-1 fw-bold" style="color: var(--label-color);">Phan Huy Hoàng
             </h5>
             <div class="d-flex justify-content-center mb-2">
               <span class="badge bg-primary"
-                style="background-color: var(--primary-color) !important; border-radius: 8px">Admin</span>
+                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important;">Admin</span>
             </div>
           </div>
         </div>
@@ -20,8 +20,7 @@
       <div class="col-lg-8">
         <div class="card mb-4 box-shadow p-4">
           <div class="card-body">
-            <h5 class="mb-4 fw-bold"
-              style="color: var(--primary-color); font-family: Bricolage Grotesque; font-size: 23px">
+            <h5 class="mb-4 fw-bold" style="color: var(--primary-color); font-size: 1.5rem">
               {{ $t("AccountInfo.title_info") }}
             </h5>
             <form @submit.prevent="updateBasicInfo">
@@ -66,9 +65,8 @@
         </div>
         <div class="card box-shadow p-4">
           <div class="card-body">
-            <h5 class="mb-4 fw-bold"
-              style="color: var(--primary-color); font-family: Bricolage Grotesque; font-size: 23px">{{
-                $t("AccountInfo.title_password") }}</h5>
+            <h5 class="mb-4 fw-bold" style="color: var(--primary-color); font-size: 1.5rem">{{
+              $t("AccountInfo.title_password") }}</h5>
             <form @submit.prevent="changePassword">
               <div class="row mb-3 d-flex align-items-center">
                 <div class="col-sm-4">
@@ -137,7 +135,7 @@ const passwordChange = reactive({
 }
 
 .card {
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 

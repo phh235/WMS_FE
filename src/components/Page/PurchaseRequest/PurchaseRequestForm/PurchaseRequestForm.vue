@@ -4,19 +4,19 @@
       <div class="row p-md-3">
         <div class="col-12 col-md-4">
           <div class="mb-3">
-            <label for="maPR" class="form-label">Mã yêu cầu mua hàng</label>
+            <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" />
           </div>
         </div>
         <div class="col-12 col-md-4">
           <div class="mb-3">
-            <label for="requesterName" class="form-label">Người yêu cầu</label>
+            <label for="requesterName" class="form-label">Người yêu cầu <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="requesterName" value="phh235" disabled />
           </div>
         </div>
         <div class="col-12 col-md-4">
           <div class="mb-3">
-            <label for="customer" class="form-label">Khách hàng</label>
+            <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
             <select v-model="selectedCustomer" id="customer" class="form-select">
               <option value="" disabled>Chọn khách hàng</option>
               <option v-for="customer in customers" :key="customer.id" :value="customer">
@@ -62,11 +62,12 @@
                 <input v-model.number="product.gia" type="number" class="form-control" min="0" />
               </td>
               <td>
-                <input v-model="product.ngayNhap" type="date" class="form-control" />
+                <VueDatePicker v-model="product.ngayNhap" :teleport="true" :auto-position="true"
+                  placeholder="Chọn ngày nhập dự kiến"></VueDatePicker>
               </td>
               <td class="td-action">
-                <div class="d-flex align-items-center justify-content-center"><button type="button"
-                    class="btn btn-danger  d-flex justify-content-center align-items-center"
+                <div class="d-flex align-items-center justify-content-center">
+                  <button type="button" class="btn btn-danger  d-flex justify-content-center align-items-center"
                     @click="removeProduct(index)">
                     <span class="material-symbols-outlined">delete_sweep</span>
                   </button>
@@ -77,14 +78,13 @@
         </table>
         <div class="d-flex justify-content-between align-items-center mt-4">
           <button :disabled="isLoading" type="submit" class="btn btn-primary d-flex align-items-center">
-            <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
-              aria-hidden="true"></span>
-            <span v-else class="material-symbols-outlined me-2">check</span>
-            Xác nhận
+            <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
+            </span>
+            <span v-else class="material-symbols-outlined me-2">check</span>Xác nhận
           </button>
-          <h5 class="fw-bold" style="color: var(--label-color);">Tổng tiền: <span
-              style="color: var(--primary-color);">{{ totalCost.toLocaleString() }}
-              đ</span></h5>
+          <h5 class="fw-bold" style="color: var(--label-color);">
+            Tổng tiền: <span style="color: var(--primary-color);">{{ totalCost.toLocaleString() }} đ</span>
+          </h5>
         </div>
       </div>
     </form>
@@ -111,6 +111,7 @@ import { useRouter } from "vue-router";
 import ProductForm from '../../Product/ProductForm/ProductForm.vue';
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo } from "@components/Toast/utils/toastHandle.js";
+import VueDatePicker from "@vuepic/vue-datepicker"
 
 const apiStore = useApiServices();
 const productStore = useProductStore();
@@ -131,9 +132,9 @@ const formData = reactive({
 });
 
 const customers = ref([
-  { id: 1, name: 'Nguyễn Văn A' },
-  { id: 2, name: 'Trần Thị B' },
-  { id: 3, name: 'Trần Thị C' },
+  { id: 1, name: 'Phan Huy Hoàng' },
+  { id: 2, name: 'Nguyễn Bá Trung' },
+  { id: 3, name: 'Võ Thị Hương Giang' },
 ]);
 
 const addProduct = () => {
@@ -209,29 +210,12 @@ const handleSubmit = async () => {
 .container-fluid {
   max-width: 1200px;
   border: 1px solid var(--border-main-color);
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .form-label {
   font-weight: bold;
   color: var(--label-color);
-}
-
-input[type='date'] {
-  position: relative;
-}
-
-input[type='date']::-webkit-calendar-picker-indicator {
-  background: transparent;
-  bottom: 0;
-  color: transparent;
-  cursor: pointer;
-  height: auto;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: auto;
 }
 
 .btn-primary:disabled,

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid box-shadow p-4">
+  <div class="container-fluid box-shadow p-3">
     <div class="mb-4 d-flex justify-content-end">
       <div class="form-group fs has-search d-flex align-items-center me-2">
         <span class="material-symbols-outlined form-control-feedback">search</span>
@@ -70,12 +70,12 @@ const filteredOutbounds = computed(() => {
 <style scoped>
 .container-fluid {
   max-width: 1600px;
-  border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border-radius: 1rem;
+  border: 1px solid var(--border-main-color);
 }
 
 .table {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .form-select {
@@ -87,12 +87,12 @@ const filteredOutbounds = computed(() => {
 }
 
 .fs {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 input,
 select {
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid var(--secondary-color);
 
   &:focus,

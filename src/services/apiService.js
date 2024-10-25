@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api/v1/";
+const BASE_DOMAIN = "http://localhost:8080";
+const BASE_URL = `${BASE_DOMAIN}/api/v1/`;
 
 const getToken = () => localStorage.getItem("token");
 

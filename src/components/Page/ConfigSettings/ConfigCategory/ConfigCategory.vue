@@ -8,6 +8,9 @@
     </div>
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.categories.search_input')" />
+      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
+        <span class="material-symbols-outlined">sort_by_alpha</span>
+      </button>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
         data-bs-toggle="modal" data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
@@ -54,8 +57,8 @@
             {{ selectedCategory.sysIdDanhMuc ? $t("ConfigSettings.categories.title_edit") :
               $t("ConfigSettings.categories.title_save") }}
           </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-            @click="btnResetForm_Click"></button>
+          <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
+            @click="btnResetForm">close</span>
         </div>
         <div class="modal-body">
           <form>
@@ -68,14 +71,14 @@
               <div class="row">
                 <div class="col-6">
                   <label for="tenDanhMuc" class="form-label fs fw-bold">
-                    {{ $t('ConfigSettings.categories.category_name') }}
+                    {{ $t('ConfigSettings.categories.category_name') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="tenDanhMuc" aria-describedby="categoryNameHelp"
                     v-model="selectedCategory.tenDanhMuc" />
                 </div>
                 <div class="col-6">
                   <label for="maKho" class="form-label fs fw-bold">
-                    {{ $t('ConfigSettings.categories.warehouse_id') }}
+                    {{ $t('ConfigSettings.categories.warehouse_id') }} <span class="text-danger">*</span>
                   </label>
                   <select class="form-select" id="maKho" v-model="selectedCategory.maKho">
                     <option value="" disabled>
@@ -100,7 +103,7 @@
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
+          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm">
             {{ $t("ConfigSettings.btn_cancel") }}
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
@@ -117,6 +120,7 @@
 import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useWarehouseStore } from "@/store/warehouseStore.js";
+import { useCategoriesStore } from "@/store/categoryStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
@@ -126,14 +130,16 @@ import SearchInput from "@/components/Common/Search/SearchInput.vue";
 const { t } = useI18n();
 
 const apiStore = useApiServices();
-const categories = ref([]);
 const warehouseStore = useWarehouseStore();
+const categoryStore = useCategoriesStore();
 // Tab
 const tabs = computed(() => [t('ConfigSettings.categories.tabs.all'), t('ConfigSettings.categories.tabs.normal'), t('ConfigSettings.categories.tabs.cold')]);
 const activeTab = ref(t('ConfigSettings.categories.tabs.all'));
 const addCategoryBtn = ref(null);
 // Search
 const searchQuery = ref("");
+// Sort
+const sortOption = ref("");
 
 const selectedCategory = reactive({
   sysIdDanhMuc: "",
@@ -142,13 +148,8 @@ const selectedCategory = reactive({
   maKho: "",
 });
 
-// pagination
-const currentPage = ref(0);
-const totalPages = ref(1);
-const pageSize = ref(10);
-
 onMounted(() => {
-  getCategories();
+  categoryStore.getCategories();
   warehouseStore.getWarehouses();
   updateTabs();
 });
@@ -157,25 +158,12 @@ watch(tabs, (newTabs) => {
   activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
 });
 
-// Lấy danh mục sản phẩm
-const getCategories = async () => {
-  try {
-    const response = await apiStore.get(
-      `category-products?page=${currentPage.value}&size=${pageSize.value}`
-    );
-    categories.value = response.data.list;
-    totalPages.value = Math.ceil(response.total / pageSize.value);
-  } catch (error) {
-    console.error("Failed to fetch categories:", error);
-  }
-};
-
 const getStatusValue = (status) =>
   ({ [t("ConfigSettings.categories.tabs.normal")]: "KHO001", [t("ConfigSettings.categories.tabs.cold")]: "KHO002" }[status] || status);
 
 // Cập nhật danh sách tab dựa trên mã kho có trong danh mục
 const updateTabs = () => {
-  const uniqueWarehouses = [...new Set(categories.value.map(category => category.maKho))];
+  const uniqueWarehouses = [...new Set(categoryStore.categories.map(category => category.maKho))];
   tabs.value = [t('ConfigSettings.categories.tabs.all'), ...uniqueWarehouses];
 };
 
@@ -183,17 +171,45 @@ function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+
 const filteredCategories = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  return categories.value
+  let filtered = categoryStore.categories
     .filter(category => category.maKho === getStatusValue(activeTab.value) || activeTab.value === t('ConfigSettings.categories.tabs.all'))
     .filter(category => (
       category.sysIdDanhMuc.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
       removeAccents(category.tenDanhMuc.toLowerCase()).includes(removeAccents(query)) ||
       removeAccents(category.maKho.toLowerCase()).includes(removeAccents(query))
     ));
+
+  if (sortOption.value === "name-asc") {
+    filtered.sort((a, b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc)); // A-Z
+  } else if (sortOption.value === "name-desc") {
+    filtered.sort((a, b) => b.tenDanhMuc.localeCompare(a.tenDanhMuc)); // Z-A
+  }
+
+  return filtered;
 });
 
+
+const toggleSortByName = () => {
+  sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+
+const updateUrl = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+
+  if (sortOption.value) {
+    params.set("sort", sortOption.value);
+  } else {
+    params.delete("sort");
+  }
+
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
+};
 
 const saveCategory = async () => {
   if (!selectedCategory.tenDanhMuc.trim()) {
@@ -221,8 +237,8 @@ const saveCategory = async () => {
       : await apiStore.post("category-products", categoryData);
 
     if (response) {
-      await getCategories();
-      btnResetForm_Click();
+      categoryStore.getCategories();
+      btnResetForm();
       addCategoryBtn.value.click();
       showToastSuccess(i18n.global.t("ConfigSettings.categories.swal.success"));
     } else if (response?.error) {
@@ -238,7 +254,7 @@ const handleRowClick = ({ target }) => {
   const row = target.closest("tr");
   const id = row?.getAttribute("data-id");
 
-  const selectedCategoryValue = categories.value.find(
+  const selectedCategoryValue = categoryStore.categories.find(
     (category) => category.sysIdDanhMuc === Number(id)
   );
 
@@ -257,14 +273,14 @@ const deleteCategory = async (id) => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("ConfigSettings.categories.swal.delete.cancel"),
-    cancelButtonColor: "#d33",
+    cancelButtonColor: "#ef4444",
     confirmButtonText: i18n.global.t("ConfigSettings.categories.swal.delete.confirm"),
   });
 
   if (swalConfirm.isConfirmed) {
     try {
       await apiStore.delete(`category-products/${id}`);
-      await getCategories(); // Cập nhật lại danh sách danh mục sau khi xóa
+      categoryStore.getCategories(); // Cập nhật lại danh sách danh mục sau khi xóa
       showToastSuccess(i18n.global.t("ConfigSettings.categories.swal.delete.success"));
     } catch (error) {
       console.error("Error while deleting category:", error);
@@ -274,7 +290,7 @@ const deleteCategory = async (id) => {
 };
 
 // Làm mới form nhập
-const btnResetForm_Click = () => {
+const btnResetForm = () => {
   Object.assign(selectedCategory, {
     sysIdDanhMuc: "",
     tenDanhMuc: "",
@@ -291,38 +307,12 @@ td {
 }
 
 td {
-  font-size: 14px;
+  font-size: 0.875rem;
   vertical-align: middle;
 }
 
 .btn-danger,
 .btn-secondary {
   padding: 10px 10px;
-}
-
-.tab-container {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 4px;
-  max-width: fit-content;
-}
-
-.tab-button {
-  padding: 4px 10px;
-  border: none;
-  background-color: transparent;
-  color: var(--tab-button-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.tab-button.active {
-  background-color: var(--background-color);
-  color: var(--nav-link-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow);
 }
 </style>

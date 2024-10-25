@@ -17,7 +17,7 @@
           <label class="form-label fs" for="email">Email</label>
           <input type="text" id="email" class="form-control" v-model="email" />
         </div>
-        <button type="submit" class="btn btn-login w-100" :disabled="loading" :class="{ loading: loading }">
+        <button type="submit" class="btn btn-login w-100 fw-bold" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           <span v-if="!loading">{{ $t("LoginForgotForm.forgot.btn_confirm") }}</span>
         </button>
@@ -65,7 +65,7 @@ const handleForgotPassword = async () => {
 }
 
 .fs {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
@@ -77,5 +77,24 @@ const handleForgotPassword = async () => {
 .btn-login.loading {
   background-color: var(--primary-color);
   color: var(--text-light-color);
+}
+
+@media screen and (max-width: 992.98px) {
+  h2 {
+    font-size: 37px;
+  }
+
+  h6 {
+    font-size: 17px;
+  }
+
+  .fs {
+    font-size: 1rem !important;
+    font-weight: bold;
+  }
+
+  input {
+    font-size: 1rem !important;
+  }
 }
 </style>

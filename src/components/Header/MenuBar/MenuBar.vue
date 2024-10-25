@@ -13,8 +13,8 @@
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel" style="color: var(--nav-link-color);">Quản lý
-              tồn kho</h5>
+            <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel" style="color: var(--nav-link-color);">{{
+              $t('Offcanvas') }}</h5>
             <!-- <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
             <span class="material-symbols-outlined text-muted custom-close" data-bs-dismiss="offcanvas"
               aria-label="Close" style="transform: rotate(180deg);">side_navigation</span>
@@ -32,7 +32,7 @@
                       <span class="material-symbols-outlined ms-2">unfold_more</span>
                     </button>
                     <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton">
-                      <small class="p-2 fw-bold" style="font-size: 12px">Tài khoản</small>
+                      <small class="p-2 fw-bold" style="font-size: .75rem">Tài khoản</small>
                       <li>
                         <router-link to="/inventory/thong-tin-tai-khoan"
                           class="dropdown-item d-flex align-items-center mb-1" aria-expanded="false">
@@ -40,7 +40,7 @@
                             <span class="fs mb-1 fw-bold">Phan Huy Hoàng
                               <span class="badge ms-1 float-end box-shadow" style="
                                   background-color: var(--primary-color) !important;
-                                  color: var(--text-light-color) !important;
+                                  color: var(--btn-primary-color) !important;
                                   font-size: 13px;
                                   border-radius: 8px;
                                 ">Admin</span></span>
@@ -54,7 +54,7 @@
                       <li>
                         <router-link to="/" class="btn btn-logout d-flex align-items-center justify-content-between"
                           href="#" @click.prevent="handleLogout">
-                          <span style="font-size: 14px"> Đăng xuất </span>
+                          <span style="font-size: 0.875rem"> Đăng xuất </span>
                           <span class="material-symbols-outlined float-end" style="color: #ef4444">logout</span>
                         </router-link>
                       </li>
@@ -84,7 +84,7 @@
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown">
-                  <small class="p-2 fw-bold" style="font-size: 12px">
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.activity.sub_items.small_1') }}
                   </small>
                   <li>
@@ -108,7 +108,7 @@
                   <li>
                     <hr class="dropdown-divider" />
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: 12px">
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.activity.sub_items.small_2') }}
                   </small>
                   <li>
@@ -136,7 +136,8 @@
               </li>
               <li class="nav-item">
                 <router-link to="/inventory/quan-ly-kho" class="nav-link d-flex align-items-center"><span
-                    class="material-symbols-outlined me-2">holiday_village</span>Quản lý kho</router-link>
+                    class="material-symbols-outlined me-2">holiday_village</span>{{
+                      $t('Navbar.menu_item.warehouses_management') }}</router-link>
               </li>
               <!-- multi dropdown menu | kho - khu vuc  -->
               <!-- <li class="nav-item dropdown">
@@ -147,7 +148,7 @@
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown">
-                  <small class="p-2 fw-bold" style="font-size: 12px">
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.warehouses_management.small') }}
                   </small>
                   <li>
@@ -184,7 +185,7 @@
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown">
-                  <small class="p-2 fw-bold" style="font-size: 12px">
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_1') }}
                   </small>
                   <li>
@@ -218,7 +219,7 @@
                   <li>
                     <hr class="dropdown-divider" />
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: 12px">
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_2') }}
                   </small>
                   <li>
@@ -234,10 +235,14 @@
               </li>
               <li class="nav-item notification">
                 <div class="dropdown">
-                  <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-expanded="false" style="padding: 9px; transition: all 0.2s ease;">
+                  <button class="btn btn-secondary d-flex align-items-center me-2  position-relative" type="button"
+                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+                    style="padding: 8px; transition: all 0.2s ease;">
                     <span class="material-symbols-outlined">
                       notifications
+                    </span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      6
                     </span>
                   </button>
                   <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="dropdownMenuButton"
@@ -264,10 +269,14 @@
             </ul>
             <div class="d-flex align-items-center justify-content-center me-2">
               <div class="dropdown notifications">
-                <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
-                  data-bs-toggle="dropdown" aria-expanded="false" style="padding: 9px; transition: all 0.2s ease;">
+                <button class="btn btn-secondary d-flex align-items-center me-2 position-relative" type="button"
+                  id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+                  style="padding: 9px; transition: all 0.2s ease;">
                   <span class="material-symbols-outlined">
                     notifications
+                  </span>
+                  <span class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger">
+                    6
                   </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="dropdownMenuButton"
@@ -291,7 +300,7 @@
                 </div>
               </div>
               <button class="btn btn-secondary d-flex align-items-center me-2"
-                style="padding: 9px; transition: all 0.2s ease;" @click="toggleLightDarkMode">
+                style="padding: 8px; transition: all 0.2s ease;" @click="toggleLightDarkMode">
                 <span class="material-symbols-outlined">
                   {{ isLightMode ? 'light_mode' : 'dark_mode' }}
                 </span>
@@ -314,7 +323,7 @@
                   </button>
                   <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton"
                     style="min-width: 170px !important">
-                    <small class="p-2 fw-bold" style="font-size: 12px">
+                    <small class="p-2 fw-bold" style="font-size: .75rem">
                       {{ $t('Navbar.menu_item.account.sub_items.small_1') }}
                     </small>
                     <li>
@@ -324,7 +333,7 @@
                           <span class="fs mb-1 fw-bold">Phan Huy Hoàng
                             <span class="badge ms-1 float-end box-shadow" style="
                                 background-color: var(--primary-color) !important;
-                                color: #fff !important;
+                                color: var(--btn-primary-color) !important;
                                 font-size: 11px;
                                 border-radius: 8px;
                               ">Admin</span></span>
@@ -338,7 +347,7 @@
                     <li>
                       <router-link to="/" class="btn btn-logout d-flex align-items-center justify-content-between"
                         href="#" @click.prevent="handleLogout">
-                        <span style="font-size: 14px">
+                        <span style="font-size: 0.875rem">
                           {{ $t('Navbar.menu_item.account.sub_items.logout') }}
                         </span>
                         <span class="material-symbols-outlined float-end" style="color: #ef4444">logout</span>
@@ -353,7 +362,7 @@
       </div>
     </nav>
     <div class="sub-nav d-flex justify-content-center">
-      <span style="font-size: 16px; font-weight: bold; color: var(--nav-link-color)">{{ headerTitle }}</span>
+      <span style="font-size: 1rem; font-weight: bold; color: var(--nav-link-color)">{{ headerTitle }}</span>
     </div>
   </div>
 </template>
@@ -454,13 +463,12 @@ const toggleLightDarkMode = () => {
 
 <style scoped>
 .fs {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .sub-nav {
-  min-height: 35px !important;
-  max-height: 35px !important;
-  border-bottom: 1.5px solid var(--border-main-color);
+  min-height: 30px !important;
+  border-bottom: 1px solid var(--border-main-color);
 }
 
 .navbar {
@@ -468,9 +476,9 @@ const toggleLightDarkMode = () => {
 }
 
 .nav-link {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--nav-link-color) !important;
-  border-radius: calc(.75rem - 2px);
+  border-radius: 0.625rem;
   margin-right: 5px;
   transition: all 0.2s ease;
   padding: 8px !important;
@@ -497,15 +505,15 @@ const toggleLightDarkMode = () => {
 .dropdown-menu {
   min-width: 190px;
   padding: 8px;
-  border-radius: 16px;
+  border-radius: 1rem;
   background-color: var(--background-color);
   border: 1px solid var(--border-main-color);
 }
 
 .dropdown-item {
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 8px;
-  border-radius: calc(.75rem - 2px);
+  border-radius: 0.625rem;
   transition: all 0.2s ease;
   color: var(--nav-link-color);
 
@@ -603,7 +611,7 @@ const toggleLightDarkMode = () => {
   }
 
   .fs {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .dropdown-menu {
@@ -611,7 +619,7 @@ const toggleLightDarkMode = () => {
   }
 
   .tab-button {
-    padding: 6px 35px !important;
+    padding: 6px 40px !important;
     max-width: fit-content;
   }
 }
@@ -621,41 +629,18 @@ const toggleLightDarkMode = () => {
   transition: all 0.2s ease;
 }
 
-.tab-container {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 4px;
-  max-width: fit-content;
-}
-
-.tab-button {
-  padding: 4px 10px;
-  border: none;
-  background-color: transparent;
-  color: var(--tab-button-text);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 10px;
-  font-size: 14px;
-}
-
-.tab-button.active {
-  background-color: var(--background-color);
-  color: var(--nav-link-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
-    var(--tw-shadow);
-
-  &:hover {
-    background-color: var(--background-color)
-  }
-}
-
 .custom-close {
   position: absolute;
-  top: 1rem;
   color: var(--nav-link-color) !important;
   right: 1rem;
   cursor: pointer;
+  border: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border: none;
+  }
 }
 
 .btn-secondary {
@@ -676,7 +661,7 @@ const toggleLightDarkMode = () => {
 
 .card,
 .list-group {
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .card,
@@ -686,7 +671,7 @@ const toggleLightDarkMode = () => {
 }
 
 .list-group-item {
-  border: 1px solid var(--border-main-color);
+  border-color: var(--border-main-color);
 
   &:hover {
     background-color: var(--secondary-color);

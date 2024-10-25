@@ -1,4 +1,5 @@
 {
+  "Offcanvas": "Quản lý tồn kho",
   "Navbar": {
     "menu_item": {
       "home": "Trang chủ",
@@ -16,14 +17,7 @@
       },
       "product": "Sản phẩm",
       "AccountManagement": "Quản lý tài khoản",
-      "warehouses_management": {
-        "label": "Quản lý kho",
-        "small": "Kho theo khu vực",
-        "sub_items": {
-          "normal": "Kho thường",
-          "cold": "Kho lạnh"
-        }
-      },
+      "warehouses_management": "Quản lý kho",
       "report": "Báo cáo",
       "config": {
         "label": "Cấu hình",
@@ -204,7 +198,7 @@
       "search_input": "Tìm kiếm sản phẩm",
       "btn_save": "Thêm sản phẩm",
       "btn_action": "Hành động",
-      "no": "STT",
+      "no": "ID",
       "product_name": "Sản phẩm",
       "desc": "Mô tả",
       "available_quantity": "Số lượng hiện có",
@@ -295,6 +289,11 @@
       "zone_desc": "Mô tả",
       "warehouse_id": "Mã kho",
       "choose_warehouse": "Chọn kho",
+      "tabs": {
+        "all": "Tất cả",
+        "normal": "Kho thường",
+        "cold": "Kho lạnh"
+      },
       "swal": {
         "delete": {
           "success": "Xóa khu vực thành công",

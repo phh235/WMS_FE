@@ -1,7 +1,8 @@
 {
+  "Offcanvas": "Inventory management",
   "Navbar": {
     "menu_item": {
-      "home": "Dashboard",
+      "home": "Home",
       "pr": "Requisition",
       "po": "Orders",
       "activity": {
@@ -16,14 +17,7 @@
       },
       "product": "Products",
       "AccountManagement": "Account Management",
-      "warehouses_management": {
-        "label": "Warehouses Management",
-        "small": "Warehouse by Area",
-        "sub_items": {
-          "normal": "Normal Warehouse",
-          "cold": "Cold Warehouse"
-        }
-      },
+      "warehouses_management": "Warehouse Management",
       "report": "Reports",
       "config": {
         "label": "Config",
@@ -204,7 +198,7 @@
       "search_input": "Type to search...",
       "btn_save": "Add new product",
       "btn_action": "Actions",
-      "no": "No.",
+      "no": "ID",
       "product_name": "Product",
       "desc": "Description",
       "available_quantity": "Available quantity",
@@ -295,6 +289,11 @@
       "zone_desc": "Description",
       "warehouse_id": "Warehouse Id",
       "choose_warehouse": "Choose warehouse",
+      "tabs": {
+        "all": "All",
+        "normal": "Normal warehouse",
+        "cold": "Cold warehouse"
+      },
       "swal": {
         "delete": {
           "success": "Delete zone successfully",

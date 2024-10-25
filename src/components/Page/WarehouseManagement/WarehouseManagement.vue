@@ -32,9 +32,10 @@ const warehouses = ref([
 .warehouse-block {
   width: 80%;
   padding: 30px;
-  background-color: #fff;
-  border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  background-color: var(--background-color);
+  border-radius: 1rem;
+  border: 1px solid var(--border-main-color);
+  color: var(--nav-link-color);
 }
 
 .warehouse-card {
@@ -42,16 +43,17 @@ const warehouses = ref([
   padding: 140px;
   text-decoration: none;
   color: inherit;
-  border-radius: 16px;
-  border: 1px solid #e4e4e7;
-/* 
+  border-radius: 1rem;
+  border: 3px solid var(--border-main-color);
+  color: var(--nav-link-color);
+  transition: none;
+
   &:hover {
-    background-color: #f8f9fa;
-    color: #fff;
+    color: var(--text-select);
     background-image: url("https://res.cloudinary.com/dnfccnxew/image/upload/v1725710674/aepjhdbiizkukw60fhuf.png");
     background-size: cover;
     background-repeat: no-repeat;
-  } */
+  }
 }
 
 .material-symbols-outlined {

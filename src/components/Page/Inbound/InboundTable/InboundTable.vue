@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid box-shadow p-4">
+  <div class="container-fluid box-shadow p-3">
     <div class="mb-4 d-flex justify-content-end">
       <SearchInput v-model="searchQuery" :placeholder="$t('Inbound.search_input')" />
       <button class="btn btn-secondary d-flex align-items-center me-2"><span
@@ -68,12 +68,12 @@ const filteredInbounds = computed(() => {
 <style scoped>
 .container-fluid {
   max-width: 1600px;
-  border-radius: 16px;
-  border: 1px solid #e4e4e7;
+  border-radius: 1rem;
+  border: 1px solid var(--border-main-color);
 }
 
 .table {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .form-select {
@@ -85,6 +85,6 @@ const filteredInbounds = computed(() => {
 }
 
 .fs {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 </style>

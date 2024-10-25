@@ -25,15 +25,15 @@
                   <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="tenSanPham">{{ $t('Product.form.product_name') }}</label>
+                  <label for="tenSanPham">{{ $t('Product.form.product_name') }} <span class="text-danger">*</span></label>
                   <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }}</label>
+                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }} <span class="text-danger">*</span></label>
                   <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
                 </div>
                 <div class="col-12 col-md-4">
-                  <label for="danhMuc">{{ $t('Product.form.category.title') }}</label>
+                  <label for="danhMuc">{{ $t('Product.form.category.title') }} <span class="text-danger">*</span></label>
                   <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
                     <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
                     <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
@@ -210,7 +210,7 @@ console.log(params?.id);
   width: 100%;
   height: 300px;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .product-image,
@@ -241,14 +241,14 @@ console.log(params?.id);
 }
 
 label {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
   color: var(--nav-link-color);
 }
 
 .block {
   background-color: var(--background-color);
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 

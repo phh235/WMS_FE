@@ -26,9 +26,11 @@
           </router-link>
         </div>
         <!-- Submit button -->
-        <button class="btn btn-login w-100" type="submit" :disabled="loading" :class="{ loading: loading }">
-          <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span v-if="!loading">{{ $t("LoginForgotForm.login.btn_login") }}</span>
+        <button class="btn btn-login w-100 d-flex align-items-center justify-content-center fw-bold" type="submit"
+          :disabled="loading" :class="{ loading: loading }">
+          <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> {{
+            $t("LoginForgotForm.login.btn_login") }}
+          <!-- <span v-if="!loading"></span> -->
         </button>
       </form>
     </div>
@@ -87,7 +89,7 @@ const handleLogin = async () => {
 }
 
 .fs {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
@@ -116,6 +118,25 @@ const handleLogin = async () => {
 
   &:hover {
     color: var(--nav-link-color);
+  }
+}
+
+@media screen and (max-width: 992.98px) {
+  h2 {
+    font-size: 34px;
+  }
+
+  h6 {
+    font-size: 17px;
+  }
+
+  .fs {
+    font-size: 1rem !important;
+    font-weight: bold;
+  }
+
+  input {
+    font-size: 1rem !important;
   }
 }
 </style>
