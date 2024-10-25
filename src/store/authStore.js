@@ -39,9 +39,7 @@ export const useAuthStore = defineStore("auth", {
       localStorage.setItem("token", token);
       // Decode JWT token to get username is logged in
       const tokenDecode = JSON.parse(atob(token.split(".")[1])).sub;
-      // console.log(tokenDecode);
       localStorage.setItem("user", JSON.stringify(tokenDecode));
-      // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
 
     checkAuth() {
@@ -65,19 +63,15 @@ export const useAuthStore = defineStore("auth", {
       this.token = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      localStorage.removeItem("warehouses");
-      localStorage.removeItem("categories");
-      localStorage.removeItem("products");
       // Xóa lịch sử trình duyệt để không thể quay lại trang trước khi đăng xuất
       window.history.replaceState(null, "", "/dang-nhap");
-      // delete axios.defaults.headers.common["Authorization"];
       showToastSuccess(i18n.global.t("Swal.logout.toast.success.title"));
       return router.push("/dang-nhap");
     },
 
     setLanguage(lang) {
       this.language = lang;
-      localStorage.setItem("language", lang); // Lưu vào localStorage
+      localStorage.setItem("language", lang); // Lưu giá trị vi-en vào localStorage
     },
   },
   getters: {

@@ -239,14 +239,14 @@ const btnCancel = () => {
 <style scoped>
 .block {
   padding: 1.5rem;
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 
 .nav-link {
   color: var(--nav-link-color);
   border: 1px solid #d3d3d3;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .nav-link.active {
@@ -261,6 +261,6 @@ const btnCancel = () => {
 
 .btn-danger {
   padding: 8px 10px;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 </style>

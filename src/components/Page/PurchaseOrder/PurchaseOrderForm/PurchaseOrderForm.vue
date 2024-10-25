@@ -146,7 +146,7 @@ const submitForm = async () => {
 <style scoped>
 .container {
   border: 1px solid #e4e4e7;
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .btn {
@@ -178,7 +178,7 @@ const submitForm = async () => {
 @media screen and (max-width: 768px) {
   .btn {
     padding: 12px 20px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 </style>

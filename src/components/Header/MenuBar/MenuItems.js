@@ -1,3 +1,5 @@
+import i18n from "@/lang/i18n";
+
 export default [
   {
     path: "tong-quan",
@@ -5,7 +7,7 @@ export default [
     component: () => import("@/components/Page/Home/Home.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Tổng quan kho",
+      headerTitle: i18n.global.t("Home.headerTitle"),
       searchConfig: {},
       storeConfig: {},
     },
@@ -56,11 +58,22 @@ export default [
   },
   {
     path: "san-pham/them-moi",
-    name: "them-moi",
+    name: "san-pham/them-moi",
     component: () => import("@components/Page/Product/ProductForm/ProductForm.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Quản lý sản phẩm",
+      headerTitle: "Thêm sản phẩm",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "san-pham/chinh-sua/:id",
+    name: "san-pham/chinh-sua/:id",
+    component: () => import("@components/Page/Product/ProductForm/ProductForm.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Chỉnh sửa sản phẩm",
       searchConfig: {},
       storeConfig: {},
     },
@@ -155,6 +168,18 @@ export default [
     },
   },
   {
+    path: "yeu-cau-mua-hang/chinh-sua/:id",
+    name: "yeu-cau-mua-hang/chinh-sua/:id",
+    component: () =>
+      import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Chỉnh sửa yêu cầu mua hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "dat-hang",
     name: "dat-hang",
     component: () => import("@/components/Page/PurchaseOrder/PurchaseOrder.vue"),
@@ -212,18 +237,6 @@ export default [
           storeConfig: {},
         },
       },
-      // {
-      //   path: "loai-kho",
-      //   name: "loai-kho",
-      //   component: () =>
-      //     import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouseType.vue"),
-      //   meta: {
-      //     requiresAuth: true,
-      //     headerTitle: "Cấu hình loại kho",
-      //     searchConfig: {},
-      //     storeConfig: {},
-      //   },
-      // },
       {
         path: "khu-vuc",
         name: "khu-vuc",
