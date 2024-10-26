@@ -147,10 +147,6 @@ const selectedWarehouseZone = reactive({
   moTa: "",
   maKho: "",
 });
-// pagination
-const currentPage = ref(0);
-const totalPages = ref(1);
-const pageSize = ref(10);
 
 onMounted(() => {
   getWarehouseZone();
@@ -168,9 +164,8 @@ const fetchWarehouses = async () => {
 
 const getWarehouseZone = async () => {
   try {
-    const response = await apiStore.get(`zones?page=${currentPage.value}&size=${pageSize.value}`);
-    zones.value = response.data.list;
-    totalPages.value = Math.ceil(response.total / pageSize.value);
+    const response = await apiStore.get("zones");
+    zones.value = response.data;
   } catch (error) {
     console.error("Failed to fetch zones:", error);
   }

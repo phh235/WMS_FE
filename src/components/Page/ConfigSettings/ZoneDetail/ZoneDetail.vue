@@ -178,7 +178,7 @@ onMounted(async () => {
 const getZoneDetail = async () => {
   try {
     const response = await apiStore.get("zone-details");
-    zoneDetail.value = response.data.list;
+    zoneDetail.value = response.data;
   } catch (error) {
     console.error("Failed to fetch zone detail:", error);
   }

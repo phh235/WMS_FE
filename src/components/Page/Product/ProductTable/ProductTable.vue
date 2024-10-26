@@ -122,8 +122,8 @@ onMounted(() => {
 
 const getProducts = async () => {
   try {
-    const response = await apiStore.get("products?page=0&size=100");
-    products.value = response.data.list;
+    const response = await apiStore.get("products");
+    products.value = response.data;
   } catch (error) {
     console.error("Failed to fetch products:", error);
   }
