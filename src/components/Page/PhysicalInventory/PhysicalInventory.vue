@@ -28,7 +28,7 @@
               <input v-model="inventory.idSanPham" type="text" class="form-control" />
             </td>
             <td class="td-warehouse-code">
-              <input v-model="inventory.maKho" type="text" class="form-control" />
+              <input v-model="inventory.tenKho" type="text" class="form-control" />
             </td>
             <td class="td-batch-code">
               <input v-model="inventory.maLo" type="text" class="form-control" />
@@ -71,15 +71,15 @@ const format = (date) => {
 };
 
 const inventoryData = reactive([
-  { idTonKho: 1, idSanPham: 101, maKho: 'K001', maLo: 'L001', soLuong: 50, ngayCapNhat: new Date() },
-  { idTonKho: 2, idSanPham: 102, maKho: 'K002', maLo: 'L002', soLuong: 30, ngayCapNhat: new Date() },
+  { idTonKho: 1, idSanPham: 101, tenKho: 'K001', maLo: 'L001', soLuong: 50, ngayCapNhat: new Date() },
+  { idTonKho: 2, idSanPham: 102, tenKho: 'K002', maLo: 'L002', soLuong: 30, ngayCapNhat: new Date() },
 ]);
 
 const addInventory = () => {
   inventoryData.push({
     idTonKho: inventoryData.length + 1,
     idSanPham: '',
-    maKho: '',
+    tenKho: '',
     maLo: '',
     soLuong: 0,
     ngayCapNhat: new Date()

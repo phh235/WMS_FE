@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@panzoom/panzoom": "^4.5.1",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^9.0.3",
     "@vueuse/core": "^11.1.0",

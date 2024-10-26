@@ -18,14 +18,17 @@
       "product": "Products",
       "AccountManagement": "Account Management",
       "warehouses_management": "Warehouse Management",
+      "lots": "Lots Management",
       "report": "Reports",
       "config": {
         "label": "Config",
         "sub_items": {
           "small_1": "Inventory",
           "small_2": "Product",
+          "small_3": "Zones",
           "warehouses": "Warehouses",
           "zones": "Zones",
+          "zoneDetail": "Zone Detail",
           "categories": "Categories"
         }
       },
@@ -310,6 +313,37 @@
           "zone_name": "Zone name cannot be empty!",
           "zone_desc": "Zone description cannot be empty!",
           "warehouse_id": "Please choose a warehouse!"
+        }
+      }
+    },
+    "zone-detail": {
+      "not_found": "No zone details found",
+      "title_save": "Add zone details",
+      "title_edit": "Edit zone details",
+      "search_input": "Search zone details...",
+      "zone_detail_id": "Zone detail code",
+      "zone_detail_name": "Zone detail name",
+      "zone_detail_desc": "Description",
+      "area_storage": "Storage volume",
+      "area_available": "Available volume",
+      "zone_id": "Zone code",
+      "choose_warehouse": "Choose zone",
+      "swal": {
+        "delete": {
+          "success": "Delete zone details successfully",
+          "failed": "Delete zone details failed",
+          "title": "Delete zone details?",
+          "text": "Are you sure you want to delete this zone detail?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        },
+        "success": "Saved successfully",
+        "validate": {
+          "zone_detail_id": "Zone detail code cannot be empty!",
+          "zone_detail_name": "Zone detail name cannot be empty!",
+          "area_storage": "Storage volume cannot be empty!",
+          "area_available": "Available volume cannot be empty!",
+          "zone_id": "Please select a zone"
         }
       }
     },

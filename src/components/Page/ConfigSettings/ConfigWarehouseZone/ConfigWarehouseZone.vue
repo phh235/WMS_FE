@@ -34,7 +34,8 @@
         <tr v-if="filteredZones.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.zones.not_found') }}</td>
         </tr>
-        <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc">
+        <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc"
+          @dblclick="showZoneDetail(zone.maKhuVuc)">
           <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
           <td class="sticky">{{ zone.maKhuVuc }}</td>
           <td>{{ zone.tenKhuVuc }}</td>
@@ -123,8 +124,10 @@ import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import { useRouter } from "vue-router";
 const { t } = useI18n();
 
+const router = useRouter();
 const apiStore = useApiServices();
 const zones = ref([]);
 const warehouseStore = useWarehouseStore();
@@ -312,6 +315,12 @@ const btnResetForm = () => {
     maKho: "",
   });
 };
+
+const showZoneDetail = (id) => {
+  console.log(id);
+  router.push({ path: `/config-settings/config-warehouse-zone/zone-detail/${id}` })
+  // router.push({ path: '/inventory/quan-ly-lo-hang/lots-normal' })
+}
 </script>
 
 <style scoped>
