@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-2">
+  <div class="container-fluid box-shadow p-3">
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-3">
       <div class="tab-container justify-content-start mb-2 mb-md-0">
         <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
           :class="['tab-button', { active: activeTab === tab }]">
@@ -8,310 +8,515 @@
         </button>
       </div>
       <div class="d-flex flex-column flex-md-row align-items-center">
-        <div class="form-group fs has-search d-flex align-items-center me-2">
-          <span class="material-symbols-outlined form-control-feedback">search</span>
-          <input type="search" class="form-control" placeholder="Tìm kiếm" v-model="searchQuery" />
+        <div class="d-flex mb-2 mb-md-0">
+          <SearchInput v-model="searchQuery" :placeholder="$t('PurchaseRequest.search_input.search_id')" />
+          <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
         </div>
-        <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          <span class="material-symbols-outlined me-2">add</span>Tạo đơn đặt hàng
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="order-card box-shadow mt-3 p-3" v-if="filteredOrders.length === 0">
-          <div class="d-flex align-content-center justify-content-center">
-            Không tìm thấy đơn đặt hàng
-          </div>
-        </div>
-        <div class="order-card box-shadow mt-3 p-3" v-for="order in filteredOrders" :key="order.id"
-          style="cursor: pointer">
-          <div class="order-header d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-center fw-bold">
-              <h5 class="me-5 fs fw-bold" style="color: var(--nav-link-color);">
-                <span class="me-2">{{ order.id }}</span> |
-                <span class="ms-2">{{ order.product }}</span>
-              </h5>
-            </div>
-            <span class="badge d-flex align-items-center" :class="getStatusClass(order.status)">
-              <span class="material-symbols-outlined me-1">{{ getStatusIcon(order.status) }}</span>
-              {{ order.status }}
-            </span>
-          </div>
-          <div class="order-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div class="d-flex justify-content-center">
-                <div class="order-user me-3">
-                  <span class="material-symbols-outlined me-1">person</span>
-                  {{ order.user }}
-                </div>
-                <div class="order-info">
-                  <span class="material-symbols-outlined me-1">place</span>
-                  {{ order.address }}
-                </div>
-              </div>
-              <div class="order-info">
-                <span class="material-symbols-outlined me-1">receipt</span>
-                {{ order.billingStatus }}
-              </div>
-            </div>
-            <div class="progress">
-              <div class="progress-bar" role="progressbar" :class="getProgressBarClass(order.status)"
-                :style="{ width: `${getProgressPercentage(order.status)}%` }"
-                :aria-valuenow="getProgressPercentage(order.status)" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <div class="progress-steps">
-              <div class="step" v-for="(step, index) in progressSteps" :key="index">
-                <span class="material-symbols-outlined" :class="getStepIconClass(order.status, index)">
-                  {{ step }}
-                </span>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-2" style="color: var(--nav-link-color);">
-              <small>{{ order.date }}</small>
-              <strong>{{ order.price }} đ</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-xl">
-      <div class="modal-content" style="background-color: var(--background-color);">
-        <div class="modal-header border-0">
-          <button type="button" class="btn btn-secondary d-flex align-items-center" data-bs-dismiss="modal"
-            aria-label="Close"> <span class="material-symbols-outlined me-2 icon"> chevron_left </span>
-            Quay lại
+        <div class="d-flex">
+          <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
+            <span class="material-symbols-outlined">swap_vert</span>
           </button>
-        </div>
-        <div class="modal-body p-0 container-fluid vh-100">
-          <PurchaseOrderForm />
+          <router-link to="dat-hang/tao-don-dat-hang" class="btn btn-primary d-flex align-items-center">
+            <span class="material-symbols-outlined me-2"> add </span>
+            {{ $t('PurchaseRequest.btn_create') }}
+          </router-link>
         </div>
       </div>
     </div>
+    <div class="table-responsive">
+      <div class="d-flex justify-content-end mb-3">
+        <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
+        <VueDatePicker v-model="date" week-picker auto-apply :enable-time-picker="false" :teleport="true"
+          :auto-position="true" locale="vi" style="max-width: 320px;" placeholder="Tìm theo tuần" />
+        <!-- <VueDatePicker v-model="date" range :teleport="true" :auto-position="true" locale="vi" style="max-width: 320px;"
+          placeholder="Tìm theo khoảng ngày" /> -->
+      </div>
+      <table class="table mb-3">
+        <thead>
+          <tr>
+            <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
+            <th>{{ $t('PurchaseRequest.table.name') }}</th>
+            <th>{{ $t('PurchaseRequest.table.status') }}</th>
+            <th>{{ $t('PurchaseRequest.table.date') }}</th>
+            <th style="width: 200px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
+            <td colspan="10">{{ $t('PurchaseRequest.not_found') }}</td>
+          </tr>
+          <tr v-for="purchase in paginatedPurchases" :key="purchase.sysIdYeuCauMuaHang">
+            <td class="sticky">{{ purchase.maPR }}</td>
+            <td>{{ purchase.fullName }}</td>
+            <td>
+              <span :class="['badge', getBadgeClass(purchase.trangThai)]">
+                {{ getStatusLabel(purchase.trangThai) }}
+              </span>
+            </td>
+            <td>{{ purchase.ngayYeuCau }}</td>
+            <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+              <div class="dropdown" style="display: inline-block;">
+                <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="material-symbols-outlined">more_vert</span>
+                </button>
+                <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <router-link :to="{ name: 'yeu-cau-mua-hang/chinh-sua/:id', params: { id: purchase.maPR } }"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      {{ $t('PurchaseRequest.table.li_edit') }}
+                      <span class="material-symbols-outlined">edit_square</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                      @click="cancelPR">
+                      {{ $t('PurchaseRequest.table.li_cancel') }}
+                      <span class="material-symbols-outlined">cancel</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
+
+    <!-- Modal để hiển thị chi tiết đơn hàng -->
+    <div v-if="isModalVisible" class="modal fade show" tabindex="-1" style="display: block;"
+      aria-labelledby="purchaseDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
+              {{ $t('PurchaseRequest.table.detail.order_detail') }}
+              <span style="color: var(--primary-color);">{{ selectedPurchase.maPR }}</span>
+            </h5>
+            <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
+              @click="closeModal">close</span>
+          </div>
+          <div class="modal-body">
+            <!-- Hiển thị thông tin chi tiết đơn hàng -->
+            <div class="row">
+              <div class="col-6 col-md-4">
+                <label class="form-label">{{ $t('PurchaseRequest.table.id') }}</label>
+                <p class="fs">{{ selectedPurchase.maPR }}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseRequest.table.detail.customer') }}
+                </label>
+                <p class="fs">{{ selectedPurchase.chiTietDonHang[0]?.tenKhachHang }}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseRequest.table.status') }}
+                </label>
+                <p>
+                  <span :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
+                    {{ getStatusLabel(selectedPurchase.trangThai) }}
+                  </span>
+                </p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseRequest.table.name') }}
+                </label>
+                <p class="fs">{{ selectedPurchase.fullName }}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseRequest.table.date') }}
+                </label>
+                <p class="fs">{{ selectedPurchase.ngayYeuCau }}</p>
+              </div>
+            </div>
+            <hr />
+            <h5 class="fw-bold"> {{ $t('PurchaseRequest.table.detail.product_detail.title') }}
+            </h5>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
+                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
+                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
+                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.date') }}</th>
+                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in selectedPurchase.chiTietDonHang" :key="item.maSanPham">
+                    <td>{{ item.tenSanPham }}</td>
+                    <td>{{ item.soLuong }} Kg</td>
+                    <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
+                      <span class="currency-symbol">&#8363;</span>
+                    </td>
+                    <td>{{ item.ngayNhap }}</td>
+                    <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
+                      <span class="currency-symbol">&#8363;</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
+                <span style="color: var(--primary-color);">{{
+                  totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay khi modal mở -->
+    <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import PurchaseOrderForm from "./PurchaseOrderForm/PurchaseOrderForm.vue";
+import { ref, computed, watch, onMounted, reactive } from "vue";
+import { useRouter } from 'vue-router';
+import { useApiServices } from "@/services/apiService.js";
+import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useI18n } from "vue-i18n";
+import i18n from "@/lang/i18n";
+import Swal from "sweetalert2";
+import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import VueDatePicker from "@vuepic/vue-datepicker"
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
-
-const searchQuery = ref("");
+const date = ref(new Date());
+// Pagination
+const currentPage = ref(1);
+const pageSize = ref(5);
+const router = useRouter();
 const { t } = useI18n();
+const searchQuery = ref("");
+const searchQueryByPeople = ref("");
+const isModalVisible = ref(false);
+const purchases = ref([]);
+const apiStore = useApiServices();
+// Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
 const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.pending'), t('PurchaseRequest.tabs.confirmed'), t('PurchaseRequest.tabs.canceled')]);
+// Sort
+const sortOption = ref("");
 
-const filteredOrders = computed(() => {
-  return orders.value.filter((order) => {
-    const searchLower = searchQuery.value.toLowerCase();
-    return (
-      order.id.toLowerCase().includes(searchLower) ||
-      order.id.toUpperCase().includes(searchLower) ||
-      order.product.toLowerCase().includes(searchLower) ||
-      order.user.toLowerCase().includes(searchLower) ||
-      order.address.toLowerCase().includes(searchLower) ||
-      order.status.toLowerCase().includes(searchLower)
-    );
-  });
+onMounted(() => {
+  getPurchaseRequests();
+})
+
+// dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
+watch(tabs, (newTabs) => {
+  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
 });
 
-const progressSteps = ["schedule", "inventory", "local_shipping", "check_circle"];
+const selectedPurchase = reactive({
+  sysIdYeuCauMuaHang: "",
+  maPR: "",
+  ngayYeuCau: "",
+  nguoiYeuCau: 1,
+  fullName: "",
+  trangThai: "",
+  chiTietDonHang: []
+})
 
-const getStatusClass = (status) => {
-  const classes = {
-    waiting: "bg-warning",
-    pending: "bg-info",
-    done: "bg-success",
-    cancel: "bg-danger",
+// Tính tổng giá trị (số lượng * giá)
+const totalOrderValue = computed(() => {
+  return selectedPurchase.chiTietDonHang.reduce((total, item) => {
+    return total + (parseFloat(item.tongChiPhi) || 0);
+  }, 0);
+});
+
+const getPurchaseRequests = async () => {
+  try {
+    const response = await apiStore.get("purchase-requests");
+    purchases.value = response.data;
+  } catch (error) {
+    console.error("Failed to fetch purchase requests:", error);
+  }
+};
+
+// Hủy yêu cầu - udpate status DA_HUY
+const cancelPR = async () => {
+  const swalConfirm = await Swal.fire({
+    title: i18n.global.t("PurchaseRequest.table.swal.delete.title"),
+    text: i18n.global.t("PurchaseRequest.table.swal.delete.text"),
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.cancel"),
+    cancelButtonColor: "#ef4444",
+    confirmButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.confirm"),
+  });
+
+  if (swalConfirm.isConfirmed) {
+    try {
+      await apiStore.put(`purchase-requests/${selectedPurchase.sysIdYeuCauMuaHang}`, { trangThai: "DA_HUY" });
+      showToastSuccess(t('PurchaseRequest.table.swal.delete.success'));
+      getPurchaseRequests();
+    } catch (error) {
+      showToastError(t('PurchaseRequest.table.swal.delete.failed'));
+    }
+  }
+};
+
+const showDetail = (purchase) => {
+  selectedPurchase.maPR = purchase.maPR;
+  selectedPurchase.ngayYeuCau = purchase.ngayYeuCau;
+  selectedPurchase.fullName = purchase.fullName;
+  selectedPurchase.trangThai = purchase.trangThai;
+  selectedPurchase.chiTietDonHang = purchase.chiTietDonHang;
+
+  isModalVisible.value = true;
+};
+
+const closeModal = () => {
+  isModalVisible.value = false;
+};
+
+// Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
+const getStatusValue = (status) => {
+  const statusMap = {
+    [t('PurchaseRequest.tabs.pending')]: "DANG_XU_LY",
+    [t('PurchaseRequest.tabs.confirmed')]: "XAC_NHAN",
+    [t('PurchaseRequest.tabs.canceled')]: "DA_HUY",
   };
-  return classes[status] || "bg-secondary";
+
+  return statusMap[status] || status;
 };
 
-const getStatusIcon = (status) => {
-  const icons = {
-    waiting: "hourglass_empty",
-    pending: "refresh",
-    done: "check_circle",
-    cancel: "cancel",
+// Hàm chuyển đổi ký tự có dấu thành không dấu
+function removeAccents(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+const filteredRequests = computed(() => {
+  return purchases.value
+    .filter(purchase =>
+      activeTab.value === t('PurchaseRequest.tabs.all') || purchase.trangThai === getStatusValue(activeTab.value)
+    )
+    .filter(purchase =>
+      !searchQuery.value || removeAccents(purchase.maPR.toLowerCase()).includes(removeAccents(searchQuery.value.toLowerCase()))
+    )
+    .filter(purchase =>
+      !searchQueryByPeople.value || removeAccents(purchase.fullName.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
+    )
+    .filter(purchase => {
+      const purchaseDate = new Date(purchase.ngayYeuCau);
+      if (Array.isArray(date.value) && date.value.length === 2) {
+        const [startDate, endDate] = date.value;
+        return purchaseDate >= new Date(startDate) && purchaseDate <= new Date(endDate);
+      } else if (date.value) {
+        return purchaseDate.toDateString() === new Date(date.value).toDateString();
+      }
+      return true;
+    });
+});
+
+
+const paginatedPurchases = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredRequests.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredRequests.value.length / pageSize.value);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (newItemsPerPage) => {
+  pageSize.value = newItemsPerPage;
+  currentPage.value = 1; // Reset to first page when changing items per page
+};
+
+// Sort
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  purchases.value.sort((a, b) => sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR));
+  updateUrl();
+};
+
+// Dùng watch để cập nhật URL khi activeTab thay đổi
+watch(activeTab, () => {
+  updateUrl();
+});
+
+/**
+ * Cập nhật URL hiện tại
+ * - Thêm tham số tab vào URL
+ * - Xóa tham số tab khỏi URL
+ */
+const updateUrl = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+
+  if (sortOption.value) {
+    params.set("sort", sortOption.value);
+  } else {
+    params.delete("sort");
+  }
+
+  if (activeTab.value && activeTab.value !== "T t c") {
+    params.set("tab", activeTab.value);
+  } else {
+    params.delete("tab");
+  }
+
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
+};
+
+const getBadgeClass = (status) => {
+  const statusMap = {
+    DANG_XU_LY: "bg-warning",
+    XAC_NHAN: "bg-success",
+    DA_HUY: "bg-danger",
   };
-  return icons[status] || "help";
+
+  return statusMap[status] || "bg-secondary";
 };
 
-const getProgressBarClass = (status) => {
-  const classes = {
-    waiting: "bg-warning",
-    pending: "bg-info",
-    done: "bg-success",
-    cancel: "bg-danger",
+const getStatusLabel = (status) => {
+  const statusMap = {
+    DANG_XU_LY: t("PurchaseRequest.tabs.pending"),
+    XAC_NHAN: t("PurchaseRequest.tabs.confirmed"),
+    DA_HUY: t("PurchaseRequest.tabs.canceled"),
   };
-  return classes[status] || "bg-secondary";
-};
 
-const getProgressPercentage = (status) => {
-  const percentages = {
-    waiting: 35,
-    pending: 50,
-    done: 100,
-    cancel: 100,
-  };
-  return percentages[status] || 0;
+  return statusMap[status] || status;
 };
-
-const getStepIconClass = (status, index) => {
-  const statusIndex = ["waiting", "pending", "done"].indexOf(status);
-  if (status === "cancel") return index === 3 ? "text-danger" : "text-muted";
-  return index <= statusIndex ? "text-primary" : "text-muted";
-};
-
-const orders = ref([
-  {
-    id: "PO-652",
-    product: "Cà chua - 100KG",
-    user: "phh235",
-    address: "Dĩ An, Bình Dương",
-    billingStatus: "Vận đơn",
-    status: "pending",
-    date: "05/10/2024",
-    price: "150.000",
-  },
-  {
-    id: "PO-655",
-    product: "Khoai tây - 100KG",
-    user: "phh235",
-    address: "Dĩ An, Bình Dương",
-    billingStatus: "Vận đơn",
-    status: "waiting",
-    date: "05/10/2024",
-    price: "150.000",
-  },
-  {
-    id: "PO-654",
-    product: "Hành tím - 100KG",
-    address: "TPHCM",
-    user: "phh235",
-    billingStatus: "Đã nhận",
-    status: "done",
-    date: "05/10/2024",
-    price: "150.000",
-  },
-  {
-    id: "PO-657",
-    product: "Hành lá - 50KG",
-    user: "phh235",
-    address: "Dĩ An, Bình Dương",
-    billingStatus: "Vận đơn",
-    status: "cancel",
-    date: "05/10/2024",
-    price: "150.000",
-  },
-]);
 </script>
 
 <style scoped>
-.container {
-  max-width: 1300px;
-}
-
-.order-card {
+.container-fluid {
+  max-width: 1400px;
   background-color: var(--background-color);
-  overflow: hidden;
   border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
 
-.order-header {
-  padding: 0px 1rem;
-}
-
-.order-body {
-  padding: 6px 1rem;
-}
-
-.order-user {
-  color: var(--nav-link-color);
-  font-size: 0.875rem;
-}
-
-.order-info {
-  font-size: 0.875rem;
-  color: var(--nav-link-color);
-  display: flex;
-  align-items: center;
-}
-
-.progress {
-  height: 10px;
-  margin-bottom: 8px;
-}
-
-.progress-steps {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.progress-bar {
-  border-radius: 100px;
-}
-
-.step {
-  font-size: 1.25rem;
-  color: #ced4da;
-}
-
-.badge {
-  font-size: 0.75rem;
-  padding: 0.35em 0.65em;
-}
-
-.material-symbols-outlined {
-  font-size: 1rem;
+td {
   vertical-align: middle;
-}
-
-.badge .material-symbols-outlined {
   font-size: 0.875rem;
 }
 
 .bg-success {
-  background-color: var(--primary-color) !important;
+  font-size: 0.875rem;
+  background-color: var(--bg-success) !important;
+  color: var(--primary-color-hover);
+  border: 1.4px solid var(--primary-color);
 }
 
 .bg-danger {
-  background-color: #e74c3c !important;
-}
-
-.bg-info {
-  background-color: #3498db !important;
+  font-size: 0.875rem;
+  background-color: var(--bg-danger) !important;
+  color: #dc3545;
+  border: 1.4px solid #dc3545;
 }
 
 .bg-warning {
-  background-color: #f1c40f !important;
+  font-size: 0.875rem;
+  background-color: var(--bg-warning) !important;
+  color: #fe961f;
+  border: 1.4px solid #fe961f;
 }
 
-.text-primary {
-  color: var(--primary-color) !important;
+.badge {
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 500;
 }
 
-@media screen and (max-width: 768.98px) {
-  .fs {
-    font-size: calc(1rem - 2px);
+.form-control {
+  width: 220px;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.fs {
+  font-size: 0.875rem;
+}
+
+.currency-symbol {
+  font-size: 0.8em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .block {
+    padding: 15px 10px !important;
+  }
+}
+
+.btn-secondary,
+.btn-danger {
+  padding: 10px;
+}
+
+.btn-secondary {
+  background-color: var(--background-color) !important;
+  border: 1.5px solid var(--border-main-color) !important;
+
+  &:focus,
+  &:active {
+    background-color: var(--background-color) !important;
+    border: 1.5px solid var(--border-main-color) !important;
+  }
+}
+
+.dropdown-menu {
+  min-width: 140px;
+  padding: 8px;
+  border-radius: 1rem;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-main-color);
+}
+
+.dropdown-item {
+  font-size: 0.875rem;
+  padding: 8px;
+  border-radius: 0.625rem;
+  transition: all 0.1s;
+  color: var(--nav-link-color);
+
+  &:hover {
+    background-color: var(--secondary-color);
+    color: var(--nav-link-color);
   }
 
-  .order-body {
-    padding: 8px;
+  &:focus,
+  &:active {
+    background-color: var(--secondary-color);
+    color: var(--nav-link-color);
   }
+}
 
-  .order-info,
-  .order-user {
-    font-size: 0.75rem;
-  }
+.btn-logout {
+  color: var(--btn-logout-color);
 
-  .progress-steps .step {
-    font-size: 1rem;
+  &:hover,
+  &:active,
+  &:focus {
+    color: var(--btn-logout-color);
+    background-color: var(--btn-logout-bg);
+    cursor: pointer;
   }
 }
 </style>

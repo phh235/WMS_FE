@@ -10,7 +10,7 @@ export const useWarehouseStore = defineStore("warehouses", () => {
   const getWarehouses = async () => {
     try {
       const response = await apiStore.get("warehouses");
-      warehouses.value = response.data.list;
+      warehouses.value = response.data;
     } catch (error) {
       console.error("Failed to fetch warehouses:", error);
       showToastError("Không thể lấy danh sách kho. Vui lòng thử lại sau.");

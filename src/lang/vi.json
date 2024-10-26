@@ -18,14 +18,17 @@
       "product": "Sản phẩm",
       "AccountManagement": "Quản lý tài khoản",
       "warehouses_management": "Quản lý kho",
+      "lots": "Quản lý lô hàng",
       "report": "Báo cáo",
       "config": {
         "label": "Cấu hình",
         "sub_items": {
           "small_1": "Quản lý kho hàng",
           "small_2": "Sản phẩm",
+          "small_3": "Quản lý khu vực",
           "warehouses": "Kho hàng",
           "zones": "Khu vực",
+          "zoneDetail": "Chi tiết khu vực",
           "categories": "Danh mục"
         }
       },
@@ -163,6 +166,7 @@
           "product_name": "Tên sản phẩm",
           "quantity": "Số lượng",
           "price": "Giá",
+          "date": "Ngày nhập",
           "total": "Tổng tiền",
           "total_price": "Tổng giá trị đơn hàng"
         }
@@ -309,6 +313,37 @@
           "zone_name": "Tên khu vực không được để trống!",
           "zone_desc": "Mô tả khu vực không được để trống!",
           "warehouse_id": "Vui lòng chọn kho!"
+        }
+      }
+    },
+    "zone-detail": {
+      "not_found": "Không tìm thấy chi tiết khu vực",
+      "title_save": "Thêm chi tiết khu vực",
+      "title_edit": "Chỉnh sửa chi tiết khu vực",
+      "search_input": "Tìm kiếm chi tiết khu vực...",
+      "zone_detail_id": "Mã chi tiết khu vực",
+      "zone_detail_name": "Tên chi tiết khu vực",
+      "zone_detail_desc": "Mô tả",
+      "area_storage": "Thể tích lưu trữ",
+      "area_available": "Thể tích khả dụng",
+      "zone_id": "Mã khu vực",
+      "choose_zone": "Chọn khu vực",
+      "swal": {
+        "delete": {
+          "success": "Xóa chi tiết khu vực thành công",
+          "failed": "Xóa chi tiết khu vực thất bại",
+          "title": "Xóa chi tiết khu vực?",
+          "text": "Bạn có chắc chắn muốn xóa chi tiết khu vực này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "zone_detail_id": "Mã chi tiết khu vực không được để trống!",
+          "zone_detail_name": "Tên chi tiết khu vực không được để trống!",
+          "area_storage": "Thể tích lưu trữ không được để trống!",
+          "area_available": "Thể tích khả dụng không được để trống!",
+          "zone_id": "Vui lòng chọn khu vực"
         }
       }
     },

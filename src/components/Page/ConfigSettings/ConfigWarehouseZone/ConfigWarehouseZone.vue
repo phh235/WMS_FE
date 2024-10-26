@@ -34,7 +34,8 @@
         <tr v-if="filteredZones.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.zones.not_found') }}</td>
         </tr>
-        <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc">
+        <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc"
+          @dblclick="showZoneDetail(zone.maKhuVuc)">
           <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
           <td class="sticky">{{ zone.maKhuVuc }}</td>
           <td>{{ zone.tenKhuVuc }}</td>
@@ -123,8 +124,10 @@ import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import { useRouter } from "vue-router";
 const { t } = useI18n();
 
+const router = useRouter();
 const apiStore = useApiServices();
 const zones = ref([]);
 const warehouseStore = useWarehouseStore();
@@ -144,10 +147,6 @@ const selectedWarehouseZone = reactive({
   moTa: "",
   maKho: "",
 });
-// pagination
-const currentPage = ref(0);
-const totalPages = ref(1);
-const pageSize = ref(10);
 
 onMounted(() => {
   getWarehouseZone();
@@ -165,9 +164,8 @@ const fetchWarehouses = async () => {
 
 const getWarehouseZone = async () => {
   try {
-    const response = await apiStore.get(`zones?page=${currentPage.value}&size=${pageSize.value}`);
-    zones.value = response.data.list;
-    totalPages.value = Math.ceil(response.total / pageSize.value);
+    const response = await apiStore.get("zones");
+    zones.value = response.data;
   } catch (error) {
     console.error("Failed to fetch zones:", error);
   }
@@ -312,34 +310,17 @@ const btnResetForm = () => {
     maKho: "",
   });
 };
+
+const showZoneDetail = (id) => {
+  console.log(id);
+  router.push({ path: `/config-settings/config-warehouse-zone/zone-detail/${id}` })
+  // router.push({ path: '/inventory/quan-ly-lo-hang/lots-normal' })
+}
 </script>
 
 <style scoped>
-tr,
-td {
-  border-bottom: 1px solid #dfdfdf;
-}
-
-td {
-  font-size: 0.875rem;
-  vertical-align: middle;
-}
-
 .btn-danger,
 .btn-secondary {
   padding: 10px 10px;
-}
-
-.btn-close {
-  box-shadow: none;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.1s;
-
-  &:hover,
-  &:active {
-    background-color: var(--secondary-color);
-    padding: 8px;
-  }
 }
 </style>
