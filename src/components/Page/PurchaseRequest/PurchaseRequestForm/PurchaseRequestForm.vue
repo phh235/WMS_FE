@@ -62,8 +62,8 @@
                 <input v-model.number="product.gia" type="number" class="form-control" min="0" />
               </td>
               <td>
-                <VueDatePicker v-model="product.ngayNhap" :teleport="true" :auto-position="true"
-                  placeholder="Chọn ngày nhập dự kiến"></VueDatePicker>
+                <VueDatePicker v-model="product.ngayNhap" :enable-time-picker="false" :teleport="true" :format="format"
+                  auto-apply :auto-position="true" placeholder="Chọn ngày nhập dự kiến"></VueDatePicker>
               </td>
               <td class="td-action">
                 <div class="d-flex align-items-center justify-content-center">
@@ -88,19 +88,6 @@
         </div>
       </div>
     </form>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <ProductForm />
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -108,11 +95,17 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
 import { useRouter } from "vue-router";
-import ProductForm from '../../Product/ProductForm/ProductForm.vue';
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo } from "@components/Toast/utils/toastHandle.js";
 import VueDatePicker from "@vuepic/vue-datepicker"
+import { closeToastLoading, showToastLoading } from '@/components/Toast/utils/toastHandle';
 
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 const apiStore = useApiServices();
 const productStore = useProductStore();
 const router = useRouter();
@@ -190,8 +183,10 @@ const handleSubmit = async () => {
   };
 
   try {
+    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo yêu cầu...');
     let response;
     response = await apiStore.post("purchase-requests/save", submitData);
+    closeToastLoading();
     showToastSuccess('Tạo yêu cầu mua hàng thành công!');
     setTimeout(() => {
       showToastInfo('Đã gửi mail cho phòng Purchase Order');

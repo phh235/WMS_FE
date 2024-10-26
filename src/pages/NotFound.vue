@@ -5,11 +5,11 @@
         <div class="col-12">
           <div class="text-center">
             <h2 class="d-flex justify-content-center align-items-center gap-2">
-              <span class="display-1 fw-bold">4</span>
+              <span class="display-1 fw-bold text-change">4</span>
               <span class="material-symbols-outlined text-danger display-1"> error </span>
-              <span class="display-1 fw-bold">4</span>
+              <span class="display-1 fw-bold text-change">4</span>
             </h2>
-            <h3 class="mb-5">Trang bạn tìm kiếm không tồn tại.</h3>
+            <h3 class="mb-5 text-change">Trang bạn tìm kiếm không tồn tại.</h3>
             <router-link class="btn bsb-btn-5xl btn-dark l px-5 fs-6 m-0" to="/inventory/tong-quan" role="button">Trở về
               trang chủ
             </router-link>
@@ -21,6 +21,16 @@
 </template>
 
 <style scoped>
+.text-change {
+  color: var(--nav-link-color);
+  color: var(--nav-link-color);
+}
+
+.btn-dark {
+  background-color: var(--nav-link-color);
+  color: var(--text-select);
+}
+
 .bsb-btn-xl {
   --bs-btn-padding-y: 0.625rem;
   --bs-btn-padding-x: 1.25rem;

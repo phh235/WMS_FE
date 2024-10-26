@@ -38,6 +38,7 @@ export const showToastLoading = (message, text) => {
     icon: "info",
     title: message,
     text: text,
+    timer: 6000,
     showConfirmButton: false,
     allowOutsideClick: false,
     didOpen: (toast) => {

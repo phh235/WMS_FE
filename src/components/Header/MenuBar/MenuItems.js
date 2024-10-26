@@ -191,8 +191,8 @@ export default [
     },
   },
   {
-    path: "tao-don-dat-hang",
-    name: "tao-don-dat-hang",
+    path: "dat-hang/tao-don-dat-hang",
+    name: "dat-hang/tao-don-dat-hang",
     component: () =>
       import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderForm.vue"),
     meta: {
@@ -201,6 +201,35 @@ export default [
       searchConfig: {},
       storeConfig: {},
     },
+  },
+  {
+    path: "quan-ly-lo-hang",
+    name: "quan-ly-lo-hang",
+    component: () => import("@/components/Page/LotsManagement/LotsManagement.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Quản lý lô hàng",
+    },
+    children: [
+      {
+        path: "lots-normal",
+        name: "lots-normal",
+        component: () => import("@/components/Page/LotsManagement/LotsNormal/LotsNormal.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Lô hàng kho thường",
+        },
+      },
+      {
+        path: "lots-cold",
+        name: "lots-cold",
+        component: () => import("@/components/Page/LotsManagement/LotsCold/LotsCold.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Lô hàng kho lạnh",
+        },
+      },
+    ],
   },
   {
     path: "cau-hinh",
@@ -245,6 +274,17 @@ export default [
         meta: {
           requiresAuth: true,
           headerTitle: "Cấu hình khu vực",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "chi-tiet-khu-vuc",
+        name: "chi-tiet-khu-vuc",
+        component: () => import("@components/Page/ConfigSettings/ZoneDetail/ZoneDetail.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình chi tiết khu vực",
           searchConfig: {},
           storeConfig: {},
         },

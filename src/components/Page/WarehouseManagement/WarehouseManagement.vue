@@ -1,8 +1,5 @@
 <template>
   <div class="container-fluid p-0">
-    <!-- <div class="row">
-      <Card />
-    </div> -->
     <div class="d-flex justify-content-center align-items-center mt-5">
       <div class="warehouse-block box-shadow">
         <div class="row">
@@ -44,16 +41,8 @@ const warehouses = ref([
   text-decoration: none;
   color: inherit;
   border-radius: 1rem;
-  border: 3px solid var(--border-main-color);
+  border: 1.5px solid var(--border-main-color);
   color: var(--nav-link-color);
-  transition: none;
-
-  &:hover {
-    color: var(--text-select);
-    background-image: url("https://res.cloudinary.com/dnfccnxew/image/upload/v1725710674/aepjhdbiizkukw60fhuf.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
 }
 
 .material-symbols-outlined {

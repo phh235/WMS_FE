@@ -1,54 +1,40 @@
 [
   {
-    "id": 1,
-    "viTri": "A1",
-    "tanSuatKiemKho": "Hàng tuần",
-    "sanPham": "Sản phẩm A",
-    "danhMucSanPham": "Điện tử",
-    "ngayDemGanNhat": "2024-08-01",
-    "soLuongHienCo": 100,
-    "soLuongDaDem": 98,
-    "chenhLech": -2,
-    "ngayTheoKeHoach": "2024-09-30",
-    "nguoiKiem": "Nguyễn Văn A"
+    "idTonKho": 1,
+    "idSanPham": 1,
+    "maKho": "KHO A",
+    "maLo": "LO 1",
+    "soLuong": 100,
+    "ngayCapNhat": "2024-08-01",
+    "hanhDong": ""
   },
   {
-    "id": 2,
-    "viTri": "B2",
-    "tanSuatKiemKho": "Hàng tháng",
-    "sanPham": "Sản phẩm B",
-    "danhMucSanPham": "Gia dụng",
-    "ngayDemGanNhat": "2024-07-15",
-    "soLuongHienCo": 50,
-    "soLuongDaDem": 50,
-    "chenhLech": 0,
-    "ngayTheoKeHoach": "2024-10-05",
-    "nguoiKiem": "Trần Thị B"
+    "idTonKho": 2,
+    "idSanPham": 2,
+    "maKho": "KHO B",
+    "maLo": "LO 2",
+    "soLuong": 50,
+    "ngayCapNhat": "2024-07-15",
+    "hanhDong": ""
   },
   {
-    "id": 3,
-    "viTri": "B2",
-    "tanSuatKiemKho": "Hàng tháng",
-    "sanPham": "Sản phẩm B",
-    "danhMucSanPham": "Gia dụng",
-    "ngayDemGanNhat": "2024-07-15",
-    "soLuongHienCo": 50,
-    "soLuongDaDem": 50,
-    "chenhLech": 0,
-    "ngayTheoKeHoach": "2024-10-05",
-    "nguoiKiem": "Trần Thị B"
+    "idTonKho": 3,
+    "idSanPham": 3,
+    "maKho": "KHO C",
+    "maLo": "LO 3",
+    "soLuong": 75,
+    "ngayCapNhat": "2024-06-20",
+    "hanhDong": ""
   },
   {
-    "id": 4,
-    "viTri": "B2",
-    "tanSuatKiemKho": "Hàng tháng",
-    "sanPham": "Sản phẩm B",
-    "danhMucSanPham": "Gia dụng",
-    "ngayDemGanNhat": "2024-07-15",
-    "soLuongHienCo": 50,
-    "soLuongDaDem": 50,
-    "chenhLech": 0,
-    "ngayTheoKeHoach": "2024-10-05",
-    "nguoiKiem": "Trần Thị B"
+    "idTonKho": 4,
+    "idSanPham": 4,
+    "maKho": "KHO D",
+    "maLo": "LO 4",
+    "soLuong": 25,
+    "ngayCapNhat": "2024-05-10",
+    "hanhDong": ""
   }
 ]
+
+
