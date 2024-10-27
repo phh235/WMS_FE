@@ -63,9 +63,9 @@ export const useAuthStore = defineStore("auth", {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       // Xóa lịch sử trình duyệt để không thể quay lại trang trước khi đăng xuất
-      window.history.replaceState(null, "", "/dang-nhap");
+      window.history.replaceState(null, "", "/login");
       showToastSuccess(i18n.global.t("Swal.logout.toast.success.title"));
-      return router.push("/dang-nhap");
+      return router.push("/login");
     },
     setLanguage(lang) {
       this.language = lang;

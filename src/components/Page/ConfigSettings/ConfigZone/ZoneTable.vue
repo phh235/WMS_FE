@@ -15,8 +15,7 @@
         <tr v-if="zones.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.zones.not_found') }}</td>
         </tr>
-        <tr v-for="zone in zones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc"
-          @dblclick="showZoneDetail(zone.maKhuVuc)">
+        <tr v-for="zone in zones" :key="zone.sysIdKhuVuc" @dblclick="showZoneDetail(zone.maKhuVuc)">
           <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
           <td class="sticky">{{ zone.maKhuVuc }}</td>
           <td>{{ zone.tenKhuVuc }}</td>

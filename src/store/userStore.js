@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useApiServices } from "../services/apiService";
 import { showToastError } from "@/components/Toast/utils/toastHandle";
 
-export const useUserStore = defineStore("user", () => {
+export const useUserStore = defineStore("users", () => {
   // Sử dụng reactive để tạo đối tượng user có thể phản ứng
   const user = reactive({
     username: "",
@@ -12,8 +12,18 @@ export const useUserStore = defineStore("user", () => {
     soDienThoai: "",
     role: "",
   });
-
+  const users = ref([]);
   const apiService = useApiServices();
+
+  const getUsers = async () => {
+    try {
+      const response = await apiService.get("users");
+      users.value = response.data;
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+      showToastError("Không thể lấy danh sách người dùng. Vui lòng thử lại sau.");
+    }
+  };
 
   // Hàm load user từ sessionStorage
   const loadUserFromSession = () => {
@@ -23,7 +33,7 @@ export const useUserStore = defineStore("user", () => {
       user.email = storedUser.email;
       user.fullName = storedUser.fullName;
       user.soDienThoai = storedUser.soDienThoai;
-      user.role = storedUser.roles[0]?.roleName || ""; // lấy roleName nếu tồn tại
+      user.role = storedUser.roles[0]?.roleName || "";
     }
   };
 
@@ -54,5 +64,20 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  return { user, loadUserFromSession, getUserByUsername };
+  const updateUser = async (updatedInfo) => {
+    try {
+      const response = await apiService.post("users/update-info", updatedInfo);
+      if (response.status === 200) {
+        // Cập nhật user
+        Object.assign(user, response.data);
+        sessionStorage.setItem("user", JSON.stringify(user)); // Cập nhật lại vào sessionStorage
+      } else {
+        showToastError("Cập nhật thông tin thất bại");
+      }
+    } catch (error) {
+      showToastError("Cập nhật thông tin thất bại");
+    }
+  };
+
+  return { users, user, getUsers, loadUserFromSession, getUserByUsername, updateUser };
 });

@@ -92,12 +92,7 @@ const selectedUser = reactive({
 
 const filteredUsers = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  return userStore.users.map((user) => {
-    return {
-      ...user,
-      roleName: user.roles[0]?.roleName || "N/A"  // Lấy roleName từ phần tử đầu tiên của roles
-    };
-  }).filter((user) => {
+  return userStore.users.filter((user) => {
     const matchesSearchQuery =
       user.username.toLowerCase().includes(query) ||
       user.email.toLowerCase().includes(query) ||

@@ -10,7 +10,7 @@
             <label for="username" class="form-label">{{ $t("AccountInfo.label.username") }}</label>
           </div>
           <div class="col-sm-8">
-            <input id="username" v-model="userInfo.username" type="text" class="form-control"/>
+            <input id="username" v-model="userInfo.username" type="text" class="form-control" />
           </div>
         </div>
         <div class="row mb-3 d-flex align-items-center">
@@ -67,6 +67,41 @@ onMounted(() => {
 });
 
 const updateInfo = async () => {
+
+  if (!userInfo.username) {
+    showToastError("Tên người dùng không được để trống");
+    return;
+  }
+
+  if (!userInfo.fullName) {
+    showToastError("Họ tên không được để trống");
+    return;
+  }
+
+  if (!userInfo.email) {
+    showToastError("Email không được để trống");
+    return;
+  }
+
+  // Kiểm tra định dạng email
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(userInfo.email)) {
+    showToastError('Địa chỉ email không hợp lệ.');
+    return;
+  }
+
+  if (!userInfo.soDienThoai) {
+    showToastError('Số điện thoại không được để trống.');
+    return;
+  }
+
+  // Kiểm tra số điện thoại
+  const phonePattern = /^\d{10,11}$/; // Đảm bảo là 10 hoặc 11 chữ số
+  if (!phonePattern.test(userInfo.soDienThoai)) {
+    showToastError('Số điện thoại phải là từ 10 đến 11 chữ số.');
+    return;
+  }
+
   try {
     const response = await apiService.post("users/update-info", userInfo);
     if (response.status === 200) {
@@ -81,4 +116,3 @@ const updateInfo = async () => {
   }
 };
 </script>
-

@@ -8,8 +8,7 @@
               <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
                 class="rounded-4 img-fluid mb-3" width="150" loading="lazy" />
             </div>
-            <h5 class="mt-1 fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}
-            </h5>
+            <h5 class="mt-1 fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h5>
             <div class="d-flex justify-content-center mb-2">
               <span class="badge bg-primary"
                 style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important;">{{
@@ -44,7 +43,7 @@ onMounted(() => {
   background-color: var(--background-color);
 }
 
-.card ::v-deep .form-label {
+.card :deep(.form-label) {
   font-weight: bold;
   color: var(--nav-link-color);
   font-size: 15px;
@@ -56,7 +55,7 @@ onMounted(() => {
 }
 
 @media screen and (max-width: 2000px) {
-  .card ::v-deep .form-control {
+  .card :deep(.form-control) {
     max-width: 300px;
   }
 

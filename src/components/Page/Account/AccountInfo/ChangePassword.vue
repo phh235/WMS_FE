@@ -52,30 +52,30 @@ const passwordChange = reactive({
 });
 
 const changePassword = async () => {
+  if (!passwordChange.passwordOld) {
+    showToastError('Vui lòng nhập mật khẩu cũ');
+    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    return;
+  }
+
+  if (!passwordChange.password) {
+    showToastError('Vui lòng nhập mật khẩu mới');
+    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    return;
+  }
+
+  if (!passwordChange.confirmPassword) {
+    showToastError('Vui lòng xác nhận mật khẩu mới');
+    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    return;
+  }
+
+  if (passwordChange.password !== passwordChange.confirmPassword) {
+    showToastError('Mật khẩu xác nhận không khớp');
+    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    return;
+  }
   try {
-    if (!passwordChange.passwordOld) {
-      showToastError('Vui lòng nhập mật khẩu cũ');
-      // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
-      return;
-    }
-
-    if (!passwordChange.password) {
-      showToastError('Vui lòng nhập mật khẩu mới');
-      // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
-      return;
-    }
-
-    if (!passwordChange.confirmPassword) {
-      showToastError('Vui lòng xác nhận mật khẩu mới');
-      // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
-      return;
-    }
-
-    if (passwordChange.password !== passwordChange.confirmPassword) {
-      showToastError('Mật khẩu xác nhận không khớp');
-      // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
-      return;
-    }
     console.log(passwordChange);
 
     const response = await apiService.post("users/update-password", passwordChange);

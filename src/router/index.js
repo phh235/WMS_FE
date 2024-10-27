@@ -8,20 +8,20 @@ import { showToastWarning, showToastLoading } from "@/components/Toast/utils/toa
 export const routes = [
   {
     path: "/inventory",
-    redirect: "/inventory/tong-quan",
+    redirect: "/inventory/home",
     component: () => import("@layouts/DefaultLayout.vue"),
     requiresAuth: true,
     children: MenuItems,
   },
   {
     path: "/",
-    redirect: "/dang-nhap",
+    redirect: "/login",
     component: BlankLayout,
     requiresAuth: false,
     children: [
       {
-        path: "dang-nhap",
-        name: "dang-nhap",
+        path: "login",
+        name: "login",
         component: Login,
         meta: {
           requiresAuth: false,
@@ -31,8 +31,8 @@ export const routes = [
         },
       },
       {
-        path: "quen-mat-khau",
-        name: "quen-mat-khau",
+        path: "forgot-password",
+        name: "ForgotPassword",
         component: () => import("@pages/User/ForgotPassword.vue"),
         meta: {
           requiresAuth: false,
@@ -68,9 +68,9 @@ const router = createRouter({
 
 // Chặn quay lại trang của trình duyệt
 router.afterEach((to) => {
-  if (to.path === "/dang-nhap") {
+  if (to.path === "/login") {
     // Đẩy thêm một trạng thái mới để chặn việc quay lại
-    window.history.pushState(null, "", "/dang-nhap");
+    window.history.pushState(null, "", "/login");
   }
 });
 
@@ -97,9 +97,9 @@ router.beforeEach((to, from, next) => {
         localStorage.setItem("redirectPath", to.fullPath);
         // Nếu không có token, hiển thị thông báo "Vui lòng đăng nhập"
         showToastWarning("Vui lòng đăng nhập để sử dụng!");
-        return next({ name: "dang-nhap" }); // Chuyển hướng đến trang đăng nhập
+        return next({ name: "login" }); // Chuyển hướng đến trang đăng nhập
       }
-      return next({ name: "dang-nhap" }); // Chuyển hướng đến trang đăng nhập
+      return next({ name: "login" }); // Chuyển hướng đến trang đăng nhập
     }
 
     // Nếu đã xác thực

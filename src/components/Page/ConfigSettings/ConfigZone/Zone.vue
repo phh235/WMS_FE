@@ -11,8 +11,8 @@
       <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
         <span class="material-symbols-outlined">sort_by_alpha</span>
       </button>
-      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneBtn"
-        data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
+      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneBtn" data-bs-toggle="modal"
+        data-bs-target="#warehouseZoneModal">
         <span class=" material-symbols-outlined me-2"> add </span>
         {{ $t('ConfigSettings.zones.title_save') }}
       </button>
@@ -260,6 +260,6 @@ const btnResetForm = () => {
 const showZoneDetail = (id) => {
   console.log(id);
   router.push({ path: `/config-settings/config-warehouse-zone/zone-detail/${id}` })
-  // router.push({ path: '/inventory/quan-ly-lo-hang/lots-normal' })
+  // router.push({ path: '/inventory/lots-management/lots-normal' })
 }
 </script>

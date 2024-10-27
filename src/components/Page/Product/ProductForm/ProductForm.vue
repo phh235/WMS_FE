@@ -168,7 +168,7 @@ const saveProduct = async () => {
 
     if (response.status === 200) {
       showToastSuccess(i18n.global.t("Product.form.swal.success"));
-      router.push("/inventory/san-pham");
+      router.push("/inventory/products");
     } else {
       showToastError("Lưu thất bại");
     }

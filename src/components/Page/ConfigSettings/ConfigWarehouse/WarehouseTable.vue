@@ -16,7 +16,7 @@
         <tr v-if="warehouses.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.warehouses.not_found') }}</td>
         </tr>
-        <tr v-for="warehouse in warehouses" :key="warehouse.sysIdKho" :data-id="warehouse.sysIdKho">
+        <tr v-for="warehouse in warehouses" :key="warehouse.sysIdKho">
           <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
           <td class="sticky">{{ warehouse.maKho }}</td>
           <td>{{ warehouse.tenKho }}</td>

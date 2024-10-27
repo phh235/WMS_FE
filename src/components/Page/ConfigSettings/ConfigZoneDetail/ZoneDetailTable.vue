@@ -18,7 +18,7 @@
           <td colspan="10">{{ $t('ConfigSettings.zone-detail.not_found') }}</td>
         </tr>
         <tr v-for="zoneDetail in zoneDetail" :key="zoneDetail.sysIdChiTietKhuVuc"
-          :data-id="zoneDetail.sysIdChiTietKhuVuc" @dblclick="$emit('detail', zoneDetail.maChiTietKhuVuc)">
+          @dblclick="$emit('detail', zoneDetail.maChiTietKhuVuc)">
           <td scope="row" class="d-none">{{ zoneDetail.sysIdChiTietKhuVuc }}</td>
           <td class="sticky">{{ zoneDetail.maChiTietKhuVuc }}</td>
           <td>{{ zoneDetail.tenChiTietKhuVuc }}</td>
@@ -52,7 +52,7 @@ defineProps({
   }
 });
 
-defineEmits(['edit', 'delete']);
+defineEmits(['detail', 'edit', 'delete']);
 </script>
 
 <style scoped>

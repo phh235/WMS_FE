@@ -10,7 +10,7 @@
               <span class="display-1 fw-bold text-change">4</span>
             </h2>
             <h3 class="mb-5 text-change">Trang bạn tìm kiếm không tồn tại.</h3>
-            <router-link class="btn bsb-btn-5xl btn-dark l px-5 fs-6 m-0" to="/inventory/tong-quan" role="button">Trở về
+            <router-link class="btn bsb-btn-5xl btn-dark l px-5 fs-6 m-0" to="/inventory/home" role="button">Trở về
               trang chủ
             </router-link>
           </div>

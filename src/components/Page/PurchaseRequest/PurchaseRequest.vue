@@ -16,7 +16,7 @@
           <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
-          <router-link to="yeu-cau-mua-hang/them-moi" class="btn btn-primary d-flex align-items-center">
+          <router-link to="/inventory/purchase-request/new" class="btn btn-primary d-flex align-items-center">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('PurchaseRequest.btn_create') }}
           </router-link>
@@ -65,7 +65,7 @@
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
                   <li>
-                    <router-link :to="{ name: 'yeu-cau-mua-hang/chinh-sua/:id', params: { id: purchase.maPR } }"
+                    <router-link :to="{ name: 'purchase-request/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}
                       <span class="material-symbols-outlined">edit_square</span>

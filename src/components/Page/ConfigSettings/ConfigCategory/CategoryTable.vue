@@ -13,7 +13,7 @@
         <tr v-if="categories.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.categories.not_found') }}</td>
         </tr>
-        <tr v-for="category in categories" :key="category.sysIdDanhMuc" :data-id="category.sysIdDanhMuc">
+        <tr v-for="category in categories" :key="category.sysIdDanhMuc">
           <td scope="row">{{ category.sysIdDanhMuc }}</td>
           <td class="sticky">{{ category.tenDanhMuc }}</td>
           <td>{{ category.moTa }}</td>

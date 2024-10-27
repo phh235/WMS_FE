@@ -32,7 +32,7 @@
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.soDienThoai }}</td>
-          <td>{{ user.roleName }}</td>
+          <td>{{ user.roles[0]?.roleName }}</td>
           <td class="d-flex">
             <button class="btn btn-secondary d-flex me-2" @click="$emit('edit', user)">
               <div class="material-symbols-outlined">edit_square</div>

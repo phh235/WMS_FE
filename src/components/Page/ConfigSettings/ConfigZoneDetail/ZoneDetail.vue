@@ -295,8 +295,7 @@ const btnResetForm = () => {
 };
 
 const showZoneDetail = (id) => {
-  router.push({ path: `/inventory/quan-ly-lo-hang/lots-normal/${id}` })
-  // router.push({ path: '/inventory/quan-ly-lo-hang/lots-normal' })
+  router.push({ path: `/inventory/lots-management/lots-normal/${id}` })
 }
 </script>
 

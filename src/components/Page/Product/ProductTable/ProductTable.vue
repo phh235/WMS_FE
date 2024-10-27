@@ -8,7 +8,7 @@
       <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
         <span class="material-symbols-outlined">sort_by_alpha</span>
       </button>
-      <router-link to="/inventory/san-pham/them-moi" class="btn btn-primary d-flex align-items-center">
+      <router-link to="/inventory/product/new" class="btn btn-primary d-flex align-items-center">
         <span class="material-symbols-outlined me-2"> add </span>
         {{ $t('Product.table.btn_save') }}
       </router-link>
@@ -49,7 +49,7 @@
             <td class="td-quantity">{{ product.soLuongHienCo ? product.soLuongHienCo : 0 }} Kg</td>
             <td class="text-center td-action">
               <router-link class="btn btn-secondary btn-sm me-2"
-                :to="{ name: 'san-pham/chinh-sua/:id', params: { id: product.sysIdSanPham } }">
+                :to="{ name: 'product/edit/:id', params: { id: product.sysIdSanPham } }">
                 <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
               </router-link>
               <button class="btn btn-danger btn-sm" @click="deleteProduct(product.sysIdSanPham)">

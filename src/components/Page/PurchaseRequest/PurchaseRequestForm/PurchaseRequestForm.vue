@@ -191,7 +191,7 @@ const handleSubmit = async () => {
     setTimeout(() => {
       showToastInfo('Đã gửi mail cho phòng Purchase Order');
     }, 2000);
-    router.push("/inventory/yeu-cau-mua-hang");
+    router.push("/inventory/purchase-request");
   } catch (error) {
     console.error('Error submitting purchase request:', error);
     showToastError('Vui lòng nhập đầy đủ thông tin sản phẩm yêu cầu');
