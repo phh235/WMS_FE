@@ -48,7 +48,7 @@ export default [
   {
     path: "san-pham",
     name: "san-pham",
-    component: () => import("@components/Page/Product/ProductTable/ProductTable.vue"),
+    component: () => import("@components/Page/Product/Product.vue"),
     meta: {
       requiresAuth: true,
       headerTitle: "Sản phẩm",
@@ -245,8 +245,7 @@ export default [
       {
         path: "danh-muc",
         name: "danh-muc",
-        component: () =>
-          import("@components/Page/ConfigSettings/ConfigCategory/ConfigCategory.vue"),
+        component: () => import("@components/Page/ConfigSettings/ConfigCategory/Category.vue"),
         meta: {
           requiresAuth: true,
           headerTitle: "Cấu hình danh mục",
@@ -257,8 +256,7 @@ export default [
       {
         path: "kho-hang",
         name: "kho-hang",
-        component: () =>
-          import("@components/Page/ConfigSettings/ConfigWarehouse/ConfigWarehouse.vue"),
+        component: () => import("@components/Page/ConfigSettings/ConfigWarehouse/Warehouse.vue"),
         meta: {
           requiresAuth: true,
           headerTitle: "Cấu hình kho hàng",
@@ -269,8 +267,7 @@ export default [
       {
         path: "khu-vuc",
         name: "khu-vuc",
-        component: () =>
-          import("@components/Page/ConfigSettings/ConfigWarehouseZone/ConfigWarehouseZone.vue"),
+        component: () => import("@components/Page/ConfigSettings/ConfigZone/Zone.vue"),
         meta: {
           requiresAuth: true,
           headerTitle: "Cấu hình khu vực",
@@ -281,7 +278,7 @@ export default [
       {
         path: "chi-tiet-khu-vuc",
         name: "chi-tiet-khu-vuc",
-        component: () => import("@components/Page/ConfigSettings/ZoneDetail/ZoneDetail.vue"),
+        component: () => import("@components/Page/ConfigSettings/ConfigZoneDetail/ZoneDetail.vue"),
         meta: {
           requiresAuth: true,
           headerTitle: "Cấu hình chi tiết khu vực",

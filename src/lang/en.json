@@ -193,6 +193,7 @@
     "search_input": "Search account...",
     "btn_account": "Create an account",
     "no": "No.",
+    "fullname": "Full name",
     "username": "Username",
     "phone": "Phone number",
     "role": "Role"

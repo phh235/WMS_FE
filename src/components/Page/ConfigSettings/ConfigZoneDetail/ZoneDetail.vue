@@ -13,45 +13,8 @@
       {{ $t('ConfigSettings.zone-detail.title_save') }}
     </button>
   </div>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col" class="d-none">ID</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.zone-detail.zone_detail_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zone-detail.zone_detail_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zone-detail.zone_detail_desc') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zone-detail.area_storage') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zone-detail.area_available') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zone-detail.zone_id') }}</th>
-          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="filteredZoneDetail.length === 0" style="text-align: center; font-style: italic">
-          <td colspan="10">{{ $t('ConfigSettings.zone-detail.not_found') }}</td>
-        </tr>
-        <tr v-for="zoneDetail in filteredZoneDetail" :key="zoneDetail.sysIdChiTietKhuVuc"
-          :data-id="zoneDetail.sysIdChiTietKhuVuc" @dblclick="showZoneDetail(zoneDetail.maChiTietKhuVuc)">
-          <td scope="row" class="d-none">{{ zoneDetail.sysIdChiTietKhuVuc }}</td>
-          <td class="sticky">{{ zoneDetail.maChiTietKhuVuc }}</td>
-          <td>{{ zoneDetail.tenChiTietKhuVuc }}</td>
-          <td>{{ zoneDetail.moTa }}</td>
-          <td>{{ zoneDetail.theTichLuuTru }}</td>
-          <td>{{ zoneDetail.theTichKhaDung }}</td>
-          <td>{{ zoneDetail.maKhuVuc }}</td>
-          <td class="text-center">
-            <button class="btn btn-secondary me-2" @click="handleRowClick">
-              <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>
-            </button>
-            <button class="btn btn-danger" @click="deleteWarehouseZone(zoneDetail.maChiTietKhuVuc, $event)">
-              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <ZoneDetailTable :zoneDetail="filteredZoneDetail" @detail="showZoneDetail" @edit="editZoneDetail"
+    @delete="deleteZoneDetail" />
   <div class="modal fade" id="warehouseZoneModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -147,10 +110,11 @@ import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import { useRouter } from "vue-router";
+import ZoneDetailTable from "./ZoneDetailTable.vue";
 const { t } = useI18n();
 
 const router = useRouter();
-const apiStore = useApiServices();
+const apiService = useApiServices();
 const zoneDetail = ref([]);
 const zoneStore = useZoneStore();
 const addZoneDetailBtn = ref(null);
@@ -177,7 +141,7 @@ onMounted(async () => {
 
 const getZoneDetail = async () => {
   try {
-    const response = await apiStore.get("zone-details");
+    const response = await apiService.get("zone-details");
     zoneDetail.value = response.data;
   } catch (error) {
     console.error("Failed to fetch zone detail:", error);
@@ -273,8 +237,8 @@ const saveWarehouseZone = async () => {
     };
 
     const response = selectedZoneDetail.sysIdChiTietKhuVuc
-      ? await apiStore.post("zone-details", { ...zoneData, sysIdChiTietKhuVuc: selectedZoneDetail.sysIdChiTietKhuVuc })
-      : await apiStore.post("zone-details", zoneData);
+      ? await apiService.post("zone-details", { ...zoneData, sysIdChiTietKhuVuc: selectedZoneDetail.sysIdChiTietKhuVuc })
+      : await apiService.post("zone-details", zoneData);
 
     if (response) {
       await getZoneDetail();
@@ -289,21 +253,12 @@ const saveWarehouseZone = async () => {
   }
 };
 
-const handleRowClick = (event) => {
-  const row = event.target.closest("tr");
-  const id = row.getAttribute("data-id");
-
-  const selectedWarehouseZoneValue = zoneDetail.value.find(
-    (zone) => zone.sysIdChiTietKhuVuc == id
-  );
-
-  if (selectedWarehouseZoneValue) {
-    Object.assign(selectedZoneDetail, selectedWarehouseZoneValue);
-    addZoneDetailBtn.value.click();
-  }
+const editZoneDetail = (zoneDetail) => {
+  Object.assign(selectedZoneDetail, zoneDetail);
+  addZoneDetailBtn.value.click();
 };
 
-const deleteWarehouseZone = async (id) => {
+const deleteZoneDetail = async (id) => {
   const swalConfirm = await Swal.fire({
     title: i18n.global.t("ConfigSettings.zone-detail.swal.delete.title"),
     text: i18n.global.t("ConfigSettings.zone-detail.swal.delete.text"),
@@ -317,7 +272,7 @@ const deleteWarehouseZone = async (id) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`zone-details/${id}`);
+      await apiService.delete(`zone-details/${id}`);
       await getZoneDetail();
       showToastSuccess(i18n.global.t("ConfigSettings.zone-detail.swal.delete.success"));
     } catch (error) {

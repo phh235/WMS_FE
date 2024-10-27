@@ -5,11 +5,11 @@ import { showToastError } from "@/components/Toast/utils/toastHandle";
 
 export const useWarehouseStore = defineStore("warehouses", () => {
   const warehouses = ref([]);
-  const apiStore = useApiServices();
+  const apiService = useApiServices();
 
   const getWarehouses = async () => {
     try {
-      const response = await apiStore.get("warehouses");
+      const response = await apiService.get("warehouses");
       warehouses.value = response.data;
     } catch (error) {
       console.error("Failed to fetch warehouses:", error);

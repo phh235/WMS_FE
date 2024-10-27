@@ -18,36 +18,7 @@
       </button>
     </div>
   </div>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">{{ $t('ConfigSettings.no') }}</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.categories.category_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.categories.category_desc') }}</th>
-          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="filteredCategories.length === 0" style="text-align: center; font-style: italic">
-          <td colspan="10">{{ $t('ConfigSettings.categories.not_found') }}</td>
-        </tr>
-        <tr v-for="category in filteredCategories" :key="category.sysIdDanhMuc" :data-id="category.sysIdDanhMuc">
-          <td scope="row">{{ category.sysIdDanhMuc }}</td>
-          <td class="sticky">{{ category.tenDanhMuc }}</td>
-          <td>{{ category.moTa }}</td>
-          <td class="text-center">
-            <button class="btn btn-secondary me-2" @click="handleRowClick">
-              <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>
-            </button>
-            <button class="btn btn-danger" @click="deleteCategory(category.sysIdDanhMuc, $event)">
-              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <CategoryTable :categories="filteredCategories" @edit="editCategory" @delete="deleteCategory" />
   <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -126,10 +97,11 @@ import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import CategoryTable from "./CategoryTable.vue";
 
 const { t } = useI18n();
 
-const apiStore = useApiServices();
+const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
 const categoryStore = useCategoriesStore();
 // Tab
@@ -148,9 +120,9 @@ const selectedCategory = reactive({
   maKho: "",
 });
 
-onMounted(() => {
-  categoryStore.getCategories();
-  warehouseStore.getWarehouses();
+onMounted(async () => {
+  await categoryStore.getCategories();
+  await warehouseStore.getWarehouses();
   updateTabs();
 });
 
@@ -171,7 +143,6 @@ function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-
 const filteredCategories = computed(() => {
   const query = searchQuery.value.toLowerCase();
   let filtered = categoryStore.categories
@@ -190,7 +161,6 @@ const filteredCategories = computed(() => {
 
   return filtered;
 });
-
 
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
@@ -230,11 +200,11 @@ const saveCategory = async () => {
     };
 
     const response = selectedCategory.sysIdDanhMuc
-      ? await apiStore.post("category-products", {
+      ? await apiService.post("category-products", {
         ...categoryData,
         sysIdDanhMuc: selectedCategory.sysIdDanhMuc,
       })
-      : await apiStore.post("category-products", categoryData);
+      : await apiService.post("category-products", categoryData);
 
     if (response) {
       categoryStore.getCategories();
@@ -249,19 +219,9 @@ const saveCategory = async () => {
   }
 };
 
-// Điền dữ liệu vào form khi click vào dòng <tr></tr>
-const handleRowClick = ({ target }) => {
-  const row = target.closest("tr");
-  const id = row?.getAttribute("data-id");
-
-  const selectedCategoryValue = categoryStore.categories.find(
-    (category) => category.sysIdDanhMuc === Number(id)
-  );
-
-  if (selectedCategoryValue) {
-    Object.assign(selectedCategory, selectedCategoryValue);
-    addCategoryBtn.value.click();
-  }
+const editCategory = (category) => {
+  Object.assign(selectedCategory, category);
+  addCategoryBtn.value.click();
 };
 
 // Xóa danh mục
@@ -279,7 +239,7 @@ const deleteCategory = async (id) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`category-products/${id}`);
+      await apiService.delete(`category-products/${id}`);
       categoryStore.getCategories(); // Cập nhật lại danh sách danh mục sau khi xóa
       showToastSuccess(i18n.global.t("ConfigSettings.categories.swal.delete.success"));
     } catch (error) {
@@ -299,10 +259,3 @@ const btnResetForm = () => {
   });
 };
 </script>
-
-<style scoped>
-.btn-danger,
-.btn-secondary {
-  padding: 10px 10px;
-}
-</style>

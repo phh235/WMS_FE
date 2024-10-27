@@ -101,7 +101,7 @@ const format = (date) => {
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
-const apiStore = useApiServices();
+const apiService = useApiServices();
 const productStore = useProductStore();
 const router = useRouter();
 const isLoading = ref(false);
@@ -178,7 +178,7 @@ const handleSubmit = async () => {
   try {
     showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo đơn hàng...');
     let response;
-    response = await apiStore.post("purchase-orders/create", submitData);
+    response = await apiService.post("purchase-orders/create", submitData);
     closeToastLoading();
     showToastSuccess('Tạo đơn hàng mua hàng thành công!');
     setTimeout(() => {

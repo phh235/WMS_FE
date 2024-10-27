@@ -5,11 +5,11 @@ import { showToastError } from "@/components/Toast/utils/toastHandle";
 
 export const useCategoriesStore = defineStore("categories", () => {
   const categories = ref([]);
-  const apiStore = useApiServices();
+  const apiService = useApiServices();
 
   const getCategories = async () => {
     try {
-      const response = await apiStore.get("category-products");
+      const response = await apiService.get("category-products");
       categories.value = response.data;
     } catch (error) {
       console.error("Failed to fetch categories:", error);

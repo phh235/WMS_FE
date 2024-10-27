@@ -39,9 +39,9 @@ export const useAuthStore = defineStore("auth", {
       localStorage.setItem("token", token);
       // Decode JWT token to get username is logged in
       const tokenDecode = JSON.parse(atob(token.split(".")[1])).sub;
-      localStorage.setItem("user", JSON.stringify(tokenDecode));
+      // Lưu giá trị tokenDecode mà không có dấu ngoặc kép
+      localStorage.setItem("user", tokenDecode); // Không cần JSON.stringify
     },
-
     checkAuth() {
       const token = localStorage.getItem("token");
       if (token) {
@@ -58,7 +58,6 @@ export const useAuthStore = defineStore("auth", {
       }
       return false;
     },
-
     logout() {
       this.token = null;
       localStorage.removeItem("token");
@@ -68,7 +67,6 @@ export const useAuthStore = defineStore("auth", {
       showToastSuccess(i18n.global.t("Swal.logout.toast.success.title"));
       return router.push("/dang-nhap");
     },
-
     setLanguage(lang) {
       this.language = lang;
       localStorage.setItem("language", lang); // Lưu giá trị vi-en vào localStorage
