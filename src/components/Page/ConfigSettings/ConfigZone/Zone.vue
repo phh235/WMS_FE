@@ -11,55 +11,21 @@
       <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
         <span class="material-symbols-outlined">sort_by_alpha</span>
       </button>
-      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addWarehouseZoneBtn"
+      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneBtn"
         data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
         <span class=" material-symbols-outlined me-2"> add </span>
         {{ $t('ConfigSettings.zones.title_save') }}
       </button>
     </div>
   </div>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col" class="d-none">ID</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.zones.zone_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zones.zone_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zones.zone_desc') }}</th>
-          <th scope="col" class="d-none">{{ $t('ConfigSettings.zones.warehouse_id') }}</th>
-          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="filteredZones.length === 0" style="text-align: center; font-style: italic">
-          <td colspan="10">{{ $t('ConfigSettings.zones.not_found') }}</td>
-        </tr>
-        <tr v-for="zone in filteredZones" :key="zone.sysIdKhuVuc" :data-id="zone.sysIdKhuVuc"
-          @dblclick="showZoneDetail(zone.maKhuVuc)">
-          <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
-          <td class="sticky">{{ zone.maKhuVuc }}</td>
-          <td>{{ zone.tenKhuVuc }}</td>
-          <td>{{ zone.moTa }}</td>
-          <td class="d-none">{{ zone.maKho }}</td>
-          <td class="text-center">
-            <button class="btn btn-secondary me-2" @click="handleRowClick">
-              <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>
-            </button>
-            <button class="btn btn-danger" @click="deleteWarehouseZone(zone.maKhuVuc, $event)">
-              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <ZoneTable :zones="filteredZones" @edit="editZone" @delete="deleteZone" />
   <div class="modal fade" id="warehouseZoneModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedWarehouseZone.sysIdKhuVuc ? $t("ConfigSettings.zones.title_edit")
+            {{ selectedZone.sysIdKhuVuc ? $t("ConfigSettings.zones.title_edit")
               : $t("ConfigSettings.zones.title_save") }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
@@ -73,20 +39,20 @@
                   <label for="maKhuVuc" class="form-label fs fw-bold">{{ $t('ConfigSettings.zones.zone_id') }}</label>
                   <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="maKhuVuc" aria-describedby="maKhuVucHelp"
-                    v-model="selectedWarehouseZone.maKhuVuc" />
+                    v-model="selectedZone.maKhuVuc" />
                 </div>
                 <div class="col-6">
                   <label for="tenKhuVuc" class="form-label fs fw-bold">{{ $t('ConfigSettings.zones.zone_name')
                     }}</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="tenKhuVuc" aria-moTa="warehouseZoneNameHelp"
-                    v-model="selectedWarehouseZone.tenKhuVuc" />
+                    v-model="selectedZone.tenKhuVuc" />
                 </div>
               </div>
             </div>
             <div class="mb-3">
               <label for="maKho" class="form-label fs fw-bold">{{ $t('ConfigSettings.zones.warehouse_id') }}</label>
               <span class="text-danger">*</span>
-              <select class="form-select" id="maKho" v-model="selectedWarehouseZone.maKho">
+              <select class="form-select" id="maKho" v-model="selectedZone.maKho">
                 <option value="" disabled>{{ $t('ConfigSettings.zones.choose_warehouse') }}</option>
                 <option v-for="warehouse in warehouseStore.warehouses" :key="warehouse.maKho" :value="warehouse.maKho">
                   {{ warehouse.maKho }} - {{ warehouse.tenKho }}
@@ -97,7 +63,7 @@
               <label for="warehouseZoneDescription" class="form-label fs fw-bold">{{
                 $t('ConfigSettings.zones.zone_desc') }}</label>
               <textarea class="form-control" id="warehouseZoneDescription" rows="4"
-                aria-describedby="warehouseZoneDescriptionHelp" v-model="selectedWarehouseZone.moTa"></textarea>
+                aria-describedby="warehouseZoneDescriptionHelp" v-model="selectedZone.moTa"></textarea>
             </div>
           </form>
         </div>
@@ -107,7 +73,7 @@
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouseZone">
             <span class="material-symbols-outlined me-2">check</span>
-            {{ selectedWarehouseZone.sysIdKhuVuc ? $t("ConfigSettings.btn_update") : $t("ConfigSettings.btn_save") }}
+            {{ selectedZone.sysIdKhuVuc ? $t("ConfigSettings.btn_update") : $t("ConfigSettings.btn_save") }}
           </button>
         </div>
       </div>
@@ -117,21 +83,23 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed, watch } from "vue";
-import { useApiServices } from "@/services/apiService.js";
-import { useWarehouseStore } from "@/store/warehouseStore.js";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { useApiServices } from "@/services/apiService";
+import { useWarehouseStore } from "@/store/warehouseStore";
+import { useZoneStore } from "@/store/zoneStore";
+import { showToastSuccess, showToastError } from "@/components/Toast/utils/toastHandle";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import { useRouter } from "vue-router";
+import ZoneTable from "./ZoneTable.vue";
 const { t } = useI18n();
 
 const router = useRouter();
-const apiStore = useApiServices();
-const zones = ref([]);
+const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
-const addWarehouseZoneBtn = ref(null);
+const zoneStore = useZoneStore();
+const addZoneBtn = ref(null);
 // Search
 const searchQuery = ref("");
 // Sort
@@ -140,7 +108,7 @@ const sortOption = ref("");
 const tabs = computed(() => [t('ConfigSettings.categories.tabs.all'), t('ConfigSettings.categories.tabs.normal'), t('ConfigSettings.categories.tabs.cold')]);
 const activeTab = ref(t('ConfigSettings.categories.tabs.all'));
 
-const selectedWarehouseZone = reactive({
+const selectedZone = reactive({
   sysIdKhuVuc: "",
   maKhuVuc: "",
   tenKhuVuc: "",
@@ -148,9 +116,9 @@ const selectedWarehouseZone = reactive({
   maKho: "",
 });
 
-onMounted(() => {
-  getWarehouseZone();
-  fetchWarehouses();
+onMounted(async () => {
+  await zoneStore.getZones();
+  await warehouseStore.getWarehouses();
   updateTabs();
 });
 
@@ -158,25 +126,12 @@ watch(tabs, (newTabs) => {
   activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
 });
 
-const fetchWarehouses = async () => {
-  await warehouseStore.getWarehouses();
-};
-
-const getWarehouseZone = async () => {
-  try {
-    const response = await apiStore.get("zones");
-    zones.value = response.data;
-  } catch (error) {
-    console.error("Failed to fetch zones:", error);
-  }
-};
-
 const getStatusValue = (status) =>
   ({ [t("ConfigSettings.zones.tabs.normal")]: "KHO001", [t("ConfigSettings.zones.tabs.cold")]: "KHO002" }[status] || status);
 
 // Cập nhật danh sách tab dựa trên mã kho có trong danh mục
 const updateTabs = () => {
-  const uniqueWarehouses = [...new Set(zones.value.map(zone => zone.maKho))];
+  const uniqueWarehouses = [...new Set(zoneStore.zones.map(zone => zone.maKho))];
   tabs.value = [t('ConfigSettings.zones.tabs.all'), ...uniqueWarehouses];
 };
 
@@ -186,7 +141,7 @@ function removeAccents(str) {
 
 const filteredZones = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  let filtered = zones.value.filter(zone => zone.maKho === getStatusValue(activeTab.value) || activeTab.value === t('ConfigSettings.zones.tabs.all'))
+  let filtered = zoneStore.zones.filter(zone => zone.maKho === getStatusValue(activeTab.value) || activeTab.value === t('ConfigSettings.zones.tabs.all'))
     .filter(zone =>
       removeAccents(zone.maKhuVuc.toLowerCase()).includes(query) ||
       removeAccents(zone.tenKhuVuc.toLowerCase()).includes(query) ||
@@ -223,37 +178,37 @@ const updateUrl = () => {
 };
 
 const saveWarehouseZone = async () => {
-  if (!selectedWarehouseZone.maKhuVuc.trim()) {
+  if (!selectedZone.maKhuVuc.trim()) {
     showToastError(i18n.global.t("ConfigSettings.zones.swal.validate.zone_id"));
     return;
   }
 
-  if (!selectedWarehouseZone.tenKhuVuc.trim()) {
+  if (!selectedZone.tenKhuVuc.trim()) {
     showToastError(i18n.global.t("ConfigSettings.zones.swal.validate.zone_name"));
     return;
   }
 
-  if (!selectedWarehouseZone.maKho) {
+  if (!selectedZone.maKho) {
     showToastError(i18n.global.t("ConfigSettings.zones.swal.validate.warehouse_id"));
     return;
   }
 
   try {
     const zoneData = {
-      maKhuVuc: selectedWarehouseZone.maKhuVuc,
-      tenKhuVuc: selectedWarehouseZone.tenKhuVuc,
-      moTa: selectedWarehouseZone.moTa,
-      maKho: selectedWarehouseZone.maKho,
+      maKhuVuc: selectedZone.maKhuVuc,
+      tenKhuVuc: selectedZone.tenKhuVuc,
+      moTa: selectedZone.moTa,
+      maKho: selectedZone.maKho,
     };
 
-    const response = selectedWarehouseZone.sysIdKhuVuc
-      ? await apiStore.post("zones", { ...zoneData, sysIdKhuVuc: selectedWarehouseZone.sysIdKhuVuc })
-      : await apiStore.post("zones", zoneData);
+    const response = selectedZone.sysIdKhuVuc
+      ? await apiService.post("zones", { ...zoneData, sysIdKhuVuc: selectedZone.sysIdKhuVuc })
+      : await apiService.post("zones", zoneData);
 
     if (response) {
-      await getWarehouseZone();
+      await zoneStore.getZones();
       btnResetForm();
-      addWarehouseZoneBtn.value.click();
+      addZoneBtn.value.click();
       showToastSuccess(i18n.global.t("ConfigSettings.zones.swal.success"));
     } else if (response?.error) {
       console.error("Error details:", response.error);
@@ -263,21 +218,12 @@ const saveWarehouseZone = async () => {
   }
 };
 
-const handleRowClick = (event) => {
-  const row = event.target.closest("tr");
-  const id = row.getAttribute("data-id");
-
-  const selectedWarehouseZoneValue = zones.value.find(
-    (zone) => zone.sysIdKhuVuc == id
-  );
-
-  if (selectedWarehouseZoneValue) {
-    Object.assign(selectedWarehouseZone, selectedWarehouseZoneValue);
-    addWarehouseZoneBtn.value.click();
-  }
+const editZone = (zone) => {
+  Object.assign(selectedZone, zone);
+  addZoneBtn.value.click();
 };
 
-const deleteWarehouseZone = async (id) => {
+const deleteZone = async (id) => {
   const swalConfirm = await Swal.fire({
     title: i18n.global.t("ConfigSettings.zones.swal.delete.title"),
     text: i18n.global.t("ConfigSettings.zones.swal.delete.text"),
@@ -291,8 +237,8 @@ const deleteWarehouseZone = async (id) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`zones/${id}`);
-      await getWarehouseZone();
+      await apiService.delete(`zones/${id}`);
+      await zoneStore.getZones();
       showToastSuccess(i18n.global.t("ConfigSettings.zones.swal.delete.success"));
     } catch (error) {
       console.error("Error while deleting zone:", error);
@@ -302,7 +248,7 @@ const deleteWarehouseZone = async (id) => {
 };
 
 const btnResetForm = () => {
-  Object.assign(selectedWarehouseZone, {
+  Object.assign(selectedZone, {
     sysIdKhuVuc: "",
     maKhuVuc: "",
     tenKhuVuc: "",
@@ -317,10 +263,3 @@ const showZoneDetail = (id) => {
   // router.push({ path: '/inventory/quan-ly-lo-hang/lots-normal' })
 }
 </script>
-
-<style scoped>
-.btn-danger,
-.btn-secondary {
-  padding: 10px 10px;
-}
-</style>

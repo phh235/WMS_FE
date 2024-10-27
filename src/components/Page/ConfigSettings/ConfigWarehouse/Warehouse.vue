@@ -7,42 +7,7 @@
       {{ $t('ConfigSettings.warehouses.btn_create') }}
     </button>
   </div>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col" class="d-none">ID</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.warehouses.warehouse_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_area') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_desc') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.manager') }}</th>
-          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="filteredWarehouses.length === 0" style="text-align: center; font-style: italic">
-          <td colspan="10">{{ $t('ConfigSettings.warehouses.not_found') }}</td>
-        </tr>
-        <tr v-for="warehouse in filteredWarehouses" :key="warehouse.sysIdKho" :data-id="warehouse.sysIdKho">
-          <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
-          <td class="sticky">{{ warehouse.maKho }}</td>
-          <td>{{ warehouse.tenKho }}</td>
-          <td>{{ warehouse.dienTich }}</td>
-          <td>{{ warehouse.moTa }}</td>
-          <td>{{ warehouse.sysIdUser }}</td>
-          <td class="text-center">
-            <button class="btn btn-secondary me-2" @click="handleRowClick">
-              <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>
-            </button>
-            <button class="btn btn-danger" @click="deleteWarehouse(warehouse.maKho, $event)">
-              <span class="material-symbols-outlined d-flex align-items-center"> delete </span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <WarehouseTable :warehouses="filteredWarehouses" @edit="editWarehouse" @delete="deleteWarehouse" />
   <div class="modal fade" id="warehouseModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -130,8 +95,10 @@ import { showToastSuccess, showToastError } from "@components/Toast/utils/toastH
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
+import Category from "../ConfigCategory/Category.vue";
+import WarehouseTable from "./WarehouseTable.vue";
 
-const apiStore = useApiServices();
+const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
 const addWarehouseBtn = ref(null);
 const searchQuery = ref("");
@@ -148,22 +115,9 @@ const currentPage = ref(0);
 const totalPages = ref(10);
 const pageSize = ref(100);
 
-onMounted(() => {
-  warehouseStore.getWarehouses();
+onMounted(async () => {
+  await warehouseStore.getWarehouses();
 });
-
-// Lấy kho hàng sản phẩm
-// const getWarehouses = async () => {
-//   try {
-//     const response = await apiStore.get(
-//       `warehouses?page=${currentPage.value}&size=${pageSize.value}`
-//     );
-//     warehouses.value = response.data.list;
-//     totalPages.value = Math.ceil(response.total / pageSize.value);
-//   } catch (error) {
-//     console.error("Failed to fetch warehouses:", error);
-//   }
-// };
 
 function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -180,7 +134,6 @@ const filteredWarehouses = computed(() => {
       warehouse.dienTich.toString().includes(queryLower)
   );
 });
-
 
 // Lưu hoặc cập nhật kho hàng
 const saveWarehouse = async () => {
@@ -214,11 +167,11 @@ const saveWarehouse = async () => {
     };
 
     const response = selectedWarehouse.sysIdKho
-      ? await apiStore.post("warehouses", {
+      ? await apiService.post("warehouses", {
         ...warehouseData,
         sysIdKho: selectedWarehouse.sysIdKho,
       })
-      : await apiStore.post("warehouses", warehouseData);
+      : await apiService.post("warehouses", warehouseData);
 
     if (response) {
       warehouseStore.getWarehouses();
@@ -234,18 +187,9 @@ const saveWarehouse = async () => {
 };
 
 // Điền dữ liệu vào form khi click vào dòng <tr></tr>
-const handleRowClick = ({ target }) => {
-  const row = target.closest("tr");
-  const id = row?.getAttribute("data-id");
-
-  const selectedWarehouseValue = warehouseStore.warehouses.find(
-    (warehouse) => warehouse.sysIdKho === Number(id)
-  );
-
-  if (selectedWarehouseValue) {
-    Object.assign(selectedWarehouse, selectedWarehouseValue);
-    addWarehouseBtn.value.click();
-  }
+const editWarehouse = (category) => {
+  Object.assign(selectedWarehouse, category);
+  addWarehouseBtn.value.click();
 };
 
 // Xóa kho hàng
@@ -263,7 +207,7 @@ const deleteWarehouse = async (maKho) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.delete(`warehouses/${maKho}`);
+      await apiService.delete(`warehouses/${maKho}`);
       warehouseStore.getWarehouses(); // Cập nhật lại danh sách kho hàng sau khi xóa
       showToastSuccess(i18n.global.t("ConfigSettings.warehouses.swal.delete.success"));
     } catch (error) {

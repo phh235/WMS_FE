@@ -5,11 +5,11 @@ import { showToastError } from "@/components/Toast/utils/toastHandle";
 
 export const useZoneStore = defineStore("zones", () => {
   const zones = ref([]);
-  const apiStore = useApiServices();
+  const apiService = useApiServices();
 
   const getZones = async () => {
     try {
-      const response = await apiStore.get("zones");
+      const response = await apiService.get("zones");
       zones.value = response.data;
     } catch (error) {
       console.error("Failed to fetch zones:", error);
