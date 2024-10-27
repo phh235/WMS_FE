@@ -22,7 +22,7 @@
           </span>
         </div>
         <div class="mb-2 text-end">
-          <router-link to="/quen-mat-khau" class="forgot fs"> {{ $t("LoginForgotForm.login.forgot_text") }}?
+          <router-link to="/forgot-password" class="forgot fs"> {{ $t("LoginForgotForm.login.forgot_text") }}?
           </router-link>
         </div>
         <!-- Submit button -->

@@ -78,7 +78,7 @@ import i18n from "@/lang/i18n";
 const { t } = useI18n();
 const imagePreview = ref(null);
 const isLoading = ref(false);
-const apiStore = useApiServices();
+const apiService = useApiServices();
 const categoryStore = useCategoriesStore();
 const productStore = useProductStore();
 const router = useRouter();
@@ -94,7 +94,7 @@ const productInfo = reactive({
 
 const getProductById = async (id) => {
   try {
-    const response = await apiStore.get(`products/${id}`);
+    const response = await apiService.get(`products/${id}`);
     if (response.status === 200) {
       const product = response.data;
       Object.assign(productInfo, product);
@@ -164,11 +164,11 @@ const saveProduct = async () => {
     if (productInfo.sysIdSanPham) {
       formData.append("sysIdSanPham", productInfo.sysIdSanPham);
     }
-    const response = await apiStore.postImage("products", formData);
+    const response = await apiService.postImage("products", formData);
 
     if (response.status === 200) {
       showToastSuccess(i18n.global.t("Product.form.swal.success"));
-      router.push("/inventory/san-pham");
+      router.push("/inventory/products");
     } else {
       showToastError("Lưu thất bại");
     }

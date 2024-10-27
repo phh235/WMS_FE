@@ -2,7 +2,7 @@
   <div style="background-color: var(--background-color)!important">
     <nav class="navbar navbar-expand-xxl">
       <div class="container-fluid p-0">
-        <router-link to="/inventory/tong-quan" class="navbar-brand">
+        <router-link to="/inventory/home" class="navbar-brand">
           <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" width="40"
             alt="" class="ms-2 rounded-4" />
         </router-link>
@@ -28,23 +28,24 @@
                       data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="Avatar"
                         style="border-radius: 5px" width="30" />
-                      <span class="ms-2 fw-bold" style="color: var(--nav-link-color);">Phan Huy Hoàng</span>
+                      <span class="ms-2 fw-bold" style="color: var(--nav-link-color);">{{ userStore.user.fullName
+                        }}</span>
                       <span class="material-symbols-outlined ms-2">unfold_more</span>
                     </button>
                     <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton">
                       <small class="p-2 fw-bold" style="font-size: .75rem">Tài khoản</small>
                       <li>
-                        <router-link to="/inventory/thong-tin-tai-khoan"
-                          class="dropdown-item d-flex align-items-center mb-1" aria-expanded="false">
+                        <router-link to="/inventory/account-info" class="dropdown-item d-flex align-items-center mb-1"
+                          aria-expanded="false">
                           <div class="d-flex flex-column">
-                            <span class="fs mb-1 fw-bold">Phan Huy Hoàng
+                            <span class="fs mb-1 fw-bold">{{ userStore.user.fullName }}
                               <span class="badge ms-1 float-end box-shadow" style="
                                   background-color: var(--primary-color) !important;
                                   color: var(--btn-primary-color) !important;
                                   font-size: 13px;
                                   border-radius: 8px;
                                 ">Admin</span></span>
-                            <span class="fs-sm">phanhuyhoang.dev@gmail.com</span>
+                            <span class="fs-sm">{{ userStore.user.email }}</span>
                           </div>
                         </router-link>
                       </li>
@@ -63,16 +64,16 @@
                 </div>
               </div>
               <li class="nav-item d-flex align-items-center">
-                <router-link to="/inventory/tong-quan" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/home" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2">home</span>{{ $t('Navbar.menu_item.home') }}</router-link>
               </li>
               <li class="nav-item d-flex align-items-center">
-                <router-link to="/inventory/yeu-cau-mua-hang" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/purchase-request" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> request_page </span> {{ $t('Navbar.menu_item.pr') }}
                 </router-link>
               </li>
               <li class="nav-item d-flex align-items-center">
-                <router-link to="/inventory/dat-hang" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/purchase-order" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2">shopping_cart </span> {{ $t('Navbar.menu_item.po') }}
                 </router-link>
               </li>
@@ -88,7 +89,7 @@
                     {{ $t('Navbar.menu_item.activity.sub_items.small_1') }}
                   </small>
                   <li>
-                    <router-link to="/inventory/nhap"
+                    <router-link to="/inventory/inbound"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.activity.sub_items.inbound') }}
@@ -97,7 +98,7 @@
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/inventory/xuat"
+                    <router-link to="/inventory/outbound"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.activity.sub_items.outbound') }}
@@ -112,7 +113,7 @@
                     {{ $t('Navbar.menu_item.activity.sub_items.small_2') }}
                   </small>
                   <li>
-                    <router-link to="/inventory/ton-kho-vat-ly"
+                    <router-link to="/inventory/physical-warehouses"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.activity.sub_items.physical_warehouses') }}
@@ -123,19 +124,19 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/san-pham" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/products" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> nutrition </span>
                   {{ $t('Navbar.menu_item.product') }}
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/quan-ly-tai-khoan" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/account-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> manage_accounts </span>
                   {{ $t('Navbar.menu_item.AccountManagement') }}
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/quan-ly-kho" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/warehouses-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2">holiday_village</span>{{
                       $t('Navbar.menu_item.warehouses_management') }}</router-link>
               </li>
@@ -172,13 +173,13 @@
                 </ul>
               </li> -->
               <li class="nav-item">
-                <router-link to="/inventory/quan-ly-lo-hang" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/lots-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> dataset </span>
                   {{ $t('Navbar.menu_item.lots') }}
                 </router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/inventory/bao-cao" class="nav-link d-flex align-items-center"><span
+                <router-link to="/inventory/report" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> flag </span>
                   {{ $t('Navbar.menu_item.report') }}
                 </router-link>
@@ -195,7 +196,7 @@
                     {{ $t('Navbar.menu_item.config.sub_items.small_1') }}
                   </small>
                   <li>
-                    <router-link to="/inventory/cau-hinh/kho-hang"
+                    <router-link to="/inventory/config/warehouses"
                       class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.warehouses') }}
@@ -203,21 +204,14 @@
                       <span class="material-symbols-outlined">warehouse</span>
                     </router-link>
                   </li>
-                   <small class="p-2 fw-bold" style="font-size: .75rem">
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_3') }}
                   </small>
-                  <!-- <li>
-                    <router-link
-                      to="/inventory/cau-hinh/loai-kho"
-                      class="dropdown-item d-flex align-items-center justify-content-between"
-                      aria-expanded="false"
-                    >
-                      <span class="fs">Loại kho</span>
-                      <span class="material-symbols-outlined">format_list_bulleted</span>
-                    </router-link>
-                  </li> -->
                   <li>
-                    <router-link to="/inventory/cau-hinh/khu-vuc"
+                    <router-link to="/inventory/config/zones"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.zones') }}
@@ -226,7 +220,7 @@
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/inventory/cau-hinh/chi-tiet-khu-vuc"
+                    <router-link to="/inventory/config/zone-detail"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.zoneDetail') }}
@@ -241,7 +235,7 @@
                     {{ $t('Navbar.menu_item.config.sub_items.small_2') }}
                   </small>
                   <li>
-                    <router-link to="/inventory/cau-hinh/danh-muc"
+                    <router-link to="/inventory/config/categories"
                       class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.categories') }}
@@ -340,22 +334,24 @@
                     <span class="material-symbols-outlined ms-2">unfold_more</span>
                   </button>
                   <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton"
-                    style="min-width: 170px !important">
+                    style="min-width: 210px !important">
                     <small class="p-2 fw-bold" style="font-size: .75rem">
                       {{ $t('Navbar.menu_item.account.sub_items.small_1') }}
                     </small>
                     <li>
-                      <router-link to="/inventory/thong-tin-tai-khoan"
-                        class="dropdown-item d-flex align-items-center mb-1" aria-expanded="false">
+                      <router-link to="/inventory/account-info" class="dropdown-item d-flex align-items-center mb-1"
+                        aria-expanded="false">
                         <div class="d-flex flex-column">
-                          <span class="fs mb-1 fw-bold">Phan Huy Hoàng
+                          <span class="fs mb-1 fw-bold">{{ userStore.user.fullName }}
                             <span class="badge ms-1 float-end box-shadow" style="
                                 background-color: var(--primary-color) !important;
                                 color: var(--btn-primary-color) !important;
                                 font-size: 11px;
                                 border-radius: 8px;
-                              ">Admin</span></span>
-                          <span class="fs-sm">phanhuyhoang.dev@gmail.com</span>
+                              ">Admin
+                            </span>
+                          </span>
+                          <span class="fs-sm">{{ userStore.user.email }}</span>
                         </div>
                       </router-link>
                     </li>
@@ -392,7 +388,9 @@ import { useAuthStore } from "@/store/authStore.js";
 import { useI18n } from "vue-i18n";
 import { useLocalStorage } from "@vueuse/core";
 import { updateTheme } from "@/theme/themeManager";
+import { useUserStore } from '@/store/userStore';
 
+const userStore = useUserStore();
 const { t, locale } = useI18n()
 const authStore = useAuthStore();
 const route = useRoute();
@@ -447,6 +445,7 @@ const changeLanguage = (tab) => {
 };
 
 onMounted(() => {
+  userStore.loadUserFromSession();
   const savedLanguage = localStorage.getItem("language");
   if (savedLanguage) {
     changeLanguage(savedLanguage);

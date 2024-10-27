@@ -5,7 +5,8 @@
 <script setup>
 import { ref, provide, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { updateTheme } from '@/theme/themeManager'; // Hàm để áp dụng theme
+import { updateTheme } from '@/theme/themeManager';
+
 
 const { locale } = useI18n();
 
@@ -25,6 +26,7 @@ const getThemeFromLocalStorage = () => {
 
 // Khi ứng dụng khởi tạo, cung cấp theme và ngôn ngữ cho các component con
 onMounted(() => {
+
   const savedLanguage = localStorage.getItem('language') || 'VI';
   const savedTheme = getThemeFromLocalStorage();
 

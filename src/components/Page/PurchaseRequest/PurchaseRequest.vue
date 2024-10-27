@@ -16,7 +16,7 @@
           <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
-          <router-link to="yeu-cau-mua-hang/them-moi" class="btn btn-primary d-flex align-items-center">
+          <router-link to="/inventory/purchase-request/new" class="btn btn-primary d-flex align-items-center">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('PurchaseRequest.btn_create') }}
           </router-link>
@@ -65,7 +65,7 @@
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
                   <li>
-                    <router-link :to="{ name: 'yeu-cau-mua-hang/chinh-sua/:id', params: { id: purchase.maPR } }"
+                    <router-link :to="{ name: 'purchase-request/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}
                       <span class="material-symbols-outlined">edit_square</span>
@@ -204,15 +204,15 @@ const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
 const purchases = ref([]);
-const apiStore = useApiServices();
+const apiService = useApiServices();
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
 const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.pending'), t('PurchaseRequest.tabs.confirmed'), t('PurchaseRequest.tabs.canceled')]);
 // Sort
 const sortOption = ref("");
 
-onMounted(() => {
-  getPurchaseRequests();
+onMounted(async () => {
+  await getPurchaseRequests();
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -239,7 +239,7 @@ const totalOrderValue = computed(() => {
 
 const getPurchaseRequests = async () => {
   try {
-    const response = await apiStore.get("purchase-requests");
+    const response = await apiService.get("purchase-requests");
     purchases.value = response.data;
   } catch (error) {
     console.error("Failed to fetch purchase requests:", error);
@@ -261,7 +261,7 @@ const cancelPR = async () => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiStore.put(`purchase-requests/${selectedPurchase.sysIdYeuCauMuaHang}`, { trangThai: "DA_HUY" });
+      await apiService.put(`purchase-requests/${selectedPurchase.sysIdYeuCauMuaHang}`, { trangThai: "DA_HUY" });
       showToastSuccess(t('PurchaseRequest.table.swal.delete.success'));
       getPurchaseRequests();
     } catch (error) {

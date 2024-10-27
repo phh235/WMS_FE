@@ -167,7 +167,7 @@ import { ref, reactive } from "vue";
 import ProductForm from "../../Product/ProductForm/ProductForm.vue";
 
 const inputFrom = ref("");
-const status = ref("nhap");
+const status = ref("inbound");
 const statusOptions = {
   nhap: "Nháp",
   "san-sang": "Sẵn sàng",

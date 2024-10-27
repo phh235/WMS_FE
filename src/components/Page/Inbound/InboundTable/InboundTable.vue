@@ -6,7 +6,7 @@
           class="material-symbols-outlined">swap_vert</span></button>
       <button class="btn btn-secondary d-flex align-items-center me-2"><span
           class="material-symbols-outlined">person</span></button>
-      <router-link to="/inventory/nhap/tao-phieu-nhap" class="btn btn-primary d-flex align-items-center">
+      <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center">
         <span class="material-symbols-outlined me-2"> add </span> {{ $t('Inbound.btn_create_inbound') }}
       </router-link>
     </div>

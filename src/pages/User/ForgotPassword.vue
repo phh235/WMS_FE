@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex align-items-center justify-content-center mb-4">
-    <router-link to="/dang-nhap" class="btn btn-secondary d-flex align-items-center justify-content-center">
+    <router-link to="/login" class="btn btn-secondary d-flex align-items-center justify-content-center">
       <span class="material-symbols-outlined me-2"> chevron_left </span>
       <span class="fw-bold"> {{ $t("LoginForgotForm.forgot.btn_login") }}
       </span>
@@ -48,7 +48,7 @@ const handleForgotPassword = async () => {
     setTimeout(function () {
       showToastInfo(i18n.global.t("Swal.forgot.toast.info.title"), i18n.global.t("Swal.forgot.toast.info.text"));
       setTimeout(function () {
-        router.push("/dang-nhap");
+        router.push("/login");
       }, 2000);
     }, 2000);
   } catch (error) {

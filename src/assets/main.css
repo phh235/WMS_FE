@@ -217,9 +217,9 @@ button {
 /* Button */
 .btn.btn-primary,
 .btn.btn-login,
+.btn.btn-logout,
 .btn.btn-secondary,
-.btn.btn-logout
-.btn-danger {
+.btn.btn-logout .btn-danger {
   font-size: 0.875rem;
   padding: 8px 10px;
   border-radius: calc(0.825rem - 1px);
@@ -447,7 +447,6 @@ small {
 }
 
 /* Custom close of modal */
-
 span.custom-close {
   position: absolute;
   color: var(--nav-link-color) !important;
@@ -455,9 +454,10 @@ span.custom-close {
   font-size: 25px;
   border: 2px solid var(--background-color);
   cursor: pointer;
+  transition: all 0.2s ease !important;
+  border-radius: 50%;
   &:hover {
     border: 2px solid var(--primary-color);
-    border-radius: 50%;
   }
 }
 

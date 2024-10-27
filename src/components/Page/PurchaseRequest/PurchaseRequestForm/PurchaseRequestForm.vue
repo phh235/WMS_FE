@@ -106,7 +106,7 @@ const format = (date) => {
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
-const apiStore = useApiServices();
+const apiService = useApiServices();
 const productStore = useProductStore();
 const router = useRouter();
 const isLoading = ref(false);
@@ -185,13 +185,13 @@ const handleSubmit = async () => {
   try {
     showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo yêu cầu...');
     let response;
-    response = await apiStore.post("purchase-requests/save", submitData);
+    response = await apiService.post("purchase-requests/save", submitData);
     closeToastLoading();
     showToastSuccess('Tạo yêu cầu mua hàng thành công!');
     setTimeout(() => {
       showToastInfo('Đã gửi mail cho phòng Purchase Order');
     }, 2000);
-    router.push("/inventory/yeu-cau-mua-hang");
+    router.push("/inventory/purchase-request");
   } catch (error) {
     console.error('Error submitting purchase request:', error);
     showToastError('Vui lòng nhập đầy đủ thông tin sản phẩm yêu cầu');
