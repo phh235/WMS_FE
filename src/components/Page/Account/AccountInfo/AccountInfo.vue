@@ -26,16 +26,11 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
 import { useUserStore } from '@/store/userStore';
 import BasicInfo from './BasicInfo.vue';
 import ChangePassword from './ChangePassword.vue';
 
 const userStore = useUserStore();
-
-onMounted(() => {
-  userStore.loadUserFromSession();
-});
 </script>
 
 <style scoped>

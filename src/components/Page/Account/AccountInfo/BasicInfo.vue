@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, watch } from 'vue';
 import { useUserStore } from '@/store/userStore';
 import { useApiServices } from '@/services/apiService';
 import { showToastError, showToastSuccess } from '@/components/Toast/utils/toastHandle';
@@ -61,10 +61,16 @@ const userInfo = reactive({
   soDienThoai: '',
 });
 
-onMounted(() => {
-  userStore.loadUserFromSession();
+onMounted(async () => {
+  await userStore.loadUserFromSession();
   Object.assign(userInfo, userStore.user);
 });
+
+watch(userInfo, (newValue) => {
+  console.log('User info updated:', newValue);
+  userStore.getUserByUsername();
+  userStore.loadUserFromSession();
+}, { deep: true });
 
 const updateInfo = async () => {
 
@@ -106,7 +112,7 @@ const updateInfo = async () => {
     const response = await apiService.post("users/update-info", userInfo);
     if (response.status === 200) {
       showToastSuccess('Cập nhật thông tin thành công');
-      userStore.loadUserFromSession();
+      await userStore.getUserByUsername();
       Object.assign(userInfo, userStore.user);
     } else {
       showToastError('Cập nhật thông tin thất bại');
