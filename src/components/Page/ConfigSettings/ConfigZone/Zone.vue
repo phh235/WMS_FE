@@ -26,7 +26,7 @@
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedZone.sysIdKhuVuc ? $t("ConfigSettings.zones.title_edit")
-              : $t("ConfigSettings.zones.title_save") }}
+            : $t("ConfigSettings.zones.title_save") }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -68,7 +68,8 @@
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm">
+          <button type="button" class="btn btn-logout d-flex align-items-center" data-bs-dismiss="modal" @click="btnResetForm">
+            <span class="material-symbols-outlined me-2">close</span>
             {{ $t("ConfigSettings.btn_cancel") }}
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouseZone">

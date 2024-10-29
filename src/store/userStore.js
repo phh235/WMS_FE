@@ -33,7 +33,7 @@ export const useUserStore = defineStore("users", () => {
       user.email = storedUser.email;
       user.fullName = storedUser.fullName;
       user.soDienThoai = storedUser.soDienThoai;
-      user.role = storedUser.roles[0]?.roleName || "";
+      user.role = storedUser.roles[0]?.roleName || "N/A";
     }
   };
 

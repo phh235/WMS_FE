@@ -22,16 +22,6 @@
         </div>
         <div class="modal-body">
           <form>
-            <!-- <div class="mb-3 d-none">
-              <label for="warehouseId" class="form-label fs fw-bold">SysIdKho</label>
-              <input
-                type="text"
-                class="form-control"
-                id="warehouseId"
-                aria-describedby="warehouseIdHelp"
-                v-model="selectedWarehouse.sysIdKho"
-              />
-            </div> -->
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
@@ -60,8 +50,14 @@
                 <div class="col-6">
                   <label for="sysIdUser" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.manager')
                     }}</label> <span class="text-danger">*</span>
-                  <input type="text" class="form-control" id="sysIdUser" aria-describedby="warehouseAdressHelp"
-                    v-model="selectedWarehouse.sysIdUser" />
+                  <select class="form-select" id="sysIdUser" v-model="selectedWarehouse.sysIdUser">
+                    <option value="" disabled>
+                      {{ $t('ConfigSettings.warehouses.choose_manager') }}
+                    </option>
+                    <option v-for="user in userStore.users" :key="user.sysIdUser" :value="user.sysIdUser">
+                      {{ user.fullName }}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -74,7 +70,9 @@
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm">
+          <button type="button" class="btn btn-logout d-flex align-items-center" data-bs-dismiss="modal"
+            @click="btnResetForm">
+            <span class="material-symbols-outlined me-2">close</span>
             {{ $t('ConfigSettings.btn_cancel') }}
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouse">
@@ -91,15 +89,16 @@
 import { ref, reactive, onMounted, computed } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useWarehouseStore } from "@/store/warehouseStore";
+import { useUserStore } from "@/store/userStore";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
-import Category from "../ConfigCategory/Category.vue";
 import WarehouseTable from "./WarehouseTable.vue";
 
 const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
+const userStore = useUserStore();
 const addWarehouseBtn = ref(null);
 const searchQuery = ref("");
 const selectedWarehouse = reactive({
@@ -110,13 +109,10 @@ const selectedWarehouse = reactive({
   moTa: "",
   sysIdUser: "",
 });
-// pagination
-const currentPage = ref(0);
-const totalPages = ref(10);
-const pageSize = ref(100);
 
 onMounted(async () => {
   await warehouseStore.getWarehouses();
+  await userStore.getUsers();
 });
 
 function removeAccents(str) {

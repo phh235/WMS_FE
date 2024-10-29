@@ -44,13 +44,13 @@
                                   color: var(--btn-primary-color) !important;
                                   font-size: 13px;
                                   border-radius: 8px;
-                                ">Admin</span></span>
+                                ">{{ userStore.user.role }}</span></span>
                             <span class="fs-sm">{{ userStore.user.email }}</span>
                           </div>
                         </router-link>
                       </li>
                       <li>
-                        <hr class="dropdown-divider" />
+                        <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                       </li>
                       <li>
                         <router-link to="/" class="btn btn-logout d-flex align-items-center justify-content-between"
@@ -107,7 +107,7 @@
                     </router-link>
                   </li>
                   <li>
-                    <hr class="dropdown-divider" />
+                    <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
                   <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.activity.sub_items.small_2') }}
@@ -205,7 +205,7 @@
                     </router-link>
                   </li>
                   <li>
-                    <hr class="dropdown-divider" />
+                    <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
                   <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_3') }}
@@ -229,7 +229,7 @@
                     </router-link>
                   </li>
                   <li>
-                    <hr class="dropdown-divider" />
+                    <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
                   <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_2') }}
@@ -245,7 +245,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item notification">
+              <li class="nav-item notification mt-2">
                 <div class="dropdown">
                   <button class="btn btn-secondary d-flex align-items-center me-2  position-relative" type="button"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
@@ -348,7 +348,7 @@
                                 color: var(--btn-primary-color) !important;
                                 font-size: 11px;
                                 border-radius: 8px;
-                              ">Admin
+                              ">{{ userStore.user.role }}
                             </span>
                           </span>
                           <span class="fs-sm">{{ userStore.user.email }}</span>
@@ -356,7 +356,7 @@
                       </router-link>
                     </li>
                     <li>
-                      <hr class="dropdown-divider" />
+                      <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                     </li>
                     <li>
                       <router-link to="/" class="btn btn-logout d-flex align-items-center justify-content-between"

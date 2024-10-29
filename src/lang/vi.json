@@ -70,6 +70,8 @@
         "success": {
           "title": "Đăng nhập thành công"
         },
+        "warning": "Vui lòng đăng nhập để tiếp tục",
+        "loading": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.",
         "info": {}
       },
       "swal": {
@@ -143,7 +145,7 @@
       "id": "Mã yêu cầu",
       "name": "Người yêu cầu",
       "status": "Trạng thái",
-      "date": "Ngày yêu cầu",
+      "date_request": "Ngày yêu cầu",
       "action": "Hành động",
       "li_edit": "Chỉnh sửa",
       "li_cancel": "Hủy",
@@ -166,7 +168,7 @@
           "product_name": "Tên sản phẩm",
           "quantity": "Số lượng",
           "price": "Giá",
-          "date": "Ngày nhập",
+          "date_plan": "Ngày xuất dự kiến",
           "total": "Tổng tiền",
           "total_price": "Tổng giá trị đơn hàng"
         }
@@ -187,7 +189,37 @@
         "confirm": "Xác nhận mật khẩu mới"
       }
     },
-    "btn_update": "Cập nhật"
+    "btn_update": "Cập nhật",
+    "swal": {
+      "confirm": {
+        "title": "Bạn chắc chắn muốn cập nhật?",
+        "text": "Hành động trên sẽ không thể hoàn tác",
+        "title_password": "Bạn có chắc chắn muốn đổi mật khẩu?",
+        "btn_confirm": "Xác nhận",
+        "btn_cancel": "Hủy"
+      },
+      "error": {
+        "title": "Cập nhật thất bại",
+        "fullname_text": "Họ và tên không được để trống",
+        "username_text": "Tên người dùng không được để trống",
+        "phone_text": "Số điện thoại không được để trống",
+        "phone_check": "Số điện thoại không đúng định dạng",
+        "email_text": "Email không được để trống",
+        "email_check": "Email không đúng định dạng",
+        "password_old_text": "Mật khẩu cũ không được để trống",
+        "password_old_check": "Mật khẩu cũ không đúng",
+        "password_new_text": "Mật khẩu mới không được để trống",
+        "password_confirm_text": "Mật khẩu mới không được để trống",
+        "password_confirm_check": "Xác nhận mật khẩu mới không đúng",
+        "failed": "Cập nhật thông tin thất bại",
+        "failed_password": "Cập nhật mật khẩu thất bại"
+      },
+      "success": {
+        "title_info": "Cập nhật thông tin thành công",
+        "title_password": "Cập nhật mật khẩu thành công"
+      },
+      "info": {}
+    }
   },
   "AccountManagement": {
     "search_input": "Tìm kiếm tài khoản...",
@@ -266,6 +298,7 @@
       "warehouse_area": "Diện tích",
       "warehouse_desc": "Mô tả",
       "manager": "Người phụ trách",
+      "choose_manager": "Chọn người phụ trách",
       "swal": {
         "delete": {
           "success": "Xóa kho hàng thành công",
