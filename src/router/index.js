@@ -3,6 +3,7 @@ import BlankLayout from "@layouts/BlankLayout.vue";
 import MenuItems from "@components/Header/MenuBar/MenuItems.js";
 import Login from "@pages/User/Login.vue";
 import { useAuthStore } from "@/store/authStore";
+import i18n from "@/lang/i18n";
 import { showToastWarning, showToastLoading } from "@/components/Toast/utils/toastHandle";
 
 export const routes = [
@@ -91,12 +92,12 @@ router.beforeEach((to, from, next) => {
       const token = localStorage.getItem("token");
       if (token) {
         // Nếu token tồn tại nhưng không hợp lệ, hiển thị thông báo "Phiên đăng nhập đã hết hạn"
-        showToastLoading("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
+        showToastLoading(i18n.global.t("Swal.login.toast.loading"), 2000);
       } else {
         // Lưu URL hiện tại mà người dùng muốn truy cập
         localStorage.setItem("redirectPath", to.fullPath);
         // Nếu không có token, hiển thị thông báo "Vui lòng đăng nhập"
-        showToastWarning("Vui lòng đăng nhập để sử dụng!");
+        showToastWarning(i18n.global.t("Swal.login.toast.warning"));
         return next({ name: "login" }); // Chuyển hướng đến trang đăng nhập
       }
       return next({ name: "login" }); // Chuyển hướng đến trang đăng nhập

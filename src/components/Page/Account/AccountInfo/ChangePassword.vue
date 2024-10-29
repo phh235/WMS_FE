@@ -29,8 +29,10 @@
             <input id="confirmPassword" v-model="passwordChange.confirmPassword" type="password" class="form-control" />
           </div>
         </div>
-        <button class="btn btn-primary d-flex align-items-center">
-          <span class="material-symbols-outlined me-2">sync</span>
+        <button :disabled="isLoading" class="btn btn-primary d-flex align-items-center">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
+          </span>
+          <span v-else class="material-symbols-outlined me-2">sync</span>
           {{ $t("AccountInfo.btn_update") }}
         </button>
       </form>
@@ -39,10 +41,15 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { ref, reactive } from 'vue'
 import { useApiServices } from '@/services/apiService';
 import { showToastError, showToastSuccess } from '@/components/Toast/utils/toastHandle';
+import i18n from "@/lang/i18n";
+import { useI18n } from "vue-i18n";
+import Swal from 'sweetalert2';
 
+const { t } = useI18n();
+const isLoading = ref(false);
 const apiService = useApiServices();
 const passwordChange = reactive({
   username: localStorage.getItem("user"),
@@ -53,43 +60,53 @@ const passwordChange = reactive({
 
 const changePassword = async () => {
   if (!passwordChange.passwordOld) {
-    showToastError('Vui lòng nhập mật khẩu cũ');
-    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    showToastError(t('AccountInfo.swal.error.password_old_text'));
     return;
   }
 
   if (!passwordChange.password) {
-    showToastError('Vui lòng nhập mật khẩu mới');
-    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    showToastError(t('AccountInfo.swal.error.password_new_text'));
     return;
   }
 
   if (!passwordChange.confirmPassword) {
-    showToastError('Vui lòng xác nhận mật khẩu mới');
-    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    showToastError(t('AccountInfo.swal.error.password_confirm_text'));
     return;
   }
 
   if (passwordChange.password !== passwordChange.confirmPassword) {
-    showToastError('Mật khẩu xác nhận không khớp');
-    // showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
+    showToastError(t('AccountInfo.swal.error.password_confirm_check'));
     return;
   }
-  try {
-    console.log(passwordChange);
 
-    const response = await apiService.post("users/update-password", passwordChange);
-    if (response.status === 200) {
-      showToastSuccess("Đổi mật khẩu thành công");
-      resetForm();
-    } else {
-      showToastError("Đổi mật khẩu thất bại");
-    }
-  } catch (error) {
-    if (error.response.data.errorMessage === "Old password is incorrect") {
-      showToastError("Mật khẩu cũ không chính xác");
-    } else {
-      showToastError("Có lỗi xảy ra, vui lòng thử lại");
+  const swalConfirm = await Swal.fire({
+    title: i18n.global.t("AccountInfo.swal.confirm.title_password"),
+    text: i18n.global.t("AccountInfo.swal.confirm.text"),
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonText: i18n.global.t("AccountInfo.swal.confirm.btn_cancel"),
+    cancelButtonColor: "#ef4444",
+    confirmButtonText: i18n.global.t("AccountInfo.swal.confirm.btn_confirm"),
+  });
+  if (swalConfirm.isConfirmed) {
+    isLoading.value = true;
+    try {
+      const response = await apiService.post("users/update-password", passwordChange);
+      if (response.status === 200) {
+        showToastSuccess(t('AccountInfo.swal.success.title_password'));
+        resetForm();
+      } else {
+        showToastError(t('AccountInfo.swal.erroe.failed_password'));
+      }
+    } catch (error) {
+      if (error.response.data.errorMessage === "Old password is incorrect") {
+        showToastError(t('AccountInfo.swal.error.password_old_check'));
+      } else {
+        showToastError(t('AccountInfo.swal.error.failed_password'));
+      }
+    } finally {
+      isLoading.value = false;
     }
   }
 };
@@ -100,3 +117,15 @@ const resetForm = () => {
   passwordChange.confirmPassword = '';
 };
 </script>
+
+<style scoped>
+.btn-primary:disabled,
+.btn-primary[disabled] {
+  background-color: var(--primary-color);
+}
+
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+</style>

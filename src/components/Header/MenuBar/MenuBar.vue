@@ -245,7 +245,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item notification">
+              <li class="nav-item notification mt-2">
                 <div class="dropdown">
                   <button class="btn btn-secondary d-flex align-items-center me-2  position-relative" type="button"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"

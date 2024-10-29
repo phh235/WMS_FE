@@ -31,7 +31,9 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { showToastError, showToastInfo, showToastSuccess } from "@/components/Toast/utils/toastHandle";
 import i18n from "@/lang/i18n";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
 const email = ref("");
@@ -39,6 +41,12 @@ const email = ref("");
 const handleForgotPassword = async () => {
   if (!email.value) {
     showToastError(i18n.global.t("Swal.forgot.toast.error.title"), i18n.global.t("Swal.forgot.toast.error.text"));
+    return;
+  }
+  // Kiểm tra định dạng email
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email.value)) {
+    showToastError(t('AccountInfo.swal.error.email_check'));
     return;
   }
   loading.value = true;

@@ -157,7 +157,7 @@ export default [
   },
   {
     path: "purchase-request/new",
-    name: "PurchaseRequestForm",
+    name: "purchase-request/new",
     component: () =>
       import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
     meta: {
@@ -169,7 +169,7 @@ export default [
   },
   {
     path: "purchase-request/edit/:id",
-    name: "PurchaseRequestForm",
+    name: "purchase-request/edit/:id",
     component: () =>
       import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
     meta: {
