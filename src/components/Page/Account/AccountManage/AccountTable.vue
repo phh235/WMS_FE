@@ -19,7 +19,7 @@
           </th>
           <th class="table-col-roleId"> {{ $t('AccountManagement.role') }}
           </th>
-          <th></th>
+          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -33,7 +33,10 @@
           <td>{{ user.email }}</td>
           <td>{{ user.soDienThoai }}</td>
           <td>{{ user.roles[0]?.roleName }}</td>
-          <td class="d-flex">
+          <td class="d-flex text-center justify-content-center">
+            <button class="btn btn-secondary d-flex me-2" @click="$emit('lock', user)">
+              <div class="material-symbols-outlined">lock</div>
+            </button>
             <button class="btn btn-secondary d-flex me-2" @click="$emit('edit', user)">
               <div class="material-symbols-outlined">edit_square</div>
             </button>
@@ -59,7 +62,7 @@ defineProps({
   }
 });
 
-defineEmits(['edit']);
+defineEmits(['lock', 'edit', 'delete']);
 </script>
 
 <style scoped>

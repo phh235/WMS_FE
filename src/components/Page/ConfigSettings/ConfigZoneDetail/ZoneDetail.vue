@@ -85,7 +85,9 @@
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm">
+          <button type="button" class="btn btn-logout d-flex align-items-center" data-bs-dismiss="modal"
+            @click="btnResetForm">
+            <span class="material-symbols-outlined me-2">close</span>
             {{ $t("ConfigSettings.btn_cancel") }}
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveWarehouseZone">

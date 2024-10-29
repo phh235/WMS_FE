@@ -38,15 +38,15 @@
               <th class="td-product">Sản phẩm</th>
               <th class="td-quantity">Số lượng</th>
               <th class="td-price">Giá</th>
-              <th class="td-date">Ngày nhập hàng dự kiến</th>
+              <th class="td-date">Ngày xuất hàng dự kiến</th>
               <th class="text-center td-action">Hành động</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-if="formData.chiTietDonHang.length === 0">
+            <tr v-if="formData.chiTietXuatHang.length === 0">
               <td colspan="10" class="text-center">Chưa có sản phẩm</td>
             </tr>
-            <tr v-for="(product, index) in formData.chiTietDonHang" :key="index">
+            <tr v-for="(product, index) in formData.chiTietXuatHang" :key="index">
               <td class="td-product">
                 <select v-model="product.sysIdSanPham" class="form-select">
                   <option value="" disabled>Chọn sản phẩm</option>
@@ -62,8 +62,9 @@
                 <input v-model.number="product.gia" type="number" class="form-control" min="0" />
               </td>
               <td>
-                <VueDatePicker v-model="product.ngayNhap" :enable-time-picker="false" :teleport="true" :format="format"
-                  auto-apply :auto-position="true" placeholder="Chọn ngày nhập dự kiến"></VueDatePicker>
+                <VueDatePicker v-model="product.ngayXuatDuKien" :enable-time-picker="false" :teleport="true"
+                  :format="format" auto-apply :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
+                </VueDatePicker>
               </td>
               <td class="td-action">
                 <div class="d-flex align-items-center justify-content-center">
@@ -118,10 +119,10 @@ onMounted(async () => {
 
 const formData = reactive({
   maPR: '',
-  ngayYeuCau: '',
   nguoiYeuCau: 1,
   trangThai: 'DANG_XU_LY',
-  chiTietDonHang: []
+  loaiYeuCau: 'XUAT',
+  chiTietXuatHang: []
 });
 
 const customers = ref([
@@ -131,21 +132,21 @@ const customers = ref([
 ]);
 
 const addProduct = () => {
-  formData.chiTietDonHang.push({
+  formData.chiTietXuatHang.push({
     sysIdSanPham: '',
     sysIdKhachHang: '',
     soLuong: 0,
     gia: 0,
-    ngayNhap: ''
+    ngayXuatDuKien: ''
   });
 };
 
 const removeProduct = (index) => {
-  formData.chiTietDonHang.splice(index, 1);
+  formData.chiTietXuatHang.splice(index, 1);
 };
 
 const totalCost = computed(() => {
-  return formData.chiTietDonHang.reduce((total, product) => {
+  return formData.chiTietXuatHang.reduce((total, product) => {
     return total + (product.soLuong * product.gia);
   }, 0);
 });
@@ -164,34 +165,41 @@ const handleSubmit = async () => {
     showToastError('Vui lòng chọn khách hàng!');
     return;
   }
-  if (formData.chiTietDonHang.length === 0) {
+  if (formData.chiTietXuatHang.length === 0) {
     showToastError('Vui lòng thêm sản phẩm!');
-    return
+    return;
   }
+
   isLoading.value = true;
+
   const submitData = {
     maPR: formData.maPR,
     nguoiYeuCau: 1,
-    chiTietDonHang: formData.chiTietDonHang.map(product => ({
+    loaiYeuCau: 'XUAT',
+    trangThai: 'DANG_XU_LY',
+    chiTietXuatHang: formData.chiTietXuatHang.map(product => ({
       soLuong: product.soLuong,
       gia: product.gia,
       tongChiPhi: product.soLuong * product.gia,
-      ngayNhap: formatDate(product.ngayNhap),
+      ngayXuatDuKien: formatDate(product.ngayXuatDuKien),
       sysIdSanPham: product.sysIdSanPham,
       sysIdKhachHang: selectedCustomer.value.id
     }))
   };
 
   try {
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo yêu cầu...');
-    let response;
-    response = await apiService.post("purchase-requests/save", submitData);
-    closeToastLoading();
-    showToastSuccess('Tạo yêu cầu mua hàng thành công!');
-    setTimeout(() => {
-      showToastInfo('Đã gửi mail cho phòng Purchase Order');
-    }, 2000);
-    router.push("/inventory/purchase-request");
+    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo yêu cầu...', 6000);
+    const response = await apiService.post("purchase-request-ob/save", submitData);
+    if (response.status === 201) {
+      closeToastLoading();
+      showToastSuccess('Tạo yêu cầu mua hàng thành công!');
+      setTimeout(() => {
+        showToastInfo('Đã gửi mail cho phòng Purchase Order');
+      }, 2000);
+      router.push("/inventory/purchase-request");
+    } else {
+      showToastError('Có lỗi xảy ra, vui lòng thử lại sau');
+    }
   } catch (error) {
     console.error('Error submitting purchase request:', error);
     showToastError('Vui lòng nhập đầy đủ thông tin sản phẩm yêu cầu');

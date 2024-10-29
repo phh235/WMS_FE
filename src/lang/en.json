@@ -1,5 +1,6 @@
 {
   "Offcanvas": "Inventory management",
+  "TokenTimeOut": "Your session has expired, please log in again.",
   "Navbar": {
     "menu_item": {
       "home": "Home",
@@ -62,14 +63,16 @@
     "login": {
       "toast": {
         "error": {
-          "title": "Login failed",
+          "title": "Sign in failed",
           "username_text": "Username field cannot be empty",
           "password_text": "Password field cannot be empty",
-          "login_fail": "Login failed"
+          "login_fail": "Sign in failed"
         },
         "success": {
-          "title": "Login successfully"
+          "title": "Sign in successfully"
         },
+        "warning": "Please sign in to continue",
+        "loading": "Your session has expired, please log in again.",
         "info": {}
       },
       "swal": {
@@ -143,7 +146,7 @@
       "id": "Request Id",
       "name": "Requestor",
       "status": "Status",
-      "date": "Date request",
+      "date_request": "Date request",
       "action": "Actions",
       "li_edit": "Edit",
       "li_cancel": "Cancel",
@@ -166,7 +169,7 @@
           "product_name": "Product name",
           "quantity": "Quantity",
           "price": "Price",
-          "date": "Expected date",
+          "date_plan": "Expected date",
           "total": "Total",
           "total_price": "Total order price",
           "form": {}
@@ -187,7 +190,37 @@
         "confirm": "Confirm new password"
       }
     },
-    "btn_update": "Update"
+    "btn_update": "Update",
+    "swal": {
+      "confirm": {
+        "title": "Are you sure you want to update?",
+        "text": "The above action cannot be undone",
+        "title_password": "Are you sure you want to change your password?",
+        "btn_confirm": "Confirm",
+        "btn_cancel": "Cancel"
+      },
+      "error": {
+        "title": "Update failed",
+        "fullname_text": "Full name cannot be empty",
+        "username_text": "Username cannot be empty",
+        "phone_text": "Phone number cannot be empty",
+        "phone_check": "Phone number is not in the correct format",
+        "email_text": "Email cannot be empty",
+        "email_check": "Email is not in the correct format",
+        "password_old_text": "Old password cannot be empty",
+        "password_old_check": "Old password is incorrect",
+        "password_new_text": "New password cannot be blank",
+        "password_confirm_text": "New password cannot be blank",
+        "password_confirm_check": "New password confirmation is incorrect",
+        "failed": "Update info failed",
+        "failed_password": "Update password failed"
+      },
+      "success": {
+        "title_info": "Update information successfully",
+        "title_password": "Update password successfully"
+      },
+      "info": {}
+    }
   },
   "AccountManagement": {
     "search_input": "Search account...",
@@ -266,6 +299,7 @@
       "warehouse_area": "Area",
       "warehouse_desc": "Description",
       "manager": "Manager",
+      "choose_manager": "Choose manager",
       "swal": {
         "delete": {
           "success": "Warehouse deleted successfully",

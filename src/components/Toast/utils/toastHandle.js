@@ -33,12 +33,11 @@ export const showToastWarning = (message, text) => {
   });
 };
 
-export const showToastLoading = (message, text) => {
+export const showToastLoading = (message, timer) => {
   Toast.fire({
     icon: "info",
     title: message,
-    text: text,
-    timer: 6000,
+    timer: timer,
     showConfirmButton: false,
     allowOutsideClick: false,
     didOpen: (toast) => {

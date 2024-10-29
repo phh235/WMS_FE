@@ -27,7 +27,7 @@
       <div class="d-flex justify-content-end mb-3">
         <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
         <VueDatePicker v-model="date" week-picker auto-apply :enable-time-picker="false" :teleport="true"
-          :auto-position="true" locale="vi" style="max-width: 320px;" placeholder="Tìm theo tuần" />
+          :auto-position="true" style="max-width: 234px;" placeholder="Tìm theo tuần" />
         <!-- <VueDatePicker v-model="date" range :teleport="true" :auto-position="true" locale="vi" style="max-width: 320px;"
           placeholder="Tìm theo khoảng ngày" /> -->
       </div>
@@ -37,7 +37,7 @@
             <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
             <th>{{ $t('PurchaseRequest.table.name') }}</th>
             <th>{{ $t('PurchaseRequest.table.status') }}</th>
-            <th>{{ $t('PurchaseRequest.table.date') }}</th>
+            <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
             <th style="width: 200px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
           </tr>
         </thead>
@@ -45,9 +45,9 @@
           <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
             <td colspan="10">{{ $t('PurchaseRequest.not_found') }}</td>
           </tr>
-          <tr v-for="purchase in paginatedPurchases" :key="purchase.sysIdYeuCauMuaHang">
+          <tr v-for="purchase in paginatedPurchases" :key="purchase.maPR">
             <td class="sticky">{{ purchase.maPR }}</td>
-            <td>{{ purchase.fullName }}</td>
+            <td>{{ purchase.nguoiYeuCau }}</td>
             <td>
               <span :class="['badge', getBadgeClass(purchase.trangThai)]">
                 {{ getStatusLabel(purchase.trangThai) }}
@@ -114,7 +114,7 @@
                 <label class="form-label">
                   {{ $t('PurchaseRequest.table.detail.customer') }}
                 </label>
-                <p class="fs">{{ selectedPurchase.chiTietDonHang[0]?.tenKhachHang }}</p>
+                <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.tenKhachHang }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
@@ -130,13 +130,19 @@
                 <label class="form-label">
                   {{ $t('PurchaseRequest.table.name') }}
                 </label>
-                <p class="fs">{{ selectedPurchase.fullName }}</p>
+                <p class="fs">{{ selectedPurchase.nguoiYeuCau }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
-                  {{ $t('PurchaseRequest.table.date') }}
+                  {{ $t('PurchaseRequest.table.date_request') }}
                 </label>
                 <p class="fs">{{ selectedPurchase.ngayYeuCau }}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseRequest.table.detail.product_detail.date_plan') }}
+                </label>
+                <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.ngayXuatDuKien }}</p>
               </div>
             </div>
             <hr />
@@ -149,29 +155,27 @@
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
-                    <th> {{ $t('PurchaseRequest.table.detail.product_detail.date') }}</th>
                     <th> {{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in selectedPurchase.chiTietDonHang" :key="item.maSanPham">
+                  <tr v-for="item in selectedPurchase.chiTietXuatHang" :key="item.maSanPham">
                     <td>{{ item.tenSanPham }}</td>
                     <td>{{ item.soLuong }} Kg</td>
                     <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
                       <span class="currency-symbol">&#8363;</span>
                     </td>
-                    <td>{{ item.ngayNhap }}</td>
                     <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
                       <span class="currency-symbol">&#8363;</span>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <p class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
-                <span style="color: var(--primary-color);">{{
-                  totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-              </p>
             </div>
+            <p class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
+              <span style="color: var(--primary-color);">{{
+                totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+            </p>
           </div>
         </div>
       </div>
@@ -224,22 +228,22 @@ const selectedPurchase = reactive({
   sysIdYeuCauMuaHang: "",
   maPR: "",
   ngayYeuCau: "",
-  nguoiYeuCau: 1,
+  nguoiYeuCau: "",
   fullName: "",
   trangThai: "",
-  chiTietDonHang: []
+  chiTietXuatHang: []
 })
 
 // Tính tổng giá trị (số lượng * giá)
 const totalOrderValue = computed(() => {
-  return selectedPurchase.chiTietDonHang.reduce((total, item) => {
+  return selectedPurchase.chiTietXuatHang.reduce((total, item) => {
     return total + (parseFloat(item.tongChiPhi) || 0);
   }, 0);
 });
 
 const getPurchaseRequests = async () => {
   try {
-    const response = await apiService.get("purchase-requests");
+    const response = await apiService.get("purchase-request-ob");
     purchases.value = response.data;
   } catch (error) {
     console.error("Failed to fetch purchase requests:", error);
@@ -273,9 +277,9 @@ const cancelPR = async () => {
 const showDetail = (purchase) => {
   selectedPurchase.maPR = purchase.maPR;
   selectedPurchase.ngayYeuCau = purchase.ngayYeuCau;
-  selectedPurchase.fullName = purchase.fullName;
+  selectedPurchase.nguoiYeuCau = purchase.nguoiYeuCau;
   selectedPurchase.trangThai = purchase.trangThai;
-  selectedPurchase.chiTietDonHang = purchase.chiTietDonHang;
+  selectedPurchase.chiTietXuatHang = purchase.chiTietXuatHang;
 
   isModalVisible.value = true;
 };
@@ -309,7 +313,7 @@ const filteredRequests = computed(() => {
       !searchQuery.value || removeAccents(purchase.maPR.toLowerCase()).includes(removeAccents(searchQuery.value.toLowerCase()))
     )
     .filter(purchase =>
-      !searchQueryByPeople.value || removeAccents(purchase.fullName.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
+      !searchQueryByPeople.value || removeAccents(purchase.nguoiYeuCau.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
     .filter(purchase => {
       const purchaseDate = new Date(purchase.ngayYeuCau);
@@ -322,7 +326,6 @@ const filteredRequests = computed(() => {
       return true;
     });
 });
-
 
 const paginatedPurchases = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;

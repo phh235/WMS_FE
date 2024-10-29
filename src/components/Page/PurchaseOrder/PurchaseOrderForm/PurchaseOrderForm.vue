@@ -176,7 +176,7 @@ const handleSubmit = async () => {
   };
 
   try {
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo đơn hàng...');
+    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo đơn hàng...', 6000);
     let response;
     response = await apiService.post("purchase-orders/create", submitData);
     closeToastLoading();

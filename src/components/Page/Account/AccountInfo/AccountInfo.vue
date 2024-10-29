@@ -8,7 +8,7 @@
               <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
                 class="rounded-4 img-fluid mb-3" width="150" loading="lazy" />
             </div>
-            <h5 class="mt-1 fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h5>
+            <h5 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h5>
             <div class="d-flex justify-content-center mb-2">
               <span class="badge bg-primary"
                 style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important;">{{
@@ -26,16 +26,11 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
 import { useUserStore } from '@/store/userStore';
 import BasicInfo from './BasicInfo.vue';
 import ChangePassword from './ChangePassword.vue';
 
 const userStore = useUserStore();
-
-onMounted(() => {
-  userStore.loadUserFromSession();
-});
 </script>
 
 <style scoped>
