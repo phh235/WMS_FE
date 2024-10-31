@@ -268,7 +268,7 @@ const deleteZoneDetail = async (id) => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("ConfigSettings.zone-detail.swal.delete.cancel"),
-    cancelButtonColor: "#ef4444",
+    cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t("ConfigSettings.zone-detail.swal.delete.confirm"),
   });
 

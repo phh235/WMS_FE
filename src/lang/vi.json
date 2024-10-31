@@ -3,7 +3,7 @@
   "Navbar": {
     "menu_item": {
       "home": "Trang chủ",
-      "pr": "Mua hàng",
+      "pr": "Yêu cầu",
       "po": "Đặt hàng",
       "activity": {
         "label": "Hoạt động",
@@ -147,16 +147,25 @@
       "status": "Trạng thái",
       "date_request": "Ngày yêu cầu",
       "action": "Hành động",
+      "li_confirm": "Xác nhận",
       "li_edit": "Chỉnh sửa",
       "li_cancel": "Hủy",
       "swal": {
         "delete": {
-          "success": "Hủy yêu cầu thành công",
+          "success": "Đã hủy yêu cầu",
           "failed": "Hủy yêu cầu thất bại",
           "title": "Hủy yêu cầu?",
           "text": "Bạn có chắc chắn muốn hủy yêu cầu này?",
           "cancel": "Hủy",
           "confirm": "OK"
+        },
+        "confirm": {
+          "success": "Đã xác nhận yêu cầu",
+          "failed": "Xác nhận yêu cầu thất bại",
+          "title": "Xác nhận yêu cầu?",
+          "text": "Bạn có chắc chắn muốn xác nhận yêu cầu này?",
+          "cancel": "Hủy",
+          "confirm": "Xác nhận"
         }
       },
       "detail": {

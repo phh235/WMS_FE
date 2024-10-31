@@ -60,4 +60,9 @@ defineEmits(['detail', 'edit', 'delete']);
 .btn-secondary {
   padding: 10px 10px;
 }
+
+th:nth-child(2) {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
 </style>

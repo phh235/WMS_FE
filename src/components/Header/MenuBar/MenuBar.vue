@@ -125,7 +125,7 @@
               </li>
               <li class="nav-item">
                 <router-link to="/inventory/products" class="nav-link d-flex align-items-center"><span
-                    class="material-symbols-outlined me-2"> nutrition </span>
+                    class="material-symbols-outlined me-2"> grocery </span>
                   {{ $t('Navbar.menu_item.product') }}
                 </router-link>
               </li>
@@ -334,7 +334,7 @@
                     <span class="material-symbols-outlined ms-2">unfold_more</span>
                   </button>
                   <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton"
-                    style="min-width: 210px !important">
+                    style="min-width: 220px !important">
                     <small class="p-2 fw-bold" style="font-size: .75rem">
                       {{ $t('Navbar.menu_item.account.sub_items.small_1') }}
                     </small>

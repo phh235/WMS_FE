@@ -72,8 +72,15 @@
                     </router-link>
                   </li>
                   <li>
+                    <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
+                      style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
+                      {{ $t('PurchaseRequest.table.li_confirm') }}
+                      <span class="material-symbols-outlined">check_circle</span>
+                    </a>
+                  </li>
+                  <li>
                     <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
-                      @click="cancelPR">
+                      @click="cancelPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_cancel') }}
                       <span class="material-symbols-outlined">cancel</span>
                     </a>
@@ -197,6 +204,7 @@ import Swal from "sweetalert2";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
+import { showToastLoading } from "@/components/Toast/utils/toastHandle";
 
 const date = ref(new Date());
 // Pagination
@@ -225,7 +233,7 @@ watch(tabs, (newTabs) => {
 });
 
 const selectedPurchase = reactive({
-  sysIdYeuCauMuaHang: "",
+  sysIdYeuCauXuatHang: "",
   maPR: "",
   ngayYeuCau: "",
   nguoiYeuCau: "",
@@ -250,27 +258,81 @@ const getPurchaseRequests = async () => {
   }
 };
 
-// Hủy yêu cầu - udpate status DA_HUY
-const cancelPR = async () => {
-  const swalConfirm = await Swal.fire({
-    title: i18n.global.t("PurchaseRequest.table.swal.delete.title"),
-    text: i18n.global.t("PurchaseRequest.table.swal.delete.text"),
-    icon: "warning",
+const cancelPR = async (id) => {
+  Swal.fire({
+    title: i18n.global.t('PurchaseRequest.table.swal.delete.title'),
+    text: i18n.global.t('PurchaseRequest.table.swal.delete.text'),
+    icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
-    cancelButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.cancel"),
-    cancelButtonColor: "#ef4444",
-    confirmButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.confirm"),
-  });
-
-  if (swalConfirm.isConfirmed) {
-    try {
-      await apiService.put(`purchase-requests/${selectedPurchase.sysIdYeuCauMuaHang}`, { trangThai: "DA_HUY" });
-      showToastSuccess(t('PurchaseRequest.table.swal.delete.success'));
-      getPurchaseRequests();
-    } catch (error) {
-      showToastError(t('PurchaseRequest.table.swal.delete.failed'));
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.delete.confirm'),
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.delete.cancel')
+  }).then((result) => {
+    if (result.isConfirmed) {
+      updatePRStatus(id, 'DA_HUY');
     }
+  });
+};
+
+const confirmPR = async (id) => {
+  Swal.fire({
+    title: i18n.global.t('PurchaseRequest.table.swal.confirm.title'),
+    text: i18n.global.t('PurchaseRequest.table.swal.confirm.text'),
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
+  }).then((result) => {
+    if (result.isConfirmed) {
+      updatePRStatus(id, 'XAC_NHAN');
+    }
+  });
+};
+
+const updatePRStatus = async (id, status) => {
+  try {
+    const response = await apiService.get(`purchase-request-ob/${id}`);
+    if (response.status) {
+      const { sysIdYeuCauXuatHang, maPR, ngayYeuCau, nguoiYeuCau, trangThai, chiTietXuatHang } = response.data[0];
+      selectedPurchase.sysIdYeuCauXuatHang = sysIdYeuCauXuatHang;
+      selectedPurchase.maPR = maPR;
+      selectedPurchase.ngayYeuCau = ngayYeuCau;
+      selectedPurchase.nguoiYeuCau = nguoiYeuCau;
+      selectedPurchase.trangThai = trangThai;
+      selectedPurchase.chiTietXuatHang = chiTietXuatHang;
+    }
+
+    const submitDataUpdate = {
+      sysIdYeuCauXuatHang: selectedPurchase.sysIdYeuCauXuatHang,
+      maPR: selectedPurchase.maPR,
+      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+      trangThai: status,
+      loaiYeuCau: 'XUAT',
+      chiTietXuatHang: selectedPurchase.chiTietXuatHang.map(product => ({
+        sysIdChiTietXuatHang: product.sysIdChiTietXuatHang,
+        maPR: product.maPR,
+        sysIdSanPham: product.sysIdSanPham,
+        sysIdKhachHang: product.sysIdKhachHang,
+        soLuong: product.soLuong,
+        gia: product.gia,
+        tongChiPhi: product.soLuong * product.gia,
+        ngayXuatDuKien: product.ngayXuatDuKien
+      }))
+    };
+    console.log(submitDataUpdate);
+    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    await apiService.post("purchase-request-ob/save", submitDataUpdate);
+    if (status === 'XAC_NHAN') {
+      showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));
+    } else {
+      showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.delete.success'));
+    }
+    getPurchaseRequests();
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -315,16 +377,16 @@ const filteredRequests = computed(() => {
     .filter(purchase =>
       !searchQueryByPeople.value || removeAccents(purchase.nguoiYeuCau.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
-    .filter(purchase => {
-      const purchaseDate = new Date(purchase.ngayYeuCau);
-      if (Array.isArray(date.value) && date.value.length === 2) {
-        const [startDate, endDate] = date.value;
-        return purchaseDate >= new Date(startDate) && purchaseDate <= new Date(endDate);
-      } else if (date.value) {
-        return purchaseDate.toDateString() === new Date(date.value).toDateString();
-      }
-      return true;
-    });
+  // .filter(purchase => {
+  //   const purchaseDate = new Date(purchase.ngayYeuCau);
+  //   if (Array.isArray(date.value) && date.value.length === 2) {
+  //     const [startDate, endDate] = date.value;
+  //     return purchaseDate >= new Date(startDate) && purchaseDate <= new Date(endDate);
+  //   } else if (date.value) {
+  //     return purchaseDate.toDateString() === new Date(date.value).toDateString();
+  //   }
+  //   return true;
+  // });
 });
 
 const paginatedPurchases = computed(() => {

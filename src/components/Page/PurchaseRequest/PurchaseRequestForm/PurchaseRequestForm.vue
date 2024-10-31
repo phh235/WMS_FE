@@ -3,24 +3,24 @@
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
         <div class="col-12 col-md-4">
-          <div class="mb-3">
+          <div class="mb-3 mb-md-0">
             <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
-            <input v-model="formData.maPR" type="text" class="form-control" id="maPR" />
+            <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
         <div class="col-12 col-md-4">
-          <div class="mb-3">
+          <div class="mb-3 mb-md-0">
             <label for="requesterName" class="form-label">Người yêu cầu <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="requesterName" value="phh235" disabled />
+            <input type="text" class="form-control" id="requesterName" v-model="nguoiYeuCau" disabled />
           </div>
         </div>
         <div class="col-12 col-md-4">
-          <div class="mb-3">
+          <div class="mb-3 mb-md-0">
             <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
             <select v-model="selectedCustomer" id="customer" class="form-select">
               <option value="" disabled>Chọn khách hàng</option>
-              <option v-for="customer in customers" :key="customer.id" :value="customer">
-                {{ customer.name }}
+              <option v-for="customer in customers" :key="customer.sysIdKhachHang" :value="customer">
+                {{ customer.fullName }}
               </option>
             </select>
           </div>
@@ -28,7 +28,7 @@
       </div>
 
       <div class="table-responsive p-md-3">
-        <button type="button" class="btn btn-secondary d-flex align-items-center" @click="addProduct"
+        <button type="button" class="btn btn-secondary d-flex align-items-center mb-3 mb-md-2" @click="addProduct"
           style="transition: all 0.2s;">
           <span class="material-symbols-outlined me-2">add</span>Thêm sản phẩm
         </button>
@@ -47,6 +47,7 @@
               <td colspan="10" class="text-center">Chưa có sản phẩm</td>
             </tr>
             <tr v-for="(product, index) in formData.chiTietXuatHang" :key="index">
+              <td class="d-none">{{ product.sysIdChiTietXuatHang }}</td>
               <td class="td-product">
                 <select v-model="product.sysIdSanPham" class="form-select">
                   <option value="" disabled>Chọn sản phẩm</option>
@@ -81,7 +82,7 @@
           <button :disabled="isLoading" type="submit" class="btn btn-primary d-flex align-items-center">
             <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
             </span>
-            <span v-else class="material-symbols-outlined me-2">check</span>Xác nhận
+            <span v-else class="material-symbols-outlined me-2">check</span>{{ isEdit ? 'Cập nhật' : 'Xác nhận' }}
           </button>
           <h5 class="fw-bold" style="color: var(--label-color);">
             Tổng tiền: <span style="color: var(--primary-color);">{{ totalCost.toLocaleString() }} đ</span>
@@ -93,44 +94,91 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, watch } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
-import { showToastSuccess, showToastError, showToastInfo } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
 import VueDatePicker from "@vuepic/vue-datepicker"
-import { closeToastLoading, showToastLoading } from '@/components/Toast/utils/toastHandle';
 
-const format = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-}
 const apiService = useApiServices();
 const productStore = useProductStore();
 const router = useRouter();
 const isLoading = ref(false);
 const selectedCustomer = ref(null);
+const isEdit = ref(false);
+const nguoiYeuCau = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
 
 onMounted(async () => {
   await productStore.getProducts();
+  const { id } = router.currentRoute.value.params;
+  if (id) {
+    await getPurchaseRequestOBByID(id);
+    isEdit.value = true;
+  } else {
+    resetFormData();
+    isEdit.value = false;
+  }
 });
 
+// Object purchase request
 const formData = reactive({
   maPR: '',
-  nguoiYeuCau: 1,
-  trangThai: 'DANG_XU_LY',
+  nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
   loaiYeuCau: 'XUAT',
   chiTietXuatHang: []
 });
 
+const resetFormData = () => {
+  formData.maPR = '';
+  formData.nguoiYeuCau = JSON.parse(sessionStorage.getItem("user")).sysIdUser;
+  formData.loaiYeuCau = 'XUAT';
+  formData.chiTietXuatHang = [];
+};
+
+// format date của VueDatePicker
+const format = (date) => {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const customers = ref([
-  { id: 1, name: 'Phan Huy Hoàng' },
-  { id: 2, name: 'Nguyễn Bá Trung' },
-  { id: 3, name: 'Võ Thị Hương Giang' },
+  { sysIdKhachHang: 1, fullName: 'Phan Huy Hoàng' },
+  { sysIdKhachHang: 2, fullName: 'Nguyễn Bá Trung' },
+  { sysIdKhachHang: 3, fullName: 'Võ Thị Hương Giang' },
 ]);
 
+// Chuyển đổi kiểu ngày là String sang kiểu Date (dd/MM/yyyy)
+const parseDateString = (dateStr) => {
+  const [day, month, year] = dateStr.split('/');
+  return new Date(year, month - 1, day); // month - 1 vì tháng trong Date bắt đầu từ 0
+};
+
+// Lấy thông tin yêu cầu xuất hàng theo mã yêu cầu
+const getPurchaseRequestOBByID = async (id) => {
+  try {
+    const response = await apiService.get(`purchase-request-ob/${id}`);
+    if (response.status) {
+      const purchase = response.data;
+      Object.assign(formData, purchase[0]);
+      // Gán giá trị cho chiTietXuatHang bao gồm sysIdKhachHang và các giá trị khác
+      formData.chiTietXuatHang = purchase[0].chiTietXuatHang.map(product => ({
+        sysIdChiTietXuatHang: product.sysIdChiTietXuatHang,
+        sysIdSanPham: product.sysIdSanPham,
+        sysIdKhachHang: product.sysIdKhachHang,
+        soLuong: product.soLuong,
+        gia: product.gia,
+        ngayXuatDuKien: parseDateString(product.ngayXuatDuKien)
+      }));
+    }
+  } catch (error) {
+    console.error("Error fetching product:", error);
+  }
+};
+
+// Thêm 1 dòng mới trong table (push)
 const addProduct = () => {
   formData.chiTietXuatHang.push({
     sysIdSanPham: '',
@@ -141,30 +189,25 @@ const addProduct = () => {
   });
 };
 
+// Xóa hàng vừa thêm vào bảng từ addProduct
 const removeProduct = (index) => {
   formData.chiTietXuatHang.splice(index, 1);
 };
 
+// Tính tổng tiền = giá * số lượng
 const totalCost = computed(() => {
   return formData.chiTietXuatHang.reduce((total, product) => {
     return total + (product.soLuong * product.gia);
   }, 0);
 });
 
-const formatDate = (date) => {
-  const d = new Date(date);
-  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-};
-
+// Thêm/chỉnh sửa yêu cầu
 const handleSubmit = async () => {
-  if (formData.maPR.trim() === '') {
-    showToastError('Mã yêu cầu không được để trống!');
-    return;
-  }
   if (!selectedCustomer.value) {
     showToastError('Vui lòng chọn khách hàng!');
     return;
   }
+
   if (formData.chiTietXuatHang.length === 0) {
     showToastError('Vui lòng thêm sản phẩm!');
     return;
@@ -172,30 +215,50 @@ const handleSubmit = async () => {
 
   isLoading.value = true;
 
-  const submitData = {
-    maPR: formData.maPR,
-    nguoiYeuCau: 1,
-    loaiYeuCau: 'XUAT',
-    trangThai: 'DANG_XU_LY',
-    chiTietXuatHang: formData.chiTietXuatHang.map(product => ({
-      soLuong: product.soLuong,
-      gia: product.gia,
-      tongChiPhi: product.soLuong * product.gia,
-      ngayXuatDuKien: formatDate(product.ngayXuatDuKien),
-      sysIdSanPham: product.sysIdSanPham,
-      sysIdKhachHang: selectedCustomer.value.id
-    }))
-  };
-
   try {
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang tạo yêu cầu...', 6000);
-    const response = await apiService.post("purchase-request-ob/save", submitData);
-    if (response.status === 201) {
+    const submitData = {
+      maPR: formData.maPR,
+      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+      loaiYeuCau: 'XUAT',
+      chiTietXuatHang: formData.chiTietXuatHang.map(product => ({
+        soLuong: product.soLuong,
+        gia: product.gia,
+        tongChiPhi: product.soLuong * product.gia,
+        sysIdSanPham: product.sysIdSanPham,
+        sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
+        ngayXuatDuKien: format(product.ngayXuatDuKien)
+      }))
+    };
+
+    const submitDataUpdate = {
+      sysIdYeuCauXuatHang: formData.sysIdYeuCauXuatHang,
+      maPR: formData.maPR,
+      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+      trangThai: 'DANG_XU_LY',
+      loaiYeuCau: 'XUAT',
+      chiTietXuatHang: formData.chiTietXuatHang.map(product => ({
+        sysIdChiTietXuatHang: product.sysIdChiTietXuatHang,
+        maPR: product.maPR,
+        sysIdSanPham: product.sysIdSanPham,
+        sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
+        soLuong: product.soLuong,
+        gia: product.gia,
+        tongChiPhi: product.soLuong * product.gia,
+        ngayXuatDuKien: format(product.ngayXuatDuKien)
+      }))
+    };
+
+    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    const response = isEdit.value
+      ? await apiService.post("purchase-request-ob/save", submitDataUpdate)
+      : await apiService.post("purchase-request-ob/save", submitData);
+
+    if (response.status === 201 || response.status === 200) {
       closeToastLoading();
-      showToastSuccess('Tạo yêu cầu mua hàng thành công!');
+      showToastSuccess(`${isEdit.value ? 'Cập nhật' : 'Tạo'} yêu cầu mua hàng thành công!`);
       setTimeout(() => {
         showToastInfo('Đã gửi mail cho phòng Purchase Order');
-      }, 2000);
+      }, 2500);
       router.push("/inventory/purchase-request");
     } else {
       showToastError('Có lỗi xảy ra, vui lòng thử lại sau');
