@@ -94,7 +94,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive, watch } from 'vue';
+import { ref, computed, onMounted, reactive } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";

@@ -26,8 +26,16 @@
     <div class="table-responsive">
       <div class="d-flex justify-content-end mb-3">
         <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
-        <VueDatePicker v-model="date" week-picker auto-apply :enable-time-picker="false" :teleport="true"
-          :auto-position="true" style="max-width: 234px;" placeholder="Tìm theo tuần" />
+        <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+          :auto-position="true" :enable-time-picker="false" style="max-width: 334px;" format="dd/MM/yyyy HH:mm:ss">
+          <template #preset-date-range-button="{ label, value, presetDate }">
+            <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
+              @keyup.space.prevent="presetDate(value)">
+              {{ label }}
+            </span>
+          </template>
+        </VueDatePicker>
+
         <!-- <VueDatePicker v-model="date" range :teleport="true" :auto-position="true" locale="vi" style="max-width: 320px;"
           placeholder="Tìm theo khoảng ngày" /> -->
       </div>
@@ -195,7 +203,6 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, reactive } from "vue";
-import { useRouter } from 'vue-router';
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useI18n } from "vue-i18n";
@@ -206,11 +213,34 @@ import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { showToastLoading } from "@/components/Toast/utils/toastHandle";
 
-const date = ref(new Date());
+const date = ref([
+  new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0),
+  new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59, 59)
+]);
+
+const presetDates = ref([
+  {
+    label: '7 ngày trước', value: [
+      new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
+      new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
+    ]
+  },
+  {
+    label: '3 ngày trước', value: [
+      new Date(new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toDateString()),
+      new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
+    ]
+  },
+  {
+    label: 'Ngày hiện tại', value: [
+      new Date(new Date().toDateString()),
+      new Date(new Date().toDateString() + ' 23:59:59')
+    ]
+  },
+]);
 // Pagination
 const currentPage = ref(1);
 const pageSize = ref(5);
-const router = useRouter();
 const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
@@ -366,6 +396,11 @@ function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+const parseDate = (dateString) => {
+  const [day, month, year, hour, minute, second] = dateString.split(/\/|\s|:/);
+  return new Date(year, month - 1, day, hour, minute, second);
+};
+
 const filteredRequests = computed(() => {
   return purchases.value
     .filter(purchase =>
@@ -377,16 +412,14 @@ const filteredRequests = computed(() => {
     .filter(purchase =>
       !searchQueryByPeople.value || removeAccents(purchase.nguoiYeuCau.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
-  // .filter(purchase => {
-  //   const purchaseDate = new Date(purchase.ngayYeuCau);
-  //   if (Array.isArray(date.value) && date.value.length === 2) {
-  //     const [startDate, endDate] = date.value;
-  //     return purchaseDate >= new Date(startDate) && purchaseDate <= new Date(endDate);
-  //   } else if (date.value) {
-  //     return purchaseDate.toDateString() === new Date(date.value).toDateString();
-  //   }
-  //   return true;
-  // });
+    .filter(purchase => {
+      if (date.value && date.value.length === 2) {
+        const [startDate, endDate] = date.value;
+        const purchaseDate = parseDate(purchase.ngayYeuCau);
+        return purchaseDate >= startDate && purchaseDate <= endDate;
+      }
+      return true;
+    });
 });
 
 const paginatedPurchases = computed(() => {
