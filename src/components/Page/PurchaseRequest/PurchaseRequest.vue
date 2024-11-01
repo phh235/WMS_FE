@@ -27,7 +27,7 @@
       <div class="d-flex justify-content-end mb-3">
         <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
         <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
-          :auto-position="true" :enable-time-picker="false" style="max-width: 334px;" format="dd/MM/yyyy HH:mm:ss">
+          :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy">
           <template #preset-date-range-button="{ label, value, presetDate }">
             <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
               @keyup.space.prevent="presetDate(value)">
