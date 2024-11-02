@@ -193,9 +193,6 @@ const onFileChange = (e) => {
     productInfo.hinhAnh = file.name; // Lưu tên tệp
   }
 };
-
-const { params } = router.currentRoute.value;
-console.log(params?.id);
 </script>
 
 <style scoped>

@@ -18,7 +18,7 @@
         <thead>
           <tr>
             <th class="td-id">{{ $t('Product.table.no') }}</th>
-            <th class="sticky td-name">{{ $t('Product.table.product_name') }}</th>
+            <th class="td-name">{{ $t('Product.table.product_name') }}</th>
             <th class="td-desc">{{ $t('Product.table.desc') }}</th>
             <th class="td-quantity">{{ $t('Product.table.available_quantity') }}</th>
             <th class="text-center td-action">{{ $t('Product.table.btn_action') }}</th>
@@ -32,7 +32,7 @@
           </tr>
           <tr v-for="product in paginatedProducts" :key="product.sysIdSanPham">
             <td class="td-id">{{ product.sysIdSanPham }}</td>
-            <td class="sticky td-name">
+            <td class="td-name">
               <div class="d-flex align-items-center">
                 <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="50" loading="lazy"
                   style="object-fit: cover; object-position: center" />
@@ -187,7 +187,7 @@ const deleteProduct = async (id) => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("Product.table.swal.confirmDelete.cancel"),
-    cancelButtonColor: "#ef4444",
+    cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t("Product.table.swal.confirmDelete.confirm"),
   });
 

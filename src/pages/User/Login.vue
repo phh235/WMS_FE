@@ -55,11 +55,15 @@ const toggleShowPassword = () => {
 
 const handleLogin = async () => {
   if (!username.value) {
-    showToastError(i18n.global.t("Swal.login.toast.error.title"), i18n.global.t("Swal.login.toast.error.username_text"));
+    showToastError(
+      // i18n.global.t("Swal.login.toast.error.title"), 
+      i18n.global.t("Swal.login.toast.error.username_text"));
     return;
   }
   if (!password.value) {
-    showToastError(i18n.global.t("Swal.login.toast.error.title"), i18n.global.t("Swal.login.toast.error.password_text"));
+    showToastError(
+      // i18n.global.t("Swal.login.toast.error.title"), 
+      i18n.global.t("Swal.login.toast.error.password_text"));
     return;
   }
   loading.value = true;

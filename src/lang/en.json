@@ -4,7 +4,14 @@
   "Navbar": {
     "menu_item": {
       "home": "Home",
-      "pr": "Requisition",
+      "pr": {
+        "label": "Requisition",
+        "sub_items": {
+          "small_1": "Requisition",
+          "inbound": "Inbound",
+          "outbound": "Outbound"
+        }
+      },
       "po": "Orders",
       "activity": {
         "label": "Activities",
@@ -133,7 +140,7 @@
     "tabs": {
       "all": "All",
       "pending": "Pending",
-      "confirmed": "Confirmed",
+      "confirmed": "Apporoved",
       "canceled": "Canceled"
     },
     "search_input": {
@@ -148,6 +155,7 @@
       "status": "Status",
       "date_request": "Date request",
       "action": "Actions",
+      "li_confirm": "Apporove",
       "li_edit": "Edit",
       "li_cancel": "Cancel",
       "swal": {
@@ -156,6 +164,14 @@
           "failed": "Request failed to cancel",
           "title": "Cancel request?",
           "text": "Are you sure you want to cancel this request?",
+          "cancel": "Cancel",
+          "confirm": "OK"
+        },
+        "confirm": {
+          "success": "Request confirmed",
+          "failed": "Request confirmed failed",
+          "title": "Confirm request?",
+          "text": "Are you sure you want to confirm this request?",
           "cancel": "Cancel",
           "confirm": "OK"
         }

@@ -39,6 +39,7 @@ export const useAuthStore = defineStore("auth", {
       localStorage.setItem("token", token);
       // Decode JWT token to get username is logged in
       const tokenDecode = JSON.parse(atob(token.split(".")[1])).sub;
+      // console.log(tokenDecode);
       // Lưu giá trị tokenDecode mà không có dấu ngoặc kép
       localStorage.setItem("user", tokenDecode); // Không cần JSON.stringify
     },
