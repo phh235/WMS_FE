@@ -10,8 +10,8 @@
             </div>
             <h5 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h5>
             <div class="d-flex justify-content-center mb-2">
-              <span class="badge bg-primary"
-                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important;">{{
+              <span class="badge bg-primary box-shadow"
+                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important; font-size: 0.775rem !important">{{
                   userStore.user.role }}</span>
             </div>
           </div>

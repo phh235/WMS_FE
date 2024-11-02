@@ -197,7 +197,7 @@ const deleteWarehouse = async (maKho) => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("ConfigSettings.warehouses.swal.delete.cancel"),
-    cancelButtonColor: "#ef4444",
+    cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t("ConfigSettings.warehouses.swal.delete.confirm"),
   });
 

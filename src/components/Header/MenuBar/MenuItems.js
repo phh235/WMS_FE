@@ -150,31 +150,93 @@ export default [
     component: () => import("@/components/Page/PurchaseRequest/PurchaseRequest.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Yêu cầu mua hàng",
+      headerTitle: "Yêu cầu",
+      searchConfig: {},
+      storeConfig: {},
+    },
+    children: [
+      {
+        path: "inbound",
+        name: "inbound",
+        component: () =>
+          import(
+            "@/components/Page/PurchaseRequest/PurchaseRequestTable/PurchaseRequestInbound.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Yêu cầu nhập hàng",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "outbound",
+        name: "outbound",
+        component: () =>
+          import(
+            "@/components/Page/PurchaseRequest/PurchaseRequestTable/PurchaseRequestOutbound.vue"
+          ),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Yêu cầu xuất hàng",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+    ],
+  },
+  {
+    path: "purchase-request/inbound/new",
+    name: "purchase-request/inbound/new",
+    component: () =>
+      import(
+        "@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestFormInbound.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Tạo yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
     },
   },
   {
-    path: "purchase-request/new",
-    name: "purchase-request/new",
+    path: "purchase-request/inbound/edit/:id",
+    name: "purchase-request/inbound/edit/:id",
     component: () =>
-      import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
+      import(
+        "@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestFormInbound.vue"
+      ),
     meta: {
       requiresAuth: true,
-      headerTitle: "Thêm yêu cầu mua hàng",
+      headerTitle: "Chỉnh sửa yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
     },
   },
   {
-    path: "purchase-request/edit/:id",
-    name: "purchase-request/edit/:id",
+    path: "purchase-request/outbound/new",
+    name: "purchase-request/outbound/new",
     component: () =>
-      import("@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestForm.vue"),
+      import(
+        "@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestFormOutbound.vue"
+      ),
     meta: {
       requiresAuth: true,
-      headerTitle: "Chỉnh sửa yêu cầu mua hàng",
+      headerTitle: "Tạo yêu cầu xuất hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "purchase-request/outbound/edit/:id",
+    name: "purchase-request/outbound/edit/:id",
+    component: () =>
+      import(
+        "@/components/Page/PurchaseRequest/PurchaseRequestForm/PurchaseRequestFormOutbound.vue"
+      ),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Chỉnh sửa yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
     },

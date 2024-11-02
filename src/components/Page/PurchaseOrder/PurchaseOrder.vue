@@ -255,7 +255,7 @@ const cancelPR = async () => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.cancel"),
-    cancelButtonColor: "#ef4444",
+    cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t("PurchaseRequest.table.swal.delete.confirm"),
   });
 

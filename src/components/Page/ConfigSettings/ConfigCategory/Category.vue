@@ -235,7 +235,7 @@ const deleteCategory = async (id) => {
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonText: i18n.global.t("ConfigSettings.categories.swal.delete.cancel"),
-    cancelButtonColor: "#ef4444",
+    cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t("ConfigSettings.categories.swal.delete.confirm"),
   });
 

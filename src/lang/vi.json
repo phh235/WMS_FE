@@ -3,7 +3,14 @@
   "Navbar": {
     "menu_item": {
       "home": "Trang chủ",
-      "pr": "Mua hàng",
+      "pr": {
+        "label": "Yêu cầu",
+        "sub_items": {
+          "small_1": "Yêu cầu",
+          "inbound": "Nhập hàng",
+          "outbound": "Xuất hàng"
+        }
+      },
       "po": "Đặt hàng",
       "activity": {
         "label": "Hoạt động",
@@ -140,23 +147,33 @@
       "search_name": "Tìm theo người yêu cầu"
     },
     "not_found": "Không tìm thấy yêu cầu",
-    "btn_create": "Tạo yêu cầu mua hàng",
+    "btn_create": "Tạo yêu cầu nhập hàng",
+    "btn_create_ob": "Tạo yêu cầu xuất hàng",
     "table": {
       "id": "Mã yêu cầu",
       "name": "Người yêu cầu",
       "status": "Trạng thái",
       "date_request": "Ngày yêu cầu",
       "action": "Hành động",
+      "li_confirm": "Xác nhận",
       "li_edit": "Chỉnh sửa",
       "li_cancel": "Hủy",
       "swal": {
         "delete": {
-          "success": "Hủy yêu cầu thành công",
+          "success": "Đã hủy yêu cầu",
           "failed": "Hủy yêu cầu thất bại",
           "title": "Hủy yêu cầu?",
           "text": "Bạn có chắc chắn muốn hủy yêu cầu này?",
           "cancel": "Hủy",
           "confirm": "OK"
+        },
+        "confirm": {
+          "success": "Đã xác nhận yêu cầu",
+          "failed": "Xác nhận yêu cầu thất bại",
+          "title": "Xác nhận yêu cầu?",
+          "text": "Bạn có chắc chắn muốn xác nhận yêu cầu này?",
+          "cancel": "Hủy",
+          "confirm": "Xác nhận"
         }
       },
       "detail": {
