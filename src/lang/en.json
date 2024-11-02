@@ -4,7 +4,14 @@
   "Navbar": {
     "menu_item": {
       "home": "Home",
-      "pr": "Requisition",
+      "pr": {
+        "label": "Requisition",
+        "sub_items": {
+          "small_1": "Requisition",
+          "inbound": "Inbound",
+          "outbound": "Outbound"
+        }
+      },
       "po": "Orders",
       "activity": {
         "label": "Activities",

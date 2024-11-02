@@ -3,7 +3,14 @@
   "Navbar": {
     "menu_item": {
       "home": "Trang chủ",
-      "pr": "Yêu cầu",
+      "pr": {
+        "label": "Yêu cầu",
+        "sub_items": {
+          "small_1": "Yêu cầu",
+          "inbound": "Nhập hàng",
+          "outbound": "Xuất hàng"
+        }
+      },
       "po": "Đặt hàng",
       "activity": {
         "label": "Hoạt động",
@@ -140,7 +147,8 @@
       "search_name": "Tìm theo người yêu cầu"
     },
     "not_found": "Không tìm thấy yêu cầu",
-    "btn_create": "Tạo yêu cầu mua hàng",
+    "btn_create": "Tạo yêu cầu nhập hàng",
+    "btn_create_ob": "Tạo yêu cầu xuất hàng",
     "table": {
       "id": "Mã yêu cầu",
       "name": "Người yêu cầu",

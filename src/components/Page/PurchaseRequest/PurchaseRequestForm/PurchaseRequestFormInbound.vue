@@ -43,11 +43,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-if="formData.chiTietXuatHang.length === 0">
+            <tr v-if="formData.chiTietNhapHang.length === 0">
               <td colspan="10" class="text-center">Chưa có sản phẩm</td>
             </tr>
-            <tr v-for="(product, index) in formData.chiTietXuatHang" :key="index">
-              <td class="d-none">{{ product.sysIdChiTietXuatHang }}</td>
+            <tr v-for="(product, index) in formData.chiTietNhapHang" :key="index">
+              <td class="d-none">{{ product.sysIdChiTietNhapHang }}</td>
               <td class="td-product">
                 <select v-model="product.sysIdSanPham" class="form-select">
                   <option value="" disabled>Chọn sản phẩm</option>
@@ -63,7 +63,7 @@
                 <input v-model.number="product.gia" type="number" class="form-control" min="0" />
               </td>
               <td>
-                <VueDatePicker v-model="product.ngayXuatDuKien" :enable-time-picker="false" :teleport="true"
+                <VueDatePicker v-model="product.ngayNhapDuKien" :enable-time-picker="false" :teleport="true"
                   :format="format" auto-apply :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
                 </VueDatePicker>
               </td>
@@ -125,15 +125,15 @@ onMounted(async () => {
 const formData = reactive({
   maPR: '',
   nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-  loaiYeuCau: 'XUAT',
-  chiTietXuatHang: []
+  loaiYeuCau: 'NHAP',
+  chiTietNhapHang: []
 });
 
 const resetFormData = () => {
   formData.maPR = '';
   formData.nguoiYeuCau = JSON.parse(sessionStorage.getItem("user")).sysIdUser;
-  formData.loaiYeuCau = 'XUAT';
-  formData.chiTietXuatHang = [];
+  formData.loaiYeuCau = 'NHAP';
+  formData.chiTietNhapHang = [];
 };
 
 // format date của VueDatePicker
@@ -159,18 +159,18 @@ const parseDateString = (dateStr) => {
 // Lấy thông tin yêu cầu xuất hàng theo mã yêu cầu
 const getPurchaseRequestOBByID = async (id) => {
   try {
-    const response = await apiService.get(`purchase-request-ob/${id}`);
+    const response = await apiService.get(`purchase-requests/${id}`);
     if (response.status) {
       const purchase = response.data;
       Object.assign(formData, purchase[0]);
-      // Gán giá trị cho chiTietXuatHang bao gồm sysIdKhachHang và các giá trị khác
-      formData.chiTietXuatHang = purchase[0].chiTietXuatHang.map(product => ({
-        sysIdChiTietXuatHang: product.sysIdChiTietXuatHang,
+      // Gán giá trị cho chiTietNhapHang bao gồm sysIdKhachHang và các giá trị khác
+      formData.chiTietNhapHang = purchase[0].chiTietNhapHang.map(product => ({
+        sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: product.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,
-        ngayXuatDuKien: parseDateString(product.ngayXuatDuKien)
+        ngayNhapDuKien: parseDateString(product.ngayNhapDuKien)
       }));
     }
   } catch (error) {
@@ -180,23 +180,23 @@ const getPurchaseRequestOBByID = async (id) => {
 
 // Thêm 1 dòng mới trong table (push)
 const addProduct = () => {
-  formData.chiTietXuatHang.push({
+  formData.chiTietNhapHang.push({
     sysIdSanPham: '',
     sysIdKhachHang: '',
     soLuong: 0,
     gia: 0,
-    ngayXuatDuKien: ''
+    ngayNhapDuKien: ''
   });
 };
 
 // Xóa hàng vừa thêm vào bảng từ addProduct
 const removeProduct = (index) => {
-  formData.chiTietXuatHang.splice(index, 1);
+  formData.chiTietNhapHang.splice(index, 1);
 };
 
 // Tính tổng tiền = giá * số lượng
 const totalCost = computed(() => {
-  return formData.chiTietXuatHang.reduce((total, product) => {
+  return formData.chiTietNhapHang.reduce((total, product) => {
     return total + (product.soLuong * product.gia);
   }, 0);
 });
@@ -208,7 +208,7 @@ const handleSubmit = async () => {
     return;
   }
 
-  if (formData.chiTietXuatHang.length === 0) {
+  if (formData.chiTietNhapHang.length === 0) {
     showToastError('Vui lòng thêm sản phẩm!');
     return;
   }
@@ -219,47 +219,47 @@ const handleSubmit = async () => {
     const submitData = {
       maPR: formData.maPR,
       nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-      loaiYeuCau: 'XUAT',
-      chiTietXuatHang: formData.chiTietXuatHang.map(product => ({
+      loaiYeuCau: 'NHAP',
+      chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         soLuong: product.soLuong,
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
-        ngayXuatDuKien: format(product.ngayXuatDuKien)
+        ngayNhapDuKien: format(product.ngayNhapDuKien)
       }))
     };
 
     const submitDataUpdate = {
-      sysIdYeuCauXuatHang: formData.sysIdYeuCauXuatHang,
+      sysIdYeuCauNhapHang: formData.sysIdYeuCauNhapHang,
       maPR: formData.maPR,
       nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
       trangThai: 'DANG_XU_LY',
-      loaiYeuCau: 'XUAT',
-      chiTietXuatHang: formData.chiTietXuatHang.map(product => ({
-        sysIdChiTietXuatHang: product.sysIdChiTietXuatHang,
-        maPR: product.maPR,
+      loaiYeuCau: 'NHAP',
+      chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
+        sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
+        maPR: formData.maPR, // fix tạm
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
-        ngayXuatDuKien: format(product.ngayXuatDuKien)
+        ngayNhapDuKien: format(product.ngayNhapDuKien)
       }))
     };
 
     showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
     const response = isEdit.value
-      ? await apiService.post("purchase-request-ob/save", submitDataUpdate)
-      : await apiService.post("purchase-request-ob/save", submitData);
+      ? await apiService.post("purchase-requests/save", submitDataUpdate)
+      : await apiService.post("purchase-requests/save", submitData);
 
-    if (response.status === 201 || response.status === 200) {
+    if (response.status === 201) {
       closeToastLoading();
       showToastSuccess(`${isEdit.value ? 'Cập nhật' : 'Tạo'} yêu cầu mua hàng thành công!`);
       setTimeout(() => {
         showToastInfo('Đã gửi mail cho phòng Purchase Order');
       }, 2500);
-      router.push("/inventory/purchase-request");
+      router.push("/inventory/purchase-request/inbound");
     } else {
       showToastError('Có lỗi xảy ra, vui lòng thử lại sau');
     }
