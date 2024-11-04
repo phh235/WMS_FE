@@ -86,7 +86,7 @@
                   </a>
                 </li>
                 <li v-if="authStore.checkPermissions(['User'])">
-                  <router-link :to="{ name: 'purchase-request/inbound/edit/:id', params: { id: purchase.maPR } }"
+                  <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
                     class="dropdown-item d-flex align-items-center justify-content-between">
                     {{ $t('PurchaseRequest.table.li_edit') }}
                     <span class="material-symbols-outlined">edit_square</span>

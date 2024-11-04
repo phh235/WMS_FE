@@ -3,25 +3,25 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">{{ $t('ConfigSettings.no') }}</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.categories.category_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.categories.category_desc') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
+          <th scope="col" class="sticky">{{ $t('ConfigSettings.suppliers.supplier_name') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_desc') }}</th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-if="categories.length === 0" style="text-align: center; font-style: italic">
-          <td colspan="10">{{ $t('ConfigSettings.categories.not_found') }}</td>
+        <tr v-if="suppliers.length === 0" style="text-align: center; font-style: italic">
+          <td colspan="10">{{ $t('ConfigSettings.suppliers.not_found') }}</td>
         </tr>
-        <tr v-for="category in categories" :key="category.sysIdDanhMuc">
-          <td scope="row">{{ category.sysIdDanhMuc }}</td>
-          <td class="sticky">{{ category.tenDanhMuc }}</td>
-          <td>{{ category.moTa }}</td>
+        <tr v-for="supplier in suppliers" :key="supplier.sysIdNhaCungCap">
+          <td scope="row">{{ supplier.sysIdNhaCungCap }}</td>
+          <td class="sticky">{{ supplier.tenLoaiKhachHang }}</td>
+          <td>{{ supplier.moTa }}</td>
           <td class="text-center">
-            <button class="btn btn-secondary me-2" @click="$emit('edit', category)">
+            <button class="btn btn-secondary me-2" @click="$emit('edit', supplier)">
               <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
             </button>
-            <button class="btn btn-danger" @click="$emit('delete', category.sysIdDanhMuc)">
+            <button class="btn btn-danger" @click="$emit('delete', supplier.sysIdNhaCungCap)">
               <span class="material-symbols-outlined d-flex align-items-center">delete</span>
             </button>
           </td>
@@ -37,7 +37,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 defineProps({
-  categories: {
+  suppliers: {
     type: Array,
     required: true
   }

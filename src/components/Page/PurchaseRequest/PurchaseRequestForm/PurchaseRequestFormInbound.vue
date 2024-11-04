@@ -18,23 +18,22 @@
           <div class="mb-3 mb-md-0">
             <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
             <select v-model="selectedCustomer" id="customer" class="form-select">
-              <option value="" disabled>Chọn khách hàng</option>
-              <option v-for="customer in customers" :key="customer.sysIdKhachHang" :value="customer">
-                {{ customer.fullName }}
+              <option :value="null" disabled>Chọn khách hàng</option>
+              <option v-for="customer in customerStore.customers" :key="customer.sysIdKhachHang" :value="customer">
+                {{ customer.tenKhachHang }}
               </option>
             </select>
           </div>
         </div>
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
-            <label for="customer" class="form-label">Ngày xuất hàng dự kiến <span class="text-danger">*</span></label>
+            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
             <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-              :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
+              :auto-position="true" placeholder="Chọn ngày nhập hàng dự kiến">
             </VueDatePicker>
           </div>
         </div>
       </div>
-
 
       <div class="table-responsive p-md-3">
         <button type="button" class="btn btn-secondary d-flex align-items-center mb-3 mb-md-2" @click="addProduct"
@@ -99,6 +98,7 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
+import { useCustomerStore } from '@/store/customerStore';
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
@@ -106,6 +106,7 @@ import VueDatePicker from "@vuepic/vue-datepicker"
 
 const apiService = useApiServices();
 const productStore = useProductStore();
+const customerStore = useCustomerStore();
 const router = useRouter();
 const isLoading = ref(false);
 const selectedCustomer = ref(null);
@@ -115,6 +116,7 @@ const dateDuKien = ref();
 
 onMounted(async () => {
   await productStore.getProducts();
+  await customerStore.getCustomers();
   const { id } = router.currentRoute.value.params;
   if (id) {
     await getPurchaseRequestOBByID(id);
@@ -148,12 +150,6 @@ const format = (date) => {
   return `${day}/${month}/${year}`;
 };
 
-const customers = ref([
-  { sysIdKhachHang: 1, fullName: 'Phan Huy Hoàng' },
-  { sysIdKhachHang: 2, fullName: 'Nguyễn Bá Trung' },
-  { sysIdKhachHang: 3, fullName: 'Võ Thị Hương Giang' },
-]);
-
 // Chuyển đổi kiểu ngày là String sang kiểu Date (dd/MM/yyyy)
 const parseDateString = (dateStr) => {
   const [day, month, year] = dateStr.split('/');
@@ -165,17 +161,23 @@ const getPurchaseRequestOBByID = async (id) => {
   try {
     const response = await apiService.get(`purchase-requests/${id}`);
     if (response.status) {
-      const purchase = response.data;
-      Object.assign(formData, purchase[0]);
-      // Gán giá trị cho chiTietNhapHang bao gồm sysIdKhachHang và các giá trị khác
-      formData.chiTietNhapHang = purchase[0].chiTietNhapHang.map(product => ({
+      const purchase = response.data[0];
+      Object.assign(formData, purchase);
+      // Gán giá trị cho chiTietXuatHang bao gồm sysIdKhachHang và các giá trị khác
+      formData.chiTietNhapHang = purchase.chiTietNhapHang.map((product) => ({
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: product.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,
-        ngayNhapDuKien: parseDateString(dateDuKien.value)
+        ngayNhapDuKien: product.ngayNhapDuKien,
       }));
+
+      dateDuKien.value = parseDateString(formData.chiTietNhapHang[0].ngayNhapDuKien);
+
+      selectedCustomer.value = customerStore.customers.find(
+        (c) => c.sysIdKhachHang === formData.chiTietNhapHang[0].sysIdKhachHang
+      );
     }
   } catch (error) {
     console.error("Error fetching product:", error);

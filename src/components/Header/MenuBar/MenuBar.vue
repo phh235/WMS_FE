@@ -276,21 +276,21 @@
                     {{ $t('Navbar.menu_item.config.sub_items.partner') }}
                   </small>
                   <li>
-                    <router-link to="/inventory/config/suppliers"
-                      class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
-                      <span class="fs">
-                        {{ $t('Navbar.menu_item.config.sub_items.supplier') }}
-                      </span>
-                      <span class="material-symbols-outlined">conveyor_belt</span>
-                    </router-link>
-                  </li>
-                  <li>
                     <router-link to="/inventory/config/customers"
                       class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
                       <span class="fs">
                         {{ $t('Navbar.menu_item.config.sub_items.customer') }}
                       </span>
                       <span class="material-symbols-outlined">partner_exchange</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/inventory/config/suppliers"
+                      class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
+                      <span class="fs">
+                        {{ $t('Navbar.menu_item.config.sub_items.suppliers') }}
+                      </span>
+                      <span class="material-symbols-outlined">conveyor_belt</span>
                     </router-link>
                   </li>
                 </ul>

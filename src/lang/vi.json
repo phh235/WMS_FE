@@ -10,7 +10,7 @@
           "inbound": "Nhập hàng",
           "outbound": "Xuất hàng"
         }
-    },
+      },
       "po": "Đặt hàng",
       "activity": {
         "label": "Hoạt động",
@@ -38,7 +38,7 @@
           "zoneDetail": "Chi tiết khu vực",
           "categories": "Danh mục",
           "partner": "Đối tác",
-          "supplier": "Nhà cung cấp",
+          "suppliers": "Nhà cung cấp",
           "customer": "Khách hàng"
         }
       },
@@ -428,6 +428,64 @@
         "validate": {
           "category_name": "Tên danh mục không được để trống!",
           "warehouse_id": "Vui lòng chọn kho!"
+        }
+      }
+    },
+    "customers": {
+      "not_found": "Không tìm thấy khách hàng",
+      "title_save": "Thêm khách hàng",
+      "title_edit": "Chỉnh sửa khách hàng",
+      "search_input": "Tìm kiếm khách hàng...",
+      "customer_name": "Tên khách hàng",
+      "customer_company": "Tên công ty",
+      "supplier_id": "Nhà cung cấp",
+      "choose_supplier": "Chọn nhà cung cấp",
+      "phone": "Số điện thoại",
+      "address": "Địa chỉ",
+      "tabs": {
+        "all": "Tất cả",
+        "normal": "Kho thường",
+        "cold": "Kho lạnh"
+      },
+      "swal": {
+        "delete": {
+          "success": "Xóa khách hàng thành công",
+          "failed": "Xóa khách hàng thất bại",
+          "title": "Xóa khách hàng?",
+          "text": "Bạn có chắc chắn muốn xóa khách hàng này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "customer_name": "Tên khách hàng không được để trống!",
+          "customer_company": "Tên công ty không được để trống!",
+          "phone": "Tên công ty không được để trống!",
+          "supplier_id": "Vui lòng chọn nhà cung cấp!"
+        }
+      }
+    },
+    "suppliers": {
+      "not_found": "Không tìm thấy nhà cung cấp",
+      "title_save": "Thêm nhà cung cấp",
+      "title_edit": "Chỉnh sửa nhà cung cấp",
+      "search_input": "Tìm kiếm nhà cung cấp...",
+      "supplier_id": "Mã nhà cung cấp",
+      "supplier_name": "Tên loại khách hàng",
+      "supplier_desc": "Mô tả",
+      "swal": {
+        "delete": {
+          "success": "Xóa nhà cung cấp thành công",
+          "failed": "Xóa nhà cung cấp thất bại",
+          "title": "Xóa nhà cung cấp?",
+          "text": "Bạn có chắc chắn muốn xóa nhà cung cấp này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "supplier_id": "Mã nhà cung cấp không được để trống!",
+          "supplier_name": "Tên nhà cung cấp không được để trống!"
         }
       }
     }

@@ -1,32 +1,26 @@
 <template>
-  <div class="mb-4 d-flex justify-content-between align-items-center">
-    <div class="tab-container justify-content-start mb-3 mb-md-0 col-12">
-      <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
-        :class="['tab-button', { active: activeTab === tab }]">
-        {{ tab }}
-      </button>
-    </div>
+  <div class="mb-4 d-flex justify-content-end align-items-center">
     <div class="d-flex flex-column flex-md-row">
-      <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.categories.search_input')" />
+      <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.customers.search_input')" />
       <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
         <span class="material-symbols-outlined">sort_by_alpha</span>
       </button>
-      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
-        data-bs-toggle="modal" data-bs-target="#categoryModal">
+      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCustomerBtn"
+        data-bs-toggle="modal" data-bs-target="#customerModal">
         <span class="material-symbols-outlined me-2"> add </span>
-        {{ $t('ConfigSettings.categories.title_save') }}
+        {{ $t('ConfigSettings.customers.title_save') }}
       </button>
     </div>
   </div>
-  <CustomerTable :categories="filteredCategories" @edit="editCategory" @delete="deleteCategory" />
-  <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  <CustomerTable :customers="filteredCustomers" @edit="editCustomer" @delete="deleteCustomer" />
+  <div class="modal fade" id="customerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            {{ selectedCategory.sysIdDanhMuc ? $t("ConfigSettings.categories.title_edit") :
-              $t("ConfigSettings.categories.title_save") }}
+            {{ selectedCustomer.sysIdKhachHang ? $t("ConfigSettings.customers.title_edit") :
+              $t("ConfigSettings.customers.title_save") }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -34,41 +28,58 @@
         <div class="modal-body">
           <form>
             <div class="mb-3 d-none">
-              <label for="categoryId" class="form-label fs">Mã Danh Mục</label>
-              <input type="text" class="form-control" id="categoryId" aria-describedby="categoryIdHelp"
-                v-model="selectedCategory.sysIdDanhMuc" />
+              <label for="customerId" class="form-label fs">Mã khách hàng</label>
+              <input type="text" class="form-control" id="customerId" aria-describedby="customerIdHelp"
+                v-model="selectedCustomer.sysIdKhachHang" />
             </div>
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="tenDanhMuc" class="form-label fs fw-bold">
-                    {{ $t('ConfigSettings.categories.category_name') }} <span class="text-danger">*</span>
+                  <label for="tenKhachHang" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.customers.customer_name') }} <span class="text-danger">*</span>
                   </label>
-                  <input type="text" class="form-control" id="tenDanhMuc" aria-describedby="categoryNameHelp"
-                    v-model="selectedCategory.tenDanhMuc" />
+                  <input type="text" class="form-control" id="tenKhachHang" aria-describedby="customerNameHelp"
+                    v-model="selectedCustomer.tenKhachHang" />
                 </div>
                 <div class="col-6">
-                  <label for="maKho" class="form-label fs fw-bold">
-                    {{ $t('ConfigSettings.categories.warehouse_id') }} <span class="text-danger">*</span>
+                  <label for="tenCongTy" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.customers.customer_company') }} <span class="text-danger">*</span>
                   </label>
-                  <select class="form-select" id="maKho" v-model="selectedCategory.maKho">
+                  <input type="text" class="form-control" id="tenCongTy" aria-describedby="customerNameHelp"
+                    v-model="selectedCustomer.tenCongTy" />
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-6">
+                  <label for="soDienThoai" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.customers.phone') }} <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="soDienThoai" aria-describedby="customerNameHelp"
+                    v-model="selectedCustomer.soDienThoai" />
+                </div>
+                <div class="col-6">
+                  <label for="sysIdNhaCungCap" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.customers.supplier_id') }} <span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" id="sysIdNhaCungCap" v-model="selectedCustomer.sysIdNhaCungCap">
                     <option value="" disabled>
-                      {{ $t('ConfigSettings.categories.choose_warehouse') }}
+                      {{ $t('ConfigSettings.customers.choose_supplier') }}
                     </option>
-                    <option v-for="warehouse in warehouseStore.warehouses" :key="warehouse.maKho"
-                      :value="warehouse.maKho">
-                      {{ warehouse.maKho }} - {{ warehouse.tenKho }}
+                    <option v-for="supplier in supplierStore.suppliers" :key="supplier.sysIdNhaCungCap"
+                      :value="supplier.sysIdNhaCungCap"> {{ supplier.tenLoaiKhachHang }}
                     </option>
                   </select>
                 </div>
               </div>
             </div>
             <div>
-              <label for="categoryDescription" class="form-label fs fw-bold">
-                {{ $t('ConfigSettings.categories.category_desc') }}
+              <label for="address" class="form-label fs fw-bold">
+                {{ $t('ConfigSettings.customers.address') }}
               </label>
-              <textarea class="form-control" id="categoryDescription" rows="4"
-                aria-describedby="categoryDescriptionHelp" v-model="selectedCategory.moTa"></textarea>
+              <textarea class="form-control" id="address" rows="4" aria-describedby="customerAddressHelp"
+                v-model="selectedCustomer.diaChi"></textarea>
             </div>
             <div class="mb-3"></div>
           </form>
@@ -79,9 +90,9 @@
             <span class="material-symbols-outlined me-2">close</span>
             {{ $t("ConfigSettings.btn_cancel") }}
           </button>
-          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
+          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCustomer">
             <span class="material-symbols-outlined me-2">check</span>
-            {{ selectedCategory.sysIdDanhMuc ? $t("ConfigSettings.btn_update") : $t("ConfigSettings.btn_save") }}
+            {{ selectedCustomer.sysIdKhachHang ? $t("ConfigSettings.btn_update") : $t("ConfigSettings.btn_save") }}
           </button>
         </div>
       </div>
@@ -92,8 +103,8 @@
 <script setup>
 import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useApiServices } from "@/services/apiService.js";
-import { useWarehouseStore } from "@/store/warehouseStore.js";
-import { useCategoriesStore } from "@/store/categoryStore.js";
+import { useCustomerStore } from "@/store/customerStore.js";
+import { useSupplierStore } from "@/store/supplierStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
@@ -104,61 +115,48 @@ import CustomerTable from "./CustomerTable.vue";
 const { t } = useI18n();
 
 const apiService = useApiServices();
-const warehouseStore = useWarehouseStore();
-const categoryStore = useCategoriesStore();
-// Tab
-const tabs = computed(() => [t('ConfigSettings.categories.tabs.all'), t('ConfigSettings.categories.tabs.normal'), t('ConfigSettings.categories.tabs.cold')]);
-const activeTab = ref(t('ConfigSettings.categories.tabs.all'));
-const addCategoryBtn = ref(null);
+const customerStore = useCustomerStore();
+const supplierStore = useSupplierStore();
+const addCustomerBtn = ref(null);
 // Search
 const searchQuery = ref("");
 // Sort
 const sortOption = ref("");
 
-const selectedCategory = reactive({
-  sysIdDanhMuc: "",
-  tenDanhMuc: "",
-  moTa: "",
-  maKho: "",
+const selectedCustomer = reactive({
+  sysIdKhachHang: "",
+  tenKhachHang: "",
+  tenCongTy: "",
+  soDienThoai: "",
+  sysIdNhaCungCap: "",
+  diaChi: "",
 });
 
 onMounted(async () => {
-  await categoryStore.getCategories();
-  await warehouseStore.getWarehouses();
-  updateTabs();
+  await customerStore.getCustomers();
+  await supplierStore.getSuppliers();
 });
-
-watch(tabs, (newTabs) => {
-  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
-});
-
-const getStatusValue = (status) =>
-  ({ [t("ConfigSettings.categories.tabs.normal")]: "KHO001", [t("ConfigSettings.categories.tabs.cold")]: "KHO002" }[status] || status);
-
-// Cập nhật danh sách tab dựa trên mã kho có trong danh mục
-const updateTabs = () => {
-  const uniqueWarehouses = [...new Set(categoryStore.categories.map(category => category.maKho))];
-  tabs.value = [t('ConfigSettings.categories.tabs.all'), ...uniqueWarehouses];
-};
 
 function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-const filteredCategories = computed(() => {
+const filteredCustomers = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  let filtered = categoryStore.categories
-    .filter(category => category.maKho === getStatusValue(activeTab.value) || activeTab.value === t('ConfigSettings.categories.tabs.all'))
-    .filter(category => (
-      category.sysIdDanhMuc.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
-      removeAccents(category.tenDanhMuc.toLowerCase()).includes(removeAccents(query)) ||
-      removeAccents(category.maKho.toLowerCase()).includes(removeAccents(query))
+  let filtered = customerStore.customers
+    .filter(customer => (
+      customer.sysIdKhachHang.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
+      removeAccents(customer.tenKhachHang.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(customer.tenCongTy.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(customer.sysIdNhaCungCap.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(customer.soDienThoai.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(customer.diaChi.toLowerCase()).includes(removeAccents(query))
     ));
 
   if (sortOption.value === "name-asc") {
-    filtered.sort((a, b) => a.tenDanhMuc.localeCompare(b.tenDanhMuc)); // A-Z
+    filtered.sort((a, b) => a.tenKhachHang.localeCompare(b.tenKhachHang)); // A-Z
   } else if (sortOption.value === "name-desc") {
-    filtered.sort((a, b) => b.tenDanhMuc.localeCompare(a.tenDanhMuc)); // Z-A
+    filtered.sort((a, b) => b.tenKhachHang.localeCompare(a.tenKhachHang)); // Z-A
   }
 
   return filtered;
@@ -183,69 +181,81 @@ const updateUrl = () => {
   window.history.replaceState({}, "", url.toString());
 };
 
-const saveCategory = async () => {
-  if (!selectedCategory.tenDanhMuc.trim()) {
-    showToastError(i18n.global.t("ConfigSettings.categories.swal.validate.category_name"));
+const saveCustomer = async () => {
+  if (!selectedCustomer.tenKhachHang) {
+    showToastError(i18n.global.t("ConfigSettings.customers.swal.validate.customer_name"));
     return;
   }
 
-  if (!selectedCategory.maKho) {
-    showToastError(i18n.global.t("ConfigSettings.categories.swal.validate.warehouse_id"));
+  if (!selectedCustomer.tenCongTy) {
+    showToastError(i18n.global.t("ConfigSettings.customers.swal.validate.customer_company"));
+    return;
+  }
+
+  if (!selectedCustomer.soDienThoai) {
+    showToastError(i18n.global.t("ConfigSettings.customers.swal.validate.phone"));
+    return;
+  }
+
+  if (!selectedCustomer.sysIdNhaCungCap) {
+    showToastError(i18n.global.t("ConfigSettings.customers.swal.validate.supplier_id"));
     return;
   }
 
   try {
-    const categoryData = {
-      tenDanhMuc: selectedCategory.tenDanhMuc,
-      moTa: selectedCategory.moTa,
-      maKho: selectedCategory.maKho,
+    const customerData = {
+      tenKhachHang: selectedCustomer.tenKhachHang,
+      tenCongTy: selectedCustomer.tenCongTy,
+      soDienThoai: selectedCustomer.soDienThoai,
+      sysIdNhaCungCap: selectedCustomer.sysIdNhaCungCap,
+      diaChi: selectedCustomer.diaChi,
     };
 
-    const response = selectedCategory.sysIdDanhMuc
-      ? await apiService.post("category-products", {
-        ...categoryData,
-        sysIdDanhMuc: selectedCategory.sysIdDanhMuc,
+    const response = selectedCustomer.sysIdKhachHang
+      ? await apiService.post("customer", {
+        ...customerData,
+        sysIdKhachHang: selectedCustomer.sysIdKhachHang,
       })
-      : await apiService.post("category-products", categoryData);
+      : await apiService.post("customer", customerData);
 
     if (response) {
-      categoryStore.getCategories();
+      customerStore.getCustomers();
       btnResetForm();
-      addCategoryBtn.value.click();
-      showToastSuccess(i18n.global.t("ConfigSettings.categories.swal.success"));
+      addCustomerBtn.value.click();
+      showToastSuccess(i18n.global.t("ConfigSettings.customers.swal.success"));
     } else if (response?.error) {
       console.error("Error details:", response.error);
     }
   } catch (error) {
-    console.error("Error while saving category:", error);
+    console.error("Error while saving customer:", error);
   }
 };
 
-const editCategory = (category) => {
-  Object.assign(selectedCategory, category);
-  addCategoryBtn.value.click();
+const editCustomer = (customer) => {
+  Object.assign(selectedCustomer, customer);
+  addCustomerBtn.value.click();
 };
 
 // Xóa danh mục
-const deleteCategory = async (id) => {
+const deleteCustomer = async (id) => {
   const swalConfirm = await Swal.fire({
-    title: i18n.global.t("ConfigSettings.categories.swal.delete.title"),
-    text: i18n.global.t("ConfigSettings.categories.swal.delete.text"),
+    title: i18n.global.t("ConfigSettings.customers.swal.delete.title"),
+    text: i18n.global.t("ConfigSettings.customers.swal.delete.text"),
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
-    cancelButtonText: i18n.global.t("ConfigSettings.categories.swal.delete.cancel"),
+    cancelButtonText: i18n.global.t("ConfigSettings.customers.swal.delete.cancel"),
     cancelButtonColor: "#dc3545",
-    confirmButtonText: i18n.global.t("ConfigSettings.categories.swal.delete.confirm"),
+    confirmButtonText: i18n.global.t("ConfigSettings.customers.swal.delete.confirm"),
   });
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiService.delete(`category-products/${id}`);
-      categoryStore.getCategories(); // Cập nhật lại danh sách danh mục sau khi xóa
-      showToastSuccess(i18n.global.t("ConfigSettings.categories.swal.delete.success"));
+      await apiService.delete(`customer/${id}`);
+      customerStore.getCustomers(); // Cập nhật lại danh sách khách hàng sau khi xóa
+      showToastSuccess(i18n.global.t("ConfigSettings.customers.swal.delete.success"));
     } catch (error) {
-      console.error("Error while deleting category:", error);
+      console.error("Error while deleting customer:", error);
       showToastError("Xóa danh mục thất bại. Vui lòng thử lại");
     }
   }
@@ -253,11 +263,13 @@ const deleteCategory = async (id) => {
 
 // Làm mới form nhập
 const btnResetForm = () => {
-  Object.assign(selectedCategory, {
-    sysIdDanhMuc: "",
-    tenDanhMuc: "",
-    moTa: "",
-    maKho: "",
+  Object.assign(selectedCustomer, {
+    sysIdKhachHang: "",
+    tenKhachHang: "",
+    tenCongTy: "",
+    soDienThoai: "",
+    sysIdKhachHang: "",
+    diaChi: "",
   });
 };
 </script>
