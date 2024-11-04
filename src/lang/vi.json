@@ -6,11 +6,11 @@
       "pr": {
         "label": "Yêu cầu",
         "sub_items": {
-          "small_1": "Yêu cầu",
+          "small_1": "Điều chuyển",
           "inbound": "Nhập hàng",
           "outbound": "Xuất hàng"
         }
-      },
+    },
       "po": "Đặt hàng",
       "activity": {
         "label": "Hoạt động",
@@ -36,7 +36,10 @@
           "warehouses": "Kho hàng",
           "zones": "Khu vực",
           "zoneDetail": "Chi tiết khu vực",
-          "categories": "Danh mục"
+          "categories": "Danh mục",
+          "partner": "Đối tác",
+          "supplier": "Nhà cung cấp",
+          "customer": "Khách hàng"
         }
       },
       "account": {

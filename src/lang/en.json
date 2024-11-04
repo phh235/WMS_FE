@@ -7,7 +7,7 @@
       "pr": {
         "label": "Requisition",
         "sub_items": {
-          "small_1": "Requisition",
+          "small_1": "Transfer",
           "inbound": "Inbound",
           "outbound": "Outbound"
         }
@@ -37,7 +37,10 @@
           "warehouses": "Warehouses",
           "zones": "Zones",
           "zoneDetail": "Zone Detail",
-          "categories": "Categories"
+          "categories": "Categories",
+          "suppliers": "Supplier",
+          "partner": "Partner",
+          "customer": "Customers"
         }
       },
       "account": {

@@ -366,6 +366,28 @@ export default [
           storeConfig: {},
         },
       },
+      {
+        path: "suppliers",
+        name: "Suppiler",
+        component: () => import("@components/Page/ConfigSettings/ConfigSupplier/Supplier.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình nhà cung cấp",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "customers",
+        name: "Customer",
+        component: () => import("@components/Page/ConfigSettings/ConfigCustomer/Customer.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Cấu hình khách hàng",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
     ],
   },
 ];

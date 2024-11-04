@@ -348,6 +348,10 @@ textarea {
 }
 
 /* custom fields */
+.btn.btn.btn-secondary:disabled {
+  background-color: var(--disable) !important;
+  color: var(--nav-link-color) !important;
+}
 input:disabled {
   background-color: var(--disable) !important;
   color: var(--nav-link-color) !important;

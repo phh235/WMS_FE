@@ -155,7 +155,7 @@
                   {{ $t('Navbar.menu_item.product') }}
                 </router-link>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" v-if="authStore.checkPermissions(['Admin', 'Manager'])">
                 <router-link to="/inventory/account-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> manage_accounts </span>
                   {{ $t('Navbar.menu_item.AccountManagement') }}
@@ -267,6 +267,30 @@
                         {{ $t('Navbar.menu_item.config.sub_items.categories') }}
                       </span>
                       <span class="material-symbols-outlined">category</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
+                  </li>
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                    {{ $t('Navbar.menu_item.config.sub_items.partner') }}
+                  </small>
+                  <li>
+                    <router-link to="/inventory/config/suppliers"
+                      class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
+                      <span class="fs">
+                        {{ $t('Navbar.menu_item.config.sub_items.supplier') }}
+                      </span>
+                      <span class="material-symbols-outlined">conveyor_belt</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/inventory/config/customers"
+                      class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
+                      <span class="fs">
+                        {{ $t('Navbar.menu_item.config.sub_items.customer') }}
+                      </span>
+                      <span class="material-symbols-outlined">partner_exchange</span>
                     </router-link>
                   </li>
                 </ul>
@@ -546,7 +570,7 @@ const toggleLightDarkMode = () => {
 }
 
 .dropdown-menu {
-  min-width: 190px;
+  min-width: 180px;
   padding: 8px;
   border-radius: 1rem;
   background-color: var(--background-color);

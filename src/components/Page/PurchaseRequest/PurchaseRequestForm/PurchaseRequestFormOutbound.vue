@@ -2,19 +2,19 @@
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
             <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
             <label for="requesterName" class="form-label">Người yêu cầu <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="requesterName" v-model="nguoiYeuCau" disabled />
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
             <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
             <select v-model="selectedCustomer" id="customer" class="form-select">
@@ -23,6 +23,14 @@
                 {{ customer.fullName }}
               </option>
             </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="mb-3 mb-md-0">
+            <label for="customer" class="form-label">Ngày xuất hàng dự kiến <span class="text-danger">*</span></label>
+            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
+              :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
+            </VueDatePicker>
           </div>
         </div>
       </div>
@@ -38,7 +46,6 @@
               <th class="td-product">Sản phẩm</th>
               <th class="td-quantity">Số lượng</th>
               <th class="td-price">Giá</th>
-              <th class="td-date">Ngày xuất hàng dự kiến</th>
               <th class="text-center td-action">Hành động</th>
             </tr>
           </thead>
@@ -61,11 +68,6 @@
               </td>
               <td class="td-price">
                 <input v-model.number="product.gia" type="number" class="form-control" min="0" />
-              </td>
-              <td>
-                <VueDatePicker v-model="product.ngayXuatDuKien" :enable-time-picker="false" :teleport="true"
-                  :format="format" auto-apply :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
-                </VueDatePicker>
               </td>
               <td class="td-action">
                 <div class="d-flex align-items-center justify-content-center">
@@ -108,6 +110,7 @@ const isLoading = ref(false);
 const selectedCustomer = ref(null);
 const isEdit = ref(false);
 const nguoiYeuCau = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
+const dateDuKien = ref();
 
 onMounted(async () => {
   await productStore.getProducts();
@@ -170,7 +173,7 @@ const getPurchaseRequestOBByID = async (id) => {
         sysIdKhachHang: product.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,
-        ngayXuatDuKien: parseDateString(product.ngayXuatDuKien)
+        ngayXuatDuKien: parseDateString(dateDuKien.value)
       }));
     }
   } catch (error) {
@@ -226,7 +229,7 @@ const handleSubmit = async () => {
         tongChiPhi: product.soLuong * product.gia,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
-        ngayXuatDuKien: format(product.ngayXuatDuKien)
+        ngayXuatDuKien: format(dateDuKien.value)
       }))
     };
 
@@ -244,7 +247,7 @@ const handleSubmit = async () => {
         soLuong: product.soLuong,
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
-        ngayXuatDuKien: format(product.ngayXuatDuKien)
+        ngayXuatDuKien: format(dateDuKien.value)
       }))
     };
 
