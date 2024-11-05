@@ -15,7 +15,7 @@
   --text-light-color: #fff;
   --text-select: #fff;
   --input-bg: #fff;
-  --disable: #d3d3d3;
+  --disable: #f4f4f5;
 
   /* Status */
   --bg-success: #effbf2;
@@ -82,7 +82,7 @@
 
 /* Dark theme */
 .dark-theme {
-  --disable: #3d3d3d;
+  --disable: #303134;
   --background-color: #202124;
   --primary-color: #22c55e;
   --primary-color-hover: #20b256;
@@ -352,10 +352,12 @@ textarea {
   background-color: var(--disable) !important;
   color: var(--nav-link-color) !important;
 }
+
 input:disabled {
   background-color: var(--disable) !important;
   color: var(--nav-link-color) !important;
 }
+
 input,
 textarea,
 select {

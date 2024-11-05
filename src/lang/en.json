@@ -5,14 +5,21 @@
     "menu_item": {
       "home": "Home",
       "pr": {
-        "label": "Requisition",
+        "label": "Purchase Requisition",
         "sub_items": {
           "small_1": "Transfer",
           "inbound": "Inbound",
           "outbound": "Outbound"
         }
       },
-      "po": "Orders",
+      "po": {
+        "label": "Purchase Orders",
+        "sub_items": {
+          "small_1": "Orders",
+          "inbound": "Inbound",
+          "outbound": "Outbound"
+        }
+      },
       "activity": {
         "label": "Activities",
         "sub_items": {
@@ -34,13 +41,15 @@
           "small_1": "Inventory",
           "small_2": "Product",
           "small_3": "Zones",
+          "small_4": "Accounts",
           "warehouses": "Warehouses",
           "zones": "Zones",
           "zoneDetail": "Zone Detail",
           "categories": "Categories",
           "suppliers": "Suppliers",
           "partner": "Partner",
-          "customer": "Customers"
+          "customer": "Customers",
+          "account": "Account Manage"
         }
       },
       "account": {

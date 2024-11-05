@@ -35,17 +35,6 @@ export default [
     },
   },
   {
-    path: "account-management",
-    name: "AccountManage",
-    component: () => import("@/components/Page/Account/AccountManage/AccountManage.vue"),
-    meta: {
-      requiresAuth: true,
-      headerTitle: "Quản lý tài khoản",
-      searchConfig: {},
-      storeConfig: {},
-    },
-  },
-  {
     path: "products",
     name: "Product",
     component: () => import("@components/Page/Product/Product.vue"),
@@ -157,7 +146,7 @@ export default [
     children: [
       {
         path: "inbound",
-        name: "inbound",
+        name: "PurchaseRequestInbound",
         component: () =>
           import(
             "@/components/Page/PurchaseRequest/PurchaseRequestTable/PurchaseRequestInbound.vue"
@@ -171,7 +160,7 @@ export default [
       },
       {
         path: "outbound",
-        name: "outbound",
+        name: "PurchaseRequestOutbound",
         component: () =>
           import(
             "@/components/Page/PurchaseRequest/PurchaseRequestTable/PurchaseRequestOutbound.vue"
@@ -251,15 +240,77 @@ export default [
       searchConfig: {},
       storeConfig: {},
     },
+    children: [
+      {
+        path: "inbound",
+        name: "PurchaseOrderInbound",
+        component: () =>
+          import("@/components/Page/PurchaseOrder/PurchaseOrderTable/PurchaseOrderInbound.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Mua hàng - nhập",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "outbound",
+        name: "PurchaseOrderOutbound",
+        component: () =>
+          import("@/components/Page/PurchaseOrder/PurchaseOrderTable/PurchaseOrderOutbound.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Mua hàng - xuất",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+    ],
   },
   {
-    path: "purchase-order/new",
-    name: "PurchaseOrderFormg",
+    path: "purchase-order/inbound/new",
+    name: "purchase-order/inbound/new",
     component: () =>
-      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderForm.vue"),
+      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormInbound.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Tạo đơn đặt hàng",
+      headerTitle: "Tạo đơn đặt hàng - nhập hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "purchase-order/inbound/edit/:id",
+    name: "purchase-order/inbound/edit/:id",
+    component: () =>
+      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormInbound.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Chỉnh sửa đơn đặt hàng - nhập hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "purchase-order/outbound/new",
+    name: "purchase-order/outbound/new",
+    component: () =>
+      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormOutbound.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Tạo đơn đặt hàng - xuất hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "purchase-order/outbound/edit/:id",
+    name: "purchase-order/outbound/edit/:id",
+    component: () =>
+      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormOutbound.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Chỉnh sửa đơn đặt hàng - xuất hàng",
       searchConfig: {},
       storeConfig: {},
     },
@@ -384,6 +435,17 @@ export default [
         meta: {
           requiresAuth: true,
           headerTitle: "Cấu hình khách hàng",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "account-management",
+        name: "Account",
+        component: () => import("@components/Page/ConfigSettings/ConfigAccount/Account.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Quản lý tài khoản",
           searchConfig: {},
           storeConfig: {},
         },

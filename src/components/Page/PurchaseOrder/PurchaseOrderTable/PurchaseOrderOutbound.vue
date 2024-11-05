@@ -15,9 +15,9 @@
         <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
           <span class="material-symbols-outlined">swap_vert</span>
         </button>
-        <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center">
+        <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center">
           <span class="material-symbols-outlined me-2"> add </span>
-          {{ $t('PurchaseRequest.btn_create') }}
+          {{ $t('PurchaseRequest.btn_create_ob') }}
         </router-link>
       </div>
     </div>
@@ -61,40 +61,38 @@
             </span>
           </td>
           <td>{{ purchase.ngayYeuCau }}</td>
-          <td>
-            <div class="d-flex align-items-center justify-content-center">
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
-                <span class="material-symbols-outlined">visibility</span>
+          <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
+            <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+            <div class="dropdown" style="display: inline-block;">
+              <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false" :disabled="purchase.trangThai !== 'DANG_XU_LY'">
+                <span class="material-symbols-outlined">more_vert</span>
               </button>
-              <div class="dropdown" style="display: inline-block;">
-                <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
-                  data-bs-toggle="dropdown" aria-expanded="false" :disabled="purchase.trangThai !== 'DANG_XU_LY'">
-                  <span class="material-symbols-outlined">more_vert</span>
-                </button>
-                <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                  <li v-if="authStore.checkPermissions(['User'])">
-                    <router-link :to="{ name: 'purchase-request/inbound/edit/:id', params: { id: purchase.maPR } }"
-                      class="dropdown-item d-flex align-items-center justify-content-between">
-                      {{ $t('PurchaseRequest.table.li_edit') }}
-                      <span class="material-symbols-outlined">edit_square</span>
-                    </router-link>
-                  </li>
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
-                    <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
-                      style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
-                      {{ $t('PurchaseRequest.table.li_confirm') }}
-                      <span class="material-symbols-outlined">check_circle</span>
-                    </a>
-                  </li>
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
-                    <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
-                      @click="cancelPR(purchase.maPR)">
-                      {{ $t('PurchaseRequest.table.li_cancel') }}
-                      <span class="material-symbols-outlined">cancel</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
+                <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
+                  <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
+                    style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
+                    {{ $t('PurchaseRequest.table.li_confirm') }}
+                    <span class="material-symbols-outlined">check_circle</span>
+                  </a>
+                </li>
+                <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
+                  <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                    @click="cancelPR(purchase.maPR)">
+                    {{ $t('PurchaseRequest.table.li_cancel') }}
+                    <span class="material-symbols-outlined">cancel</span>
+                  </a>
+                </li>
+                <li v-if="authStore.checkPermissions(['User'])">
+                  <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
+                    class="dropdown-item d-flex align-items-center justify-content-between">
+                    {{ $t('PurchaseRequest.table.li_edit') }}
+                    <span class="material-symbols-outlined">edit_square</span>
+                  </router-link>
+                </li>
+              </ul>
             </div>
           </td>
         </tr>
@@ -130,7 +128,7 @@
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.customer') }}
               </label>
-              <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.tenKhachHang }}</p>
+              <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.tenKhachHang }}</p>
             </div>
             <div class="col-6 col-md-4">
               <label class="form-label">
@@ -158,7 +156,7 @@
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_plan') }}
               </label>
-              <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.ngayNhapDuKien }}</p>
+              <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.ngayXuatDuKien }}</p>
             </div>
           </div>
           <hr />
@@ -175,7 +173,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in selectedPurchase.chiTietNhapHang" :key="item.maSanPham">
+                <tr v-for="item in selectedPurchase.chiTietXuatHang" :key="item.maSanPham">
                   <td>{{ item.tenSanPham }}</td>
                   <td>{{ item.soLuong }} Kg</td>
                   <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
@@ -266,25 +264,25 @@ watch(() => tabs.value, (newTabs) => {
 });
 
 const selectedPurchase = reactive({
-  sysIdYeuCauNhapHang: "",
+  sysIdYeuCauXuatHang: "",
   maPR: "",
   ngayYeuCau: "",
   nguoiYeuCau: "",
   fullName: "",
   trangThai: "",
-  chiTietNhapHang: []
+  chiTietXuatHang: []
 })
 
 // Tính tổng giá trị (số lượng * giá)
 const totalOrderValue = computed(() => {
-  return selectedPurchase.chiTietNhapHang.reduce((total, item) => {
+  return selectedPurchase.chiTietXuatHang.reduce((total, item) => {
     return total + (parseFloat(item.tongChiPhi) || 0);
   }, 0);
 });
 
 const getPurchaseRequests = async () => {
   try {
-    const response = await apiService.get("purchase-requests");
+    const response = await apiService.get("purchase-request-ob");
     purchases.value = response.data;
   } catch (error) {
     console.error("Failed to fetch purchase requests:", error);
@@ -327,37 +325,37 @@ const confirmPR = async (id) => {
 
 const updatePRStatus = async (id, status) => {
   try {
-    const response = await apiService.get(`purchase-requests/${id}`);
+    const response = await apiService.get(`purchase-request-ob/${id}`);
     if (response.status) {
-      const { sysIdYeuCauNhapHang, maPR, ngayYeuCau, nguoiYeuCau, trangThai, chiTietNhapHang } = response.data[0];
-      selectedPurchase.sysIdYeuCauNhapHang = sysIdYeuCauNhapHang;
+      const { sysIdYeuCauXuatHang, maPR, ngayYeuCau, nguoiYeuCau, trangThai, chiTietXuatHang } = response.data[0];
+      selectedPurchase.sysIdYeuCauXuatHang = sysIdYeuCauXuatHang;
       selectedPurchase.maPR = maPR;
       selectedPurchase.ngayYeuCau = ngayYeuCau;
       selectedPurchase.nguoiYeuCau = nguoiYeuCau;
       selectedPurchase.trangThai = trangThai;
-      selectedPurchase.chiTietNhapHang = chiTietNhapHang;
+      selectedPurchase.chiTietXuatHang = chiTietXuatHang;
     }
 
     const submitDataUpdate = {
-      sysIdYeuCauNhapHang: selectedPurchase.sysIdYeuCauNhapHang,
+      sysIdYeuCauXuatHang: selectedPurchase.sysIdYeuCauXuatHang,
       maPR: selectedPurchase.maPR,
       nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
       trangThai: status,
-      loaiYeuCau: 'NHAP',
-      chiTietNhapHang: selectedPurchase.chiTietNhapHang.map(product => ({
-        sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
+      loaiYeuCau: 'XUAT',
+      chiTietXuatHang: selectedPurchase.chiTietXuatHang.map(product => ({
+        sysIdChiTietXuatHang: product.sysIdChiTietXuatHang,
         maPR: product.maPR,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: product.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
-        ngayNhapDuKien: product.ngayNhapDuKien
+        ngayXuatDuKien: product.ngayXuatDuKien
       }))
     };
     console.log(submitDataUpdate);
     showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
-    await apiService.post("purchase-requests/save", submitDataUpdate);
+    await apiService.post("purchase-request-ob/save", submitDataUpdate);
     if (status === 'XAC_NHAN') {
       showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));
     } else {
@@ -374,7 +372,7 @@ const showDetail = (purchase) => {
   selectedPurchase.ngayYeuCau = purchase.ngayYeuCau;
   selectedPurchase.nguoiYeuCau = purchase.nguoiYeuCau;
   selectedPurchase.trangThai = purchase.trangThai;
-  selectedPurchase.chiTietNhapHang = purchase.chiTietNhapHang;
+  selectedPurchase.chiTietXuatHang = purchase.chiTietXuatHang;
 
   isModalVisible.value = true;
 };

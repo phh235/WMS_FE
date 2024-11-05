@@ -3,7 +3,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
+          <th scope="col" class="d-none">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
           <th scope="col" class="sticky">{{ $t('ConfigSettings.suppliers.supplier_name') }}</th>
           <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_desc') }}</th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
@@ -14,7 +14,7 @@
           <td colspan="10">{{ $t('ConfigSettings.suppliers.not_found') }}</td>
         </tr>
         <tr v-for="supplier in suppliers" :key="supplier.sysIdNhaCungCap">
-          <td scope="row">{{ supplier.sysIdNhaCungCap }}</td>
+          <td scope="row" class="d-none">{{ supplier.sysIdNhaCungCap }}</td>
           <td class="sticky">{{ supplier.tenLoaiKhachHang }}</td>
           <td>{{ supplier.moTa }}</td>
           <td class="text-center">

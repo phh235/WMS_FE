@@ -4,14 +4,21 @@
     "menu_item": {
       "home": "Trang chủ",
       "pr": {
-        "label": "Yêu cầu",
+        "label": "Purchase Requisition",
         "sub_items": {
           "small_1": "Điều chuyển",
           "inbound": "Nhập hàng",
           "outbound": "Xuất hàng"
         }
       },
-      "po": "Đặt hàng",
+      "po": {
+        "label": "Purchase Orders",
+        "sub_items": {
+          "small_1": "Mua hàng",
+          "inbound": "Nhập hàng",
+          "outbound": "Xuất hàng"
+        }
+      },
       "activity": {
         "label": "Hoạt động",
         "sub_items": {
@@ -33,13 +40,15 @@
           "small_1": "Quản lý kho hàng",
           "small_2": "Sản phẩm",
           "small_3": "Quản lý khu vực",
+          "small_4": "Tài khoản",
           "warehouses": "Kho hàng",
           "zones": "Khu vực",
           "zoneDetail": "Chi tiết khu vực",
           "categories": "Danh mục",
           "partner": "Đối tác",
           "suppliers": "Nhà cung cấp",
-          "customer": "Khách hàng"
+          "customer": "Khách hàng",
+          "account": "Quản lý tài khoản"
         }
       },
       "account": {

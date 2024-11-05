@@ -98,10 +98,36 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item d-flex align-items-center">
-                <router-link to="/inventory/purchase-order" class="nav-link d-flex align-items-center"><span
-                    class="material-symbols-outlined me-2">shopping_cart </span> {{ $t('Navbar.menu_item.po') }}
-                </router-link>
+              <li class="nav-item dropdown">
+                <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="material-symbols-outlined me-2">shopping_cart</span>
+                  {{ $t('Navbar.menu_item.po.label') }}
+                  <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
+                </a>
+                <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown">
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                    {{ $t('Navbar.menu_item.po.sub_items.small_1') }}
+                  </small>
+                  <li>
+                    <router-link to="/inventory/purchase-order/inbound"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      <span class="fs">
+                        {{ $t('Navbar.menu_item.po.sub_items.inbound') }}
+                      </span>
+                      <span class="material-symbols-outlined">input</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/inventory/purchase-order/outbound"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      <span class="fs">
+                        {{ $t('Navbar.menu_item.po.sub_items.outbound') }}
+                      </span>
+                      <span class="material-symbols-outlined">output</span>
+                    </router-link>
+                  </li>
+                </ul>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
@@ -155,12 +181,6 @@
                   {{ $t('Navbar.menu_item.product') }}
                 </router-link>
               </li>
-              <li class="nav-item" v-if="authStore.checkPermissions(['Admin', 'Manager'])">
-                <router-link to="/inventory/account-management" class="nav-link d-flex align-items-center"><span
-                    class="material-symbols-outlined me-2"> manage_accounts </span>
-                  {{ $t('Navbar.menu_item.AccountManagement') }}
-                </router-link>
-              </li>
               <li class="nav-item">
                 <router-link to="/inventory/warehouses-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2">holiday_village</span>{{
@@ -210,7 +230,7 @@
                   {{ $t('Navbar.menu_item.report') }}
                 </router-link>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown" v-if="authStore.checkPermissions(['Admin', 'Manager'])">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="material-symbols-outlined me-2"> manufacturing </span>
@@ -291,6 +311,17 @@
                         {{ $t('Navbar.menu_item.config.sub_items.suppliers') }}
                       </span>
                       <span class="material-symbols-outlined">conveyor_belt</span>
+                    </router-link>
+                  </li>
+                  <small class="p-2 fw-bold" style="font-size: .75rem" v-if="authStore.checkPermissions(['Admin'])">
+                    {{ $t('Navbar.menu_item.config.sub_items.small_4') }}
+                  </small>
+                  <li v-if="authStore.checkPermissions(['Admin'])">
+                    <router-link to="/inventory/config/account-management"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      {{ $t('Navbar.menu_item.config.sub_items.account') }}
+                      <span class="material-symbols-outlined">
+                        manage_accounts </span>
                     </router-link>
                   </li>
                 </ul>
@@ -546,7 +577,6 @@ const toggleLightDarkMode = () => {
   font-size: 0.875rem;
   color: var(--nav-link-color) !important;
   border-radius: 0.625rem;
-  margin-right: 5px;
   transition: all 0.2s ease;
   padding: 8px !important;
   line-height: 24px;
