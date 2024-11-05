@@ -34,7 +34,7 @@
             <td class="td-id">{{ product.sysIdSanPham }}</td>
             <td class="td-name">
               <div class="d-flex align-items-center">
-                <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="50" loading="lazy"
+                <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="40" loading="lazy"
                   style="object-fit: cover; object-position: center" />
                 <div>
                   <div class="fw-bold" style="color: var(--nav-link-color);">{{ product.tenSanPham }}</div>
@@ -95,7 +95,7 @@ const apiService = useApiServices();
 const searchQuery = ref("");
 const sortOption = ref("");
 const currentPage = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(10);
 
 function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");

@@ -61,38 +61,40 @@
             </span>
           </td>
           <td>{{ purchase.ngayYeuCau }}</td>
-          <td style="width: 200px;" class="d-flex align-items-center justify-content-center">
-            <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
-              <span class="material-symbols-outlined">visibility</span>
-            </button>
-            <div class="dropdown" style="display: inline-block;">
-              <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="material-symbols-outlined">more_vert</span>
+          <td>
+            <div class="d-flex align-items-center justify-content-center">
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
+                <span class="material-symbols-outlined">visibility</span>
               </button>
-              <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                <li>
-                  <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
-                    class="dropdown-item d-flex align-items-center justify-content-between">
-                    {{ $t('PurchaseRequest.table.li_edit') }}
-                    <span class="material-symbols-outlined">edit_square</span>
-                  </router-link>
-                </li>
-                <li>
-                  <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
-                    style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
-                    {{ $t('PurchaseRequest.table.li_confirm') }}
-                    <span class="material-symbols-outlined">check_circle</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
-                    @click="cancelPR(purchase.maPR)">
-                    {{ $t('PurchaseRequest.table.li_cancel') }}
-                    <span class="material-symbols-outlined">cancel</span>
-                  </a>
-                </li>
-              </ul>
+              <div class="dropdown" style="display: inline-block;">
+                <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-expanded="false" :disabled="purchase.trangThai !== 'DANG_XU_LY'">
+                  <span class="material-symbols-outlined">more_vert</span>
+                </button>
+                <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
+                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
+                    <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
+                      style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
+                      {{ $t('PurchaseRequest.table.li_confirm') }}
+                      <span class="material-symbols-outlined">check_circle</span>
+                    </a>
+                  </li>
+                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
+                    <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                      @click="cancelPR(purchase.maPR)">
+                      {{ $t('PurchaseRequest.table.li_cancel') }}
+                      <span class="material-symbols-outlined">cancel</span>
+                    </a>
+                  </li>
+                  <li v-if="authStore.checkPermissions(['User'])">
+                    <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      {{ $t('PurchaseRequest.table.li_edit') }}
+                      <span class="material-symbols-outlined">edit_square</span>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </td>
         </tr>
@@ -202,6 +204,7 @@
 <script setup>
 import { ref, computed, watch, onMounted, reactive } from "vue";
 import { useApiServices } from "@/services/apiService.js";
+import { useAuthStore } from "@/store/authStore.js";
 import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
@@ -236,6 +239,8 @@ const presetDates = ref([
     ]
   },
 ]);
+// Check permissions
+const authStore = useAuthStore();
 // Pagination
 const currentPage = ref(1);
 const pageSize = ref(10);
@@ -256,8 +261,8 @@ onMounted(async () => {
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
-watch(tabs, (newTabs) => {
-  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
+watch(() => tabs.value, (newTabs) => {
+  activeTab.value = newTabs[0];
 });
 
 const selectedPurchase = reactive({

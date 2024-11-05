@@ -40,7 +40,7 @@ const handleUpdateProducts = async () => {
 <style scoped>
 .container-fluid {
   max-width: 1600px;
-  padding: 15px;
+  /* padding: 15px; */
 }
 
 .box-shadow {

@@ -11,6 +11,7 @@ export const useCategoriesStore = defineStore("categories", () => {
     try {
       const response = await apiService.get("category-products");
       categories.value = response.data;
+      console.log(response.data);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
       showToastError("Không thể lấy danh sách danh mục. Vui lòng thử lại sau.");

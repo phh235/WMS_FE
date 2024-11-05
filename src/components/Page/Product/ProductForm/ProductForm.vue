@@ -249,6 +249,7 @@ label {
   background-color: var(--background-color);
   border-radius: 1rem;
   border: 1px solid var(--border-main-color);
+  min-height: 300px;
 }
 
 .btn-primary:disabled,
