@@ -3,7 +3,7 @@
     <!-- Logo and Title -->
     <div class="mb-4 top-0 start-0 position-absolute p-2 d-flex align-items-center user-select-none">
       <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" alt="Logo WMS"
-        width="45" class="me-2 rounded-4" />
+        width="45" class="me-2 rounded-4" loading="lazy" />
       <p class="h6 fw-bold mt-2" style="color: var(--nav-link-color);"> {{
         $t("LoginForgotForm.logo_title") }}
       </p>
@@ -22,7 +22,8 @@
       <div class="col-12 col-lg-7 vh-100 d-none d-lg-block">
         <!-- <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" alt="Logo WMS"
           class="w-100 h-100 user-select-none" /> -->
-        <img src="/src/assets/images/login_bg.png" alt="Logo WMS" class="w-100 h-100 user-select-none" />
+        <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1730820774/cfnfpawbgsu02hbmqrfn.png" alt="Logo WMS"
+          class="w-100 h-100 user-select-none" loading="lazy" />
       </div>
     </div>
   </main>
