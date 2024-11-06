@@ -22,7 +22,7 @@
           <td>{{ warehouse.tenKho }}</td>
           <td>{{ warehouse.dienTich }}</td>
           <td>{{ warehouse.moTa }}</td>
-          <td>{{ warehouse.sysIdUser }}</td>
+          <td>{{ warehouse.nguoiPhuTrach }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', warehouse)">
               <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>

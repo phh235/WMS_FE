@@ -6,7 +6,7 @@
           <th scope="col" class="d-none">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
           <th scope="col" class="sticky">{{ $t('ConfigSettings.suppliers.supplier_name') }}</th>
           <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_desc') }}</th>
-          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
+          <th scope="col" class="text-center action">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -15,7 +15,7 @@
         </tr>
         <tr v-for="supplier in suppliers" :key="supplier.sysIdNhaCungCap">
           <td scope="row" class="d-none">{{ supplier.sysIdNhaCungCap }}</td>
-          <td class="sticky">{{ supplier.tenLoaiKhachHang }}</td>
+          <td class="sticky">{{ supplier.tenNhaCungCap }}</td>
           <td>{{ supplier.moTa }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', supplier)">
@@ -50,5 +50,14 @@ defineEmits(['edit', 'delete']);
 .btn-danger,
 .btn-secondary {
   padding: 10px 10px;
+}
+
+th:nth-child(2) {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.action {
+  width: 150px;
 }
 </style>

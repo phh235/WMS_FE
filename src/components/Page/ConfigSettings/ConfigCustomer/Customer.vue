@@ -68,7 +68,7 @@
                       {{ $t('ConfigSettings.customers.choose_supplier') }}
                     </option>
                     <option v-for="supplier in supplierStore.suppliers" :key="supplier.sysIdNhaCungCap"
-                      :value="supplier.sysIdNhaCungCap"> {{ supplier.tenLoaiKhachHang }}
+                      :value="supplier.sysIdNhaCungCap"> {{ supplier.tenNhaCungCap }}
                     </option>
                   </select>
                 </div>
@@ -212,11 +212,11 @@ const saveCustomer = async () => {
     };
 
     const response = selectedCustomer.sysIdKhachHang
-      ? await apiService.post("customer", {
+      ? await apiService.post("customers", {
         ...customerData,
         sysIdKhachHang: selectedCustomer.sysIdKhachHang,
       })
-      : await apiService.post("customer", customerData);
+      : await apiService.post("customers", customerData);
 
     if (response) {
       customerStore.getCustomers();
@@ -251,7 +251,7 @@ const deleteCustomer = async (id) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiService.delete(`customer/${id}`);
+      await apiService.delete(`customers/${id}`);
       customerStore.getCustomers(); // Cập nhật lại danh sách khách hàng sau khi xóa
       showToastSuccess(i18n.global.t("ConfigSettings.customers.swal.delete.success"));
     } catch (error) {

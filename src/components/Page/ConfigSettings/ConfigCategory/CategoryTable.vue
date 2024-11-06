@@ -6,6 +6,7 @@
           <th scope="col">{{ $t('ConfigSettings.no') }}</th>
           <th scope="col" class="sticky">{{ $t('ConfigSettings.categories.category_name') }}</th>
           <th scope="col">{{ $t('ConfigSettings.categories.category_desc') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.categories.warehouse_name') }}</th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
@@ -17,6 +18,7 @@
           <td scope="row">{{ category.sysIdDanhMuc }}</td>
           <td class="sticky">{{ category.tenDanhMuc }}</td>
           <td>{{ category.moTa }}</td>
+          <td>{{ category.tenKho }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', category)">
               <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>

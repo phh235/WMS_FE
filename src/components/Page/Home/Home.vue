@@ -266,7 +266,7 @@ onUnmounted(() => {
 
 <style scoped>
 .container-fluid {
-  max-width: 1600px;
+  width: 100%;
 }
 
 .card {

@@ -158,11 +158,11 @@ const saveSupplier = async () => {
     };
 
     const response = selectedSupplier.sysIdNhaCungCap
-      ? await apiService.post("supplier", {
+      ? await apiService.post("suppliers", {
         ...supplierData,
         sysIdNhaCungCap: selectedSupplier.sysIdNhaCungCap,
       })
-      : await apiService.post("supplier", supplierData);
+      : await apiService.post("suppliers", supplierData);
 
     if (response) {
       supplierStore.getSuppliers();
@@ -197,7 +197,7 @@ const deleteSupplier = async (id) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiService.delete(`supplier/${id}`);
+      await apiService.delete(`suppliers/${id}`);
       supplierStore.getSuppliers(); // Cập nhật lại danh sách danh mục sau khi xóa
       showToastSuccess(i18n.global.t("ConfigSettings.suppliers.swal.delete.success"));
     } catch (error) {
