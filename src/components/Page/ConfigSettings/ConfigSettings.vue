@@ -6,7 +6,7 @@
 
 <style scoped>
 .container-fluid {
-  width: 70%;
+  width: 100%;
   background-color: var(--background-color);
   border-radius: 1rem;
   border: 1px solid var(--border-main-color);

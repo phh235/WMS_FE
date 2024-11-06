@@ -36,7 +36,7 @@
       "lots": "Lots Management",
       "report": "Reports",
       "config": {
-        "label": "Config",
+        "label": "Configs",
         "sub_items": {
           "small_1": "Inventory",
           "small_2": "Product",
@@ -417,7 +417,7 @@
       "search_input": "Search category...",
       "category_name": "Category name",
       "category_desc": "Description",
-      "warehouse_id": "Warehouse type",
+      "warehouse_name": "Warehouse type",
       "choose_warehouse": "Please choose warehouse",
       "tabs": {
         "all": "All",

@@ -230,7 +230,7 @@
                   {{ $t('Navbar.menu_item.report') }}
                 </router-link>
               </li>
-              <li class="nav-item dropdown" v-if="authStore.checkPermissions(['Admin', 'Manager'])">
+              <li class="nav-item dropdown" v-if="authStore.checkPermissions(['Admin'])">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="material-symbols-outlined me-2"> manufacturing </span>
@@ -313,10 +313,13 @@
                       <span class="material-symbols-outlined">conveyor_belt</span>
                     </router-link>
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: .75rem" v-if="authStore.checkPermissions(['Admin'])">
+                  <li>
+                    <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
+                  </li>
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_4') }}
                   </small>
-                  <li v-if="authStore.checkPermissions(['Admin'])">
+                  <li>
                     <router-link to="/inventory/config/account-management"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('Navbar.menu_item.config.sub_items.account') }}

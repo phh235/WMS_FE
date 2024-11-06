@@ -417,7 +417,7 @@
       "search_input": "Tìm kiếm danh mục...",
       "category_name": "Tên danh mục",
       "category_desc": "Mô tả",
-      "warehouse_id": "Kho",
+      "warehouse_name": "Kho bảo quản",
       "choose_warehouse": "Chọn kho",
       "tabs": {
         "all": "Tất cả",
@@ -480,7 +480,7 @@
       "title_edit": "Chỉnh sửa nhà cung cấp",
       "search_input": "Tìm kiếm nhà cung cấp...",
       "supplier_id": "Mã nhà cung cấp",
-      "supplier_name": "Tên loại khách hàng",
+      "supplier_name": "Tên nhà cung cấp",
       "supplier_desc": "Mô tả",
       "swal": {
         "delete": {

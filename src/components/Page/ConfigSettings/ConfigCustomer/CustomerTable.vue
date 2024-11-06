@@ -21,7 +21,7 @@
           <td class="sticky">{{ customer.tenKhachHang }}</td>
           <td class="sticky">{{ customer.tenCongTy }}</td>
           <td class="sticky">{{ customer.soDienThoai }}</td>
-          <td class="sticky">{{ customer.sysIdNhaCungCap }}</td>
+          <td class="sticky">{{ customer.tenNhaCungCap }}</td>
           <td>{{ customer.diaChi }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', customer)">
