@@ -9,7 +9,7 @@ export const useCustomerStore = defineStore("customers", () => {
 
   const getCustomers = async () => {
     try {
-      const response = await apiService.get("customer");
+      const response = await apiService.get("customers");
       customers.value = response.data;
     } catch (error) {
       console.error("Failed to fetch customers:", error);

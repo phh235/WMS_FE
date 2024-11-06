@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-6">
                   <label for="maKho" class="form-label fs fw-bold">
-                    {{ $t('ConfigSettings.categories.warehouse_id') }} <span class="text-danger">*</span>
+                    {{ $t('ConfigSettings.categories.warehouse_name') }} <span class="text-danger">*</span>
                   </label>
                   <select class="form-select" id="maKho" v-model="selectedCategory.maKho">
                     <option value="" disabled>
@@ -202,11 +202,11 @@ const saveCategory = async () => {
     };
 
     const response = selectedCategory.sysIdDanhMuc
-      ? await apiService.post("category-products", {
+      ? await apiService.post("categories", {
         ...categoryData,
         sysIdDanhMuc: selectedCategory.sysIdDanhMuc,
       })
-      : await apiService.post("category-products", categoryData);
+      : await apiService.post("categories", categoryData);
 
     if (response) {
       categoryStore.getCategories();
@@ -241,7 +241,7 @@ const deleteCategory = async (id) => {
 
   if (swalConfirm.isConfirmed) {
     try {
-      await apiService.delete(`category-products/${id}`);
+      await apiService.delete(`categories/${id}`);
       categoryStore.getCategories(); // Cập nhật lại danh sách danh mục sau khi xóa
       showToastSuccess(i18n.global.t("ConfigSettings.categories.swal.delete.success"));
     } catch (error) {
