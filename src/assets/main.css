@@ -21,6 +21,7 @@
   --bg-success: #effbf2;
   --bg-danger: #faf0f0;
   --bg-warning: #faf5ef;
+  --bg-primary: #f2fbfe;
 
   /* tabs */
   --tab-button-bg: #6c757d;
@@ -38,6 +39,9 @@
 
   /*  background image */
   --background-image: radial-gradient(rgba(0, 0, 0, 0.171) 2px, transparent 0);
+  --alert-danger: #f8d7da;
+  --alert-danger-color: #58151c;
+  --alert-danger-border: #f1aeb5;
 
   /*General*/
   --dp-font-family: "Google Sans", sans-serif !important;
@@ -104,8 +108,12 @@
   --bg-success: #1c2e2d;
   --bg-danger: rgba(220, 53, 69, 0.1);
   --bg-warning: #2d2c2e;
+  --bg-primary: rgba(236, 251, 253, 0.05);
+  --alert-danger: #2c0b0e;
+  --alert-danger-color: #ea868f;
+  --alert-danger-border: #842029;
 
-  --tw-shadow: 0 1px 1px 0 rgb(255 255 255 / 0.02), 0 1px 1px -1px rgb(255 255 255 / 0.02);
+  --tw-shadow: 0 1px 1px 0 rgba(7, 6, 6, 0.02), 0 1px 1px -1px rgb(255 255 255 / 0.02);
 
   --background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 0);
 }

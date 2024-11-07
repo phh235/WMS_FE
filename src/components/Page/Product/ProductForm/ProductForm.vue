@@ -1,5 +1,9 @@
 <template>
-  <div class="container px-4">
+  <div class="container-fluid">
+    <router-link to="/inventory/products" class="btn btn-secondary mb-4 d-flex align-items-center"
+      style="width: fit-content;">
+      <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
+    </router-link>
     <div class="row">
       <div class="col-12 col-md-3 mb-4">
         <div class="block box-shadow">
@@ -9,9 +13,18 @@
               <span style="color: var(--nav-link-color);">{{ $t('Product.form.no_image') }}</span>
             </div>
             <input type="file" @change="onFileChange" class="file-input" id="imageUpload" />
-            <label for="imageUpload" class="upload-button btn btn-primary d-flex align-items-center fw-medium"><span
+            <label for="imageUpload"
+              class="upload-button btn btn-primary box-shadow d-flex align-items-center fw-medium"><span
                 class="material-symbols-outlined me-2"> upload </span>{{ $t('Product.form.btn_upload') }}
             </label>
+            <div class="image-actions" v-if="imagePreview">
+              <button class="btn btn-secondary d-flex align-items-center mb-1" @click="replaceImage"><span
+                  class="material-symbols-outlined me-2">
+                  replace_image </span> {{ $t('Product.form.btn_replace') }}</button>
+              <button class="btn btn-danger d-flex align-items-center" @click="deleteImage"><span
+                  class="material-symbols-outlined me-2"> delete_sweep
+                </span> {{ $t('Product.form.btn_remove') }}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -30,7 +43,7 @@
                   <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }} <span
+                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }} (Kg)<span
                       class="text-danger">*</span></label>
                   <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
                 </div>
@@ -49,9 +62,9 @@
             </div>
             <div class="mb-0">
               <label for="moTa">{{ $t('Product.form.desc') }}</label>
-              <textarea id="moTa" class="form-control" rows="4" v-model="productInfo.moTa"></textarea>
+              <textarea id="moTa" class="form-control" rows="9" v-model="productInfo.moTa"></textarea>
             </div>
-            <div class="d-flex justify-content-end mt-3">
+            <div class="d-flex justify-content-end mt-4">
               <button :disabled="isLoading" type="submit" class="btn btn-primary ms-auto d-flex align-items-center">
                 <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
                   aria-hidden="true"></span>
@@ -193,9 +206,22 @@ const onFileChange = (e) => {
     productInfo.hinhAnh = file.name; // Lưu tên tệp
   }
 };
+
+const replaceImage = () => {
+  document.getElementById('imageUpload').click();
+};
+
+const deleteImage = () => {
+  imagePreview.value = null;
+  productInfo.hinhAnh = '';
+};
 </script>
 
 <style scoped>
+.container-fluid {
+  width: 100%;
+}
+
 .card-header {
   text-align: center;
   font-weight: bold;
@@ -207,7 +233,7 @@ const onFileChange = (e) => {
   background-color: var(--background-color);
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 400px;
   overflow: hidden;
   border-radius: 1rem;
 }
@@ -215,7 +241,7 @@ const onFileChange = (e) => {
 .product-image,
 .placeholder-image {
   width: 100%;
-  height: 300px;
+  height: 400px;
   object-fit: cover;
 }
 
@@ -234,8 +260,8 @@ const onFileChange = (e) => {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 5px 10px;
-  border-radius: 5px;
+  /* padding: 5px 10px; */
+  /* border-radius: 5px; */
   cursor: pointer;
 }
 
@@ -249,7 +275,7 @@ label {
   background-color: var(--background-color);
   border-radius: 1rem;
   border: 1px solid var(--border-main-color);
-  min-height: 300px;
+  min-height: 400px;
 }
 
 .btn-primary:disabled,
@@ -260,5 +286,20 @@ label {
 .spinner-border {
   width: 1.2rem;
   height: 1.2rem;
+}
+
+.image-actions {
+  position: absolute;
+  top: 35%;
+  right: 126px;
+  display: none;
+
+  .btn-danger {
+    margin-left: 35px;
+  }
+}
+
+.image-upload-container:hover .image-actions {
+  display: block;
 }
 </style>
