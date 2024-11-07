@@ -103,7 +103,10 @@ import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
 import VueDatePicker from "@vuepic/vue-datepicker"
+import i18n from "@/lang/i18n";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const apiService = useApiServices();
 const productStore = useProductStore();
 const customerStore = useCustomerStore();
@@ -254,7 +257,7 @@ const handleSubmit = async () => {
       }))
     };
 
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     const response = isEdit.value
       ? await apiService.post("purchase-requests/save", submitDataUpdate)
       : await apiService.post("purchase-requests/save", submitData);

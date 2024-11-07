@@ -150,9 +150,12 @@
   "PurchaseRequest": {
     "tabs": {
       "all": "Tất cả",
-      "pending": "Đang xử lý",
-      "confirmed": "Đã xác nhận",
-      "canceled": "Đã hủy"
+      "open": "Đang mở",
+      "re-open": "Mở lại",
+      "send": "Yêu cầu phê duyệt",
+      "approving": "Đang xử lý",
+      "reject": "Đã hủy",
+      "confirm": "Đã xác nhận"
     },
     "search_input": {
       "search_id": "Tìm theo mã yêu cầu",
@@ -166,12 +169,16 @@
       "name": "Người yêu cầu",
       "status": "Trạng thái",
       "date_request": "Ngày yêu cầu",
+      "reason": "Lí do hủy",
       "action": "Hành động",
       "li_confirm": "Xác nhận",
       "li_edit": "Chỉnh sửa",
       "li_cancel": "Hủy",
       "swal": {
+        "reason": "Vui lòng nhập lý do hủy",
+        "loading": "Vui lòng đợi 1 chút, hệ thống đang xử lý...",
         "delete": {
+          "reason": "Lý do hủy yêu cầu...",
           "success": "Đã hủy yêu cầu",
           "failed": "Hủy yêu cầu thất bại",
           "title": "Hủy yêu cầu?",
@@ -180,10 +187,14 @@
           "confirm": "OK"
         },
         "confirm": {
-          "success": "Đã xác nhận yêu cầu",
+          "success": "Đã gửi mail xác nhận đến Purchase Request",
+          "re-open": "Đã mở lại yêu cầu",
+          "approving": "Đã gửi mail yêu cầu đến Purchase Order",
           "failed": "Xác nhận yêu cầu thất bại",
           "title": "Xác nhận yêu cầu?",
           "text": "Bạn có chắc chắn muốn xác nhận yêu cầu này?",
+          "text_po": "Bạn có chắc chắn muốn gửi yêu cầu này tới PO?",
+          "text_re_open": "Bạn có chắc chắn muốn mở lại yêu cầu này?",
           "cancel": "Hủy",
           "confirm": "Xác nhận"
         }
@@ -290,6 +301,8 @@
     "form": {
       "no_image": "Chưa có ảnh",
       "btn_upload": "Chọn ảnh",
+      "btn_replace": "Chọn ảnh khác",
+      "btn_remove": "Xóa",
       "btn_save": "Lưu",
       "product_name": "Tên sản phẩm",
       "available_quantity": "Số lượng hiện có",

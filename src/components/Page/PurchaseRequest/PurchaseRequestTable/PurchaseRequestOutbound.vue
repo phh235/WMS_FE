@@ -12,30 +12,26 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
+        <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+          :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
+          placeholder="Tìm theo ngày">
+          <template #preset-date-range-button="{ label, value, presetDate }">
+            <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
+              @keyup.space.prevent="presetDate(value)">
+              {{ label }}
+            </span>
+          </template>
+        </VueDatePicker>
+        <button class="btn btn-secondary d-flex align-items-center ms-2 me-2" @click="toggleSortById">
           <span class="material-symbols-outlined">swap_vert</span>
         </button>
-        <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center">
+        <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
+          v-if="authStore.checkPermissions(['User'])">
           <span class="material-symbols-outlined me-2"> add </span>
           {{ $t('PurchaseRequest.btn_create_ob') }}
         </router-link>
       </div>
     </div>
-  </div>
-  <div class="d-flex justify-content-end mb-3">
-    <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
-    <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true" :auto-position="true"
-      :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy" placeholder="Tìm theo ngày">
-      <template #preset-date-range-button="{ label, value, presetDate }">
-        <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
-          @keyup.space.prevent="presetDate(value)">
-          {{ label }}
-        </span>
-      </template>
-    </VueDatePicker>
-
-    <!-- <VueDatePicker v-model="date" range :teleport="true" :auto-position="true" locale="vi" style="max-width: 320px;"
-        placeholder="Tìm theo khoảng ngày" /> -->
   </div>
   <div class="table-responsive">
     <table class="table mb-3">
@@ -45,7 +41,7 @@
           <th>{{ $t('PurchaseRequest.table.name') }}</th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
           <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
-          <th style="width: 200px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
+          <th style="width: 300px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -61,25 +57,39 @@
             </span>
           </td>
           <td>{{ purchase.ngayYeuCau }}</td>
-          <td>
+          <td class="d-none">{{ purchase.lyDo }}</td>
+          <td class="text-end">
             <div class="d-flex align-items-center justify-content-center">
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
+                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
+                <span class="material-symbols-outlined">check_circle</span>
+              </button>
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToPO(purchase.maPR)"
+                v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'open'">
+                <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
+              </button>
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="reOpen(purchase.maPR)"
+                v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'reject'">
+                <span class="material-symbols-outlined me-2">sync</span> {{ $t('PurchaseRequest.tabs.re-open') }}
+              </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
                 <span class="material-symbols-outlined">visibility</span>
               </button>
               <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
-                  data-bs-toggle="dropdown" aria-expanded="false" :disabled="purchase.trangThai !== 'DANG_XU_LY'">
+                  data-bs-toggle="dropdown" aria-expanded="false"
+                  :disabled="(authStore.checkPermissions(['User']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'reject')">
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
+                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'open'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
                       style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_confirm') }}
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li>
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'DANG_XU_LY'">
+                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                       @click="cancelPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_cancel') }}
@@ -159,6 +169,19 @@
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_plan') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.ngayXuatDuKien }}</p>
+            </div>
+            <div class="col-12 col-md-12" v-if="selectedPurchase.trangThai === 'reject'">
+              <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
+                <span class="material-symbols-outlined fs-2 me-3">
+                  warning
+                </span>
+                <div>
+                  <label class="form-label mb-0">
+                    {{ $t('PurchaseRequest.table.reason') }}
+                  </label>
+                  <p class="mb-0">{{ selectedPurchase.lyDo }}</p>
+                </div>
+              </div>
             </div>
           </div>
           <hr />
@@ -252,7 +275,7 @@ const purchases = ref([]);
 const apiService = useApiServices();
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
-const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.pending'), t('PurchaseRequest.tabs.confirmed'), t('PurchaseRequest.tabs.canceled')]);
+const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.open'), t('PurchaseRequest.tabs.approving'), t('PurchaseRequest.tabs.confirm'), t('PurchaseRequest.tabs.reject')]);
 // Sort
 const sortOption = ref("");
 
@@ -292,7 +315,7 @@ const getPurchaseRequests = async () => {
 };
 
 const cancelPR = async (id) => {
-  Swal.fire({
+  const result = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.delete.title'),
     text: i18n.global.t('PurchaseRequest.table.swal.delete.text'),
     icon: 'warning',
@@ -300,12 +323,22 @@ const cancelPR = async (id) => {
     confirmButtonColor: "#16a34a",
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.delete.confirm'),
-    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.delete.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'DA_HUY');
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.delete.cancel'),
+    input: 'textarea',
+    inputPlaceholder: i18n.global.t('PurchaseRequest.table.swal.delete.reason'),
+    allowEnterKey: false,
+    allowOutsideClick: false,
+    preConfirm: (lyDo) => {
+      if (lyDo.trim() === '') {
+        Swal.showValidationMessage(i18n.global.t('PurchaseRequest.table.swal.reason'));
+        return false;
+      }
     }
   });
+  if (result.isConfirmed) {
+    const lyDo = result.value;
+    updatePRStatus(id, 'reject', lyDo);
+  }
 };
 
 const confirmPR = async (id) => {
@@ -320,12 +353,44 @@ const confirmPR = async (id) => {
     cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
   }).then((result) => {
     if (result.isConfirmed) {
-      updatePRStatus(id, 'XAC_NHAN');
+      updatePRStatus(id, 'confirm');
     }
   });
 };
 
-const updatePRStatus = async (id, status) => {
+const sendToPO = async (id) => {
+  Swal.fire({
+    title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_po'),
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
+  }).then((result) => {
+    if (result.isConfirmed) {
+      updatePRStatus(id, 'approving');
+    }
+  });
+};
+
+const reOpen = async (id) => {
+  Swal.fire({
+    title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_re_open'),
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
+  }).then((result) => {
+    if (result.isConfirmed) {
+      updatePRStatus(id, 'open');
+    }
+  });
+};
+
+const updatePRStatus = async (id, status, lyDo) => {
   try {
     const response = await apiService.get(`purchase-request-ob/${id}`);
     if (response.status) {
@@ -353,15 +418,25 @@ const updatePRStatus = async (id, status) => {
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
         ngayXuatDuKien: product.ngayXuatDuKien
-      }))
+      })),
+      ...(lyDo && { lyDo: lyDo }),
     };
     console.log(submitDataUpdate);
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     await apiService.post("purchase-request-ob/save", submitDataUpdate);
-    if (status === 'XAC_NHAN') {
-      showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));
-    } else {
-      showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.delete.success'));
+    switch (status) {
+      case 'approving':
+        showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.approving'));
+        break;
+      case 'confirm':
+        showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));
+        break;
+      case 'open':
+        showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.re-open'));
+        break;
+      case 'reject':
+        showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.delete.success'));
+        break;
     }
     getPurchaseRequests();
   } catch (error) {
@@ -374,8 +449,8 @@ const showDetail = (purchase) => {
   selectedPurchase.ngayYeuCau = purchase.ngayYeuCau;
   selectedPurchase.nguoiYeuCau = purchase.nguoiYeuCau;
   selectedPurchase.trangThai = purchase.trangThai;
+  selectedPurchase.lyDo = purchase.lyDo;
   selectedPurchase.chiTietXuatHang = purchase.chiTietXuatHang;
-
   isModalVisible.value = true;
 };
 
@@ -386,9 +461,10 @@ const closeModal = () => {
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
   const statusMap = {
-    [t('PurchaseRequest.tabs.pending')]: "DANG_XU_LY",
-    [t('PurchaseRequest.tabs.confirmed')]: "XAC_NHAN",
-    [t('PurchaseRequest.tabs.canceled')]: "DA_HUY",
+    [t('PurchaseRequest.tabs.open')]: "open",
+    [t('PurchaseRequest.tabs.approving')]: "approving",
+    [t('PurchaseRequest.tabs.confirm')]: "confirm",
+    [t('PurchaseRequest.tabs.reject')]: "reject",
   };
 
   return statusMap[status] || status;
@@ -422,7 +498,10 @@ const filteredRequests = computed(() => {
         return purchaseDate >= startDate && purchaseDate <= endDate;
       }
       return true;
-    });
+    })
+    .filter(purchase =>
+      authStore.checkPermissions(['User']) || purchase.trangThai !== 'open'
+    );
 });
 
 const paginatedPurchases = computed(() => {
@@ -483,9 +562,10 @@ const updateUrl = () => {
 
 const getBadgeClass = (status) => {
   const statusMap = {
-    DANG_XU_LY: "bg-warning",
-    XAC_NHAN: "bg-success",
-    DA_HUY: "bg-danger",
+    open: "bg-primary",
+    approving: "bg-warning",
+    confirm: "bg-success",
+    reject: "bg-danger",
   };
 
   return statusMap[status] || "bg-secondary";
@@ -493,9 +573,10 @@ const getBadgeClass = (status) => {
 
 const getStatusLabel = (status) => {
   const statusMap = {
-    DANG_XU_LY: t("PurchaseRequest.tabs.pending"),
-    XAC_NHAN: t("PurchaseRequest.tabs.confirmed"),
-    DA_HUY: t("PurchaseRequest.tabs.canceled"),
+    open: t("PurchaseRequest.tabs.open"),
+    approving: t("PurchaseRequest.tabs.approving"),
+    confirm: t("PurchaseRequest.tabs.confirm"),
+    reject: t("PurchaseRequest.tabs.reject"),
   };
 
   return statusMap[status] || status;
@@ -506,6 +587,13 @@ const getStatusLabel = (status) => {
 td {
   vertical-align: middle;
   font-size: 0.875rem;
+}
+
+.bg-primary {
+  font-size: 0.875rem;
+  background-color: var(--bg-primary) !important;
+  color: #4ca7f1;
+  border: 1.4px solid #4ca7f1;
 }
 
 .bg-success {
@@ -561,7 +649,8 @@ td {
 
 .btn-secondary,
 .btn-danger {
-  padding: 10px;
+  padding: 10px !important;
+  height: 40px !important;
 }
 
 .btn-secondary {
@@ -612,5 +701,11 @@ td {
     background-color: var(--btn-logout-bg);
     cursor: pointer;
   }
+}
+
+.alert-danger {
+  background-color: var(--alert-danger) !important;
+  border-color: var(--alert-danger-border) !important;
+  color: var(--alert-danger-color) !important;
 }
 </style>

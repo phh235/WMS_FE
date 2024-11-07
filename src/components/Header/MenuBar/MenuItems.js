@@ -186,6 +186,7 @@ export default [
       headerTitle: "Tạo yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["User"],
     },
   },
   {
@@ -200,6 +201,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["User"],
     },
   },
   {
@@ -214,6 +216,7 @@ export default [
       headerTitle: "Tạo yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["User"],
     },
   },
   {
@@ -228,6 +231,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["User"],
     },
   },
   {
@@ -371,6 +375,7 @@ export default [
       headerTitle: "Danh mục sản phẩm",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["Admin"],
     },
     children: [
       {
@@ -382,6 +387,7 @@ export default [
           headerTitle: "Cấu hình danh mục",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
       {
@@ -393,6 +399,7 @@ export default [
           headerTitle: "Cấu hình kho hàng",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
       {
@@ -404,6 +411,7 @@ export default [
           headerTitle: "Cấu hình khu vực",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
       {
@@ -415,6 +423,7 @@ export default [
           headerTitle: "Cấu hình chi tiết khu vực",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
       {
@@ -426,6 +435,7 @@ export default [
           headerTitle: "Cấu hình nhà cung cấp",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
       {
@@ -437,6 +447,7 @@ export default [
           headerTitle: "Cấu hình khách hàng",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
       {
@@ -448,6 +459,7 @@ export default [
           headerTitle: "Quản lý tài khoản",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["Admin"],
         },
       },
     ],
