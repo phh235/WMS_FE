@@ -354,7 +354,7 @@ const updatePRStatus = async (id, status) => {
       }))
     };
     console.log(submitDataUpdate);
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     await apiService.post("purchase-request-ob/save", submitDataUpdate);
     if (status === 'XAC_NHAN') {
       showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));

@@ -3,7 +3,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col" class="d-none">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
           <th scope="col" class="sticky">{{ $t('ConfigSettings.suppliers.supplier_name') }}</th>
           <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_desc') }}</th>
           <th scope="col" class="text-center action">{{ $t('ConfigSettings.btn_action') }}</th>
@@ -14,7 +14,7 @@
           <td colspan="10">{{ $t('ConfigSettings.suppliers.not_found') }}</td>
         </tr>
         <tr v-for="supplier in suppliers" :key="supplier.sysIdNhaCungCap">
-          <td scope="row" class="d-none">{{ supplier.sysIdNhaCungCap }}</td>
+          <td scope="row">{{ supplier.sysIdNhaCungCap }}</td>
           <td class="sticky">{{ supplier.tenNhaCungCap }}</td>
           <td>{{ supplier.moTa }}</td>
           <td class="text-center">
@@ -52,10 +52,10 @@ defineEmits(['edit', 'delete']);
   padding: 10px 10px;
 }
 
-th:nth-child(2) {
+/* th:nth-child(2) {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-}
+} */
 
 .action {
   width: 150px;

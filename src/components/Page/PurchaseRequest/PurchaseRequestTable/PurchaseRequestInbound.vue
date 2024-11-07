@@ -12,30 +12,26 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
+        <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+          :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
+          placeholder="Tìm theo ngày">
+          <template #preset-date-range-button="{ label, value, presetDate }">
+            <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
+              @keyup.space.prevent="presetDate(value)">
+              {{ label }}
+            </span>
+          </template>
+        </VueDatePicker>
+        <button class="btn btn-secondary d-flex align-items-center ms-2 me-2" @click="toggleSortById">
           <span class="material-symbols-outlined">swap_vert</span>
         </button>
-        <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center">
+        <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center"
+          v-if="authStore.checkPermissions(['User'])">
           <span class="material-symbols-outlined me-2"> add </span>
           {{ $t('PurchaseRequest.btn_create') }}
         </router-link>
       </div>
     </div>
-  </div>
-  <div class="d-flex justify-content-end mb-3">
-    <!-- <VueDatePicker v-model="dateNow" style="max-width: 320px;" class="float-end" placeholder="Ngày hiện tại" /> -->
-    <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true" :auto-position="true"
-      :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy" placeholder="Tìm theo ngày">
-      <template #preset-date-range-button="{ label, value, presetDate }">
-        <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
-          @keyup.space.prevent="presetDate(value)">
-          {{ label }}
-        </span>
-      </template>
-    </VueDatePicker>
-
-    <!-- <VueDatePicker v-model="date" range :teleport="true" :auto-position="true" locale="vi" style="max-width: 320px;"
-        placeholder="Tìm theo khoảng ngày" /> -->
   </div>
   <div class="table-responsive">
     <table class="table mb-3">
@@ -356,7 +352,7 @@ const updatePRStatus = async (id, status) => {
       }))
     };
     console.log(submitDataUpdate);
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     await apiService.post("purchase-requests/save", submitDataUpdate);
     if (status === 'XAC_NHAN') {
       showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));

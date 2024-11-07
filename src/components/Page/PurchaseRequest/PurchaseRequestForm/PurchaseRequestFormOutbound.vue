@@ -1,4 +1,10 @@
 <template>
+  <div class="container-fluid border-0 p-0">
+    <router-link to="/inventory/purchase-request/outbound" class="btn btn-secondary mb-3 d-flex align-items-center"
+      style="width: fit-content;">
+      <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
+    </router-link>
+  </div>
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
@@ -80,7 +86,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-flex justify-content-between align-items-center mt-5">
           <button :disabled="isLoading" type="submit" class="btn btn-primary d-flex align-items-center">
             <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
             </span>
@@ -103,7 +109,10 @@ import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
 import VueDatePicker from "@vuepic/vue-datepicker"
+import i18n from "@/lang/i18n";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const apiService = useApiServices();
 const productStore = useProductStore();
 const customerStore = useCustomerStore();
@@ -255,7 +264,7 @@ const handleSubmit = async () => {
       }))
     };
 
-    showToastLoading('Vui lòng đợi 1 chút, hệ thống đang xử lý...', 10000);
+    showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     const response = isEdit.value
       ? await apiService.post("purchase-request-ob/save", submitDataUpdate)
       : await apiService.post("purchase-request-ob/save", submitData);
@@ -281,7 +290,7 @@ const handleSubmit = async () => {
 
 <style scoped>
 .container-fluid {
-  max-width: 1200px;
+  max-width: 100%;
   border: 1px solid var(--border-main-color);
   border-radius: 1rem;
 }

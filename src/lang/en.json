@@ -151,39 +151,51 @@
   "PurchaseRequest": {
     "tabs": {
       "all": "All",
-      "pending": "Pending",
-      "confirmed": "Apporoved",
-      "canceled": "Canceled"
+      "open": "Open",
+      "re-open": "Re-open",
+      "send": "Send PO",
+      "approving": "Approving",
+      "reject": "Rejected",
+      "confirm": "Confirmed"
     },
     "search_input": {
       "search_id": "Find by request Id",
       "search_name": "Find by requestor"
     },
     "not_found": "Request not found",
-    "btn_create": "Create purchase request",
+    "btn_create": "Create purchase request inbound",
+    "btn_create_ob": "Create purchase request outbound",
     "table": {
       "id": "Request Id",
       "name": "Requestor",
       "status": "Status",
       "date_request": "Date request",
+      "reason": "Reason",
       "action": "Actions",
       "li_confirm": "Apporove",
       "li_edit": "Edit",
-      "li_cancel": "Cancel",
+      "li_cancel": "Reject",
       "swal": {
+        "reason": "Please enter the reason for rejection",
+        "loading": "Please wait a moment, the system is processing...",
         "delete": {
-          "success": "Request successfully cancelled",
-          "failed": "Request failed to cancel",
-          "title": "Cancel request?",
-          "text": "Are you sure you want to cancel this request?",
+          "reason": "Reason for rejection...",
+          "success": "Request successfully rejected",
+          "failed": "Request failed to reject",
+          "title": "Reject request?",
+          "text": "Are you sure you want to reject this request?",
           "cancel": "Cancel",
           "confirm": "OK"
         },
         "confirm": {
-          "success": "Request confirmed",
+          "success": "Confirmation email sent to Purchase Request",
+          "re-open": "Reopened request",
+          "approving": "Request email sent to Purchase Order",
           "failed": "Request confirmed failed",
           "title": "Confirm request?",
           "text": "Are you sure you want to confirm this request?",
+          "text_po": "Are you sure you want to send this request to PO?",
+          "text_re_open": "Are you sure you want to Re-open this request?",
           "cancel": "Cancel",
           "confirm": "OK"
         }
@@ -290,6 +302,8 @@
     "form": {
       "no_image": "No image",
       "btn_upload": "Upload image",
+      "btn_replace": "Replace",
+      "btn_remove": "Remove",
       "btn_save": "Save",
       "product_name": "Product name",
       "available_quantity": "Available quantity",

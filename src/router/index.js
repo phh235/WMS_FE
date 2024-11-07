@@ -46,16 +46,16 @@ export const routes = [
   },
   {
     path: "/:pathMatch(.*)*",
-    name: "Page Not Found",
+    name: "not-found",
     component: () => import("@pages/NotFound.vue"),
     meta: {
       headerTitle: "404",
     },
   },
   {
-    path: "/error",
-    name: "Error",
-    component: () => import("@pages/Error.vue"),
+    path: "/not-authorized",
+    name: "not-authorized",
+    component: () => import("@pages/NotAuthorized.vue"),
     meta: {
       headerTitle: "Error",
     },
@@ -102,7 +102,10 @@ router.beforeEach((to, from, next) => {
       }
       return next({ name: "login" }); // Chuyển hướng đến trang đăng nhập
     }
-
+    const permissions = to.meta.permissions;
+    if (permissions && !authStore.checkPermissions(permissions)) {
+      return next({ name: "not-authorized" }); // Chuyển hướng đến trang không tìm thấy nếu không có quyền truy cập
+    }
     // Nếu đã xác thực
     next(); // Chuyển hướng bình thường
   } else {

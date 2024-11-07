@@ -652,9 +652,11 @@ const toggleLightDarkMode = () => {
 
 @media screen and (max-width: 1400px) {
   .offcanvas {
+    margin: 8px;
+    border-radius: 12px;
     width: 300px !important;
     background-color: var(--background-color);
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease;
   }
 
   .offcanvas-body .nav-link {
