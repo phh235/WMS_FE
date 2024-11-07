@@ -41,7 +41,7 @@
           <th>{{ $t('PurchaseRequest.table.name') }}</th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
           <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
-          <th style="width: 240px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
+          <th style="width: 300px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -295,7 +295,6 @@ const selectedPurchase = reactive({
   nguoiYeuCau: "",
   fullName: "",
   trangThai: "",
-  lyDo: "",
   chiTietXuatHang: []
 })
 
@@ -420,11 +419,9 @@ const updatePRStatus = async (id, status, lyDo) => {
         tongChiPhi: product.soLuong * product.gia,
         ngayXuatDuKien: product.ngayXuatDuKien
       })),
-      lyDo: lyDo ? lyDo : '',
+      ...(lyDo && { lyDo: lyDo }),
     };
     console.log(submitDataUpdate);
-    // confirm đã gửi mail xác nhận
-    // approving đã gửi mail yêu cầu -> PO
     showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     await apiService.post("purchase-request-ob/save", submitDataUpdate);
     switch (status) {
