@@ -28,11 +28,23 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="username">Tên người dùng</label>
+                  <label for="username" class="form-label">Họ và tên</label>
                   <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
                 </div>
                 <div class="col-6">
-                  <label for="password">Mật khẩu</label>
+                  <label for="username" class="form-label">Tên người dùng</label>
+                  <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-6">
+                  <label for="username" class="form-label">Số điện thoại</label>
+                  <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
+                </div>
+                <div class="col-6">
+                  <label for="password" class="form-label">Mật khẩu</label>
                   <input type="password" class="form-control" id="password" />
                 </div>
               </div>
@@ -40,14 +52,15 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="email">Email</label>
+                  <label for="email" class="form-label">Email</label>
                   <input type="email" class="form-control" id="email" />
                 </div>
                 <div class="col-6">
-                  <label for="roleId">Vai trò</label>
+                  <label for="roleId" class="form-label">Vai trò</label>
                   <select class="form-select" id="roleId">
                     <option value="1">Admin</option>
-                    <option value="2">User</option>
+                    <option value="2">Manager</option>
+                    <option value="3">User</option>
                   </select>
                 </div>
               </div>
