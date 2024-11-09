@@ -25,6 +25,8 @@
         <button class="btn btn-secondary d-flex align-items-center ms-2 me-2" @click="toggleSortById">
           <span class="material-symbols-outlined">swap_vert</span>
         </button>
+        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+            class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
         <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User'])">
           <span class="material-symbols-outlined me-2"> add </span>
@@ -41,7 +43,7 @@
           <th>{{ $t('PurchaseRequest.table.name') }}</th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
           <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
-          <th style="width: 300px;" class="text-center">{{ $t('PurchaseRequest.table.action') }}</th>
+          <th style="width: 300px;" class="text-end px-4">{{ $t('PurchaseRequest.table.action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -52,19 +54,25 @@
           <td class="sticky">{{ purchase.maPR }}</td>
           <td>{{ purchase.nguoiYeuCau }}</td>
           <td>
-            <span :class="['badge', getBadgeClass(purchase.trangThai)]">
+            <span class="d-flex align-items-center" style="width: fit-content;"
+              :class="['badge', getBadgeClass(purchase.trangThai)]">
+              <span class="material-symbols-outlined me-2">{{ statusIcon[purchase.trangThai] }}</span>
               {{ getStatusLabel(purchase.trangThai) }}
             </span>
           </td>
           <td>{{ purchase.ngayYeuCau }}</td>
           <td class="d-none">{{ purchase.lyDo }}</td>
-          <td class="text-end">
-            <div class="d-flex align-items-center justify-content-center">
+          <td>
+            <div class="d-flex align-items-center justify-content-end">
+              <!-- <button class="btn btn-secondary d-flex align-items-center me-2" @click="createPO(purchase.maPR)"
+                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm'">
+                <span class="material-symbols-outlined me-2">add_circle</span> Tạo PO
+              </button> -->
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
                 v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
-                <span class="material-symbols-outlined">check_circle</span>
+                <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToPO(purchase.maPR)"
+              <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToAdmin(purchase.maPR)"
                 v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'open'">
                 <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
               </button>
@@ -147,7 +155,9 @@
                 {{ $t('PurchaseRequest.table.status') }}
               </label>
               <p>
-                <span :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
+                <span class="d-flex align-items-center" style="width: fit-content;"
+                  :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
+                  <span class="material-symbols-outlined me-2">{{ statusIcon[selectedPurchase.trangThai] }}</span>
                   {{ getStatusLabel(selectedPurchase.trangThai) }}
                 </span>
               </p>
@@ -232,6 +242,7 @@ import { showToastSuccess, showToastError } from "@components/Toast/utils/toastH
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
 import Swal from "sweetalert2";
+import * as XLSX from 'xlsx';
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
@@ -275,7 +286,20 @@ const purchases = ref([]);
 const apiService = useApiServices();
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
-const tabs = computed(() => [t('PurchaseRequest.tabs.all'), t('PurchaseRequest.tabs.open'), t('PurchaseRequest.tabs.approving'), t('PurchaseRequest.tabs.confirm'), t('PurchaseRequest.tabs.reject')]);
+const showTabOpen = computed(() => {
+  return authStore.checkPermissions(['User']);
+});
+
+const tabs = computed(() => {
+  const tabsToShow = [
+    t('PurchaseRequest.tabs.all'),
+    ...(showTabOpen.value ? [t('PurchaseRequest.tabs.open')] : []),
+    t('PurchaseRequest.tabs.approving'),
+    t('PurchaseRequest.tabs.confirm'),
+    t('PurchaseRequest.tabs.reject')
+  ];
+  return tabsToShow;
+});
 // Sort
 const sortOption = ref("");
 
@@ -293,6 +317,7 @@ const selectedPurchase = reactive({
   maPR: "",
   ngayYeuCau: "",
   nguoiYeuCau: "",
+  sysIdNguoiYeuCau: "",
   fullName: "",
   trangThai: "",
   chiTietXuatHang: []
@@ -358,7 +383,7 @@ const confirmPR = async (id) => {
   });
 };
 
-const sendToPO = async (id) => {
+const sendToAdmin = async (id) => {
   Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_po'),
     icon: 'warning',
@@ -394,11 +419,12 @@ const updatePRStatus = async (id, status, lyDo) => {
   try {
     const response = await apiService.get(`purchase-request-ob/${id}`);
     if (response.status) {
-      const { sysIdYeuCauXuatHang, maPR, ngayYeuCau, nguoiYeuCau, trangThai, chiTietXuatHang } = response.data[0];
+      const { sysIdYeuCauXuatHang, maPR, ngayYeuCau, nguoiYeuCau, sysIdNguoiYeuCau, trangThai, chiTietXuatHang } = response.data[0];
       selectedPurchase.sysIdYeuCauXuatHang = sysIdYeuCauXuatHang;
       selectedPurchase.maPR = maPR;
       selectedPurchase.ngayYeuCau = ngayYeuCau;
       selectedPurchase.nguoiYeuCau = nguoiYeuCau;
+      selectedPurchase.sysIdNguoiYeuCau = sysIdNguoiYeuCau;
       selectedPurchase.trangThai = trangThai;
       selectedPurchase.chiTietXuatHang = chiTietXuatHang;
     }
@@ -406,7 +432,7 @@ const updatePRStatus = async (id, status, lyDo) => {
     const submitDataUpdate = {
       sysIdYeuCauXuatHang: selectedPurchase.sysIdYeuCauXuatHang,
       maPR: selectedPurchase.maPR,
-      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+      nguoiYeuCau: selectedPurchase.sysIdNguoiYeuCau,
       trangThai: status,
       loaiYeuCau: 'XUAT',
       chiTietXuatHang: selectedPurchase.chiTietXuatHang.map(product => ({
@@ -469,6 +495,13 @@ const getStatusValue = (status) => {
 
   return statusMap[status] || status;
 };
+
+const statusIcon = {
+  open: 'call_made',
+  approving: 'timer',
+  confirm: 'check_circle',
+  reject: 'error'
+}
 
 // Hàm chuyển đổi ký tự có dấu thành không dấu
 function removeAccents(str) {
@@ -581,6 +614,44 @@ const getStatusLabel = (status) => {
 
   return statusMap[status] || status;
 };
+
+// Export file excel
+const exportToExcel = () => {
+  const tableData = purchases.value.map((purchase) => {
+    return {
+      'Mã PR': purchase.maPR,
+      'Người yêu cầu': purchase.nguoiYeuCau,
+      'Trạng thái': getStatusValue(purchase.trangThai),
+      'Ngày yêu cầu': purchase.ngayYeuCau,
+      'Chi tiết nhập hàng': purchase.chiTietXuatHang.map((item) => {
+        return `Mã sản phẩm: ${item.sysIdSanPham}, Tên sản phẩm: ${item.tenSanPham}, Số lượng: ${item.soLuong}, Giá: ${item.gia}, Tổng chi phí: ${item.tongChiPhi}`;
+      }).join('\n'),
+    };
+  });
+
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(tableData);
+
+  // Thiết lập chiều rộng cột
+  const columnWidths = [
+    { wch: 20 }, // Mã PR
+    { wch: 20 }, // Người yêu cầu
+    { wch: 10 }, // Trạng thái
+    { wch: 20 }, // Ngày yêu cầu
+    { wch: 100 }, // Chi tiết nhập hàng
+  ];
+
+  worksheet['!cols'] = columnWidths;
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Danh sách yêu cầu xuất hàng');
+
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+  const excelFile = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(excelFile);
+  link.download = 'danh-sach-yeu-cau-outbound.xlsx';
+  link.click();
+};
 </script>
 
 <style scoped>
@@ -593,28 +664,28 @@ td {
   font-size: 0.875rem;
   background-color: var(--bg-primary) !important;
   color: #4ca7f1;
-  border: 1.4px solid #4ca7f1;
+  border: 1.5px solid #4ca7f1;
 }
 
 .bg-success {
   font-size: 0.875rem;
   background-color: var(--bg-success) !important;
-  color: var(--primary-color-hover);
-  border: 1.4px solid var(--primary-color);
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-color);
 }
 
 .bg-danger {
   font-size: 0.875rem;
   background-color: var(--bg-danger) !important;
   color: #dc3545;
-  border: 1.4px solid #dc3545;
+  border: 1.5px solid #dc3545;
 }
 
 .bg-warning {
   font-size: 0.875rem;
   background-color: var(--bg-warning) !important;
   color: #fe961f;
-  border: 1.4px solid #fe961f;
+  border: 1.5px solid #fe961f;
 }
 
 .badge {

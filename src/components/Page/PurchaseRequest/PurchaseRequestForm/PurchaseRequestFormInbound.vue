@@ -249,7 +249,7 @@ const handleSubmit = async () => {
       sysIdYeuCauNhapHang: formData.sysIdYeuCauNhapHang,
       maPR: formData.maPR,
       nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-      trangThai: 'DANG_XU_LY',
+      trangThai: 'open',
       loaiYeuCau: 'NHAP',
       chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
