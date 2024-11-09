@@ -170,6 +170,7 @@ export default [
           headerTitle: "Yêu cầu xuất hàng",
           searchConfig: {},
           storeConfig: {},
+          permissions: ["User", "Admin"],
         },
       },
     ],
@@ -216,7 +217,7 @@ export default [
       headerTitle: "Tạo yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User"],
+      permissions: ["User", "Admin"],
     },
   },
   {
@@ -231,7 +232,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User"],
+      permissions: ["User", "Admin"],
     },
   },
   {
@@ -457,6 +458,18 @@ export default [
         meta: {
           requiresAuth: true,
           headerTitle: "Quản lý tài khoản",
+          searchConfig: {},
+          storeConfig: {},
+          permissions: ["Admin"],
+        },
+      },
+      {
+        path: "lots-management",
+        name: "Lots",
+        component: () => import("@components/Page/ConfigSettings/ConfigLots/Lots.vue"),
+        meta: {
+          requiresAuth: true,
+          headerTitle: "Quản lý lô hàng",
           searchConfig: {},
           storeConfig: {},
           permissions: ["Admin"],

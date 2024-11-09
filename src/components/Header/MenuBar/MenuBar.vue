@@ -87,7 +87,7 @@
                       <span class="material-symbols-outlined">input</span>
                     </router-link>
                   </li>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['Admin', 'User'])">
                     <router-link to="/inventory/purchase-request/outbound"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
@@ -237,7 +237,8 @@
                   {{ $t('Navbar.menu_item.config.label') }}
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
-                <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown">
+                <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown"
+                  style="max-height: 300px; overflow-y: auto;">
                   <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_1') }}
                   </small>
@@ -272,6 +273,18 @@
                         {{ $t('Navbar.menu_item.config.sub_items.zoneDetail') }}
                       </span>
                       <span class="material-symbols-outlined">activity_zone</span>
+                    </router-link>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
+                  </li>
+                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                    {{ $t('Navbar.menu_item.config.sub_items.small_5') }}
+                  </small>
+                  <li class="nav-item">
+                    <router-link to="/inventory/config/lots-management"
+                      class="nav-link d-flex align-items-center justify-content-between">
+                      {{ $t('Navbar.menu_item.lots') }} <span class="material-symbols-outlined"> dataset </span>
                     </router-link>
                   </li>
                   <li>
