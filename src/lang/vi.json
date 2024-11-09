@@ -191,6 +191,7 @@
           "success": "Đã gửi mail xác nhận đến Purchase Request",
           "re-open": "Đã mở lại yêu cầu",
           "approving": "Đã gửi mail yêu cầu đến Purchase Order",
+          "approving_ob": "Đã gửi mail yêu cầu đến Warehouse Manager",
           "failed": "Xác nhận yêu cầu thất bại",
           "title": "Xác nhận yêu cầu?",
           "text": "Bạn có chắc chắn muốn xác nhận yêu cầu này?",

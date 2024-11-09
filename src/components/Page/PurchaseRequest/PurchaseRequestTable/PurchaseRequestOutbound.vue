@@ -68,7 +68,7 @@
                 v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm'">
                 <span class="material-symbols-outlined me-2">add_circle</span> Tạo PO
               </button> -->
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
+              <button class="btn btn-primary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
                 v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
                 <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
@@ -452,7 +452,7 @@ const updatePRStatus = async (id, status, lyDo) => {
     await apiService.post("purchase-request-ob/save", submitDataUpdate);
     switch (status) {
       case 'approving':
-        showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.approving'));
+        showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.approving_ob'));
         break;
       case 'confirm':
         showToastSuccess(i18n.global.t('PurchaseRequest.table.swal.confirm.success'));

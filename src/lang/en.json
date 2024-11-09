@@ -192,6 +192,7 @@
           "success": "Confirmation email sent to Purchase Request",
           "re-open": "Reopened request",
           "approving": "Request email sent to Purchase Order",
+          "approving_ob": "Request email sent to Warehouse Manager",
           "failed": "Request confirmed failed",
           "title": "Confirm request?",
           "text": "Are you sure you want to confirm this request?",
