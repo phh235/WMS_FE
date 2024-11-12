@@ -40,12 +40,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { showToastError, showToastSuccess } from '@/components/Toast/utils/toastHandle'
+import { showToastError, showToastLoading, showToastSuccess } from '@/components/Toast/utils/toastHandle'
 import { useI18n } from 'vue-i18n'
 import i18n from '@/lang/i18n'
+import { useApiServices } from '@/services/apiService'
 
 const { t } = useI18n()
 const router = useRouter()
+const apiService = useApiServices();
 const loading = ref(false)
 const inputs = ref([])
 const otpDigits = ref(['', '', '', '', '', ''])
@@ -100,14 +102,16 @@ const handleConfirmOTP = async () => {
     return
   }
 
-  loading.value = true
+  loading.value = false
+  const email = sessionStorage.getItem("email");
   try {
+    await apiService.post(`forgot-password/verify-otp/${otp.value}/${email}`)
     showToastSuccess("Xác thực OTP thành công");
     setTimeout(function () {
       router.push('/reset-password')
     }, 2000);
   } catch (error) {
-    console.log('Error:', error)
+    showToastError("Mã OTP không chính xác. Vui lòng thử lại.")
   } finally {
     loading.value = false
     resetCountdown()

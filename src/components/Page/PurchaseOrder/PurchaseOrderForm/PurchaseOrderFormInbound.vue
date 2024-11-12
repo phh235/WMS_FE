@@ -8,16 +8,35 @@
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
             <label for="maPR" class="form-label">Mã đơn đặt hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
             <label for="requesterName" class="form-label">Người tạo <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="requesterName" v-model="nguoiYeuCau" disabled />
+            <input type="text" class="form-control" id="requesterName" v-model="sysIdUser" disabled />
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="mb-3 mb-md-0">
+            <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
+            <select v-model="selectedCustomer" id="customer" class="form-select">
+              <option :value="null" disabled>Chọn khách hàng</option>
+              <option v-for="customer in customerStore.customers" :key="customer.sysIdKhachHang" :value="customer">
+                {{ customer.tenKhachHang }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="mb-3 mb-md-0">
+            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
+            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
+              :auto-position="true" placeholder="Chọn ngày nhập hàng dự kiến">
+            </VueDatePicker>
           </div>
         </div>
       </div>
@@ -99,7 +118,7 @@ const router = useRouter();
 const isLoading = ref(false);
 const selectedCustomer = ref(null);
 const isEdit = ref(false);
-const nguoiYeuCau = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
+const sysIdUser = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
 const dateDuKien = ref();
 
 onMounted(async () => {
@@ -117,16 +136,12 @@ onMounted(async () => {
 
 // Object purchase request
 const formData = reactive({
-  maPR: '',
-  nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-  loaiYeuCau: 'NHAP',
+  sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
   chiTietNhapHang: []
 });
 
 const resetFormData = () => {
-  formData.maPR = '';
-  formData.nguoiYeuCau = JSON.parse(sessionStorage.getItem("user")).sysIdUser;
-  formData.loaiYeuCau = 'NHAP';
+  formData.sysIdUser = JSON.parse(sessionStorage.getItem("user")).sysIdUser;
   formData.chiTietNhapHang = [];
 };
 
@@ -135,7 +150,7 @@ const format = (date) => {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  return `${year}/${month}/${day}`;
 };
 
 // Chuyển đổi kiểu ngày là String sang kiểu Date (dd/MM/yyyy)
@@ -211,9 +226,7 @@ const handleSubmit = async () => {
 
   try {
     const submitData = {
-      maPR: formData.maPR,
-      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-      loaiYeuCau: 'NHAP',
+      sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
       chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         soLuong: product.soLuong,
         gia: product.gia,
@@ -226,13 +239,9 @@ const handleSubmit = async () => {
 
     const submitDataUpdate = {
       sysIdYeuCauNhapHang: formData.sysIdYeuCauNhapHang,
-      maPR: formData.maPR,
-      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-      trangThai: 'DANG_XU_LY',
-      loaiYeuCau: 'NHAP',
+      sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
       chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
-        maPR: formData.maPR, // fix tạm
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
         soLuong: product.soLuong,
@@ -244,8 +253,8 @@ const handleSubmit = async () => {
 
     showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     const response = isEdit.value
-      ? await apiService.post("purchase-requests/save", submitDataUpdate)
-      : await apiService.post("purchase-requests/save", submitData);
+      ? await apiService.post("purchase-orders/create", submitDataUpdate)
+      : await apiService.post("purchase-orders/create", submitData);
 
     if (response.status === 201) {
       closeToastLoading();
@@ -253,7 +262,7 @@ const handleSubmit = async () => {
       setTimeout(() => {
         showToastInfo('Đã gửi mail cho phòng Purchase Order');
       }, 2500);
-      router.push("/inventory/purchase-request/inbound");
+      router.push("/inventory/purchase-order/inbound");
     } else {
       showToastError('Có lỗi xảy ra, vui lòng thử lại sau');
     }

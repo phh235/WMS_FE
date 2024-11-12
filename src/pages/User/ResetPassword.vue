@@ -6,13 +6,23 @@
       <h6 class="text-center mb-5" style="color: var(--nav-link-color);"> {{ $t("LoginForgotForm.reset.small") }}
       </h6>
       <form style="width: 20rem; margin: auto" @submit.prevent="handleResetPassword">
-        <div class="mb-3">
-          <label class="form-label fs" for="password">{{ $t("LoginForgotForm.reset.password") }}</label>
-          <input type="text" id="password" class="form-control" v-model="passwordInput.password" />
+        <div class="mb-3 password-container">
+          <label class="form-label fs" for="repeatPassword">{{ $t("LoginForgotForm.reset.password") }}</label>
+          <input id="repeatPassword" :type="showPassword ? 'text' : 'password'" class="form-control"
+            v-model="passwordInput.password" />
+          <span class="toggle-password" @click="toggleShowPassword">
+            <span v-if="showPassword" class="material-symbols-outlined"> visibility_off </span>
+            <span v-else class="material-symbols-outlined"> visibility </span>
+          </span>
         </div>
-        <div class="mb-3">
-          <label class="form-label fs" for="confirmPassword">{{ $t("LoginForgotForm.reset.confirm") }}</label>
-          <input type="text" id="confirmPassword" class="form-control" v-model="passwordInput.confirmPassword" />
+        <div class="mb-3 password-container">
+          <label class="form-label fs" for="repeatPassword">{{ $t("LoginForgotForm.reset.confirm") }}</label>
+          <input id="repeatPassword" :type="showPassword ? 'text' : 'password'" class="form-control"
+            v-model="passwordInput.repeatPassword" />
+          <span class="toggle-password" @click="toggleShowConfirmPassword">
+            <span v-if="showConfirmPassword" class="material-symbols-outlined"> visibility_off </span>
+            <span v-else class="material-symbols-outlined"> visibility </span>
+          </span>
         </div>
         <button type="submit" class="btn btn-login w-100 fw-bold" :disabled="loading" :class="{ loading: loading }">
           <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -26,41 +36,55 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { showToastError, showToastInfo, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import { showToastError, showToastInfo, showToastLoading, showToastSuccess } from "@/components/Toast/utils/toastHandle";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
+import { useApiServices } from "@/services/apiService";
 
 const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
+const apiService = useApiServices();
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const passwordInput = reactive({
   password: '',
-  confirmPassword: ''
+  repeatPassword: ''
 });
+
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+};
+const toggleShowConfirmPassword = () => {
+  showConfirmPassword.value = !showConfirmPassword.value;
+};
 
 const handleResetPassword = async () => {
   if (!passwordInput.password) {
     showToastError(i18n.global.t("Swal.reset.toast.error.text"));
     return;
   }
-  if (!passwordInput.confirmPassword) {
+  if (!passwordInput.repeatPassword) {
     showToastError(i18n.global.t("Swal.reset.toast.error.text_confirm"));
     return;
   }
 
-  if (passwordInput.password !== passwordInput.confirmPassword) {
+  if (passwordInput.password !== passwordInput.repeatPassword) {
     showToastError(i18n.global.t("Swal.reset.toast.error.text_confirm_password"));
     return;
   }
 
-  loading.value = true;
+  loading.value = false;
+  const email = sessionStorage.getItem("email");
   try {
+    await apiService.post(`forgot-password/change-password/${email}`, passwordInput)
     showToastSuccess(i18n.global.t("Swal.reset.toast.success.title"))
     setTimeout(function () {
       showToastInfo(i18n.global.t("Swal.reset.toast.info.title"), i18n.global.t("Swal.reset.toast.info.text"));
       setTimeout(function () {
         router.push("/login");
+        sessionStorage.removeItem("email");
       }, 2000);
     }, 2000);
   } catch (error) {
@@ -107,6 +131,25 @@ const handleResetPassword = async () => {
 
   input {
     font-size: 1rem !important;
+  }
+}
+
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 90%;
+  right: 15px;
+  transform: translateY(-90%);
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+  user-select: none;
+
+  &:hover {
+    color: var(--nav-link-color);
   }
 }
 </style>

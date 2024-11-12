@@ -31,7 +31,7 @@
       <thead>
         <tr>
           <th class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
-          <th>{{ $t('PurchaseOrder.table.name') }}</th>
+          <th>{{ $t('PurchaseOrder.table.id_pr') }}</th>
           <th>{{ $t('PurchaseOrder.table.name') }}</th>
           <th>{{ $t('PurchaseOrder.table.date_request') }}</th>
           <th style="width: 200px;" class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
@@ -40,7 +40,7 @@
       <tbody>
         <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('PurchaseOrder.not_found') }}</td>
-        </tr>
+        </tr> 
         <tr v-for="purchase in paginatedPurchases" :key="purchase.maPO">
           <td class="sticky">{{ purchase.maPO }}</td>
           <td>{{ purchase.maPR }}</td>

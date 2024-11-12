@@ -29,14 +29,16 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { showToastError, showToastInfo, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import { showToastError, showToastInfo, showToastLoading, showToastSuccess } from "@/components/Toast/utils/toastHandle";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
+import { useApiServices } from "@/services/apiService";
 
 const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
 const email = ref("");
+const apiService = useApiServices();
 
 const handleForgotPassword = async () => {
   if (!email.value) {
@@ -51,13 +53,15 @@ const handleForgotPassword = async () => {
   }
   loading.value = true;
   try {
-    // call api thì dùng await để thực thi /disable - loading/ của button
+    showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
+    await apiService.post(`forgot-password/verify-mail/${email.value}`)
+    sessionStorage.setItem("email", email.value);
     showToastSuccess(i18n.global.t("Swal.forgot.toast.success.title"), i18n.global.t("Swal.forgot.toast.success.text"))
     setTimeout(function () {
       router.push("/confirm-otp");
-    }, 2000);
+    }, 1000);
   } catch (error) {
-    console.log("Error:", error);
+    showToastError("Email không tồn tại. Vui lòng kiểm tra lại.")
   } finally {
     loading.value = false;
   }
