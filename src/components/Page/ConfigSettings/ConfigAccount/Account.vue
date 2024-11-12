@@ -21,15 +21,16 @@
             <!-- {{ sy.sysIdDanhMuc ? "Chỉnh sửa người dùng" : "Thêm người dùng" }} -->
             Cấp tài khoản
           </h5>
-          <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close">close</span>
+          <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
+            @click="btnResetForm">close</span>
         </div>
         <div class="modal-body">
           <form>
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="username" class="form-label">Họ và tên</label>
-                  <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
+                  <label for="fullName" class="form-label">Họ và tên</label>
+                  <input type="text" class="form-control" id="fullName" v-model="selectedUser.fullName" />
                 </div>
                 <div class="col-6">
                   <label for="username" class="form-label">Tên người dùng</label>
@@ -40,8 +41,8 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="username" class="form-label">Số điện thoại</label>
-                  <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
+                  <label for="phone" class="form-label">Số điện thoại</label>
+                  <input type="text" class="form-control" id="phone" v-model="selectedUser.soDienThoai" />
                 </div>
                 <div class="col-6">
                   <label for="password" class="form-label">Mật khẩu</label>
@@ -53,7 +54,7 @@
               <div class="row">
                 <div class="col-6">
                   <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" />
+                  <input type="email" class="form-control" id="email" v-model="selectedUser.email" />
                 </div>
                 <div class="col-6">
                   <label for="roleId" class="form-label">Vai trò</label>
@@ -68,8 +69,9 @@
           </form>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" class="btn btn-logout" data-bs-dismiss="modal" @click="btnResetForm_Click">
-            Hủy
+          <button type="button" class="btn btn-logout d-flex align-items-center" data-bs-dismiss="modal"
+            @click="btnResetForm">
+            <span class="material-symbols-outlined me-2">close</span> Hủy
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
             <span class="material-symbols-outlined me-2">check</span> Xác nhận
@@ -94,9 +96,9 @@ onMounted(async () => {
 })
 
 const selectedUser = reactive({
+  fullName: "",
   username: "",
   email: "",
-  fullName: "",
   soDienThoai: "",
   roles: [],
 });
@@ -120,6 +122,17 @@ const editUser = (user) => {
 const deleteUser = (username) => {
 
 }
+
+const btnResetForm = () => {
+  Object.assign(selectedUser, {
+    sysIdUser: "",
+    username: "",
+    fullName: "",
+    password: "",
+    email: "",
+    soDienThoai: "",
+  });
+};
 </script>
 
 <style scoped>

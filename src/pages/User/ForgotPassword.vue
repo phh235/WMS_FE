@@ -54,10 +54,7 @@ const handleForgotPassword = async () => {
     // call api thì dùng await để thực thi /disable - loading/ của button
     showToastSuccess(i18n.global.t("Swal.forgot.toast.success.title"), i18n.global.t("Swal.forgot.toast.success.text"))
     setTimeout(function () {
-      showToastInfo(i18n.global.t("Swal.forgot.toast.info.title"), i18n.global.t("Swal.forgot.toast.info.text"));
-      setTimeout(function () {
-        router.push("/login");
-      }, 2000);
+      router.push("/confirm-otp");
     }, 2000);
   } catch (error) {
     console.log("Error:", error);

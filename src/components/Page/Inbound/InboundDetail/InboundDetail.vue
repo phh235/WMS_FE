@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4">
+  <div class="container-fluid mt-4">
     <h4 class="fw-bold" style="color: var(--primary-color);">Phiếu nhập</h4>
     <div class="mb-3 block box-shadow">
       <div class="d-flex justify-content-between">

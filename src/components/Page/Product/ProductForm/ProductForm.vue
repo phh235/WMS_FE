@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <router-link to="/inventory/products" class="btn btn-secondary mb-4 d-flex align-items-center"
+    <router-link to="/inventory/products" class="btn btn-secondary mb-3 d-flex align-items-center fw-bold"
       style="width: fit-content;">
       <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
     </router-link>
@@ -34,21 +34,21 @@
             <div class="mb-0">
               <div class="row">
                 <div class="col-12 col-md-4 mb-3 d-none">
-                  <label for="sysIdSanPham">Mã sản phẩm</label>
+                  <label for="sysIdSanPham" class="form-label">Mã sản phẩm</label>
                   <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="tenSanPham">{{ $t('Product.form.product_name') }} <span
+                  <label for="tenSanPham" class="form-label">{{ $t('Product.form.product_name') }} <span
                       class="text-danger">*</span></label>
                   <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
                 </div>
                 <div class="col-12 col-md-4 mb-3">
-                  <label for="soLuongHienCo">{{ $t('Product.form.available_quantity') }} (Kg)<span
+                  <label for="soLuongHienCo" class="form-label">{{ $t('Product.form.available_quantity') }} (Kg)<span
                       class="text-danger">*</span></label>
                   <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
                 </div>
                 <div class="col-12 col-md-4">
-                  <label for="danhMuc">{{ $t('Product.form.category.title') }} <span
+                  <label for="danhMuc" class="form-label">{{ $t('Product.form.category.title') }} <span
                       class="text-danger">*</span></label>
                   <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
                     <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
@@ -61,8 +61,8 @@
               </div>
             </div>
             <div class="mb-0">
-              <label for="moTa">{{ $t('Product.form.desc') }}</label>
-              <textarea id="moTa" class="form-control" rows="9" v-model="productInfo.moTa"></textarea>
+              <label for="moTa" class="form-label">{{ $t('Product.form.desc') }}</label>
+              <textarea id="moTa" class="form-control" rows="8" v-model="productInfo.moTa"></textarea>
             </div>
             <div class="d-flex justify-content-end mt-4">
               <button :disabled="isLoading" type="submit" class="btn btn-primary ms-auto d-flex align-items-center">
@@ -260,8 +260,6 @@ const deleteImage = () => {
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  /* padding: 5px 10px; */
-  /* border-radius: 5px; */
   cursor: pointer;
 }
 

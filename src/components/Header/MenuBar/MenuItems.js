@@ -187,7 +187,7 @@ export default [
       headerTitle: "Tạo yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User"],
+      permissions: ["User", "Admin"],
     },
   },
   {
@@ -202,7 +202,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User"],
+      permissions: ["User", "Admin"],
     },
   },
   {
@@ -244,6 +244,7 @@ export default [
       headerTitle: "Đặt hàng",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["Manager", "Admin"],
     },
     children: [
       {
@@ -253,21 +254,10 @@ export default [
           import("@/components/Page/PurchaseOrder/PurchaseOrderTable/PurchaseOrderInbound.vue"),
         meta: {
           requiresAuth: true,
-          headerTitle: "Mua hàng - nhập",
+          headerTitle: "Mua hàng",
           searchConfig: {},
           storeConfig: {},
-        },
-      },
-      {
-        path: "outbound",
-        name: "PurchaseOrderOutbound",
-        component: () =>
-          import("@/components/Page/PurchaseOrder/PurchaseOrderTable/PurchaseOrderOutbound.vue"),
-        meta: {
-          requiresAuth: true,
-          headerTitle: "Mua hàng - xuất",
-          searchConfig: {},
-          storeConfig: {},
+          permissions: ["Manager", "Admin"],
         },
       },
     ],
@@ -279,9 +269,10 @@ export default [
       import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormInbound.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Tạo đơn đặt hàng - nhập hàng",
+      headerTitle: "Tạo đơn mua hàng",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["Manager", "Admin"],
     },
   },
   {
@@ -291,33 +282,10 @@ export default [
       import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormInbound.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Chỉnh sửa đơn đặt hàng - nhập hàng",
+      headerTitle: "Chỉnh sửa đơn mua hàng",
       searchConfig: {},
       storeConfig: {},
-    },
-  },
-  {
-    path: "purchase-order/outbound/new",
-    name: "purchase-order/outbound/new",
-    component: () =>
-      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormOutbound.vue"),
-    meta: {
-      requiresAuth: true,
-      headerTitle: "Tạo đơn đặt hàng - xuất hàng",
-      searchConfig: {},
-      storeConfig: {},
-    },
-  },
-  {
-    path: "purchase-order/outbound/edit/:id",
-    name: "purchase-order/outbound/edit/:id",
-    component: () =>
-      import("@/components/Page/PurchaseOrder/PurchaseOrderForm/PurchaseOrderFormOutbound.vue"),
-    meta: {
-      requiresAuth: true,
-      headerTitle: "Chỉnh sửa đơn đặt hàng - xuất hàng",
-      searchConfig: {},
-      storeConfig: {},
+      permissions: ["Manager", "Admin"],
     },
   },
   {

@@ -42,6 +42,28 @@ export const routes = [
           storeConfig: {},
         },
       },
+      {
+        path: "reset-password",
+        name: "ResetPassword",
+        component: () => import("@pages/User/ResetPassword.vue"),
+        meta: {
+          requiresAuth: false,
+          headerTitle: "Đặt lại mật khẩu",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
+      {
+        path: "confirm-otp",
+        name: "ConfirmOTP",
+        component: () => import("@pages/User/ConfirmOTP.vue"),
+        meta: {
+          requiresAuth: false,
+          headerTitle: "Xác thực OTP",
+          searchConfig: {},
+          storeConfig: {},
+        },
+      },
     ],
   },
   {

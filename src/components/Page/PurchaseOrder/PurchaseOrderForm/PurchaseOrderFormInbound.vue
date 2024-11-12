@@ -1,40 +1,26 @@
 <template>
+  <div class="container-fluid border-0 p-0">
+    <router-link to="/inventory/purchase-order/inbound" class="btn btn-secondary mb-3 d-flex align-items-center"
+      style="width: fit-content;">
+      <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
+    </router-link>
+  </div>
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-6">
           <div class="mb-3 mb-md-0">
-            <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
+            <label for="maPR" class="form-label">Mã đơn đặt hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-6">
           <div class="mb-3 mb-md-0">
-            <label for="requesterName" class="form-label">Người yêu cầu <span class="text-danger">*</span></label>
+            <label for="requesterName" class="form-label">Người tạo <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="requesterName" v-model="nguoiYeuCau" disabled />
           </div>
         </div>
-        <div class="col-12 col-md-3">
-          <div class="mb-3 mb-md-0">
-            <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
-            <select v-model="selectedCustomer" id="customer" class="form-select">
-              <option :value="null" disabled>Chọn khách hàng</option>
-              <option v-for="customer in customerStore.customers" :key="customer.sysIdKhachHang" :value="customer">
-                {{ customer.tenKhachHang }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <div class="mb-3 mb-md-0">
-            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
-            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-              :auto-position="true" placeholder="Chọn ngày nhập hàng dự kiến">
-            </VueDatePicker>
-          </div>
-        </div>
       </div>
-
       <div class="table-responsive p-md-3">
         <button type="button" class="btn btn-secondary d-flex align-items-center mb-3 mb-md-2" @click="addProduct"
           style="transition: all 0.2s;">
@@ -102,7 +88,6 @@ import { useCustomerStore } from '@/store/customerStore';
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
-import VueDatePicker from "@vuepic/vue-datepicker"
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 
@@ -283,7 +268,7 @@ const handleSubmit = async () => {
 
 <style scoped>
 .container-fluid {
-  max-width: 1200px;
+  max-width: 100%;
   border: 1px solid var(--border-main-color);
   border-radius: 1rem;
 }

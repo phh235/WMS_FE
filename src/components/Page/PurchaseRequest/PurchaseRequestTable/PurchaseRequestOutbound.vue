@@ -28,7 +28,7 @@
         <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
         <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
-          v-if="authStore.checkPermissions(['User'])">
+          v-if="authStore.checkPermissions(['User', 'Admin'])">
           <span class="material-symbols-outlined me-2"> add </span>
           {{ $t('PurchaseRequest.btn_create_ob') }}
         </router-link>
@@ -73,11 +73,11 @@
                 <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToAdmin(purchase.maPR)"
-                v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'open'">
+                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
                 <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="reOpen(purchase.maPR)"
-                v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'reject'">
+                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'reject'">
                 <span class="material-symbols-outlined me-2">sync</span> {{ $t('PurchaseRequest.tabs.re-open') }}
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
@@ -90,13 +90,13 @@
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'open'">
+                  <!-- <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'open'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
                       style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_confirm') }}
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
-                  </li>
+                  </li> -->
                   <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                       @click="cancelPR(purchase.maPR)">
@@ -104,7 +104,7 @@
                       <span class="material-symbols-outlined">cancel</span>
                     </a>
                   </li>
-                  <li v-if="authStore.checkPermissions(['User'])">
+                  <li v-if="authStore.checkPermissions(['User', 'Admin'])">
                     <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}

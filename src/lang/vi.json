@@ -4,15 +4,15 @@
     "menu_item": {
       "home": "Trang chủ",
       "pr": {
-        "label": "Purchase Requisition",
+        "label": "Requisition",
         "sub_items": {
           "small_1": "Điều chuyển",
-          "inbound": "Nhập hàng",
-          "outbound": "Xuất hàng"
+          "inbound": "Yêu cầu nhập hàng",
+          "outbound": "Yêu cầu xuất hàng"
         }
       },
       "po": {
-        "label": "Purchase Orders",
+        "label": "Orders",
         "sub_items": {
           "small_1": "Mua hàng",
           "inbound": "Nhập hàng",
@@ -121,12 +121,38 @@
           "text": "Email không được để trống"
         },
         "success": {
-          "title": "Gửi email thành công",
-          "text": "Vui lòng kiểm tra email để khôi phục mật khẩu"
+          "title": "Gửi OTP thành công",
+          "text": "Vui lòng kiểm tra email."
         },
         "info": {
           "title": "Đang chuyển hướng về trang đăng nhập",
           "text": "Vui lòng đợi..."
+        }
+      }
+    },
+    "reset": {
+      "toast": {
+        "error": {
+          "title": "Đặt lại mật khẩu thất bại",
+          "text": "Vui lòng nhập mật khẩu mới",
+          "text_confirm": "Vui lòng xác nhận mật khẩu mới",
+          "text_confirm_password": "Mật khẩu xác nhận không khớp"
+        },
+        "success": {
+          "title": "Đặt lại mật khẩu thành công"
+        },
+        "info": {
+          "title": "Đang chuyển hướng về trang đăng nhập",
+          "text": "Vui lòng đợi..."
+        }
+      }
+    },
+    "otp": {
+      "toast": {
+        "error": {
+          "title": "Xác nhận OTP thất bại",
+          "text": "Vui lòng nhập OTP",
+          "text_confirm_otp": "Mã OTP không đúng, vui lòng thử lại"
         }
       }
     }
@@ -144,8 +170,24 @@
     "forgot": {
       "title": "Quên mật khẩu",
       "small": "Vui lòng nhập email",
-      "btn_confirm": "Xác nhận",
+      "btn_confirm": "Gửi mã OTP",
       "btn_login": "Quay lại đăng nhập"
+    },
+    "reset": {
+      "title": "Đặt lại mật khẩu",
+      "password": "Mật khẩu mới",
+      "confirm": "Xác nhận mật khẩu mới",
+      "small": "Vui lòng nhập mật khẩu mới",
+      "btn_confirm": "Xác nhận"
+    },
+    "otp": {
+      "title": "Xác thực OTP",
+      "text": "OTP",
+      "didnt": "Chưa nhận được mã OTP?",
+      "in": " trong",
+      "resend": "Gửi lại",
+      "small": "Vui lòng nhập mã xác thực OTP",
+      "btn_confirm": "Đặt lại mật khẩu"
     }
   },
   "PurchaseRequest": {
@@ -201,6 +243,38 @@
           "confirm": "Xác nhận"
         }
       },
+      "detail": {
+        "title": "Chi tiết",
+        "order_detail": "Chi tiết đơn hàng: ",
+        "customer": "Khách hàng",
+        "product_detail": {
+          "title": "Chi tiết sản phẩm",
+          "product_name": "Tên sản phẩm",
+          "quantity": "Số lượng",
+          "price": "Giá",
+          "date_plan": "Ngày xuất dự kiến",
+          "total": "Tổng tiền",
+          "total_price": "Tổng giá trị đơn hàng"
+        }
+      }
+    },
+    "form": {}
+  },
+  "PurchaseOrder": {
+    "search_input": {
+      "search_id": "Tìm theo mã đơn đặt hàng",
+      "search_name": "Tìm theo người tạo"
+    },
+    "not_found": "Không tìm thấy đơn đặt hàng",
+    "btn_create": "Tạo đơn đặt hàng",
+    "table": {
+      "id": "Mã đơn đặt hàng",
+      "id_pr": "Mã yêu cầu",
+      "name": "Người tạo",
+      "name_pr": "Người yêu cầu",
+      "date_request": "Ngày tạo",
+      "action": "Hành động",
+      "li_edit": "Chỉnh sửa",
       "detail": {
         "title": "Chi tiết",
         "order_detail": "Chi tiết đơn hàng: ",

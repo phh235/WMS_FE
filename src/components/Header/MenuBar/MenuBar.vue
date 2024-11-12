@@ -98,7 +98,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="material-symbols-outlined me-2">shopping_cart</span>
@@ -118,16 +118,13 @@
                       <span class="material-symbols-outlined">input</span>
                     </router-link>
                   </li>
-                  <li>
-                    <router-link to="/inventory/purchase-order/outbound"
-                      class="dropdown-item d-flex align-items-center justify-content-between">
-                      <span class="fs">
-                        {{ $t('Navbar.menu_item.po.sub_items.outbound') }}
-                      </span>
-                      <span class="material-symbols-outlined">output</span>
-                    </router-link>
-                  </li>
                 </ul>
+              </li> -->
+              <li class="nav-item" v-if="authStore.checkPermissions(['Admin', 'Manager'])">
+                <router-link to="/inventory/purchase-order/inbound" class="nav-link d-flex align-items-center"><span
+                    class="material-symbols-outlined me-2"> shopping_cart </span>
+                  {{ $t('Navbar.menu_item.po.label') }}
+                </router-link>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
@@ -616,7 +613,7 @@ const toggleLightDarkMode = () => {
 }
 
 .dropdown-menu {
-  min-width: 180px;
+  min-width: 190px;
   padding: 8px;
   border-radius: 1rem;
   background-color: var(--background-color);
