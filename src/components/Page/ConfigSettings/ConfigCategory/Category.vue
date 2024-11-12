@@ -141,9 +141,7 @@ const updateTabs = () => {
   tabs.value = [t('ConfigSettings.categories.tabs.all'), ...uniqueWarehouses];
 };
 
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const filteredCategories = computed(() => {
   const query = searchQuery.value.toLowerCase();

@@ -28,7 +28,7 @@
         <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
         <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center"
-          v-if="authStore.checkPermissions(['User'])">
+          v-if="authStore.checkPermissions(['User', 'Admin'])">
           <span class="material-symbols-outlined me-2"> add </span>
           {{ $t('PurchaseRequest.btn_create') }}
         </router-link>
@@ -64,20 +64,20 @@
           <td class="d-none">{{ purchase.lyDo }}</td>
           <td>
             <div class="d-flex align-items-center justify-content-end">
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="createPO(purchase.maPR)"
+              <button class="btn btn-primary d-flex align-items-center me-2" @click="createPO(purchase.maPR)"
                 v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm'">
                 <span class="material-symbols-outlined me-2">add_circle</span> Tạo PO
               </button>
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
+              <button class="btn btn-primary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
                 v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
                 <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToPO(purchase.maPR)"
-                v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'open'">
+                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
                 <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="reOpen(purchase.maPR)"
-                v-if="authStore.checkPermissions(['User']) && purchase.trangThai === 'reject'">
+                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'reject'">
                 <span class="material-symbols-outlined me-2">sync</span> {{ $t('PurchaseRequest.tabs.re-open') }}
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
@@ -86,17 +86,17 @@
               <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false"
-                  :disabled="(authStore.checkPermissions(['User']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'reject')">
+                  :disabled="(authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'reject')">
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'open'">
+                  <!-- <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'open'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
                       style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_confirm') }}
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
-                  </li>
+                  </li> -->
                   <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                       @click="cancelPR(purchase.maPR)">
@@ -104,7 +104,7 @@
                       <span class="material-symbols-outlined">cancel</span>
                     </a>
                   </li>
-                  <li v-if="authStore.checkPermissions(['User'])">
+                  <li v-if="authStore.checkPermissions(['User', 'Admin'])">
                     <router-link :to="{ name: 'purchase-request/inbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}
@@ -247,6 +247,7 @@ import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { showToastLoading } from "@/components/Toast/utils/toastHandle";
+import router from "@/router";
 
 const date = ref([
   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
@@ -287,7 +288,7 @@ const apiService = useApiServices();
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
 const showTabOpen = computed(() => {
-  return authStore.checkPermissions(['User']);
+  return authStore.checkPermissions(['User', 'Admin']);
 });
 
 const tabs = computed(() => {
@@ -470,6 +471,21 @@ const updatePRStatus = async (id, status, lyDo) => {
   }
 };
 
+const createPO = async (id) => {
+  try {
+    const response = await apiService.post("purchase-orders/create", {
+      maPR: id,
+      sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+    });
+    if (response.status == 201) {
+      showToastSuccess("Tạo PO thành công");
+      router.push({ path: "/inventory/purchase-order/inbound" })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const showDetail = (purchase) => {
   selectedPurchase.maPR = purchase.maPR;
   selectedPurchase.ngayYeuCau = purchase.ngayYeuCau;
@@ -504,9 +520,7 @@ const statusIcon = {
 }
 
 // Hàm chuyển đổi ký tự có dấu thành không dấu
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const parseDate = (dateString) => {
   const [day, month, year, hour, minute, second] = dateString.split(/\/|\s|:/);
@@ -533,7 +547,7 @@ const filteredRequests = computed(() => {
       return true;
     })
     .filter(purchase =>
-      authStore.checkPermissions(['User']) || purchase.trangThai !== 'open'
+      authStore.checkPermissions(['User', 'Admin']) || purchase.trangThai !== 'open'
     );
 });
 

@@ -6,10 +6,10 @@
           <div class="card-body text-center">
             <div class="d-flex justify-content-center">
               <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
-                class="rounded-4 img-fluid mb-3" width="150" loading="lazy" />
+                class="rounded-4 img-fluid mb-3" width="200" loading="lazy" />
             </div>
-            <h5 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h5>
-            <div class="d-flex justify-content-center mb-2">
+            <h4 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h4>
+            <div class="d-flex justify-content-center">
               <span class="badge bg-primary box-shadow"
                 style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important; font-size: 0.775rem !important">{{
                   userStore.user.role }}</span>

@@ -97,9 +97,7 @@ const sortOption = ref("");
 const currentPage = ref(1);
 const pageSize = ref(10);
 
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const filteredProducts = computed(() => {
   const query = removeAccents(searchQuery.value.toLowerCase());

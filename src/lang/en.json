@@ -5,15 +5,15 @@
     "menu_item": {
       "home": "Home",
       "pr": {
-        "label": "Purchase Requisition",
+        "label": "Requisition",
         "sub_items": {
           "small_1": "Transfer",
-          "inbound": "Inbound",
-          "outbound": "Outbound"
+          "inbound": "Inbound Request",
+          "outbound": "Outbound Request"
         }
       },
       "po": {
-        "label": "Purchase Orders",
+        "label": "Orders",
         "sub_items": {
           "small_1": "Orders",
           "inbound": "Inbound",
@@ -122,12 +122,38 @@
           "text": "Email field cannot be empty"
         },
         "success": {
-          "title": "Email send successfully",
-          "text": "Please check your email to recover your password."
+          "title": "OTP send successfully",
+          "text": "Please check your email."
         },
         "info": {
           "title": "Redirecting to login page",
           "text": "Please wait..."
+        }
+      }
+    },
+    "reset": {
+      "toast": {
+        "error": {
+          "title": "Password reset failed",
+          "text": "Please enter new password",
+          "text_confirm": "Please confirm new password",
+          "text_confirm_password": "Confirm password does not match"
+        },
+        "success": {
+          "title": "Password reset successful"
+        },
+        "info": {
+          "title": "Redirecting to login page",
+          "text": "Please wait..."
+        }
+      }
+    },
+    "otp": {
+      "toast": {
+        "error": {
+          "title": "OTP confirmation failed",
+          "text": "Please enter OTP",
+          "text_confirm_otp": "OTP code is incorrect, please try again"
         }
       }
     }
@@ -145,8 +171,24 @@
     "forgot": {
       "title": "Forgot password",
       "small": "Please enter email",
-      "btn_confirm": "Send email",
+      "btn_confirm": "Send OTP",
       "btn_login": "Back to sign in"
+    },
+    "reset": {
+      "title": "Reset Password",
+      "password": "New password",
+      "confirm": "Confirm new password",
+      "small": "Please enter new password",
+      "btn_confirm": "Confirm"
+    },
+    "otp": {
+      "title": "OTP Verification",
+      "text": "OTP",
+      "didnt": "Didn't receive the OTP?",
+      "in": " in",
+      "resend": "Resend",
+      "small": "Please enter OTP verification code",
+      "btn_confirm": "Reset Password"
     }
   },
   "PurchaseRequest": {
@@ -192,6 +234,7 @@
           "success": "Confirmation email sent to Purchase Request",
           "re-open": "Reopened request",
           "approving": "Request email sent to Purchase Order",
+          "approving_ob": "Request email sent to Warehouse Manager",
           "failed": "Request confirmed failed",
           "title": "Confirm request?",
           "text": "Are you sure you want to confirm this request?",
@@ -217,6 +260,38 @@
         }
       }
     }
+  },
+  "PurchaseOrder": {
+    "search_input": {
+      "search_id": "Search by order number",
+      "search_name": "Search by creator"
+    },
+    "not_found": "Order not found",
+    "btn_create": "Create order",
+    "table": {
+      "id": "Order number",
+      "id_pr": "Request number",
+      "name": "Creator",
+      "name_pr": "Requester",
+      "date_request": "Created date",
+      "action": "Action",
+      "li_edit": "Edit",
+      "detail": {
+        "title": "Detail",
+        "order_detail": "Order details: ",
+        "customer": "Customer",
+        "product_detail": {
+          "title": "Product details",
+          "product_name": "Product name product",
+          "quantity": "Quantity",
+          "price": "Price",
+          "date_plan": "Expected shipping date",
+          "total": "Total amount",
+          "total_price": "Total order value"
+        }
+      }
+    },
+    "form": {}
   },
   "AccountInfo": {
     "title_info": "Account Information",
