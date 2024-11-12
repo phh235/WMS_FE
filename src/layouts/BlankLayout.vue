@@ -66,7 +66,7 @@ onMounted(() => {
 .tab-container {
   position: absolute;
   top: 10px;
-  right: 998px;
+  right: 10px;
 }
 
 @media screen and (max-width: 992.98px) {

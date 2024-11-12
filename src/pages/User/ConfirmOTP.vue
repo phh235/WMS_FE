@@ -40,7 +40,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { showToastError } from '@/components/Toast/utils/toastHandle'
+import { showToastError, showToastSuccess } from '@/components/Toast/utils/toastHandle'
 import { useI18n } from 'vue-i18n'
 import i18n from '@/lang/i18n'
 
@@ -57,7 +57,7 @@ onMounted(() => {
   if (inputs.value[0]) {
     inputs.value[0].focus()
   }
-  countdownTimer() // Start the timer immediately
+  countdownTimer()
 })
 
 const handleInput = (index) => {
@@ -102,9 +102,10 @@ const handleConfirmOTP = async () => {
 
   loading.value = true
   try {
-    // Call API to verify OTP
-    // ...
-    router.push('/reset-password')
+    showToastSuccess("Xác thực OTP thành công");
+    setTimeout(function () {
+      router.push('/reset-password')
+    }, 2000);
   } catch (error) {
     console.log('Error:', error)
   } finally {
@@ -161,9 +162,9 @@ const handleResendOTP = () => {
 
 .otp-input {
   width: 2.9rem;
-  height: 3rem;
+  height: 3.2rem;
   padding: 0;
-  font-size: 1.1rem !important;
+  font-size: 1.2rem !important;
   text-align: center;
   border-radius: 0.375rem;
 
