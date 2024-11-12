@@ -137,9 +137,7 @@ onMounted(async () => {
   await supplierStore.getSuppliers();
 });
 
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const filteredCustomers = computed(() => {
   const query = searchQuery.value.toLowerCase();

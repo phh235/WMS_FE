@@ -80,20 +80,10 @@
         <div class="modal-body">
           <!-- Hiển thị thông tin chi tiết đơn hàng -->
           <div class="row">
-            <!-- <div class="col-6 col-md-4">
-              <label class="form-label">{{ $t('PurchaseOrder.table.id') }}</label>
-              <p class="fs">{{ selectedPurchaseOrder.maPO }}</p>
-            </div> -->
             <div class="col-6 col-md-4">
               <label class="form-label">{{ $t('PurchaseOrder.table.id_pr') }}</label>
               <p class="fs">{{ selectedPurchaseOrder.maPR }}</p>
             </div>
-            <!-- <div class="col-6 col-md-4">
-              <label class="form-label">
-                {{ $t('PurchaseOrder.table.detail.customer') }}
-              </label>
-              <p class="fs">{{ selectedPurchaseOrder.chiTietNhapHang[0]?.tenKhachHang }}</p>
-            </div> -->
             <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseOrder.table.name') }}
@@ -134,10 +124,86 @@
               </tbody>
             </table>
           </div>
-          <p class="fw-bold float-end mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
-            <span style="color: var(--primary-color);">{{
-              totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-          </p>
+          <div class="d-flex align-items-center justify-content-between">
+            <button class="btn btn-primary d-flex align-items-center" @click="exportOrderToPDF">
+              <span class="material-symbols-outlined me-2">upgrade</span> Xuất hóa đơn
+            </button>
+            <p class="fw-bold mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
+              <span style="color: var(--primary-color);">{{
+                totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="export-data" style="z-index: -9999;">
+      <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" alt="Logo WMS"
+        width="45" class="me-2 rounded-4"/>
+      <p class="h6 fw-bold mt-2" style="color: var(--nav-link-color);"> {{
+        $t("LoginForgotForm.logo_title") }}
+      </p>
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
+              {{ $t('PurchaseOrder.table.detail.order_detail') }}
+              <span style="color: var(--primary-color);">{{ selectedPurchaseOrder.maPO }}</span>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <!-- Hiển thị thông tin chi tiết đơn hàng -->
+            <div class="row">
+              <div class="col-6 col-md-4">
+                <label class="form-label">{{ $t('PurchaseOrder.table.id_pr') }}</label>
+                <p class="fs">{{ selectedPurchaseOrder.maPR }}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseOrder.table.name') }}
+                </label>
+                <p class="fs">{{ selectedPurchaseOrder.nguoiTao }}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                <label class="form-label">
+                  {{ $t('PurchaseOrder.table.date_request') }}
+                </label>
+                <p class="fs">{{ formatDate(selectedPurchaseOrder.ngayTao) }}</p>
+              </div>
+            </div>
+            <hr />
+            <h5 class="fw-bold"> {{ $t('PurchaseOrder.table.detail.product_detail.title') }}
+            </h5>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th> {{ $t('PurchaseOrder.table.detail.product_detail.product_name') }}</th>
+                    <th> {{ $t('PurchaseOrder.table.detail.product_detail.quantity') }}</th>
+                    <th> {{ $t('PurchaseOrder.table.detail.product_detail.price') }}</th>
+                    <th> {{ $t('PurchaseOrder.table.detail.product_detail.total') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in selectedPurchaseOrder.chiTietNhapHang" :key="item.maSanPham">
+                    <td>{{ item.tenSanPham }}</td>
+                    <td>{{ item.soLuong }} Kg</td>
+                    <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
+                      <span class="currency-symbol">&#8363;</span>
+                    </td>
+                    <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
+                      <span class="currency-symbol">&#8363;</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex align-items-center justify-content-end">
+              <p class="fw-bold mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
+                <span style="color: var(--primary-color);">{{
+                  totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -154,6 +220,7 @@ import { useAuthStore } from "@/store/authStore.js";
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
 import Swal from "sweetalert2";
+import html2pdf from "html2pdf.js";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
@@ -254,9 +321,7 @@ const closeModal = () => {
 };
 
 // Hàm chuyển đổi ký tự có dấu thành không dấu
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const parseDate = (dateString) => {
   const [day, month, year, hour, minute, second] = dateString.split(/\/|\s|:/);
@@ -327,6 +392,20 @@ const updateUrl = () => {
   url.search = params.toString();
   window.history.replaceState({}, "", url.toString());
 };
+
+const exportOrderToPDF = () => {
+  const date = new Date();
+  const dateString = `${date.getDate()}_${date.getMonth() + 1}_${date.getFullYear()}`;
+  const modalContent = document.querySelector('.export-data');
+  html2pdf(modalContent, {
+    margin: 1,
+    filename: `purchase_order_${dateString}.pdf`,
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
+  });
+}
+
 </script>
 
 <style scoped>

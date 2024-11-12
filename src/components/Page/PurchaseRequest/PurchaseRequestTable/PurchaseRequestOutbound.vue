@@ -504,9 +504,7 @@ const statusIcon = {
 }
 
 // Hàm chuyển đổi ký tự có dấu thành không dấu
-function removeAccents(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const parseDate = (dateString) => {
   const [day, month, year, hour, minute, second] = dateString.split(/\/|\s|:/);
