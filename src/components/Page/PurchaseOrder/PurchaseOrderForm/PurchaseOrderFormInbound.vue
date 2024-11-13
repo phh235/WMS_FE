@@ -1,17 +1,23 @@
 <template>
+  <div class="container-fluid border-0 p-0">
+    <router-link to="/inventory/purchase-order/inbound" class="btn btn-secondary mb-3 d-flex align-items-center"
+      style="width: fit-content;">
+      <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
+    </router-link>
+  </div>
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
-            <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
+            <label for="maPR" class="form-label">Mã đơn đặt hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
-            <label for="requesterName" class="form-label">Người yêu cầu <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="requesterName" v-model="nguoiYeuCau" disabled />
+            <label for="requesterName" class="form-label">Người tạo <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="requesterName" v-model="sysIdUser" disabled />
           </div>
         </div>
         <div class="col-12 col-md-3">
@@ -34,7 +40,6 @@
           </div>
         </div>
       </div>
-
       <div class="table-responsive p-md-3">
         <button type="button" class="btn btn-secondary d-flex align-items-center mb-3 mb-md-2" @click="addProduct"
           style="transition: all 0.2s;">
@@ -102,7 +107,6 @@ import { useCustomerStore } from '@/store/customerStore';
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
-import VueDatePicker from "@vuepic/vue-datepicker"
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 
@@ -114,7 +118,7 @@ const router = useRouter();
 const isLoading = ref(false);
 const selectedCustomer = ref(null);
 const isEdit = ref(false);
-const nguoiYeuCau = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
+const sysIdUser = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
 const dateDuKien = ref();
 
 onMounted(async () => {
@@ -132,16 +136,12 @@ onMounted(async () => {
 
 // Object purchase request
 const formData = reactive({
-  maPR: '',
-  nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-  loaiYeuCau: 'NHAP',
+  sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
   chiTietNhapHang: []
 });
 
 const resetFormData = () => {
-  formData.maPR = '';
-  formData.nguoiYeuCau = JSON.parse(sessionStorage.getItem("user")).sysIdUser;
-  formData.loaiYeuCau = 'NHAP';
+  formData.sysIdUser = JSON.parse(sessionStorage.getItem("user")).sysIdUser;
   formData.chiTietNhapHang = [];
 };
 
@@ -150,7 +150,7 @@ const format = (date) => {
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  return `${year}/${month}/${day}`;
 };
 
 // Chuyển đổi kiểu ngày là String sang kiểu Date (dd/MM/yyyy)
@@ -226,9 +226,7 @@ const handleSubmit = async () => {
 
   try {
     const submitData = {
-      maPR: formData.maPR,
-      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-      loaiYeuCau: 'NHAP',
+      sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
       chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         soLuong: product.soLuong,
         gia: product.gia,
@@ -241,13 +239,9 @@ const handleSubmit = async () => {
 
     const submitDataUpdate = {
       sysIdYeuCauNhapHang: formData.sysIdYeuCauNhapHang,
-      maPR: formData.maPR,
-      nguoiYeuCau: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
-      trangThai: 'DANG_XU_LY',
-      loaiYeuCau: 'NHAP',
+      sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
       chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
-        maPR: formData.maPR, // fix tạm
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
         soLuong: product.soLuong,
@@ -259,8 +253,8 @@ const handleSubmit = async () => {
 
     showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     const response = isEdit.value
-      ? await apiService.post("purchase-requests/save", submitDataUpdate)
-      : await apiService.post("purchase-requests/save", submitData);
+      ? await apiService.post("purchase-orders/create", submitDataUpdate)
+      : await apiService.post("purchase-orders/create", submitData);
 
     if (response.status === 201) {
       closeToastLoading();
@@ -268,7 +262,7 @@ const handleSubmit = async () => {
       setTimeout(() => {
         showToastInfo('Đã gửi mail cho phòng Purchase Order');
       }, 2500);
-      router.push("/inventory/purchase-request/inbound");
+      router.push("/inventory/purchase-order/inbound");
     } else {
       showToastError('Có lỗi xảy ra, vui lòng thử lại sau');
     }
@@ -283,7 +277,7 @@ const handleSubmit = async () => {
 
 <style scoped>
 .container-fluid {
-  max-width: 1200px;
+  max-width: 100%;
   border: 1px solid var(--border-main-color);
   border-radius: 1rem;
 }

@@ -67,7 +67,7 @@ const filteredInbounds = computed(() => {
 
 <style scoped>
 .container-fluid {
-  max-width: 1600px;
+  max-width: 100%;
   border-radius: 1rem;
   border: 1px solid var(--border-main-color);
 }
