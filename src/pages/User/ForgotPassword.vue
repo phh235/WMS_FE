@@ -54,14 +54,20 @@ const handleForgotPassword = async () => {
   loading.value = true;
   try {
     showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
-    await apiService.post(`forgot-password/verify-mail/${email.value}`)
+    const response = await apiService.post(`forgot-password/verify-mail/${email.value}`)
     sessionStorage.setItem("email", email.value);
-    showToastSuccess(i18n.global.t("Swal.forgot.toast.success.title"), i18n.global.t("Swal.forgot.toast.success.text"))
-    setTimeout(function () {
-      router.push("/confirm-otp");
-    }, 1000);
+    if (response) {
+      showToastSuccess(i18n.global.t("Swal.forgot.toast.success.title"), i18n.global.t("Swal.forgot.toast.success.text"))
+      setTimeout(function () {
+        router.push("/confirm-otp");
+      }, 1000);
+    }
   } catch (error) {
-    showToastError("Email không tồn tại. Vui lòng kiểm tra lại.")
+    if (error.response.status === 404) {
+      showToastError("Email không tồn tại. Vui lòng kiểm tra lại.")
+    } else if (error.response.status === 429) {
+      showToastError("Chức năng gửi mail tạm thời vô hiệu hóa gửi mail. Vui lòng thử lại sau.")
+    }
   } finally {
     loading.value = false;
   }

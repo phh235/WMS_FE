@@ -102,16 +102,22 @@ const handleConfirmOTP = async () => {
     return
   }
 
-  loading.value = false
+  loading.value = true
   const email = sessionStorage.getItem("email");
   try {
-    await apiService.post(`forgot-password/verify-otp/${otp.value}/${email}`)
-    showToastSuccess("Xác thực OTP thành công");
-    setTimeout(function () {
-      router.push('/reset-password')
-    }, 2000);
+    const response = await apiService.post(`forgot-password/verify-otp/${otp.value}/${email}`)
+    if (response) {
+      showToastSuccess("Xác thực OTP thành công");
+      setTimeout(function () {
+        router.push('/reset-password')
+      }, 500);
+    }
   } catch (error) {
-    showToastError("Mã OTP không chính xác. Vui lòng thử lại.")
+    if (error.response.status === 410) {
+      showToastError("Mã OTP hết hạn.")
+    } else if (error.response.status === 400) {
+      showToastError("Mã OTP không chính xác. Vui lòng thử lại.")
+    }
   } finally {
     loading.value = false
     resetCountdown()

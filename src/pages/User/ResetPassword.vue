@@ -56,6 +56,7 @@ const passwordInput = reactive({
 const toggleShowPassword = () => {
   showPassword.value = !showPassword.value;
 };
+
 const toggleShowConfirmPassword = () => {
   showConfirmPassword.value = !showConfirmPassword.value;
 };
@@ -65,30 +66,57 @@ const handleResetPassword = async () => {
     showToastError(i18n.global.t("Swal.reset.toast.error.text"));
     return;
   }
+
+  const passwordPattern = {
+    length: /.{8,}/,
+    uppercase: /[A-Z]/,
+    number: /\d/,
+    specialChar: /[@$!%*?&]/
+  };
+
+  if (!passwordPattern.length.test(passwordInput.password)) {
+    showToastError("Mật khẩu phải có độ dài tối thiểu 8 ký tự.");
+    return;
+  }
+  if (!passwordPattern.uppercase.test(passwordInput.password)) {
+    showToastError("Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa.");
+    return;
+  }
+  if (!passwordPattern.number.test(passwordInput.password)) {
+    showToastError("Mật khẩu phải chứa ít nhất 1 số.");
+    return;
+  }
+  if (!passwordPattern.specialChar.test(passwordInput.password)) {
+    showToastError("Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.");
+    return;
+  }
+
   if (!passwordInput.repeatPassword) {
     showToastError(i18n.global.t("Swal.reset.toast.error.text_confirm"));
     return;
   }
 
-  if (passwordInput.password !== passwordInput.repeatPassword) {
-    showToastError(i18n.global.t("Swal.reset.toast.error.text_confirm_password"));
-    return;
-  }
+  // if (passwordInput.password !== passwordInput.repeatPassword) {
+  //   return;
+  // }
 
-  loading.value = false;
+  loading.value = true
   const email = sessionStorage.getItem("email");
   try {
-    await apiService.post(`forgot-password/change-password/${email}`, passwordInput)
+    const response = await apiService.post(`forgot-password/change-password/${email}`, passwordInput)
     showToastSuccess(i18n.global.t("Swal.reset.toast.success.title"))
     setTimeout(function () {
       showToastInfo(i18n.global.t("Swal.reset.toast.info.title"), i18n.global.t("Swal.reset.toast.info.text"));
       setTimeout(function () {
         router.push("/login");
         sessionStorage.removeItem("email");
-      }, 2000);
-    }, 2000);
+      }, 1500);
+    }, 1500);
   } catch (error) {
-    console.log("Error:", error);
+    if (error.response.status === 400) {
+      showToastError(i18n.global.t("Swal.reset.toast.error.text_confirm_password"));
+      console.log("Error:", error);
+    }
   } finally {
     loading.value = false;
   }

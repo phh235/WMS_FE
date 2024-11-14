@@ -589,12 +589,26 @@
     }
   },
   "Inbound": {
+    "tabs": {
+      "all": "Tất cả",
+      "open": "Đang mở",
+      "re-open": "Mở lại",
+      "send": "Yêu cầu phê duyệt",
+      "approving": "Đang xử lý",
+      "reject": "Đã hủy",
+      "confirm": "Đã xác nhận"
+    },
+    "search_input": {
+      "search_id": "Tìm theo mã phiếu nhập",
+      "search_name": "Tìm theo người yêu cầu"
+    },
     "title": "Nhập kho",
-    "search_input": "Tìm kiếm nhập kho...",
     "btn_create_inbound": "Tạo phiếu nhập",
     "not_found": "Không tìm thấy",
     "table": {
       "reference_code": "Mã tham chiếu",
+      "po_code": "Mã PO",
+      "wh_code": "Mã kho",
       "from": "Từ",
       "to": "Đến",
       "contact": "Liên hệ",
@@ -604,7 +618,8 @@
       "effective_date": "Ngày hiệu lực",
       "expiry_date": "Ngày hết hạn",
       "order_late": "Đơn hàng chậm trễ của",
-      "status": "Trạng thái"
+      "status": "Trạng thái",
+      "action": "Hành động"
     }
   },
   "Outbound": {

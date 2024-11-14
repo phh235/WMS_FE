@@ -590,12 +590,26 @@
     }
   },
   "Inbound": {
+    "tabs": {
+      "all": "All",
+      "open": "Open",
+      "re-open": "Re-open",
+      "send": "Send PO",
+      "approving": "Approving",
+      "reject": "Rejected",
+      "confirm": "Confirmed"
+    },
+    "search_input": {
+      "search_id": "Find by Inbound ID",
+      "search_name": "Find by requestor"
+    },
     "title": "Inbound",
-    "search_input": "Search for inbound...",
     "btn_create_inbound": "Create inbound",
     "not_found": "Not found",
     "table": {
       "reference_code": "Reference code",
+      "po_code": "PO code",
+      "wh_code": "WH code",
       "from": "From",
       "to": "To",
       "contact": "Contact",
@@ -605,7 +619,8 @@
       "effective_date": "Effective date",
       "expiry_date": "Expiry date",
       "order_late": "Delayed order of",
-      "status": "Status"
+      "status": "Status",
+      "action": "Action"
     }
   },
   "Outbound": {
