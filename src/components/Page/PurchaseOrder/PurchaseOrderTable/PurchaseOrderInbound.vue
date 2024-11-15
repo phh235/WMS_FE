@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="table-responsive">
-    <table class="table mb-3">
+    <table class="table mb-3 table-hover">
       <thead>
         <tr>
           <th class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
@@ -40,7 +40,7 @@
       <tbody>
         <tr v-if="filteredRequests.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('PurchaseOrder.not_found') }}</td>
-        </tr> 
+        </tr>
         <tr v-for="purchase in paginatedPurchases" :key="purchase.maPO">
           <td class="sticky">{{ purchase.maPO }}</td>
           <td>{{ purchase.maPR }}</td>
@@ -50,10 +50,10 @@
             <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
               <span class="material-symbols-outlined">visibility</span>
             </button>
-            <router-link :to="{ name: 'purchase-order/inbound/edit/:id', params: { id: purchase.maPO } }"
+            <!-- <router-link :to="{ name: 'purchase-order/inbound/edit/:id', params: { id: purchase.maPO } }"
               class="btn btn-secondary d-flex align-items-center">
               <span class="material-symbols-outlined">edit_square</span>
-            </router-link>
+            </router-link> -->
           </td>
         </tr>
       </tbody>
@@ -101,7 +101,7 @@
           <h5 class="fw-bold"> {{ $t('PurchaseOrder.table.detail.product_detail.title') }}
           </h5>
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th> {{ $t('PurchaseOrder.table.detail.product_detail.product_name') }}</th>
@@ -138,7 +138,7 @@
     </div>
     <div class="export-data" style="z-index: -9999;">
       <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" alt="Logo WMS"
-        width="45" class="me-2 rounded-4"/>
+        width="45" class="me-2 rounded-4" />
       <p class="h6 fw-bold mt-2" style="color: var(--nav-link-color);"> {{
         $t("LoginForgotForm.logo_title") }}
       </p>
@@ -174,7 +174,7 @@
             <h5 class="fw-bold"> {{ $t('PurchaseOrder.table.detail.product_detail.title') }}
             </h5>
             <div class="table-responsive">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr>
                     <th> {{ $t('PurchaseOrder.table.detail.product_detail.product_name') }}</th>

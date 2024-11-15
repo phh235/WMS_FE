@@ -215,12 +215,12 @@
                   </li>
                 </ul>
               </li> -->
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <router-link to="/inventory/lots-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> dataset </span>
                   {{ $t('Navbar.menu_item.lots') }}
                 </router-link>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <router-link to="/inventory/report" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> flag </span>

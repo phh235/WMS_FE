@@ -82,9 +82,35 @@ const handleLogin = async () => {
   color: var(--label-color);
   font-weight: bold;
   text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease-out !important;
 
   &:hover {
     color: var(--primary-color);
+
+    &::after {
+      width: 100%;
+      left: 0;
+      right: auto;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 1.5px;
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    right: 0;
+    bottom: -2px;
+    transition: width 0.2s ease-out;
+  }
+
+  &:not(:hover)::after {
+    width: 0;
+    left: auto;
+    right: 0;
   }
 }
 

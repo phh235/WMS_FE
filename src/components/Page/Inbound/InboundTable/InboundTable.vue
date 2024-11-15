@@ -28,7 +28,7 @@
           </button>
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
               class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
-          <router-link to="/inventory/inbound-request/inbound/new" class="btn btn-primary d-flex align-items-center"
+          <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
             v-if="authStore.checkPermissions(['User', 'Admin'])">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('Inbound.btn_create_inbound') }}
@@ -173,7 +173,7 @@
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
-                  {{ $t('Inbound.table.detail.product_detail.date_plan') }}
+                  {{ $t('Inbound.table.detail.product_detail.date_plan_ib') }}
                 </label>
                 <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.ngayNhapDuKien }}</p>
               </div>
@@ -195,7 +195,7 @@
             <h5 class="fw-bold"> {{ $t('Inbound.table.detail.product_detail.title') }}
             </h5>
             <div class="table-responsive">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr>
                     <th> {{ $t('Inbound.table.detail.product_detail.product_name') }}</th>
