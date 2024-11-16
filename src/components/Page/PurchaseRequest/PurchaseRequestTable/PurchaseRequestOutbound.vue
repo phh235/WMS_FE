@@ -36,7 +36,7 @@
     </div>
   </div>
   <div class="table-responsive">
-    <table class="table mb-3">
+    <table class="table mb-3 table-hover">
       <thead>
         <tr>
           <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
@@ -134,6 +134,11 @@
             {{ $t('PurchaseRequest.table.detail.order_detail') }}
             <span style="color: var(--primary-color);">{{ selectedPurchase.maPR }}</span>
           </h5>
+          <span class="d-flex align-items-center ms-2" style="width: fit-content;"
+            :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
+            <span class="material-symbols-outlined me-2">{{ statusIcon[selectedPurchase.trangThai] }}</span>
+            {{ getStatusLabel(selectedPurchase.trangThai) }}
+          </span>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="closeModal">close</span>
         </div>
@@ -141,26 +146,10 @@
           <!-- Hiển thị thông tin chi tiết đơn hàng -->
           <div class="row">
             <div class="col-6 col-md-4">
-              <label class="form-label">{{ $t('PurchaseRequest.table.id') }}</label>
-              <p class="fs">{{ selectedPurchase.maPR }}</p>
-            </div>
-            <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.customer') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.tenKhachHang }}</p>
-            </div>
-            <div class="col-6 col-md-4">
-              <label class="form-label">
-                {{ $t('PurchaseRequest.table.status') }}
-              </label>
-              <p>
-                <span class="d-flex align-items-center" style="width: fit-content;"
-                  :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
-                  <span class="material-symbols-outlined me-2">{{ statusIcon[selectedPurchase.trangThai] }}</span>
-                  {{ getStatusLabel(selectedPurchase.trangThai) }}
-                </span>
-              </p>
             </div>
             <div class="col-6 col-md-4">
               <label class="form-label">
@@ -176,9 +165,15 @@
             </div>
             <div class="col-6 col-md-4">
               <label class="form-label">
-                {{ $t('PurchaseRequest.table.detail.product_detail.date_plan') }}
+                {{ $t('PurchaseRequest.table.detail.product_detail.date_plan_ob') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.ngayXuatDuKien }}</p>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label">
+                {{ $t('PurchaseRequest.table.detail.product_detail.date_plan_ob') }}
+              </label>
+              <p class="fs">{{ kyGuiDate }} ngày</p>
             </div>
             <div class="col-12 col-md-12" v-if="selectedPurchase.trangThai === 'reject'">
               <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
@@ -198,7 +193,7 @@
           <h5 class="fw-bold"> {{ $t('PurchaseRequest.table.detail.product_detail.title') }}
           </h5>
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th> {{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
@@ -650,6 +645,13 @@ const exportToExcel = () => {
   link.download = 'danh-sach-yeu-cau-outbound.xlsx';
   link.click();
 };
+
+const kyGuiDate = computed(() => {
+  const ngayYeuCauNgay = parseInt(selectedPurchase.ngayYeuCau.split('T')[0].split('/')[0]);
+  const ngayXuatDuKienNgay = parseInt(selectedPurchase.chiTietXuatHang[0]?.ngayXuatDuKien.split('/')[0]);
+  const kyGui = ngayXuatDuKienNgay - ngayYeuCauNgay;
+  return kyGui;
+});
 </script>
 
 <style scoped>

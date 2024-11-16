@@ -196,7 +196,7 @@
       "all": "All",
       "open": "Open",
       "re-open": "Re-open",
-      "send": "Send PO",
+      "send": "Send",
       "approving": "Approving",
       "reject": "Rejected",
       "confirm": "Confirmed"
@@ -246,14 +246,17 @@
       },
       "detail": {
         "title": "Detail",
-        "order_detail": "Order detail: ",
+        "order_detail": "Request detail: ",
         "customer": "Customer",
         "product_detail": {
           "title": "Product detail",
           "product_name": "Product name",
           "quantity": "Quantity",
           "price": "Price",
-          "date_plan": "Expected date",
+          "date_plan_ib": "Expected import date",
+          "date_plan_ob": "Expected export date",
+          "date_deposit": "Total deposit date",
+          "day": "days",
           "total": "Total",
           "total_price": "Total order price",
           "form": {}
@@ -345,7 +348,29 @@
     "fullname": "Full name",
     "username": "Username",
     "phone": "Phone number",
-    "role": "Role"
+    "role": "Role",
+    "add_account_text": "Add Account",
+    "choose_role": "Choose Role",
+    "swal": {
+      "delete": {
+        "success": "Account deleted successfully",
+        "failed": "Account deleted failed",
+        "title": "Delete account?",
+        "text": "Are you sure you want to delete this account?",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      },
+      "success": "Saved successfully",
+      "validate": {
+        "fullname": "Full name field cannot be empty!",
+        "username": "Username field cannot be empty!",
+        "password": "Password field cannot be empty!",
+        "email": "Email field cannot be empty!",
+        "email_check": "Email is not in the correct format!",
+        "phone": "Phone number field cannot be empty!",
+        "role": "Please choose a role!"
+      }
+    }
   },
   "Product": {
     "table": {
@@ -587,15 +612,64 @@
           "supplier_name": "Supplier name cannot be empty!"
         }
       }
+    },
+    "consignments": {
+      "not_found": "Consignment not found",
+      "title_save": "Add consignment",
+      "title_edit": "Edit consignment",
+      "search_input": "Search for consignment...",
+      "consignment_id": "Consignment code",
+      "consignment_zone_detail": "Zone detail code",
+      "consignment_product": "Product",
+      "consignment_quantity": "Quantity",
+      "consignment_date": "Manufacturing date",
+      "consignment_date_exp": "Expiry date",
+      "consignment_area": "Capacity",
+      "choose_product": "Choose product",
+      "choose_zone_detail": "Choose zone detail",
+      "swal": {
+        "delete": {
+          "success": "Consignment deleted successfully",
+          "failed": "Consignment deleted failed",
+          "title": "Delete consignment?",
+          "text": "Are you sure you want to delete this consignment?",
+          "cancel": "Cancel",
+          "confirm": "Delete"
+        },
+        "success": "Saved successfully",
+        "validate": {
+          "consignment_id": "Consignment code cannot be empty!",
+          "consignment_zone_detail": "Please select zone details!",
+          "consignment_product": "Please select product!",
+          "consignment_quantity": "Quantity cannot be empty!",
+          "consignment_date": "Pleasee select manufacturing date !",
+          "consignment_date_exp": "Pleasee select expiry date !",
+          "consignment_area": "Volume cannot be empty!"
+        }
+      }
     }
   },
   "Inbound": {
+    "tabs": {
+      "all": "All",
+      "open": "Open",
+      "re-open": "Re-open",
+      "send": "Send",
+      "approving": "Approving",
+      "reject": "Rejected",
+      "confirm": "Confirmed"
+    },
+    "search_input": {
+      "search_id": "Find by Inbound ID",
+      "search_name": "Find by requestor"
+    },
     "title": "Inbound",
-    "search_input": "Search for inbound...",
     "btn_create_inbound": "Create inbound",
     "not_found": "Not found",
     "table": {
       "reference_code": "Reference code",
+      "po_code": "PO code",
+      "wh_code": "WH code",
       "from": "From",
       "to": "To",
       "contact": "Contact",
@@ -605,7 +679,8 @@
       "effective_date": "Effective date",
       "expiry_date": "Expiry date",
       "order_late": "Delayed order of",
-      "status": "Status"
+      "status": "Status",
+      "action": "Action"
     }
   },
   "Outbound": {

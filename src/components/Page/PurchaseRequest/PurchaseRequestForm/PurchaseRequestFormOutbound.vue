@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid border-0 p-0">
-    <router-link to="/inventory/purchase-request/outbound" class="btn btn-secondary mb-3 d-flex align-items-center fw-bold"
-      style="width: fit-content;">
+    <router-link to="/inventory/purchase-request/outbound"
+      class="btn btn-secondary mb-3 d-flex align-items-center fw-bold" style="width: fit-content;">
       <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
     </router-link>
   </div>
@@ -46,7 +46,7 @@
           style="transition: all 0.2s;">
           <span class="material-symbols-outlined me-2">add</span>Thêm sản phẩm
         </button>
-        <table class="table">
+        <table class="table table-hover">
           <thead>
             <tr>
               <th class="td-product text-center">Sản phẩm</th>
