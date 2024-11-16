@@ -12,7 +12,6 @@
           <th class="table-col-username">
             {{ $t('AccountManagement.username') }}
           </th>
-          <th class="table-col-password d-none">Mật khẩu</th>
           <th class="table-col-email">Email</th>
           <th class="table-col-email">
             {{ $t('AccountManagement.phone') }}
@@ -37,9 +36,9 @@
             <button class="btn btn-secondary d-flex me-2" @click="$emit('lock', user)">
               <div class="material-symbols-outlined">lock</div>
             </button>
-            <button class="btn btn-secondary d-flex me-2" @click="$emit('edit', user)">
+            <!-- <button class="btn btn-secondary d-flex me-2" @click="$emit('edit', user)">
               <div class="material-symbols-outlined">edit_square</div>
-            </button>
+            </button> -->
             <button class="btn btn-danger d-flex" @click="$emit('delete', user.username)">
               <div class="material-symbols-outlined">delete</div>
             </button>
