@@ -195,7 +195,7 @@
       "all": "Tất cả",
       "open": "Đang mở",
       "re-open": "Mở lại",
-      "send": "Yêu cầu phê duyệt",
+      "send": "Gửi",
       "approving": "Đang xử lý",
       "reject": "Đã hủy",
       "confirm": "Đã xác nhận"
@@ -245,14 +245,17 @@
       },
       "detail": {
         "title": "Chi tiết",
-        "order_detail": "Chi tiết đơn hàng: ",
+        "order_detail": "Chi tiết yêu cầu: ",
         "customer": "Khách hàng",
         "product_detail": {
           "title": "Chi tiết sản phẩm",
           "product_name": "Tên sản phẩm",
           "quantity": "Số lượng",
           "price": "Giá",
-          "date_plan": "Ngày xuất dự kiến",
+          "date_plan_ib": "Ngày nhập dự kiến",
+          "date_plan_ob": "Ngày xuất dự kiến",
+          "date_deposit": "Tổng ngày ký gửi",
+          "day": "ngày",
           "total": "Tổng tiền",
           "total_price": "Tổng giá trị đơn hàng"
         }
@@ -586,15 +589,64 @@
           "supplier_name": "Tên nhà cung cấp không được để trống!"
         }
       }
+    },
+    "consignments": {
+      "not_found": "Không tìm thấy lô hàng",
+      "title_save": "Thêm lô hàng",
+      "title_edit": "Chỉnh sửa lô hàng",
+      "search_input": "Tìm kiếm lô hàng...",
+      "consignment_id": "Mã lô",
+      "consignment_zone_detail": "Mã chi tiết khu vực",
+      "consignment_product": "Sản phẩm",
+      "consignment_quantity": "Số lượng",
+      "consignment_date": "Ngày sản xuất",
+      "consignment_date_exp": "Hạn sử dụng",
+      "consignment_area": "Dung tích",
+      "choose_product": "Chọn sản phẩm",
+      "choose_zone_detail": "Chọn chi tiết khu vực",
+      "swal": {
+        "delete": {
+          "success": "Xóa lô hàng thành công",
+          "failed": "Xóa lô hàng thất bại",
+          "title": "Xóa lô hàng?",
+          "text": "Bạn có chắc chắn muốn xóa lô hàng này?",
+          "cancel": "Hủy",
+          "confirm": "Xóa"
+        },
+        "success": "Lưu thành công",
+        "validate": {
+          "consignment_id": "Mã lô hàng không được để trống!",
+          "consignment_zone_detail": "Vui lòng chọn chi tiết khu vực!",
+          "consignment_product": "Vui lòng chọn sản phẩm!",
+          "consignment_quantity": "Số lượng không được để trống!",
+          "consignment_date": "Vui lòng chọn ngày sản xuất!",
+          "consignment_date_exp": "Vui lòng chọn ngày hết hạn!",
+          "consignment_area": "Dung tích không được để trống!"
+        }
+      }
     }
   },
   "Inbound": {
+    "tabs": {
+      "all": "Tất cả",
+      "open": "Đang mở",
+      "re-open": "Mở lại",
+      "send": "Gửi",
+      "approving": "Đang xử lý",
+      "reject": "Đã hủy",
+      "confirm": "Đã xác nhận"
+    },
+    "search_input": {
+      "search_id": "Tìm theo mã phiếu nhập",
+      "search_name": "Tìm theo người yêu cầu"
+    },
     "title": "Nhập kho",
-    "search_input": "Tìm kiếm nhập kho...",
     "btn_create_inbound": "Tạo phiếu nhập",
     "not_found": "Không tìm thấy",
     "table": {
       "reference_code": "Mã tham chiếu",
+      "po_code": "Mã PO",
+      "wh_code": "Mã kho",
       "from": "Từ",
       "to": "Đến",
       "contact": "Liên hệ",
@@ -604,7 +656,8 @@
       "effective_date": "Ngày hiệu lực",
       "expiry_date": "Ngày hết hạn",
       "order_late": "Đơn hàng chậm trễ của",
-      "status": "Trạng thái"
+      "status": "Trạng thái",
+      "action": "Hành động"
     }
   },
   "Outbound": {
