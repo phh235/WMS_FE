@@ -346,8 +346,31 @@
     "no": "STT",
     "fullname": "Họ và tên",
     "username": "Tên người dùng",
+    "password": "Mật khẩu",
     "phone": "Số điện thoại",
-    "role": "Vai trò"
+    "role": "Vai trò",
+    "add_account_text": "Cấp tài khoản",
+    "choose_role": "Chọn vai trò",
+    "swal": {
+      "delete": {
+        "success": "Xóa tài khoản thành công",
+        "failed": "Xóa tài khoản thất bại",
+        "title": "Xóa tài khoản?",
+        "text": "Bạn có chắc chắn muốn xóa tài khoản này?",
+        "cancel": "Hủy",
+        "confirm": "Xóa"
+      },
+      "success": "Lưu thành công",
+      "validate": {
+        "fullname": "Họ và tên không được để trống!",
+        "username": "Tên người dùng không được để trống!",
+        "password": "Mật khẩu không được để trống!",
+        "email": "Email không được để trống!",
+        "email_check": "Email không đúng định dạng!",
+        "phone": "Số điện thoại không được để trống!",
+        "role": "Vui lòng chọn vai trò!"
+      }
+    }
   },
   "Product": {
     "table": {

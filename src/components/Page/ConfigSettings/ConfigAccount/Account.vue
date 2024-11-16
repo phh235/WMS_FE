@@ -6,20 +6,19 @@
         v-model="searchQuery" />
     </div>
     <button type="button" class="btn btn-primary d-flex align-items-center" ref="addUserBtn" data-bs-toggle="modal"
-      data-bs-target="#categoryModal">
+      data-bs-target="#accountModal">
       <span class="material-symbols-outlined me-2"> add </span>
       {{ $t('AccountManagement.btn_account') }}
     </button>
   </div>
-  <AccountTable :users="filteredUsers" @edit="editUser" @delete="deleteUser" />
-  <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  <AccountTable :users="filteredUsers" @delete="deleteUser" />
+  <div class="modal fade" id="accountModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-            <!-- {{ sy.sysIdDanhMuc ? "Chỉnh sửa người dùng" : "Thêm người dùng" }} -->
-            Cấp tài khoản
+            {{ $t('AccountManagement.add_account_text') }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -29,11 +28,13 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="fullName" class="form-label">Họ và tên</label>
+                  <label for="fullName" class="form-label"> {{ $t('AccountManagement.fullname') }}
+                  </label>
                   <input type="text" class="form-control" id="fullName" v-model="selectedUser.fullName" />
                 </div>
                 <div class="col-6">
-                  <label for="username" class="form-label">Tên người dùng</label>
+                  <label for="username" class="form-label"> {{ $t('AccountManagement.username') }}
+                  </label>
                   <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
                 </div>
               </div>
@@ -41,12 +42,14 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-6">
-                  <label for="phone" class="form-label">Số điện thoại</label>
+                  <label for="phone" class="form-label"> {{ $t('AccountManagement.phone') }}
+                  </label>
                   <input type="text" class="form-control" id="phone" v-model="selectedUser.soDienThoai" />
                 </div>
                 <div class="col-6">
-                  <label for="password" class="form-label">Mật khẩu</label>
-                  <input type="password" class="form-control" id="password" />
+                  <label for="password" class="form-label"> {{ $t('AccountManagement.password') }}
+                  </label>
+                  <input type="password" class="form-control" id="password" v-model="selectedUser.password" />
                 </div>
               </div>
             </div>
@@ -57,11 +60,12 @@
                   <input type="email" class="form-control" id="email" v-model="selectedUser.email" />
                 </div>
                 <div class="col-6">
-                  <label for="roleId" class="form-label">Vai trò</label>
-                  <select class="form-select" id="roleId">
-                    <option value="1">Admin</option>
-                    <option value="2">Manager</option>
-                    <option value="3">User</option>
+                  <label for="roleId" class="form-label"> {{ $t('AccountManagement.role') }}</label>
+                  <select class="form-select" id="roleId" v-model="selectedUser.sysIdRole">
+                    <option value="">{{ $t('AccountManagement.choose_role') }}</option>
+                    <option v-for="role in roleStore.roles" :key="role.sysIdRole" :value="role.sysIdRole">{{
+                      role.roleName }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -73,7 +77,7 @@
             @click="btnResetForm">
             <span class="material-symbols-outlined me-2">close</span> Hủy
           </button>
-          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveCategory">
+          <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveAccount">
             <span class="material-symbols-outlined me-2">check</span> Xác nhận
           </button>
         </div>
@@ -85,14 +89,22 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from "vue";
 import { useUserStore } from "@/store/userStore";
+import { useRoleStore } from "@/store/roleStore";
 import AccountTable from "./AccountTable.vue";
+import Swal from "sweetalert2";
+import i18n from "@/lang/i18n";
+import { useApiServices } from "@/services/apiService";
+import { showToastError, showToastSuccess } from "@/components/Toast/utils/toastHandle";
 
 const userStore = useUserStore();
+const roleStore = useRoleStore();
 const addUserBtn = ref(null);
 const searchQuery = ref("");
+const apiService = useApiServices();
 
 onMounted(async () => {
   await userStore.getUsers();
+  await roleStore.getRole();
 })
 
 const selectedUser = reactive({
@@ -100,7 +112,8 @@ const selectedUser = reactive({
   username: "",
   email: "",
   soDienThoai: "",
-  roles: [],
+  password: "",
+  sysIdRole: "",
 });
 
 const filteredUsers = computed(() => {
@@ -114,13 +127,88 @@ const filteredUsers = computed(() => {
   });
 });
 
-const editUser = (user) => {
-  Object.assign(selectedUser, user);
-  addUserBtn.value.click();
+const saveAccount = async () => {
+  if (!selectedUser.fullName) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.fullname"));
+    return;
+  }
+
+  if (!selectedUser.username) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.username"));
+    return;
+  }
+
+  if (!selectedUser.soDienThoai) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.phone"));
+    return;
+  }
+
+  if (!selectedUser.password) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.password"));
+    return;
+  }
+
+  if (!selectedUser.email) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.email"));
+    return;
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(selectedUser.email)) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.email_check"));
+    return;
+  }
+
+  if (!selectedUser.sysIdRole) {
+    showToastError(i18n.global.t("AccountManagement.swal.validate.role"));
+    return;
+  }
+
+  try {
+    const accountData = {
+      fullName: selectedUser.fullName,
+      username: selectedUser.username,
+      email: selectedUser.email,
+      password: selectedUser.password,
+      soDienThoai: selectedUser.soDienThoai,
+      sysIdRole: selectedUser.sysIdRole,
+    };
+
+    const response = await apiService.post("account", accountData);
+
+    if (response) {
+      userStore.getUsers();
+      btnResetForm();
+      addUserBtn.value.click();
+      showToastSuccess(i18n.global.t("AccountManagement.swal.success"));
+    }
+  } catch (error) {
+    console.error("Error while saving account:", error);
+  }
 }
 
-const deleteUser = (username) => {
+const deleteUser = async (username) => {
+  const swalConfirm = await Swal.fire({
+    title: i18n.global.t("AccountManagement.swal.delete.title"),
+    text: i18n.global.t("AccountManagement.swal.delete.text"),
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonText: i18n.global.t("AccountManagement.swal.delete.cancel"),
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: i18n.global.t("AccountManagement.swal.delete.confirm"),
+  });
 
+  if (swalConfirm.isConfirmed) {
+    try {
+      await apiService.delete(`account/${username}`);
+      userStore.getUsers();
+      showToastSuccess(i18n.global.t("AccountManagement.swal.delete.success"));
+    } catch (error) {
+      console.error("Error while deleting account:", error);
+      showToastError("Xóa tài khoản thất bại. Vui lòng thử lại");
+    }
+  }
 }
 
 const btnResetForm = () => {

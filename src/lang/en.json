@@ -348,7 +348,29 @@
     "fullname": "Full name",
     "username": "Username",
     "phone": "Phone number",
-    "role": "Role"
+    "role": "Role",
+    "add_account_text": "Add Account",
+    "choose_role": "Choose Role",
+    "swal": {
+      "delete": {
+        "success": "Account deleted successfully",
+        "failed": "Account deleted failed",
+        "title": "Delete account?",
+        "text": "Are you sure you want to delete this account?",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      },
+      "success": "Saved successfully",
+      "validate": {
+        "fullname": "Full name field cannot be empty!",
+        "username": "Username field cannot be empty!",
+        "password": "Password field cannot be empty!",
+        "email": "Email field cannot be empty!",
+        "email_check": "Email is not in the correct format!",
+        "phone": "Phone number field cannot be empty!",
+        "role": "Please choose a role!"
+      }
+    }
   },
   "Product": {
     "table": {
@@ -623,7 +645,6 @@
           "consignment_date": "Pleasee select manufacturing date !",
           "consignment_date_exp": "Pleasee select expiry date !",
           "consignment_area": "Volume cannot be empty!"
-          
         }
       }
     }
