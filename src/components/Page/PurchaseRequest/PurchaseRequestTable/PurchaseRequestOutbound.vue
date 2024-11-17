@@ -282,7 +282,7 @@ const apiService = useApiServices();
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
 const showTabOpen = computed(() => {
-  return authStore.checkPermissions(['User']);
+  return authStore.checkPermissions(['User', 'Admin']);
 });
 
 const tabs = computed(() => {
@@ -526,7 +526,7 @@ const filteredRequests = computed(() => {
       return true;
     })
     .filter(purchase =>
-      authStore.checkPermissions(['User']) || purchase.trangThai !== 'open'
+      authStore.checkPermissions(['User', 'Admin']) || purchase.trangThai !== 'open'
     );
 });
 
