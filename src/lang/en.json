@@ -625,6 +625,7 @@
       "consignment_date": "Manufacturing date",
       "consignment_date_exp": "Expiry date",
       "consignment_area": "Capacity",
+      "consignment_detail_inbound": "Inbound detail code",
       "choose_product": "Choose product",
       "choose_zone_detail": "Choose zone detail",
       "swal": {

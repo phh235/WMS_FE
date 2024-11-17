@@ -34,7 +34,7 @@
                     {{ $t('ConfigSettings.consignments.consignment_id') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="maLo" aria-describedby="consignmentNameHelp"
-                    v-model="selectedConsignment.maLo" />
+                    v-model="selectedConsignment.maLo" disabled />
                 </div>
                 <div class="col-6">
                   <label for="dungTich" class="form-label fs fw-bold">
@@ -92,7 +92,7 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                   <label for="maChiTietKhuVuc" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.consignments.consignment_zone_detail') }} <span class="text-danger">*</span>
                   </label>
@@ -106,6 +106,14 @@
                     </option>
                   </select>
                 </div>
+                <div class="col-6">
+                  <label for="sysIdChiTietNhapHang" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.consignments.consignment_detail_inbound') }} <span
+                      class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="sysIdChiTietNhapHang"
+                    aria-describedby="consignmentNameHelp" v-model="selectedConsignment.sysIdChiTietNhapHang" />
+                </div>
               </div>
             </div>
           </form>
@@ -118,7 +126,7 @@
           </button>
           <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveConsignment">
             <span class="material-symbols-outlined me-2">check</span>
-            {{ selectedConsignment.sysIdLoHang ? $t("ConfigSettings.btn_update") : $t("ConfigSettings.btn_save") }}
+            {{ selectedConsignment.maLo ? $t("ConfigSettings.btn_update") : $t("ConfigSettings.btn_save") }}
           </button>
         </div>
       </div>
@@ -158,7 +166,8 @@ const selectedConsignment = reactive({
   ngaySanXuat: '',
   hanSuDung: '',
   dungTich: '',
-  maChiTietKhuVuc: ''
+  maChiTietKhuVuc: '',
+  sysIdChiTietNhapHang: '',
 });
 
 onMounted(async () => {
@@ -168,10 +177,16 @@ onMounted(async () => {
 });
 
 const format = (date) => {
+  if (!date || !(date instanceof Date)) return ""; // Kiểm tra null hoặc kiểu dữ liệu
   const day = date.getDate().toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
+};
+
+const parseDate = (dateStr) => {
+  const [day, month, year] = dateStr.split('/').map(Number);
+  return new Date(year, month - 1, day); // Tháng bắt đầu từ 0 (tháng 1 là 0)
 };
 
 const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -214,11 +229,6 @@ const updateUrl = () => {
 };
 
 const saveConsignment = async () => {
-  if (!selectedConsignment.maLo.trim()) {
-    showToastError(i18n.global.t("ConfigSettings.consignments.swal.validate.consignment_id"));
-    return;
-  }
-
   if (!selectedConsignment.dungTich) {
     showToastError(i18n.global.t("ConfigSettings.consignments.swal.validate.consignment_area"));
     return;
@@ -253,10 +263,11 @@ const saveConsignment = async () => {
     const consignmentData = {
       sysIdSanPham: selectedConsignment.sysIdSanPham,
       soLuong: selectedConsignment.soLuong,
-      ngaySanXuat: selectedConsignment.ngaySanXuat,
-      hanSuDung: selectedConsignment.hanSuDung,
+      ngaySanXuat: format(selectedConsignment.ngaySanXuat),
+      hanSuDung: format(selectedConsignment.hanSuDung),
       dungTich: selectedConsignment.dungTich,
       maChiTietKhuVuc: selectedConsignment.maChiTietKhuVuc,
+      sysIdChiTietNhapHang: selectedConsignment.sysIdChiTietNhapHang,
     };
 
     const response = selectedConsignment.sysIdLoHang
@@ -280,7 +291,11 @@ const saveConsignment = async () => {
 };
 
 const editConsignment = (consignment) => {
-  Object.assign(selectedConsignment, consignment);
+  Object.assign(selectedConsignment, {
+    ...consignment,
+    ngaySanXuat: parseDate(consignment.ngaySanXuat),
+    hanSuDung: parseDate(consignment.hanSuDung),
+  });
   addConsignmentBtn.value.click();
 };
 
@@ -318,7 +333,8 @@ const btnResetForm = () => {
     ngaySanXuat: '',
     hanSuDung: '',
     dungTich: '',
-    maChiTietKhuVuc: ''
+    maChiTietKhuVuc: '',
+    sysIdChiTietNhapHang: ''
   });
 };
 </script>

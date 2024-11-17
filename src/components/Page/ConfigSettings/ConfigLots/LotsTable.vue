@@ -11,6 +11,7 @@
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_date_exp') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_area') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_zone_detail') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_detail_inbound') }}</th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
@@ -21,12 +22,13 @@
         <tr v-for="consignment in consignments" :key="consignment.sysIdLoHang">
           <td scope="row">{{ consignment.sysIdLoHang }}</td>
           <td class="sticky">{{ consignment.maLo }}</td>
-          <td>{{ consignment.sysIdSanPham }}</td>
+          <td>{{ consignment.tenSanPham }}</td>
           <td>{{ consignment.soLuong }}</td>
           <td>{{ consignment.ngaySanXuat }}</td>
           <td>{{ consignment.hanSuDung }}</td>
           <td>{{ consignment.dungTich }}</td>
           <td>{{ consignment.maChiTietKhuVuc }}</td>
+          <td>{{ consignment.sysIdChiTietNhapHang || 'Không có' }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', consignment)">
               <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>

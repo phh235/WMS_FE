@@ -625,6 +625,7 @@
       "consignment_date": "Ngày sản xuất",
       "consignment_date_exp": "Hạn sử dụng",
       "consignment_area": "Dung tích",
+      "consignment_detail_inbound": "Mã chi tiết nhập hàng",
       "choose_product": "Chọn sản phẩm",
       "choose_zone_detail": "Chọn chi tiết khu vực",
       "swal": {
