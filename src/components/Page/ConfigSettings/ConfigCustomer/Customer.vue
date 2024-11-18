@@ -2,9 +2,6 @@
   <div class="mb-4 d-flex justify-content-end align-items-center">
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.customers.search_input')" />
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
-        <span class="material-symbols-outlined">sort_by_alpha</span>
-      </button>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCustomerBtn"
         data-bs-toggle="modal" data-bs-target="#customerModal">
         <span class="material-symbols-outlined me-2"> add </span>
@@ -12,7 +9,8 @@
       </button>
     </div>
   </div>
-  <CustomerTable :customers="filteredCustomers" @edit="editCustomer" @delete="deleteCustomer" />
+  <CustomerTable :customers="filteredCustomers" @edit="editCustomer" @delete="deleteCustomer" @id="toggleSortById"
+    @name="toggleSortByName" @company="toggleSortByCompany" @phone="toggleSortByPhone" @address="toggleSortByAddress" />
   <div class="modal fade" id="customerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -42,24 +40,24 @@
                     v-model="selectedCustomer.tenKhachHang" />
                 </div>
                 <div class="col-6">
-                  <label for="tenCongTy" class="form-label fs fw-bold">
-                    {{ $t('ConfigSettings.customers.customer_company') }} <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" class="form-control" id="tenCongTy" aria-describedby="customerNameHelp"
-                    v-model="selectedCustomer.tenCongTy" />
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <div class="row">
-                <div class="col-6">
                   <label for="soDienThoai" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.customers.phone') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="soDienThoai" aria-describedby="customerNameHelp"
                     v-model="selectedCustomer.soDienThoai" />
                 </div>
-                <div class="col-6">
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-12">
+                  <label for="tenCongTy" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.customers.customer_company') }} <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="tenCongTy" aria-describedby="customerNameHelp"
+                    v-model="selectedCustomer.tenCongTy" />
+                </div>
+                <!-- <div class="col-6">
                   <label for="sysIdNhaCungCap" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.customers.supplier_id') }} <span class="text-danger">*</span>
                   </label>
@@ -71,12 +69,12 @@
                       :value="supplier.sysIdNhaCungCap"> {{ supplier.tenNhaCungCap }}
                     </option>
                   </select>
-                </div>
+                </div> -->
               </div>
             </div>
             <div>
               <label for="address" class="form-label fs fw-bold">
-                {{ $t('ConfigSettings.customers.address') }}
+                {{ $t('ConfigSettings.customers.address') }} <span class="text-danger">*</span>
               </label>
               <textarea class="form-control" id="address" rows="4" aria-describedby="customerAddressHelp"
                 v-model="selectedCustomer.diaChi"></textarea>
@@ -128,7 +126,6 @@ const selectedCustomer = reactive({
   tenKhachHang: "",
   tenCongTy: "",
   soDienThoai: "",
-  sysIdNhaCungCap: "",
   diaChi: "",
 });
 
@@ -146,22 +143,57 @@ const filteredCustomers = computed(() => {
       customer.sysIdKhachHang.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
       removeAccents(customer.tenKhachHang.toLowerCase()).includes(removeAccents(query)) ||
       removeAccents(customer.tenCongTy.toLowerCase()).includes(removeAccents(query)) ||
-      removeAccents(customer.sysIdNhaCungCap.toLowerCase()).includes(removeAccents(query)) ||
       removeAccents(customer.soDienThoai.toLowerCase()).includes(removeAccents(query)) ||
       removeAccents(customer.diaChi.toLowerCase()).includes(removeAccents(query))
     ));
 
-  if (sortOption.value === "name-asc") {
+  if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.sysIdKhachHang - b.sysIdKhachHang); // tăng dần
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.sysIdKhachHang - a.sysIdKhachHang); // giảm dần
+  } else if (sortOption.value === "name-asc") {
     filtered.sort((a, b) => a.tenKhachHang.localeCompare(b.tenKhachHang)); // A-Z
   } else if (sortOption.value === "name-desc") {
     filtered.sort((a, b) => b.tenKhachHang.localeCompare(a.tenKhachHang)); // Z-A
+  } else if (sortOption.value === "company-asc") {
+    filtered.sort((a, b) => a.tenCongTy.localeCompare(b.tenCongTy)); // A-Z
+  } else if (sortOption.value === "company-desc") {
+    filtered.sort((a, b) => b.tenCongTy.localeCompare(a.tenCongTy)); // Z-A
+  } else if (sortOption.value === "phone-asc") {
+    filtered.sort((a, b) => a.soDienThoai.localeCompare(b.soDienThoai)); // A-Z
+  } else if (sortOption.value === "phone-desc") {
+    filtered.sort((a, b) => b.soDienThoai.localeCompare(a.soDienThoai)); // Z-A
+  } else if (sortOption.value === "address-asc") {
+    filtered.sort((a, b) => a.diaChi.localeCompare(b.diaChi)); // A-Z
+  } else if (sortOption.value === "address-desc") {
+    filtered.sort((a, b) => b.diaChi.localeCompare(a.diaChi)); // Z-A
   }
 
   return filtered;
 });
 
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  updateUrl();
+};
+
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+
+const toggleSortByCompany = () => {
+  sortOption.value = sortOption.value === "company-asc" ? "company-desc" : "company-asc";
+  updateUrl();
+};
+
+const toggleSortByPhone = () => {
+  sortOption.value = sortOption.value === "phone-asc" ? "phone-desc" : "phone-asc";
+  updateUrl();
+};
+
+const toggleSortByAddress = () => {
+  sortOption.value = sortOption.value === "address-asc" ? "address-desc" : "address-asc";
   updateUrl();
 };
 
@@ -195,8 +227,8 @@ const saveCustomer = async () => {
     return;
   }
 
-  if (!selectedCustomer.sysIdNhaCungCap) {
-    showToastError(i18n.global.t("ConfigSettings.customers.swal.validate.supplier_id"));
+  if (!selectedCustomer.diaChi) {
+    showToastError(i18n.global.t("ConfigSettings.customers.swal.validate.address"));
     return;
   }
 
@@ -205,7 +237,6 @@ const saveCustomer = async () => {
       tenKhachHang: selectedCustomer.tenKhachHang,
       tenCongTy: selectedCustomer.tenCongTy,
       soDienThoai: selectedCustomer.soDienThoai,
-      sysIdNhaCungCap: selectedCustomer.sysIdNhaCungCap,
       diaChi: selectedCustomer.diaChi,
     };
 

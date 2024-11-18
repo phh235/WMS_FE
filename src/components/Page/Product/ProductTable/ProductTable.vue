@@ -2,12 +2,12 @@
   <div class="box-shadow p-3">
     <div class="d-flex mb-3 justify-content-end">
       <SearchInput v-model="searchQuery" :placeholder="$t('Product.table.search_input')" />
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByQuantity">
+      <!-- <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByQuantity">
         <span class="material-symbols-outlined">swap_vert</span>
       </button>
       <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
         <span class="material-symbols-outlined">sort_by_alpha</span>
-      </button>
+      </button> -->
       <router-link to="/inventory/product/new" class="btn btn-primary d-flex align-items-center">
         <span class="material-symbols-outlined me-2"> add </span>
         {{ $t('Product.table.btn_save') }}
@@ -17,10 +17,16 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th class="td-id">{{ $t('Product.table.no') }}</th>
-            <th class="td-name">{{ $t('Product.table.product_name') }}</th>
+            <th class="td-id" @click="toggleSortById">{{ $t('Product.table.no') }} <span
+                class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+            </th>
+            <th class="td-name" @click="toggleSortByName">{{ $t('Product.table.product_name') }} <span
+                class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
             <th class="td-desc">{{ $t('Product.table.desc') }}</th>
-            <th class="td-quantity">{{ $t('Product.table.available_quantity') }}</th>
+            <th class="td-quantity" @click="toggleSortByQuantity">{{
+              $t('Product.table.available_quantity') }} <span
+                class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+            </th>
             <th class="text-center td-action">{{ $t('Product.table.btn_action') }}</th>
           </tr>
         </thead>
@@ -120,6 +126,10 @@ const filteredProducts = computed(() => {
     filtered.sort((a, b) => a.soLuongHienCo - b.soLuongHienCo);
   } else if (sortOption.value === "quantity-desc") {
     filtered.sort((a, b) => b.soLuongHienCo - a.soLuongHienCo);
+  } else if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.sysIdDanhMuc - b.sysIdDanhMuc);
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.sysIdDanhMuc - a.sysIdDanhMuc);
   }
 
   return filtered;
@@ -146,6 +156,10 @@ watch([() => props.selectedCategory, searchQuery], () => {
 const handleItemsPerPageChange = (newItemsPerPage) => {
   pageSize.value = newItemsPerPage;
   currentPage.value = 1;
+};
+
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
 };
 
 const toggleSortByName = () => {
@@ -213,7 +227,7 @@ const deleteProduct = async (id) => {
 }
 
 .td-id {
-  width: 40px;
+  width: 60px;
 }
 
 .td-name {

@@ -8,35 +8,46 @@
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-2">
           <div class="mb-3 mb-md-0">
             <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-2">
           <div class="mb-3 mb-md-0">
             <label for="requesterName" class="form-label">Người yêu cầu <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="requesterName" v-model="nguoiYeuCau" disabled />
           </div>
         </div>
+        <div class="col-12 col-md-2">
+          <div class="mb-3 mb-md-0">
+            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
+            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
+              :auto-position="true" placeholder="Chọn ngày nhập dự kiến">
+            </VueDatePicker>
+          </div>
+        </div>
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
-            <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
-            <select v-model="selectedCustomer" id="customer" class="form-select">
-              <option :value="null" disabled>Chọn khách hàng</option>
-              <option v-for="customer in customerStore.customers" :key="customer.sysIdKhachHang" :value="customer">
-                {{ customer.tenKhachHang }}
+            <label for="supplier" class="form-label">Nhà cung cấp <span class="text-danger">*</span></label>
+            <select v-model="selectedSupplier" id="supplier" class="form-select">
+              <option value="" disabled>Chọn nhà cung cấp</option>
+              <option v-for="supplier in supplierStore.suppliers" :key="supplier.sysIdNhaCungCap" :value="supplier">
+                {{ supplier.tenNhaCungCap }}
               </option>
             </select>
           </div>
         </div>
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
-            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
-            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-              :auto-position="true" placeholder="Chọn ngày nhập hàng dự kiến">
-            </VueDatePicker>
+            <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
+            <select v-model="selectedCustomer" id="customer" class="form-select">
+              <option value="" disabled>Chọn khách hàng</option>
+              <option v-for="customer in customerStore.customers" :key="customer.sysIdKhachHang" :value="customer">
+                {{ customer.tenKhachHang }}
+              </option>
+            </select>
           </div>
         </div>
       </div>
@@ -46,7 +57,7 @@
           style="transition: all 0.2s;">
           <span class="material-symbols-outlined me-2">add</span>Thêm sản phẩm
         </button>
-        <table class="table table-hover">
+        <table class="table">
           <thead>
             <tr>
               <th class="td-product text-center">Sản phẩm</th>
@@ -105,6 +116,7 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
 import { useCustomerStore } from '@/store/customerStore';
+import { useSupplierStore } from '@/store/supplierStore';
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
@@ -116,9 +128,11 @@ const { t } = useI18n();
 const apiService = useApiServices();
 const productStore = useProductStore();
 const customerStore = useCustomerStore();
+const supplierStore = useSupplierStore();
 const router = useRouter();
 const isLoading = ref(false);
 const selectedCustomer = ref(null);
+const selectedSupplier = ref(null);
 const isEdit = ref(false);
 const nguoiYeuCau = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
 const dateDuKien = ref();
@@ -126,6 +140,7 @@ const dateDuKien = ref();
 onMounted(async () => {
   await productStore.getProducts();
   await customerStore.getCustomers();
+  await supplierStore.getSuppliers();
   const { id } = router.currentRoute.value.params;
   if (id) {
     await getPurchaseRequestOBByID(id);
@@ -177,12 +192,18 @@ const getPurchaseRequestOBByID = async (id) => {
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: product.sysIdKhachHang,
+        sysIdNhaCungCap: product.sysIdNhaCungCap,
         soLuong: product.soLuong,
         gia: product.gia,
         ngayNhapDuKien: product.ngayNhapDuKien,
       }));
 
       dateDuKien.value = parseDateString(formData.chiTietNhapHang[0].ngayNhapDuKien);
+
+      selectedSupplier.value = supplierStore.suppliers.find(
+        (s) => s.sysIdNhaCungCap === formData.chiTietNhapHang[0].sysIdNhaCungCap
+      );
+      console.log(selectedSupplier.value);
 
       selectedCustomer.value = customerStore.customers.find(
         (c) => c.sysIdKhachHang === formData.chiTietNhapHang[0].sysIdKhachHang
@@ -198,6 +219,7 @@ const addProduct = () => {
   formData.chiTietNhapHang.push({
     sysIdSanPham: '',
     sysIdKhachHang: '',
+    sysIdNhaCungCap: '',
     soLuong: 0,
     gia: 0,
     ngayNhapDuKien: ''
@@ -218,6 +240,16 @@ const totalCost = computed(() => {
 
 // Thêm/chỉnh sửa yêu cầu
 const handleSubmit = async () => {
+  if (!dateDuKien.value) {
+    showToastError('Vui lòng chọn ngày nhập dự kiến!');
+    return;
+  }
+
+  if (!selectedSupplier.value) {
+    showToastError('Vui lòng chọn nhà cung cấp!');
+    return;
+  }
+
   if (!selectedCustomer.value) {
     showToastError('Vui lòng chọn khách hàng!');
     return;
@@ -241,6 +273,7 @@ const handleSubmit = async () => {
         tongChiPhi: product.soLuong * product.gia,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
+        sysIdNhaCungCap: selectedSupplier.value.sysIdNhaCungCap,
         ngayNhapDuKien: format(dateDuKien.value)
       }))
     };
@@ -256,6 +289,7 @@ const handleSubmit = async () => {
         maPR: formData.maPR, // fix tạm
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
+        sysIdNhaCungCap: selectedSupplier.value.sysIdNhaCungCap,
         soLuong: product.soLuong,
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,

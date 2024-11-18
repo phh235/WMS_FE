@@ -3,12 +3,23 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">{{ $t('ConfigSettings.no') }}</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.customers.customer_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.customers.customer_company') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.customers.phone') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.customers.supplier_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.customers.address') }}</th>
+          <th scope="col" @click="$emit('id', toggleSortById)">{{ $t('ConfigSettings.no') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('name', toggleSortByName)" class="sticky">{{
+            $t('ConfigSettings.customers.customer_name') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('company', toggleSortByCompany)">{{
+            $t('ConfigSettings.customers.customer_company') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('phone', toggleSortByPhone)">{{ $t('ConfigSettings.customers.phone') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('address', toggleSortByAddress)">{{ $t('ConfigSettings.customers.address') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
@@ -21,7 +32,6 @@
           <td class="sticky">{{ customer.tenKhachHang }}</td>
           <td class="sticky">{{ customer.tenCongTy }}</td>
           <td class="sticky">{{ customer.soDienThoai }}</td>
-          <td class="sticky">{{ customer.tenNhaCungCap }}</td>
           <td>{{ customer.diaChi }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', customer)">
@@ -49,7 +59,7 @@ defineProps({
   }
 });
 
-defineEmits(['edit', 'delete']);
+defineEmits(['edit', 'delete', 'id', 'name', 'company', 'phone', 'address']);
 </script>
 
 <style scoped>

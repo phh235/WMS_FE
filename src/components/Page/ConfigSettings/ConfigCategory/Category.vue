@@ -8,9 +8,6 @@
     </div>
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.categories.search_input')" />
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
-        <span class="material-symbols-outlined">sort_by_alpha</span>
-      </button>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
         data-bs-toggle="modal" data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
@@ -18,7 +15,8 @@
       </button>
     </div>
   </div>
-  <CategoryTable :categories="filteredCategories" @edit="editCategory" @delete="deleteCategory" />
+  <CategoryTable :categories="filteredCategories" @edit="editCategory" @delete="deleteCategory"
+    @sort="toggleSortByName" />
   <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

@@ -248,6 +248,7 @@
         "title": "Detail",
         "order_detail": "Request detail: ",
         "customer": "Customer",
+        "supplier": "Supplier",
         "product_detail": {
           "title": "Product detail",
           "product_name": "Product name",
@@ -585,6 +586,7 @@
           "customer_name": "Customer name cannot be empty!",
           "customer_company": "Company name cannot be empty!",
           "phone": "Company name cannot be empty!",
+          "address": "Address cannot be empty!",
           "supplier_id": "Please select a supplier!"
         }
       }
@@ -595,8 +597,10 @@
       "title_edit": "Edit supplier",
       "search_input": "Search supplier...",
       "supplier_id": "Supplier code",
-      "supplier_name": "Customer type name",
-      "supplier_desc": "Description",
+      "supplier_name": "Supplier name",
+      "supplier_company": "Company Name",
+      "supplier_phone": "Phone Number",
+      "supplier_address": "Address",
       "swal": {
         "delete": {
           "success": "Supplier deleted successfully",
@@ -608,8 +612,10 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "supplier_id": "Supplier code cannot be empty!",
-          "supplier_name": "Supplier name cannot be empty!"
+          "supplier_name": "Supplier name cannot be empty!",
+          "supplier_company": "Company name cannot be empty!",
+          "supplier_phone": "Phone number cannot be empty!",
+          "supplier_address": "Address cannot be empty!"
         }
       }
     },
