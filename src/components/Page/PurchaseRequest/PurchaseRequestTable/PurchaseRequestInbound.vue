@@ -134,7 +134,7 @@
             {{ $t('PurchaseRequest.table.detail.order_detail') }}
             <span style="color: var(--primary-color);">{{ selectedPurchase.maPR }}</span>
           </h5>
-          <span class="d-flex align-items-center ms-2" style="width: fit-content;"
+          <span class="d-flex align-items-center ms-5" style="width: fit-content;"
             :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
             <span class="material-symbols-outlined me-2">{{ statusIcon[selectedPurchase.trangThai] }}</span>
             {{ getStatusLabel(selectedPurchase.trangThai) }}
@@ -149,11 +149,17 @@
               <label class="form-label">{{ $t('PurchaseRequest.table.id') }}</label>
               <p class="fs">{{ selectedPurchase.maPR }}</p>
             </div> -->
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
+              <label class="form-label">
+                {{ $t('PurchaseRequest.table.detail.supplier') }}
+              </label>
+              <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.tenKhachHang }}</p>
+            </div>
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.customer') }}
               </label>
-              <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.tenKhachHang }}</p>
+              <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.tenNhaCungCap }}</p>
             </div>
             <!-- <div class="col-6 col-md-4">
               <label class="form-label">
@@ -167,30 +173,30 @@
                 </span>
               </p>
             </div> -->
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.name') }}
               </label>
               <p class="fs">{{ selectedPurchase.nguoiYeuCau }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.date_request') }}
               </label>
               <p class="fs">{{ selectedPurchase.ngayYeuCau }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_plan_ib') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.ngayNhapDuKien }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <!-- <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_deposit') }}
               </label>
               <p class="fs">{{ kyGuiDate }} {{ $t('PurchaseRequest.table.detail.product_detail.day') }}</p>
-            </div>
+            </div> -->
             <div class="col-12 col-md-12" v-if="selectedPurchase.trangThai === 'reject'">
               <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
                 <span class="material-symbols-outlined fs-2 me-3">

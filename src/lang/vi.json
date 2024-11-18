@@ -47,7 +47,7 @@
           "zoneDetail": "Chi tiết khu vực",
           "categories": "Danh mục",
           "partner": "Đối tác",
-          "suppliers": "Nhà cung cấp",
+          "suppliers": "Loại khách hàng",
           "customer": "Khách hàng",
           "account": "Quản lý tài khoản"
         }
@@ -247,6 +247,7 @@
         "title": "Chi tiết",
         "order_detail": "Chi tiết yêu cầu: ",
         "customer": "Khách hàng",
+        "supplier": "Nhà cung cấp",
         "product_detail": {
           "title": "Chi tiết sản phẩm",
           "product_name": "Tên sản phẩm",
@@ -562,8 +563,8 @@
       "search_input": "Tìm kiếm khách hàng...",
       "customer_name": "Tên khách hàng",
       "customer_company": "Tên công ty",
-      "supplier_id": "Nhà cung cấp",
-      "choose_supplier": "Chọn nhà cung cấp",
+      "supplier_id": "Loại khách hàng",
+      "choose_supplier": "Chọn loại khách hàng",
       "phone": "Số điện thoại",
       "address": "Địa chỉ",
       "tabs": {
@@ -585,7 +586,8 @@
           "customer_name": "Tên khách hàng không được để trống!",
           "customer_company": "Tên công ty không được để trống!",
           "phone": "Tên công ty không được để trống!",
-          "supplier_id": "Vui lòng chọn nhà cung cấp!"
+          "address": "Địa chỉ không được để trống!",
+          "supplier_id": "Vui lòng chọn loại khách hàng!"
         }
       }
     },
@@ -596,7 +598,9 @@
       "search_input": "Tìm kiếm nhà cung cấp...",
       "supplier_id": "Mã nhà cung cấp",
       "supplier_name": "Tên nhà cung cấp",
-      "supplier_desc": "Mô tả",
+      "supplier_company": "Tên công ty",
+      "supplier_phone": "Số điện thoại",
+      "supplier_address": "Địa chỉ",
       "swal": {
         "delete": {
           "success": "Xóa nhà cung cấp thành công",
@@ -608,8 +612,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "supplier_id": "Mã nhà cung cấp không được để trống!",
-          "supplier_name": "Tên nhà cung cấp không được để trống!"
+          "supplier_name": "Tên nhà cung cấp không được để trống!",
+          "supplier_company": "Tên công ty không được để trống!",
+          "supplier_phone": "Số điện thoại không được để trống!",
+          "supplier_address": "Địa chỉ không được để trống!"
         }
       }
     },

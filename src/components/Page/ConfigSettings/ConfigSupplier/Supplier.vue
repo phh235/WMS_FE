@@ -12,7 +12,8 @@
       </button>
     </div>
   </div>
-  <SupplierTable :suppliers="filteredSuppliers" @edit="editSupplier" @delete="deleteSupplier" />
+  <SupplierTable :suppliers="filteredSuppliers" @edit="editSupplier" @delete="deleteSupplier" @name="toggleSortByName"
+    @company="toggleSortByCompany" />
   <div class="modal fade" id="supplierModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -29,7 +30,7 @@
           <form>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-6 d-none">
                   <div class="mb-3">
                     <label for="supplierId" class="form-label fs fw-bold">{{ $t('ConfigSettings.suppliers.supplier_id')
                       }} <span class="text-danger">*</span></label>
@@ -38,20 +39,40 @@
                   </div>
                 </div>
                 <div class="col-6">
-                  <label for="tenLoaiKhachHang" class="form-label fs fw-bold">
+                  <label for="tenNhaCungCap" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.suppliers.supplier_name') }} <span class="text-danger">*</span>
                   </label>
-                  <input type="text" class="form-control" id="tenLoaiKhachHang" aria-describedby="supplierNameHelp"
-                    v-model="selectedSupplier.tenLoaiKhachHang" />
+                  <input type="text" class="form-control" id="tenNhaCungCap" aria-describedby="supplierNameHelp"
+                    v-model="selectedSupplier.tenNhaCungCap" />
+                </div>
+                <div class="col-6">
+                  <label for="tenCongTy" class="form-label fs fw-bold">
+                    {{ $t('ConfigSettings.suppliers.supplier_company') }} <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="tenCongTy" aria-describedby="supplierNameHelp"
+                    v-model="selectedSupplier.tenCongTy" />
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="phone" class="form-label fs fw-bold">{{
+                      $t('ConfigSettings.suppliers.supplier_phone')
+                    }} <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="phone" aria-describedby="supplierIdHelp"
+                      v-model="selectedSupplier.soDienThoai" />
+                  </div>
                 </div>
               </div>
             </div>
             <div>
-              <label for="supplierDescription" class="form-label fs fw-bold">
-                {{ $t('ConfigSettings.suppliers.supplier_desc') }}
+              <label for="supplierAddress" class="form-label fs fw-bold">
+                {{ $t('ConfigSettings.suppliers.supplier_address') }}
               </label>
-              <textarea class="form-control" id="supplierDescription" rows="4"
-                aria-describedby="supplierDescriptionHelp" v-model="selectedSupplier.moTa"></textarea>
+              <textarea class="form-control" id="supplierAddress" rows="4" aria-describedby="supplierDescriptionHelp"
+                v-model="selectedSupplier.diaChi"></textarea>
             </div>
             <div class="mb-3"></div>
           </form>
@@ -96,8 +117,10 @@ const sortOption = ref("");
 
 const selectedSupplier = reactive({
   sysIdNhaCungCap: "",
-  tenLoaiKhachHang: "",
-  moTa: "",
+  tenNhaCungCap: "",
+  tenCongTy: "",
+  soDienThoai: "",
+  diaChi: "",
 });
 
 onMounted(async () => {
@@ -111,14 +134,19 @@ const filteredSuppliers = computed(() => {
   let filtered = supplierStore.suppliers
     .filter(supplier => (
       supplier.sysIdNhaCungCap.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
-      removeAccents(supplier.tenLoaiKhachHang.toLowerCase()).includes(removeAccents(query)) ||
-      removeAccents(supplier.moTa.toLowerCase()).includes(removeAccents(query))
+      removeAccents(supplier.tenNhaCungCap.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(supplier.tenCongTy.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(supplier.diaChi.toLowerCase()).includes(removeAccents(query))
     ));
 
   if (sortOption.value === "name-asc") {
-    filtered.sort((a, b) => a.tenLoaiKhachHang.localeCompare(b.tenLoaiKhachHang)); // A-Z
+    filtered.sort((a, b) => a.tenNhaCungCap.localeCompare(b.tenNhaCungCap)); // A-Z
   } else if (sortOption.value === "name-desc") {
-    filtered.sort((a, b) => b.tenLoaiKhachHang.localeCompare(a.tenLoaiKhachHang)); // Z-A
+    filtered.sort((a, b) => b.tenNhaCungCap.localeCompare(a.tenNhaCungCap)); // Z-A
+  } else if (sortOption.value === "company-asc") {
+    filtered.sort((a, b) => a.tenCongTy.localeCompare(b.tenCongTy)); // A-Z
+  } else if (sortOption.value === "company-desc") {
+    filtered.sort((a, b) => b.tenCongTy.localeCompare(a.tenCongTy)); // Z-A
   }
 
   return filtered;
@@ -126,6 +154,10 @@ const filteredSuppliers = computed(() => {
 
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+const toggleSortByCompany = () => {
+  sortOption.value = sortOption.value === "company-asc" ? "company-desc" : "company-asc";
   updateUrl();
 };
 
@@ -144,15 +176,29 @@ const updateUrl = () => {
 };
 
 const saveSupplier = async () => {
-  if (!selectedSupplier.tenLoaiKhachHang) {
+  if (!selectedSupplier.tenNhaCungCap) {
     showToastError(i18n.global.t("ConfigSettings.suppliers.swal.validate.supplier_name"));
+    return;
+  }
+  if (!selectedSupplier.tenCongTy) {
+    showToastError(i18n.global.t("ConfigSettings.suppliers.swal.validate.supplier_company"));
+    return;
+  }
+  if (!selectedSupplier.soDienThoai) {
+    showToastError(i18n.global.t("ConfigSettings.suppliers.swal.validate.supplier_phone"));
+    return;
+  }
+  if (!selectedSupplier.diaChi) {
+    showToastError(i18n.global.t("ConfigSettings.suppliers.swal.validate.supplier_address"));
     return;
   }
 
   try {
     const supplierData = {
-      tenLoaiKhachHang: selectedSupplier.tenLoaiKhachHang,
-      moTa: selectedSupplier.moTa,
+      tenNhaCungCap: selectedSupplier.tenNhaCungCap,
+      tenCongTy: selectedSupplier.tenCongTy,
+      soDienThoai: selectedSupplier.soDienThoai,
+      diaChi: selectedSupplier.diaChi,
     };
 
     const response = selectedSupplier.sysIdNhaCungCap
@@ -209,8 +255,10 @@ const deleteSupplier = async (id) => {
 const btnResetForm = () => {
   Object.assign(selectedSupplier, {
     sysIdNhaCungCap: "",
-    tenLoaiKhachHang: "",
-    moTa: "",
+    tenNhaCungCap: "",
+    tenCongTy: "",
+    soDienThoai: "",
+    diaChi: "",
   });
 };
 </script>
