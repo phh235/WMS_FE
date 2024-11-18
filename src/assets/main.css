@@ -484,6 +484,12 @@ th {
   border: none !important;
   padding: 12px 8px !important;
   font-size: 14px !important;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--secondary-color-hover) !important;
+  }
 }
 
 th:first-child {

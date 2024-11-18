@@ -4,7 +4,10 @@
       <thead>
         <tr>
           <th scope="col">{{ $t('ConfigSettings.no') }}</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.categories.category_name') }}</th>
+          <th scope="col" class="sticky" @click="$emit('sort', toggleSortByName)">{{
+            $t('ConfigSettings.categories.category_name') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
           <th scope="col">{{ $t('ConfigSettings.categories.category_desc') }}</th>
           <th scope="col">{{ $t('ConfigSettings.categories.warehouse_name') }}</th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
@@ -45,7 +48,7 @@ defineProps({
   }
 });
 
-defineEmits(['edit', 'delete']);
+const emit = defineEmits(['edit', 'delete', 'sort']);
 </script>
 
 <style scoped>

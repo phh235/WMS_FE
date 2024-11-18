@@ -145,36 +145,36 @@
         <div class="modal-body">
           <!-- Hiển thị thông tin chi tiết đơn hàng -->
           <div class="row">
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.customer') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.tenKhachHang }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.name') }}
               </label>
               <p class="fs">{{ selectedPurchase.nguoiYeuCau }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.date_request') }}
               </label>
               <p class="fs">{{ selectedPurchase.ngayYeuCau }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <div class="col-6 col-md-3">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_plan_ob') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietXuatHang[0]?.ngayXuatDuKien }}</p>
             </div>
-            <div class="col-6 col-md-4">
+            <!-- <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_plan_ob') }}
               </label>
               <p class="fs">{{ kyGuiDate }} ngày</p>
-            </div>
+            </div> -->
             <div class="col-12 col-md-12" v-if="selectedPurchase.trangThai === 'reject'">
               <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
                 <span class="material-symbols-outlined fs-2 me-3">

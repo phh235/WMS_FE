@@ -6,7 +6,7 @@
           <th scope="col">{{ $t('ConfigSettings.no') }}</th>
           <th scope="col" class="sticky">{{ $t('ConfigSettings.consignments.consignment_id') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_product') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_quantity') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_quantity') }} (Kg)</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_date') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_date_exp') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_area') }}</th>

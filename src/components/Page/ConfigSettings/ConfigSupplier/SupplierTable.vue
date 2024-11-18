@@ -4,8 +4,17 @@
       <thead>
         <tr>
           <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_id') }}</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.suppliers.supplier_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_desc') }}</th>
+          <th scope="col" @click="$emit('name', toggleSortByName)" class="sticky">{{
+            $t('ConfigSettings.suppliers.supplier_name') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('company', toggleSortByCompany)">{{
+            $t('ConfigSettings.suppliers.supplier_company')
+          }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_phone') }}</th>
+          <th scope="col">{{ $t('ConfigSettings.suppliers.supplier_address') }}</th>
           <th scope="col" class="text-center action">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
@@ -16,7 +25,9 @@
         <tr v-for="supplier in suppliers" :key="supplier.sysIdNhaCungCap">
           <td scope="row">{{ supplier.sysIdNhaCungCap }}</td>
           <td class="sticky">{{ supplier.tenNhaCungCap }}</td>
-          <td>{{ supplier.moTa }}</td>
+          <td>{{ supplier.tenCongTy }}</td>
+          <td>{{ supplier.soDienThoai }}</td>
+          <td>{{ supplier.diaChi }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', supplier)">
               <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
@@ -43,7 +54,7 @@ defineProps({
   }
 });
 
-defineEmits(['edit', 'delete']);
+defineEmits(['edit', 'delete', 'name', 'company']);
 </script>
 
 <style scoped>
