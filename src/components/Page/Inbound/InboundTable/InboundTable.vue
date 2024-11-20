@@ -195,7 +195,7 @@
             <h5 class="fw-bold"> {{ $t('Inbound.table.detail.product_detail.title') }}
             </h5>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table ">
                 <thead>
                   <tr>
                     <th> {{ $t('Inbound.table.detail.product_detail.product_name') }}</th>

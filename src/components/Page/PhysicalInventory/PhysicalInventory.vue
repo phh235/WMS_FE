@@ -4,7 +4,7 @@
       <button type="button" class="btn btn-primary d-flex align-items-center" @click="addInventory">
         <span class="material-symbols-outlined me-2">add</span>Thêm tồn kho
       </button>
-      <table class="table table-hover">
+      <table class="table ">
         <thead>
           <tr>
             <th class="th-id">ID Tồn kho</th>
