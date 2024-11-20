@@ -45,7 +45,7 @@
           style="transition: all 0.2s;">
           <span class="material-symbols-outlined me-2">add</span>Thêm sản phẩm
         </button>
-        <table class="table table-hover">
+        <table class="table ">
           <thead>
             <tr>
               <th class="td-product text-center">Sản phẩm</th>

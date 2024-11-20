@@ -17,7 +17,7 @@
         </div>
         <div class="mb-3 password-container">
           <label class="form-label fs" for="repeatPassword">{{ $t("LoginForgotForm.reset.confirm") }}</label>
-          <input id="repeatPassword" :type="showPassword ? 'text' : 'password'" class="form-control"
+          <input id="repeatPassword" :type="showConfirmPassword ? 'text' : 'password'" class="form-control"
             v-model="passwordInput.repeatPassword" />
           <span class="toggle-password" @click="toggleShowConfirmPassword">
             <span v-if="showConfirmPassword" class="material-symbols-outlined"> visibility_off </span>
@@ -110,8 +110,8 @@ const handleResetPassword = async () => {
       setTimeout(function () {
         router.push("/login");
         sessionStorage.removeItem("email");
-      }, 1500);
-    }, 1500);
+      }, 1000);
+    }, 1000);
   } catch (error) {
     if (error.response.status === 400) {
       showToastError(i18n.global.t("Swal.reset.toast.error.text_confirm_password"));

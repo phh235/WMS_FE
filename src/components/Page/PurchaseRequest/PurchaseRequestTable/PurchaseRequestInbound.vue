@@ -36,7 +36,7 @@
     </div>
   </div>
   <div class="table-responsive">
-    <table class="table mb-3 table-hover">
+    <table class="table mb-3">
       <thead>
         <tr>
           <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
@@ -215,7 +215,7 @@
           <h5 class="fw-bold"> {{ $t('PurchaseRequest.table.detail.product_detail.title') }}
           </h5>
           <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table ">
               <thead>
                 <tr>
                   <th> {{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
@@ -458,6 +458,7 @@ const updatePRStatus = async (id, status, lyDo) => {
         maPR: product.maPR,
         sysIdSanPham: product.sysIdSanPham,
         sysIdKhachHang: product.sysIdKhachHang,
+        sysIdNhaCungCap: product.sysIdNhaCungCap,
         soLuong: product.soLuong,
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
