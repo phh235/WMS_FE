@@ -14,7 +14,7 @@
       </router-link>
     </div>
     <div class="table-responsive">
-      <table class="table table-hover">
+      <table class="table ">
         <thead>
           <tr>
             <th class="td-id" @click="toggleSortById">{{ $t('Product.table.no') }} <span

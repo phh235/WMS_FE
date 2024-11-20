@@ -134,6 +134,28 @@ export default [
     },
   },
   {
+    path: "scan-qr",
+    name: "ScanQR",
+    component: () => import("@/components/Page/QRCode/QRCode.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Quét QR",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
+    path: "invoice/order-info/:id",
+    name: "OrderInfo",
+    component: () => import("@/components/Page/Invoice/OrderInfo.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Thông tin đơn hàng",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "purchase-request",
     name: "PurchaseRequest",
     component: () => import("@/components/Page/PurchaseRequest/PurchaseRequest.vue"),

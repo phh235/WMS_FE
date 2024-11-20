@@ -41,7 +41,7 @@
         </div>
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
-            <label for="customer" class="form-label">Khách hàng <span class="text-danger">*</span></label>
+            <label for="customer" class="form-label">Khách hàng</label>
             <select v-model="selectedCustomer" id="customer" class="form-select">
               <option value="" disabled>Chọn khách hàng</option>
               <option v-for="customer in customerStore.customers" :key="customer.sysIdKhachHang" :value="customer">
