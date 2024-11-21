@@ -136,7 +136,11 @@
           "title": "Đặt lại mật khẩu thất bại",
           "text": "Vui lòng nhập mật khẩu mới",
           "text_confirm": "Vui lòng xác nhận mật khẩu mới",
-          "text_confirm_password": "Mật khẩu xác nhận không khớp"
+          "text_confirm_password": "Mật khẩu xác nhận không khớp",
+          "check_length": "Mật khẩu phải có độ dài tối thiểu 8 ký tự.",
+          "check_uppercase": "Mật khẩu phải có ít nhất 1 chữ cái viết hoa.",
+          "check_number": "Mật khẩu phải có ít nhất 1 số.",
+          "check_special": "Mật khẩu phải có ít nhất 1 ký tự đặc biệt."
         },
         "success": {
           "title": "Đặt lại mật khẩu thành công"

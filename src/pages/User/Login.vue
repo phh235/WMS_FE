@@ -9,28 +9,35 @@
         <!-- Username input -->
         <div class="mb-2">
           <label class="form-label fs" for="username">{{ $t("LoginForgotForm.login.label_username") }}</label>
-          <input type="text" id="username" class="form-control" v-model="username" />
+          <input type="text" id="username" class="form-control" v-model="username"
+            :class="{ 'is-invalid': usernameError }" />
+          <div v-if="usernameError" class="invalid-feedback">
+            {{ $t(usernameError) }}
+          </div>
         </div>
         <!-- Password input -->
         <div class="mb-2 password-container">
           <label class="form-label fs" for="password">{{ $t("LoginForgotForm.login.label_password") }}</label>
           <input class="form-control" :type="showPassword ? 'text' : 'password'" id="password" autocomplete
-            v-model="password" />
-          <span class="toggle-password" @click="toggleShowPassword">
+            v-model="password" :class="{ 'is-invalid': passwordError }" />
+          <span class="toggle-password" @click="toggleShowPassword" v-if="!passwordError">
             <span v-if="showPassword" class="material-symbols-outlined"> visibility_off </span>
             <span v-else class="material-symbols-outlined"> visibility </span>
           </span>
+          <div v-if="passwordError" class="invalid-feedback">
+            {{ $t(passwordError) }}
+          </div>
         </div>
         <div class="mb-2 text-end">
-          <router-link to="/forgot-password" class="forgot fs"> {{ $t("LoginForgotForm.login.forgot_text") }}?
+          <router-link to="/forgot-password" class="forgot fs"> {{ $t("LoginForgotForm.login.forgot_text") }}
           </router-link>
         </div>
         <!-- Submit button -->
         <button class="btn btn-login w-100 d-flex align-items-center justify-content-center fw-bold" type="submit"
           :disabled="loading" :class="{ loading: loading }">
-          <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> {{
-            $t("LoginForgotForm.login.btn_login") }}
-          <!-- <span v-if="!loading"></span> -->
+          <span v-if="loading" class="spinner-border spinner-border-sm me-2 align-middle" role="status"
+            aria-hidden="true"></span> {{
+              $t("LoginForgotForm.login.btn_login") }}
         </button>
       </form>
     </div>
@@ -40,32 +47,41 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/store/authStore.js";
-import i18n from "@/lang/i18n";
-import { showToastError } from "@components/Toast/utils/toastHandle.js";
 
 const authStore = useAuthStore();
 const loading = ref(false);
 const username = ref("");
 const password = ref("");
+const usernameError = ref("");
+const passwordError = ref("");
 const showPassword = ref(false);
 
+// Show/hide password
 const toggleShowPassword = () => {
   showPassword.value = !showPassword.value;
 };
 
 const handleLogin = async () => {
+  // Reset errors
+  usernameError.value = "";
+  passwordError.value = "";
+
+  // Check username
   if (!username.value) {
-    showToastError(
-      // i18n.global.t("Swal.login.toast.error.title"), 
-      i18n.global.t("Swal.login.toast.error.username_text"));
-    return;
+    usernameError.value = "Swal.login.toast.error.username_text"; // Lưu key
   }
+
+  // Check password
   if (!password.value) {
-    showToastError(
-      // i18n.global.t("Swal.login.toast.error.title"), 
-      i18n.global.t("Swal.login.toast.error.password_text"));
+    passwordError.value = "Swal.login.toast.error.password_text"; // Lưu key
+  }
+
+  // If there is an error, stop
+  if (usernameError.value || passwordError.value) {
     return;
   }
+
+  // handle login
   loading.value = true;
   try {
     await authStore.login({ username: username.value, password: password.value });
@@ -168,5 +184,15 @@ const handleLogin = async () => {
   input {
     font-size: 1rem !important;
   }
+}
+
+input {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Bỏ transition chỉ cho input có is-invalid */
+input.is-invalid {
+  transition: none !important;
+  border: 1.5px solid #dc3545 !important;
 }
 </style>
