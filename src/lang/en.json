@@ -137,7 +137,11 @@
           "title": "Password reset failed",
           "text": "Please enter new password",
           "text_confirm": "Please confirm new password",
-          "text_confirm_password": "Confirm password does not match"
+          "text_confirm_password": "Confirm password does not match",
+          "check_length": "Password must be at least 8 characters long.",
+          "check_uppercase": "Password must contain at least 1 uppercase letter.",
+          "check_number": "Password must contain at least 1 number.",
+          "check_special": "Password must contain at least 1 special character."
         },
         "success": {
           "title": "Password reset successful"

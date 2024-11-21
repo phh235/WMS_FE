@@ -86,7 +86,7 @@
               <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false"
-                  :disabled="(authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'reject')">
+                  :disabled="(authStore.checkPermissions(['Manager', 'Admin']) && purchase.trangThai !== 'approving')">
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
