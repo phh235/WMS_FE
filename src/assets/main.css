@@ -13,6 +13,8 @@
   --btn-primary-color: #fff;
   --main-text-color: #16a34a;
   --border-input-color: #16a34a;
+  --valid-color: #16a34a;
+  --is-valid-color: #dc3545;
   --border-main-color: #e4e4e7;
   --text-light-color: #fff;
   --text-select: #fff;
@@ -98,6 +100,7 @@
   --border-main-color: #2d2f31;
   --main-text-color: #ffffff;
   --border-input-color: #22c55e;
+  --valid-color: #22c55e;
   --nav-link-color: #fff;
   --label-color: #fff;
   --nav-link-hover: #303134;

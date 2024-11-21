@@ -10,7 +10,11 @@
             <label for="username" class="form-label">{{ $t("AccountInfo.label.username") }}</label>
           </div>
           <div class="col-sm-8">
-            <input id="username" v-model="userInfo.username" type="text" class="form-control" />
+            <input id="username" v-model="userInfo.username" type="text" class="form-control"
+              :class="{ 'is-invalid': errors.username }" />
+            <div v-if="errors.username" class="invalid-feedback">
+              {{ errors.username }}
+            </div>
           </div>
         </div>
         <div class="row mb-3 d-flex align-items-center">
@@ -18,7 +22,11 @@
             <label for="fullname" class="form-label">{{ $t("AccountInfo.label.fullname") }}</label>
           </div>
           <div class="col-sm-8">
-            <input id="fullname" v-model="userInfo.fullName" type="text" class="form-control" />
+            <input id="fullname" v-model="userInfo.fullName" type="text" class="form-control"
+              :class="{ 'is-invalid': errors.fullName }" />
+            <div v-if="errors.fullName" class="invalid-feedback">
+              {{ errors.fullName }}
+            </div>
           </div>
         </div>
         <div class="row mb-3 d-flex align-items-center">
@@ -26,7 +34,11 @@
             <label for="email" class="form-label">Email</label>
           </div>
           <div class="col-sm-8">
-            <input id="email" v-model="userInfo.email" type="email" class="form-control" />
+            <input id="email" v-model="userInfo.email" type="email" class="form-control"
+              :class="{ 'is-invalid': errors.email }" />
+            <div v-if="errors.email" class="invalid-feedback">
+              {{ errors.email }}
+            </div>
           </div>
         </div>
         <div class="row mb-3 d-flex align-items-center">
@@ -34,7 +46,11 @@
             <label for="phone" class="form-label">{{ $t("AccountInfo.label.phone") }}</label>
           </div>
           <div class="col-sm-8">
-            <input id="phone" v-model="userInfo.soDienThoai" type="tel" class="form-control" />
+            <input id="phone" v-model="userInfo.soDienThoai" type="tel" class="form-control"
+              :class="{ 'is-invalid': errors.soDienThoai }" />
+            <div v-if="errors.soDienThoai" class="invalid-feedback">
+              {{ errors.soDienThoai }}
+            </div>
           </div>
         </div>
         <button :disabled="isLoading" class="btn btn-primary d-flex align-items-center">
@@ -47,6 +63,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
@@ -80,39 +97,32 @@ onMounted(async () => {
 //   userStore.loadUserFromSession();
 // }, { deep: true });
 
-const updateInfo = async () => {
+const errors = reactive({
+  username: null,
+  fullName: null,
+  email: null,
+  soDienThoai: null,
+});
 
-  if (!userInfo.username) {
-    showToastError(t('AccountInfo.swal.error.username_text'));
-    return;
-  }
+const validateFields = () => {
+  errors.username = userInfo.username ? null : t("AccountInfo.swal.error.username_text");
+  errors.fullName = userInfo.fullName ? null : t("AccountInfo.swal.error.fullname_text");
+  errors.email = userInfo.email ? null : t("AccountInfo.swal.error.email_text");
 
-  if (!userInfo.fullName) {
-    showToastError(t('AccountInfo.swal.error.fullname_text'));
-    return;
-  }
-
-  if (!userInfo.email) {
-    showToastError(t('AccountInfo.swal.error.email_text'));
-    return;
-  }
-
-  // Kiểm tra định dạng email
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailPattern.test(userInfo.email)) {
-    showToastError(t('AccountInfo.swal.error.email_check'));
-    return;
-  }
+  errors.email = errors.email || (emailPattern.test(userInfo.email) ? null : t("AccountInfo.swal.error.email_check"));
 
-  if (!userInfo.soDienThoai) {
-    showToastError(t('AccountInfo.swal.error.phone_text'));
-    return;
-  }
+  errors.soDienThoai = userInfo.soDienThoai ? null : t("AccountInfo.swal.error.phone_text");
 
-  // Kiểm tra số điện thoại
-  const phonePattern = /^\d{10,11}$/; // Đảm bảo là 10 hoặc 11 chữ số
-  if (!phonePattern.test(userInfo.soDienThoai)) {
-    showToastError(t('AccountInfo.swal.error.phone_check'));
+  const phonePattern = /^\d{10,11}$/;
+  errors.soDienThoai =
+    errors.soDienThoai || (phonePattern.test(userInfo.soDienThoai) ? null : t("AccountInfo.swal.error.phone_check"));
+
+  return !Object.values(errors).some((error) => error !== null);
+};
+
+const updateInfo = async () => {
+  if (!validateFields()) {
     return;
   }
 
@@ -132,19 +142,20 @@ const updateInfo = async () => {
     try {
       const response = await apiService.post("users/update-info", userInfo);
       if (response.status === 200) {
-        showToastSuccess(t('AccountInfo.swal.success.title_info'));
+        showToastSuccess(t("AccountInfo.swal.success.title_info"));
         await userStore.getUserByUsername();
         Object.assign(userInfo, userStore.user);
       } else {
-        showToastError(t('AccountInfo.swal.error.failed'));
+        showToastError(t("AccountInfo.swal.error.failed"));
       }
     } catch (error) {
-      showToastError(t('AccountInfo.swal.error.failed'));
+      showToastError(t("AccountInfo.swal.error.failed"));
     } finally {
       isLoading.value = false;
     }
   }
 };
+
 </script>
 
 <style scoped>
@@ -156,5 +167,15 @@ const updateInfo = async () => {
 .spinner-border {
   width: 1.2rem;
   height: 1.2rem;
+}
+
+input {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Bỏ transition chỉ cho input có is-invalid */
+input.is-invalid {
+  transition: none !important;
+  border: 1.5px solid #dc3545 !important;
 }
 </style>

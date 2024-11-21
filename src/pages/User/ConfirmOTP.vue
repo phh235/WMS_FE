@@ -29,7 +29,8 @@
           </p>
         </div>
         <button type="submit" class="btn btn-login w-100 fw-bold" :disabled="loading" :class="{ loading }">
-          <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span v-if="loading" class="spinner-border spinner-border-sm align-middle" role="status"
+            aria-hidden="true"></span>
           <span v-if="!loading">{{ $t("LoginForgotForm.otp.btn_confirm") }}</span>
         </button>
       </form>
