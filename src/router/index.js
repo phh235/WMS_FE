@@ -4,7 +4,7 @@ import MenuItems from "@components/Header/MenuBar/MenuItems.js";
 import Login from "@pages/User/Login.vue";
 import { useAuthStore } from "@/store/authStore";
 import i18n from "@/lang/i18n";
-import { showToastWarning, showToastLoading } from "@/components/Toast/utils/toastHandle";
+import { showToastWarning, showToastLoading } from "@/utils/Toast/toastHandle";
 
 export const routes = [
   {

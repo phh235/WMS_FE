@@ -75,7 +75,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useApiServices } from "@/services/apiService";
-import { showToastError, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import { showToastError, showToastSuccess } from "@/utils/Toast/toastHandle";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import Swal from "sweetalert2";
@@ -162,8 +162,4 @@ input {
 }
 
 /* Bỏ transition chỉ cho input có is-invalid */
-input.is-invalid {
-  transition: none !important;
-  border: 1.5px solid #dc3545 !important;
-}
 </style>

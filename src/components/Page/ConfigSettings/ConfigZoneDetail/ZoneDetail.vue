@@ -106,7 +106,7 @@
 import { ref, reactive, onMounted, computed } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useZoneStore } from "@/store/zoneStore.js";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";

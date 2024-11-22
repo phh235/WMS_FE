@@ -94,7 +94,7 @@ import AccountTable from "./AccountTable.vue";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useApiServices } from "@/services/apiService";
-import { showToastError, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import { showToastError, showToastSuccess } from "@/utils/Toast/toastHandle";
 
 const userStore = useUserStore();
 const roleStore = useRoleStore();

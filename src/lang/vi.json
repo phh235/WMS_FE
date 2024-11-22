@@ -83,8 +83,8 @@
       "toast": {
         "error": {
           "title": "Đăng nhập thất bại",
-          "username_text": "Tên đăng nhập không được để trống",
-          "password_text": "Mật khẩu không được để trống",
+          "username_text": "Tên đăng nhập không được trống",
+          "password_text": "Mật khẩu không được trống",
           "login_fail": "Đăng nhập thất bại"
         },
         "success": {
@@ -118,7 +118,7 @@
       "toast": {
         "error": {
           "title": "Gửi email thất bại",
-          "text": "Email không được để trống"
+          "text": "Email không được trống"
         },
         "success": {
           "title": "Gửi OTP thành công",
@@ -324,16 +324,16 @@
       },
       "error": {
         "title": "Cập nhật thất bại",
-        "fullname_text": "Họ và tên không được để trống",
-        "username_text": "Tên người dùng không được để trống",
-        "phone_text": "Số điện thoại không được để trống",
+        "fullname_text": "Họ và tên không được trống",
+        "username_text": "Tên người dùng không được trống",
+        "phone_text": "Số điện thoại không được trống",
         "phone_check": "Số điện thoại không đúng định dạng",
-        "email_text": "Email không được để trống",
+        "email_text": "Email không được trống",
         "email_check": "Email không đúng định dạng",
-        "password_old_text": "Mật khẩu cũ không được để trống",
+        "password_old_text": "Mật khẩu cũ không được trống",
         "password_old_check": "Mật khẩu cũ không đúng",
-        "password_new_text": "Mật khẩu mới không được để trống",
-        "password_confirm_text": "Mật khẩu mới không được để trống",
+        "password_new_text": "Mật khẩu mới không được trống",
+        "password_confirm_text": "Mật khẩu mới không được trống",
         "password_confirm_check": "Xác nhận mật khẩu mới không đúng",
         "failed": "Cập nhật thông tin thất bại",
         "failed_password": "Cập nhật mật khẩu thất bại"
@@ -367,12 +367,12 @@
       },
       "success": "Lưu thành công",
       "validate": {
-        "fullname": "Họ và tên không được để trống!",
-        "username": "Tên người dùng không được để trống!",
-        "password": "Mật khẩu không được để trống!",
-        "email": "Email không được để trống!",
+        "fullname": "Họ và tên không được trống!",
+        "username": "Tên người dùng không được trống!",
+        "password": "Mật khẩu không được trống!",
+        "email": "Email không được trống!",
         "email_check": "Email không đúng định dạng!",
-        "phone": "Số điện thoại không được để trống!",
+        "phone": "Số điện thoại không được trống!",
         "role": "Vui lòng chọn vai trò!"
       }
     }
@@ -459,10 +459,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "warehouse_id": "Mã kho hàng không được để trống!",
-          "warehouse_name": "Tên kho hàng không được để trống!",
-          "warehouse_area": "Diện tích hàng không được để trống!",
-          "manager": "Vui lòng chọn người dùng!"
+          "warehouse_id": "Mã kho hàng không được trống!",
+          "warehouse_name": "Tên kho hàng không được trống!",
+          "warehouse_area": "Diện tích hàng không được trống!",
+          "manager": "Vui lòng chọn người phụ trách!"
         }
       }
     },
@@ -492,9 +492,9 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "zone_id": "Mã khu vực không được để trống!",
-          "zone_name": "Tên khu vực không được để trống!",
-          "zone_desc": "Mô tả khu vực không được để trống!",
+          "zone_id": "Mã khu vực không được trống!",
+          "zone_name": "Tên khu vực không được trống!",
+          "zone_desc": "Mô tả khu vực không được trống!",
           "warehouse_id": "Vui lòng chọn kho!"
         }
       }
@@ -522,10 +522,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "zone_detail_id": "Mã chi tiết khu vực không được để trống!",
-          "zone_detail_name": "Tên chi tiết khu vực không được để trống!",
-          "area_storage": "Thể tích lưu trữ không được để trống!",
-          "area_available": "Thể tích khả dụng không được để trống!",
+          "zone_detail_id": "Mã chi tiết khu vực không được trống!",
+          "zone_detail_name": "Tên chi tiết khu vực không được trống!",
+          "area_storage": "Thể tích lưu trữ không được trống!",
+          "area_available": "Thể tích khả dụng không được trống!",
           "zone_id": "Vui lòng chọn khu vực"
         }
       }
@@ -555,7 +555,7 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "category_name": "Tên danh mục không được để trống!",
+          "category_name": "Tên danh mục không được trống!",
           "warehouse_id": "Vui lòng chọn kho!"
         }
       }
@@ -587,10 +587,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "customer_name": "Tên khách hàng không được để trống!",
-          "customer_company": "Tên công ty không được để trống!",
-          "phone": "Tên công ty không được để trống!",
-          "address": "Địa chỉ không được để trống!",
+          "customer_name": "Tên khách hàng không được trống!",
+          "customer_company": "Tên công ty không được trống!",
+          "phone": "Tên công ty không được trống!",
+          "address": "Địa chỉ không được trống!",
           "supplier_id": "Vui lòng chọn loại khách hàng!"
         }
       }
@@ -616,10 +616,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "supplier_name": "Tên nhà cung cấp không được để trống!",
-          "supplier_company": "Tên công ty không được để trống!",
-          "supplier_phone": "Số điện thoại không được để trống!",
-          "supplier_address": "Địa chỉ không được để trống!"
+          "supplier_name": "Tên nhà cung cấp không được trống!",
+          "supplier_company": "Tên công ty không được trống!",
+          "supplier_phone": "Số điện thoại không được trống!",
+          "supplier_address": "Địa chỉ không được trống!"
         }
       }
     },
@@ -649,13 +649,13 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "consignment_id": "Mã lô hàng không được để trống!",
+          "consignment_id": "Mã lô hàng không được trống!",
           "consignment_zone_detail": "Vui lòng chọn chi tiết khu vực!",
           "consignment_product": "Vui lòng chọn sản phẩm!",
-          "consignment_quantity": "Số lượng không được để trống!",
+          "consignment_quantity": "Số lượng không được trống!",
           "consignment_date": "Vui lòng chọn ngày sản xuất!",
           "consignment_date_exp": "Vui lòng chọn ngày hết hạn!",
-          "consignment_area": "Dung tích không được để trống!"
+          "consignment_area": "Dung tích không được trống!"
         }
       }
     }
