@@ -46,55 +46,12 @@
           style="transition: all 0.2s;">
           <span class="material-symbols-outlined me-2">add</span>Thêm sản phẩm
         </button>
-        <table class="table ">
-          <thead>
-            <tr>
-              <th class="td-product text-center">Sản phẩm</th>
-              <th class="td-quantity text-center">Số lượng (Kg)</th>
-              <th class="td-price text-center">Giá (đ)</th>
-              <th class="text-center td-action">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="formData.chiTietXuatHang.length === 0">
-              <td colspan="10" class="text-center">Chưa có sản phẩm</td>
-            </tr>
-            <tr v-for="(product, index) in formData.chiTietXuatHang" :key="index">
-              <td class="d-none">{{ product.sysIdChiTietXuatHang }}</td>
-              <td class="td-product">
-                <select v-model="product.sysIdSanPham" class="form-select">
-                  <option value="" disabled>Chọn sản phẩm</option>
-                  <option v-for="prod in productStore.products" :key="prod.sysIdSanPham" :value="prod.sysIdSanPham">
-                    {{ prod.tenSanPham }}
-                  </option>
-                </select>
-              </td>
-              <td class="td-quantity">
-                <input v-model.number="product.soLuong" type="number" class="form-control" min="0" />
-              </td>
-              <td class="td-price">
-                <input v-model.number="product.gia" type="number" class="form-control" min="0" />
-              </td>
-              <td class="td-action">
-                <div class="d-flex align-items-center justify-content-center">
-                  <button type="button" class="btn btn-danger  d-flex justify-content-center align-items-center"
-                    @click="removeProduct(index)">
-                    <span class="material-symbols-outlined">delete_sweep</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
         <div class="d-flex justify-content-between align-items-center mt-5">
           <button :disabled="isLoading" type="submit" class="btn btn-primary d-flex align-items-center">
             <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
             </span>
             <span v-else class="material-symbols-outlined me-2">check</span>{{ isEdit ? 'Cập nhật' : 'Xác nhận' }}
           </button>
-          <h5 class="fw-bold" style="color: var(--label-color);">
-            Tổng tiền: <span style="color: var(--primary-color);">{{ totalCost.toLocaleString() }} đ</span>
-          </h5>
         </div>
       </div>
     </form>
@@ -107,7 +64,7 @@ import { useProductStore } from "@/store/productStore.js";
 import { useCustomerStore } from '@/store/customerStore';
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
-import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/components/Toast/utils/toastHandle";
+import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/utils/Toast/toastHandle";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
-import { showToastSuccess, showToastError } from "@/components/Toast/utils/toastHandle";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle";
 import i18n from "@/lang/i18n";
 
 export const useAuthStore = defineStore("auth", {
@@ -14,6 +14,7 @@ export const useAuthStore = defineStore("auth", {
       try {
         const response = await axios.post(
           "http://localhost:8080/api/v1/auth/login",
+          // "http://localhost:8080/api/v1/auth/login",
           userCredentials
         );
 

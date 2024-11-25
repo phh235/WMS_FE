@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import { useApiServices } from "../services/apiService";
-import { showToastError } from "@/components/Toast/utils/toastHandle";
+import { showToastError } from "@/utils/Toast/toastHandle";
 
 export const useUserStore = defineStore("users", () => {
   // Sử dụng reactive để tạo đối tượng user có thể phản ứng

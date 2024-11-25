@@ -77,7 +77,7 @@
 import { ref, computed, watch } from 'vue';
 import { useApiServices } from "@/services/apiService.js";
 import { useI18n } from "vue-i18n";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle.js";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import Swal from "sweetalert2";

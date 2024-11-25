@@ -27,15 +27,17 @@
                 <div class="col-6">
                   <label for="warehouseId" class="form-label fs fw-bold">{{
                     $t('ConfigSettings.warehouses.warehouse_id') }}</label> <span class="text-danger">*</span>
-                  <input type="text" class="form-control" id="warehouseId" aria-describedby="warehouseIdHelp"
+                  <input type="text" class="form-control" id="warehouseId" :class="{ 'is-invalid': errors.maKho }"
                     v-model="selectedWarehouse.maKho" />
+                  <div class="invalid-feedback" v-if="errors.maKho">{{ $t(errors.maKho) }}</div>
                 </div>
                 <div class="col-6">
                   <label for="tenKho" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.warehouses.warehouse_name') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="tenKho" aria-describedby="warehouseNameHelp"
-                    v-model="selectedWarehouse.tenKho" />
+                    :class="{ 'is-invalid': errors.tenKho }" v-model="selectedWarehouse.tenKho" />
+                  <div class="invalid-feedback" v-if="errors.tenKho">{{ $t(errors.tenKho) }}</div>
                 </div>
               </div>
             </div>
@@ -45,12 +47,14 @@
                   <label for="dienTich" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.warehouse_area')
                     }}</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="dienTich" aria-describedby="warehouseAdressHelp"
-                    v-model="selectedWarehouse.dienTich" />
+                    :class="{ 'is-invalid': errors.dienTich }" v-model="selectedWarehouse.dienTich" />
+                  <div class="invalid-feedback" v-if="errors.dienTich">{{ $t(errors.dienTich) }}</div>
                 </div>
                 <div class="col-6">
                   <label for="sysIdUser" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.manager')
                     }}</label> <span class="text-danger">*</span>
-                  <select class="form-select" id="sysIdUser" v-model="selectedWarehouse.sysIdUser">
+                  <select class="form-select" id="sysIdUser" v-model="selectedWarehouse.sysIdUser"
+                    :class="{ 'is-invalid': errors.sysIdUser }">
                     <option value="" disabled>
                       {{ $t('ConfigSettings.warehouses.choose_manager') }}
                     </option>
@@ -58,6 +62,7 @@
                       {{ user.fullName }}
                     </option>
                   </select>
+                  <div class="invalid-feedback" v-if="errors.sysIdUser">{{ $t(errors.sysIdUser) }}</div>
                 </div>
               </div>
             </div>
@@ -90,11 +95,12 @@ import { ref, reactive, onMounted, computed } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useWarehouseStore } from "@/store/warehouseStore";
 import { useUserStore } from "@/store/userStore";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle.js";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import WarehouseTable from "./WarehouseTable.vue";
+import { isNotEmpty, validate } from "@/utils/validation";
 
 const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
@@ -109,6 +115,7 @@ const selectedWarehouse = reactive({
   moTa: "",
   sysIdUser: "",
 });
+const errors = reactive({});
 
 onMounted(async () => {
   await warehouseStore.getWarehouses();
@@ -131,25 +138,21 @@ const filteredWarehouses = computed(() => {
 
 // Lưu hoặc cập nhật kho hàng
 const saveWarehouse = async () => {
-  if (!selectedWarehouse.maKho.trim()) {
-    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.warehouse_id"));
-    return;
-  }
+  errors.maKho = validate(selectedWarehouse.maKho, [
+    { check: isNotEmpty, message: ("ConfigSettings.warehouses.swal.validate.warehouse_id") },
+  ]);
 
-  if (!selectedWarehouse.tenKho.trim()) {
-    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.warehouse_name"));
-    return;
-  }
+  errors.tenKho = validate(selectedWarehouse.tenKho, [
+    { check: isNotEmpty, message: ("ConfigSettings.warehouses.swal.validate.warehouse_name") },
+  ]);
 
-  if (!selectedWarehouse.dienTich) {
-    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.warehouse_area"));
-    return;
-  }
+  errors.dienTich = validate(selectedWarehouse.dienTich, [
+    { check: isNotEmpty, message: ("ConfigSettings.warehouses.swal.validate.warehouse_area") },
+  ]);
 
-  if (!selectedWarehouse.sysIdUser) {
-    showToastError(i18n.global.t("ConfigSettings.warehouses.swal.validate.manager"));
-    return;
-  }
+  errors.sysIdUser = validate(selectedWarehouse.sysIdUser, [
+    { check: isNotEmpty, message: ("ConfigSettings.warehouses.swal.validate.manager") },
+  ]);
 
   try {
     const warehouseData = {
@@ -219,6 +222,12 @@ const btnResetForm = () => {
     tenKho: "",
     dienTich: "",
     moTa: "",
+    sysIdUser: "",
+  });
+  Object.assign(errors, {
+    maKho: "",
+    tenKho: "",
+    dienTich: "",
     sysIdUser: "",
   });
 };

@@ -83,7 +83,7 @@ import { ref, onMounted, reactive, watch } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useCategoriesStore } from "@/store/categoryStore.js";
 import { useProductStore } from "@/store/productStore.js";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle.js";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";

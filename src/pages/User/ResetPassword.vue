@@ -74,7 +74,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { showToastError, showToastInfo, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import { showToastError, showToastInfo, showToastSuccess } from "@/utils/Toast/toastHandle";
 import { useI18n } from "vue-i18n";
 import { useApiServices } from "@/services/apiService";
 
@@ -254,6 +254,7 @@ li {
   border-radius: 1rem;
   border: 1.5px solid var(--border-main-color);
   cursor: pointer;
+  background-color: var(--background-color);
 
   &:active {
     border: 1.5px solid var(--primary-color);

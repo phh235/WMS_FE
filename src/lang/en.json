@@ -84,8 +84,8 @@
       "toast": {
         "error": {
           "title": "Sign in failed",
-          "username_text": "Username field cannot be empty",
-          "password_text": "Password field cannot be empty",
+          "username_text": "Username field required.",
+          "password_text": "Password field required.",
           "login_fail": "Sign in failed"
         },
         "success": {
@@ -119,7 +119,7 @@
       "toast": {
         "error": {
           "title": "Email failed to send",
-          "text": "Email field cannot be empty"
+          "text": "Email field required."
         },
         "success": {
           "title": "OTP send successfully",
@@ -325,13 +325,13 @@
       },
       "error": {
         "title": "Update failed",
-        "fullname_text": "Full name cannot be empty",
-        "username_text": "Username cannot be empty",
-        "phone_text": "Phone number cannot be empty",
+        "fullname_text": "Full name required.",
+        "username_text": "Username required.",
+        "phone_text": "Phone number required.",
         "phone_check": "Phone number is not in the correct format",
-        "email_text": "Email cannot be empty",
+        "email_text": "Email required.",
         "email_check": "Email is not in the correct format",
-        "password_old_text": "Old password cannot be empty",
+        "password_old_text": "Old password required.",
         "password_old_check": "Old password is incorrect",
         "password_new_text": "New password cannot be blank",
         "password_confirm_text": "New password cannot be blank",
@@ -367,12 +367,12 @@
       },
       "success": "Saved successfully",
       "validate": {
-        "fullname": "Full name field cannot be empty!",
-        "username": "Username field cannot be empty!",
-        "password": "Password field cannot be empty!",
-        "email": "Email field cannot be empty!",
+        "fullname": "Full name field required.!",
+        "username": "Username field required.!",
+        "password": "Password field required.!",
+        "email": "Email field required.!",
         "email_check": "Email is not in the correct format!",
-        "phone": "Phone number field cannot be empty!",
+        "phone": "Phone number field required.!",
         "role": "Please choose a role!"
       }
     }
@@ -459,9 +459,9 @@
         },
         "success": "Save successfully",
         "validate": {
-          "warehouse_id": "Warehouse code field cannot be empty",
-          "warehouse_name": "Warehouse name field cannot be empty",
-          "warehouse_area": "Warehouse area field cannot be empty",
+          "warehouse_id": "Warehouse code field required.",
+          "warehouse_name": "Warehouse name field required.",
+          "warehouse_area": "Warehouse area field required.",
           "manager": "Please choose a manager"
         }
       }
@@ -492,9 +492,9 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "zone_id": "Zone code cannot be empty!",
-          "zone_name": "Zone name cannot be empty!",
-          "zone_desc": "Zone description cannot be empty!",
+          "zone_id": "Zone code required.!",
+          "zone_name": "Zone name required.!",
+          "zone_desc": "Zone description required.!",
           "warehouse_id": "Please choose a warehouse!"
         }
       }
@@ -522,10 +522,10 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "zone_detail_id": "Zone detail code cannot be empty!",
-          "zone_detail_name": "Zone detail name cannot be empty!",
-          "area_storage": "Storage volume cannot be empty!",
-          "area_available": "Available volume cannot be empty!",
+          "zone_detail_id": "Zone detail code required.!",
+          "zone_detail_name": "Zone detail name required.!",
+          "area_storage": "Storage volume required.!",
+          "area_available": "Available volume required.!",
           "zone_id": "Please select a zone"
         }
       }
@@ -555,7 +555,7 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "category_name": "Category name cannot be empty!",
+          "category_name": "Category name required.!",
           "warehouse_id": "Please choose a warehouse!"
         }
       }
@@ -587,10 +587,10 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "customer_name": "Customer name cannot be empty!",
-          "customer_company": "Company name cannot be empty!",
-          "phone": "Company name cannot be empty!",
-          "address": "Address cannot be empty!",
+          "customer_name": "Customer name required.!",
+          "customer_company": "Company name required.!",
+          "phone": "Company name required.!",
+          "address": "Address required.!",
           "supplier_id": "Please select a supplier!"
         }
       }
@@ -616,10 +616,10 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "supplier_name": "Supplier name cannot be empty!",
-          "supplier_company": "Company name cannot be empty!",
-          "supplier_phone": "Phone number cannot be empty!",
-          "supplier_address": "Address cannot be empty!"
+          "supplier_name": "Supplier name required.!",
+          "supplier_company": "Company name required.!",
+          "supplier_phone": "Phone number required.!",
+          "supplier_address": "Address required.!"
         }
       }
     },
@@ -649,13 +649,13 @@
         },
         "success": "Saved successfully",
         "validate": {
-          "consignment_id": "Consignment code cannot be empty!",
+          "consignment_id": "Consignment code required.!",
           "consignment_zone_detail": "Please select zone details!",
           "consignment_product": "Please select product!",
-          "consignment_quantity": "Quantity cannot be empty!",
+          "consignment_quantity": "Quantity required.!",
           "consignment_date": "Pleasee select manufacturing date !",
           "consignment_date_exp": "Pleasee select expiry date !",
-          "consignment_area": "Volume cannot be empty!"
+          "consignment_area": "Volume required.!"
         }
       }
     }
