@@ -18,7 +18,7 @@
           <label class="form-label fs" for="email">Email</label>
           <input type="text" id="email" class="form-control" v-model="email" :class="{ 'is-invalid': emailError }" />
           <div v-if="emailError" class="invalid-feedback">
-            {{ emailError }}
+            {{ $t(emailError) }}
           </div>
         </div>
         <button type="submit" class="btn btn-login w-100 fw-bold" :disabled="loading" :class="{ loading: loading }">
@@ -34,7 +34,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { showToastError, showToastInfo, showToastLoading, showToastSuccess } from "@/components/Toast/utils/toastHandle";
+import { showToastError, showToastInfo, showToastLoading, showToastSuccess } from "@/utils/Toast/toastHandle";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";
 import { useApiServices } from "@/services/apiService";
@@ -50,14 +50,14 @@ const handleForgotPassword = async () => {
   emailError.value = ""; // Reset error trước khi kiểm tra lại
 
   if (!email.value) {
-    emailError.value = t('Swal.forgot.toast.error.text'); // Thông báo lỗi khi bỏ trống
+    emailError.value = 'Swal.forgot.toast.error.text'; // Thông báo lỗi khi bỏ trống
     return;
   }
 
   // Kiểm tra định dạng email
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(email.value)) {
-    emailError.value = t('AccountInfo.swal.error.email_check'); // Thông báo lỗi nếu email không hợp lệ
+    emailError.value = 'AccountInfo.swal.error.email_check'; // Thông báo lỗi nếu email không hợp lệ
     return;
   }
 
@@ -128,8 +128,4 @@ input {
 }
 
 /* Bỏ transition chỉ cho input có is-invalid */
-input.is-invalid {
-  transition: none !important;
-  border: 1.5px solid #dc3545 !important;
-}
 </style>

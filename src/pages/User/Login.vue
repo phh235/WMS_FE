@@ -191,8 +191,4 @@ input {
 }
 
 /* Bỏ transition chỉ cho input có is-invalid */
-input.is-invalid {
-  transition: none !important;
-  border: 1.5px solid #dc3545 !important;
-}
 </style>

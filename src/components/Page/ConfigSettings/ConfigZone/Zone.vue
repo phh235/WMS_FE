@@ -88,7 +88,7 @@ import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useApiServices } from "@/services/apiService";
 import { useWarehouseStore } from "@/store/warehouseStore";
 import { useZoneStore } from "@/store/zoneStore";
-import { showToastSuccess, showToastError } from "@/components/Toast/utils/toastHandle";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle";
 import Swal from "sweetalert2";
 import i18n from "@/lang/i18n";
 import { useI18n } from "vue-i18n";

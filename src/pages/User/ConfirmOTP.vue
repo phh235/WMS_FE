@@ -41,7 +41,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { showToastError, showToastLoading, showToastSuccess } from '@/components/Toast/utils/toastHandle'
+import { showToastError, showToastLoading, showToastSuccess } from '@/utils/Toast/toastHandle'
 import { useI18n } from 'vue-i18n'
 import i18n from '@/lang/i18n'
 import { useApiServices } from '@/services/apiService'

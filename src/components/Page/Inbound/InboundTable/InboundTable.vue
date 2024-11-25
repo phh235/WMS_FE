@@ -72,7 +72,6 @@
               </span>
             </td>
             <td>{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien }}</td>
-            <td>{{ inbound.maInBound }}</td>
             <td class="d-none">{{ inbound.ngayNhap }}</td>
             <td>
               <div class="d-flex align-items-center justify-content-end">
@@ -236,7 +235,7 @@
 import { ref, computed, watch, onMounted, reactive } from "vue";
 import { useApiServices } from "@/services/apiService.js";
 import { useAuthStore } from "@/store/authStore.js";
-import { showToastSuccess, showToastError } from "@components/Toast/utils/toastHandle.js";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle.js";
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
 import Swal from "sweetalert2";
@@ -244,7 +243,7 @@ import * as XLSX from 'xlsx';
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
-import { showToastLoading } from "@/components/Toast/utils/toastHandle";
+import { showToastLoading } from "@/utils/Toast/toastHandle";
 import router from "@/router";
 
 // const date = ref([
@@ -291,7 +290,6 @@ const activeTab = ref(t('Inbound.tabs.all'));
 const tabs = computed(() => {
   const tabsToShow = [
     t('Inbound.tabs.all'),
-    t('Inbound.tabs.approving'),
     t('Inbound.tabs.confirm'),
     t('Inbound.tabs.reject')
   ];
@@ -355,7 +353,6 @@ const closeModal = () => {
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
   const statusMap = {
-    [t('Inbound.tabs.approving')]: "approving",
     [t('Inbound.tabs.confirm')]: "confirm",
     [t('Inbound.tabs.reject')]: "reject",
   };
@@ -364,7 +361,6 @@ const getStatusValue = (status) => {
 };
 
 const statusIcon = {
-  approving: 'timer',
   confirm: 'check_circle',
   reject: 'error'
 }
