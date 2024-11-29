@@ -15,7 +15,6 @@
           <div class="col-sm-8">
             <input id="passwordOld" v-model="passwordChange.passwordOld" type="password" class="form-control" :class="{
               'is-invalid': !passwordChange.passwordOld && formSubmitted,
-              'is-valid': passwordChange.passwordOld && formSubmitted,
             }" />
             <div class="invalid-feedback">
               {{ $t("AccountInfo.swal.error.password_old_text") }}
@@ -33,7 +32,6 @@
           <div class="col-sm-8">
             <input id="password" v-model="passwordChange.password" type="password" class="form-control" :class="{
               'is-invalid': !passwordChange.password && formSubmitted,
-              'is-valid': passwordChange.password && formSubmitted,
             }" />
             <div class="invalid-feedback">
               {{ $t("AccountInfo.swal.error.password_new_text") }}
@@ -53,7 +51,6 @@
               :class="{
                 'is-invalid': (!passwordChange.confirmPassword ||
                   passwordChange.password !== passwordChange.confirmPassword) && formSubmitted,
-                'is-valid': passwordChange.confirmPassword === passwordChange.password && formSubmitted,
               }" />
             <div class="invalid-feedback">
               {{ $t("AccountInfo.swal.error.password_confirm_check") }}

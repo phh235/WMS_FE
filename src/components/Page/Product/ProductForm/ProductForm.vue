@@ -35,34 +35,39 @@
               <div class="row">
                 <div class="col-12 col-md-4 mb-3 d-none">
                   <label for="sysIdSanPham" class="form-label">Mã sản phẩm</label>
-                  <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham" />
+                  <input type="text" id="sysIdSanPham" class="form-control" v-model="productInfo.sysIdSanPham">
                 </div>
-                <div class="col-12 col-md-4 mb-3">
+                <div class="col-12 col-md-6 mb-3">
                   <label for="tenSanPham" class="form-label">{{ $t('Product.form.product_name') }} <span
                       class="text-danger">*</span></label>
-                  <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" />
+                  <input type="text" id="tenSanPham" class="form-control" v-model="productInfo.tenSanPham" :class="{
+                    'is-invalid': !productInfo.tenSanPham && formSubmitted,
+                  }" />
+                  <div class="invalid-feedback">
+                    {{ $t("Product.form.swal.validate.product_name") }}
+                  </div>
                 </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <label for="soLuongHienCo" class="form-label">{{ $t('Product.form.available_quantity') }} (Kg)<span
-                      class="text-danger">*</span></label>
-                  <input type="text" id="soLuongHienCo" class="form-control" v-model="productInfo.soLuongHienCo" />
-                </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                   <label for="danhMuc" class="form-label">{{ $t('Product.form.category.title') }} <span
                       class="text-danger">*</span></label>
-                  <select id="danhMuc" class="form-select mb-3" v-model="productInfo.sysIdDanhMuc">
+                  <select id="danhMuc" class="form-select" v-model="productInfo.sysIdDanhMuc" :class="{
+                    'is-invalid': !productInfo.sysIdDanhMuc && formSubmitted,
+                  }">
                     <option value="" selected disabled>{{ $t('Product.form.category.option') }}</option>
                     <option v-for="category in categoryStore.categories" :key="category.sysIdDanhMuc"
                       :value="category.sysIdDanhMuc">
                       {{ category.tenDanhMuc }}
                     </option>
                   </select>
+                  <div class="invalid-feedback">
+                    {{ $t("Product.form.swal.validate.choose_category") }}
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="mb-0">
+            <div class="mt-3 mb-md-0">
               <label for="moTa" class="form-label">{{ $t('Product.form.desc') }}</label>
-              <textarea id="moTa" class="form-control" rows="8" v-model="productInfo.moTa"></textarea>
+              <textarea id="moTa" class="form-control" rows="7" v-model="productInfo.moTa"></textarea>
             </div>
             <div class="d-flex justify-content-end mt-4">
               <button :disabled="isLoading" type="submit" class="btn btn-primary ms-auto d-flex align-items-center">
@@ -93,13 +98,13 @@ const imagePreview = ref(null);
 const isLoading = ref(false);
 const apiService = useApiServices();
 const categoryStore = useCategoriesStore();
+const formSubmitted = ref(false);
 const productStore = useProductStore();
 const router = useRouter();
 
 const productInfo = reactive({
   sysIdSanPham: "",
   tenSanPham: "",
-  soLuongHienCo: "",
   moTa: "",
   sysIdDanhMuc: "",
   hinhAnh: "",
@@ -136,36 +141,24 @@ watch(() => productStore.selectedProduct, (newProduct) => {
 }, { deep: true });
 
 const saveProduct = async () => {
+  formSubmitted.value = true;
   // Validate form
   if (!productInfo.tenSanPham) {
-    showToastError(i18n.global.t("Product.form.swal.validate.product_name"));
-    return;
-  }
-  if (!productInfo.soLuongHienCo) {
-    showToastError(i18n.global.t("Product.form.swal.validate.available_quantity"));
     return;
   }
   if (!productInfo.sysIdDanhMuc) {
-    showToastError(i18n.global.t("Product.form.swal.validate.choose_category"));
-    return;
-  }
-
-  // Kiểm tra số lượng hiện có phải là số
-  if (isNaN(productInfo.soLuongHienCo)) {
-    showToastError(i18n.global.t("Product.form.swal.validate.available_quantity_number"));
     return;
   }
   // Kiểm tra xem đã chọn ảnh hay chưa
-  if (!imagePreview.value) {
-    showToastError(i18n.global.t("Product.form.swal.validate.image"));
-    return;
-  }
+  // if (!imagePreview.value) {
+  //   showToastError(i18n.global.t("Product.form.swal.validate.image"));
+  //   return;
+  // }
   isLoading.value = true;
   try {
     const formData = new FormData();
 
     formData.append("tenSanPham", productInfo.tenSanPham);
-    formData.append("soLuongHienCo", productInfo.soLuongHienCo);
     formData.append("moTa", productInfo.moTa);
     formData.append("sysIdDanhMuc", productInfo.sysIdDanhMuc);
 
@@ -187,7 +180,6 @@ const saveProduct = async () => {
     }
   } catch (error) {
     console.error("Failed to save products:", error);
-    showToastError("Có lỗi xảy ra khi lưu sản phẩm");
   } finally {
     isLoading.value = false;
   }
