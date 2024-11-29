@@ -13,8 +13,8 @@ export const useAuthStore = defineStore("auth", {
     async login(userCredentials) {
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/auth/login",
           // "http://localhost:8080/api/v1/auth/login",
+          "http://157.66.26.244:8080/api/v1/auth/login",
           userCredentials
         );
 
