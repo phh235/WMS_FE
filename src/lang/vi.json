@@ -12,7 +12,7 @@
         }
       },
       "po": {
-        "label": "Orders",
+        "label": "Phê duyệt",
         "sub_items": {
           "small_1": "Mua hàng",
           "inbound": "Nhập hàng",
@@ -424,6 +424,7 @@
           "product_name": "Vui lòng nhập tên sản phẩm",
           "available_quantity": "Vui lòng nhập số lượng hiện có",
           "available_quantity_number": "Số lượng hiện có phải là số",
+          "available_quantity_negative": "Số lượng hiện không được bé hơn không",
           "choose_category": "Vui lòng chọn danh mục",
           "image": "Chưa chọn ảnh sản phẩm"
         }

@@ -43,7 +43,11 @@
                     {{ $t('ConfigSettings.categories.category_name') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="tenDanhMuc" aria-describedby="categoryNameHelp"
-                    v-model="selectedCategory.tenDanhMuc" />
+                    v-model="selectedCategory.tenDanhMuc"
+                    :class="{ 'is-invalid': !selectedCategory.tenDanhMuc && formSubmmited }" />
+                  <div class="invalid-feedback" v-if="!selectedCategory.tenDanhMuc && formSubmmited">
+                    {{ $t("ConfigSettings.categories.swal.validate.category_name") }}
+                  </div>
                 </div>
                 <div class="col-6">
                   <label for="maKho" class="form-label fs fw-bold">
@@ -112,6 +116,8 @@ const addCategoryBtn = ref(null);
 const searchQuery = ref("");
 // Sort
 const sortOption = ref("");
+// Validate
+const formSubmmited = ref(false);
 
 const selectedCategory = reactive({
   sysIdDanhMuc: "",
@@ -180,8 +186,9 @@ const updateUrl = () => {
 };
 
 const saveCategory = async () => {
-  if (!selectedCategory.tenDanhMuc.trim()) {
-    showToastError(i18n.global.t("ConfigSettings.categories.swal.validate.category_name"));
+  formSubmmited.value = true;
+  if (!selectedCategory.tenDanhMuc) {
+    // showToastError(i18n.global.t("ConfigSettings.categories.swal.validate.category_name"));
     return;
   }
 

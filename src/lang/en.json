@@ -424,6 +424,7 @@
           "product_name": "Please enter product name",
           "available_quantity": "Please enter available quantity",
           "available_quantity_number": "Available quantity must be a number",
+          "available_quantity_negative": "Available quantity must not be less than zero",
           "choose_category": "Please select a category",
           "image": "No product image selected"
         }

@@ -47,9 +47,11 @@ const startScanner = async () => {
     qrScanner = new QrScanner(
       videoElement.value,
       (result) => {
-        qrCodeData.value = result.data;
-        // gọi api theo pr code data
-        // router push by name or path
+        if (result.data.startsWith("http")) {
+          window.open(result.data, "_blank");
+        } else {
+          qrCodeData.value = result.data;
+        }
         stopScanner();
       },
       {
@@ -79,3 +81,5 @@ onBeforeUnmount(() => {
   border: 1px solid var(--border-main-color);
 }
 </style>
+
+
