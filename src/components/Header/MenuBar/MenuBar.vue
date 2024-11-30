@@ -235,7 +235,7 @@
                   <span class="material-symbols-outlined ms-1">keyboard_arrow_down</span>
                 </a>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown"
-                  style="max-height: 300px; overflow-y: auto;">
+                  style="max-height: 400px; overflow-y: auto;">
                   <small class="p-2 fw-bold" style="font-size: .75rem">
                     {{ $t('Navbar.menu_item.config.sub_items.small_1') }}
                   </small>

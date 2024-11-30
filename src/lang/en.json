@@ -86,7 +86,8 @@
           "title": "Sign in failed",
           "username_text": "Username field required.",
           "password_text": "Password field required.",
-          "login_fail": "Sign in failed"
+          "login_fail": "Sign in failed",
+          "lock_account": "Account has been disabled"
         },
         "success": {
           "title": "Sign in successfully"
@@ -354,16 +355,24 @@
     "username": "Username",
     "phone": "Phone number",
     "role": "Role",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
     "add_account_text": "Add Account",
     "choose_role": "Choose Role",
     "swal": {
       "delete": {
         "success": "Account deleted successfully",
+        "success_lock": "Account locked successfully",
         "failed": "Account deleted failed",
+        "failed_lock": "Account locked failed",
         "title": "Delete account?",
+        "title_lock": "Lock account?",
         "text": "Are you sure you want to delete this account?",
+        "text_lock": "Are you sure you want to lock this account?",
         "cancel": "Cancel",
-        "confirm": "Delete"
+        "confirm": "Delete",
+        "confirm_lock": "OK"
       },
       "success": "Saved successfully",
       "validate": {

@@ -6,11 +6,13 @@
 import { ref, provide, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { updateTheme } from '@/theme/themeManager';
+import { useAuthStore } from "@/store/authStore";
 
 const { locale } = useI18n();
 
 // Biến trạng thái để lưu chế độ Light/Dark
 const isDarkMode = ref(false);
+const authStore = useAuthStore();
 
 // Hàm để cập nhật ngôn ngữ
 const updateLanguage = (lang) => {
@@ -36,5 +38,10 @@ onMounted(() => {
 
   // Cung cấp giá trị isDarkMode cho toàn bộ các component con
   provide('isDarkMode', isDarkMode);
+
+  // Kiểm tra nếu account có active === false thì chuyển hướng về trang login
+  if (sessionStorage.getItem("user") && JSON.parse(sessionStorage.getItem("user")).active === false) {
+    authStore.logout();
+  }
 });
 </script>
