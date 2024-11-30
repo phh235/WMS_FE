@@ -91,12 +91,6 @@ onMounted(async () => {
   Object.assign(userInfo, userStore.user);
 });
 
-// watch(userInfo, (newValue) => {
-//   console.log('User info updated:', newValue);
-//   userStore.getUserByUsername();
-//   userStore.loadUserFromSession();
-// }, { deep: true });
-
 const errors = reactive({
   username: null,
   fullName: null,

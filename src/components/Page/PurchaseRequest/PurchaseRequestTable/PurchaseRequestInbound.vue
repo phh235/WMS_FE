@@ -65,7 +65,7 @@
           <td>
             <div class="d-flex align-items-center justify-content-end">
               <button class="btn btn-primary d-flex align-items-center me-2" @click="createPO(purchase.maPR)"
-                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm'">
+                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm' && checkIdIsExist(purchase.maPR)">
                 <span class="material-symbols-outlined me-2">add_circle</span> Tạo PO
               </button>
               <button class="btn btn-primary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
@@ -323,6 +323,7 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getPurchaseRequests();
+  await checkIdIsExist();
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -355,6 +356,12 @@ const getPurchaseRequests = async () => {
   } catch (error) {
     console.error("Failed to fetch purchase requests:", error);
   }
+};
+
+const checkIdIsExist = async (id) => {
+  const response = await apiService.get(`purchase-orders/check-exist-by-ma-pr?maPR=${id}`);
+  const isExist = response.data;
+  console.log(id + " - " + isExist);
 };
 
 const cancelPR = async (id) => {
