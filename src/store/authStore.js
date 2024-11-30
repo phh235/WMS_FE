@@ -14,7 +14,7 @@ export const useAuthStore = defineStore("auth", {
       try {
         const response = await axios.post(
           // "http://localhost:8080/api/v1/auth/login",
-          "https:wms-techtribe.io.vn/api/v1/auth/login",
+          "/api/v1/auth/login",
           userCredentials
         );
 
