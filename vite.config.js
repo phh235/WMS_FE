@@ -21,10 +21,7 @@ export default defineConfig({
   },
   server: {
     open: true,
-<<<<<<< HEAD
-=======
     port: 5173,
->>>>>>> 435b584e5457a0b82312b128a5157b6d0b937c0b
     host: "0.0.0.0",
   },
   optimizeDeps: {

@@ -1,6 +1,6 @@
 <template>
   <div class="form-group fs has-search me-2">
-    <span class="material-symbols-outlined form-control-feedback">search</span>
+    <span class="material-symbols-outlined form-control-feedback" style="color: #959595 !important;">search</span>
     <input type="search" class="form-control" :placeholder="placeholder" v-model="model" />
   </div>
 </template>
@@ -32,3 +32,26 @@ const model = computed({
   set: (value) => emit('update:modelValue', value)
 });
 </script>
+
+<style scoped>
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #4c4c4c !important;
+  opacity: 1;
+  /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #4c4c4c !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #4c4c4c !important;
+}
+
+input[type='search']::-webkit-search-cancel-button {
+  filter: grayscale(1);
+}
+</style>
