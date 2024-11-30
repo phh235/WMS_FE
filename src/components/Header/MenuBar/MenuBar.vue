@@ -408,7 +408,7 @@
               <button class="btn btn-secondary d-flex align-items-center me-2"
                 style="padding: 8px; transition: all 0.2s ease;" @click="toggleLightDarkMode">
                 <span class="material-symbols-outlined">
-                  {{ isLightMode ? 'light_mode' : 'dark_mode' }}
+                  {{ isDarkMode ? 'light_mode' : 'dark_mode' }}
                 </span>
               </button>
               <div class="tab-container">
@@ -489,7 +489,7 @@ const { t, locale } = useI18n()
 const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
-const isLightMode = useLocalStorage('isLightMode', true);
+const isDarkMode = useLocalStorage('isDarkMode', false);
 
 const tabs = ["VI", "EN"];
 const activeTab = ref("VI");
@@ -562,13 +562,13 @@ const handleLogout = async () => {
   }
 };
 
-watch(isLightMode, (newValue) => {
+watch(isDarkMode, (newValue) => {
   updateTheme(newValue)
-}, { immediate: true })
+}, { immediate: false })
 
 const toggleLightDarkMode = () => {
-  isLightMode.value = !isLightMode.value;
-  updateTheme(isLightMode.value);
+  isDarkMode.value = !isDarkMode.value;
+  updateTheme(isDarkMode.value);
 }
 </script>
 
