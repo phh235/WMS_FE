@@ -21,7 +21,7 @@
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedSupplier.sysIdNhaCungCap ? $t("ConfigSettings.suppliers.title_edit") :
-              $t("ConfigSettings.suppliers.title_save") }}
+            $t("ConfigSettings.suppliers.title_save") }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -38,14 +38,14 @@
                       v-model="selectedSupplier.sysIdNhaCungCap" />
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="tenNhaCungCap" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.suppliers.supplier_name') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="tenNhaCungCap" aria-describedby="supplierNameHelp"
                     v-model="selectedSupplier.tenNhaCungCap" />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="tenCongTy" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.suppliers.supplier_company') }} <span class="text-danger">*</span>
                   </label>
@@ -60,7 +60,7 @@
                   <div class="mb-3">
                     <label for="phone" class="form-label fs fw-bold">{{
                       $t('ConfigSettings.suppliers.supplier_phone')
-                    }} <span class="text-danger">*</span></label>
+                      }} <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="phone" aria-describedby="supplierIdHelp"
                       v-model="selectedSupplier.soDienThoai" />
                   </div>

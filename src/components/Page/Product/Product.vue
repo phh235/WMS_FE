@@ -4,7 +4,7 @@
       <div class="col-12 col-md-3 mb-3 px-md-3 p-0">
         <CategoryList :categories="categoryStore.categories" @categorySelected="handleCategorySelected" />
       </div>
-      <div class="col-12 col-md-9">
+      <div class="col-12 col-md-9 p-0">
         <ProductTable :products="productStore.products" :selectedCategory="selectedCategory"
           @updateProducts="handleUpdateProducts" />
       </div>

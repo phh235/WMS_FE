@@ -65,14 +65,14 @@
           <td>
             <div class="d-flex align-items-center justify-content-end">
               <button class="btn btn-primary d-flex align-items-center me-2" @click="createPO(purchase.maPR)"
-                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm'">
+                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm' && purchase.isExistPO === false">
                 <span class="material-symbols-outlined me-2">add_circle</span> Tạo PO
               </button>
               <button class="btn btn-primary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
                 v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
                 <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToPO(purchase.maPR)"
+              <button class="btn btn-export d-flex align-items-center me-2" @click="sendToPO(purchase.maPR)"
                 v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
                 <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
               </button>
@@ -86,7 +86,7 @@
               <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false"
-                  :disabled="(authStore.checkPermissions(['Manager', 'Admin']) && purchase.trangThai !== 'approving')">
+                  :disabled="(authStore.checkPermissions(['Manager', 'Admin']) && purchase.trangThai !== 'open')">
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
@@ -149,15 +149,15 @@
               <label class="form-label">{{ $t('PurchaseRequest.table.id') }}</label>
               <p class="fs">{{ selectedPurchase.maPR }}</p>
             </div> -->
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
               <label class="form-label">
-                {{ $t('PurchaseRequest.table.detail.supplier') }}
+                {{ $t('PurchaseRequest.table.detail.customer') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.tenKhachHang }}</p>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
               <label class="form-label">
-                {{ $t('PurchaseRequest.table.detail.customer') }}
+                {{ $t('PurchaseRequest.table.detail.supplier') }}
               </label>
               <p class="fs">{{ selectedPurchase.chiTietNhapHang[0]?.tenNhaCungCap }}</p>
             </div>
@@ -173,19 +173,19 @@
                 </span>
               </p>
             </div> -->
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.name') }}
               </label>
               <p class="fs">{{ selectedPurchase.nguoiYeuCau }}</p>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.date_request') }}
               </label>
               <p class="fs">{{ selectedPurchase.ngayYeuCau }}</p>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4">
               <label class="form-label">
                 {{ $t('PurchaseRequest.table.detail.product_detail.date_plan_ib') }}
               </label>
@@ -238,10 +238,10 @@
               </tbody>
             </table>
           </div>
-          <p class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
+          <h5 class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
             <span style="color: var(--primary-color);">{{
               totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-          </p>
+          </h5>
         </div>
       </div>
     </div>
@@ -323,6 +323,7 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getPurchaseRequests();
+  // await checkIdIsExist();
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -356,6 +357,11 @@ const getPurchaseRequests = async () => {
     console.error("Failed to fetch purchase requests:", error);
   }
 };
+
+// const checkIdIsExist = async (id) => {
+//   const response = await apiService.get(`purchase-orders/check-exist-by-ma-pr?maPR=${id}`);
+//   isExist.value = response.data;
+// };
 
 const cancelPR = async (id) => {
   const result = await Swal.fire({
@@ -497,7 +503,8 @@ const createPO = async (id) => {
     });
     if (response.status == 201) {
       showToastSuccess("Tạo PO thành công");
-      router.push({ path: "/inventory/purchase-order/inbound" })
+      getPurchaseRequests();
+      // router.push({ path: "/inventory/purchase-order/inbound" })
     }
   } catch (error) {
     console.log(error);

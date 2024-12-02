@@ -1,7 +1,5 @@
-// utils/validation.js
-
 export const isNotEmpty = (value) => {
-  return value !== null;
+  return value !== null && value !== undefined && value !== '';
 };
 
 export const isValidEmail = (email) => {

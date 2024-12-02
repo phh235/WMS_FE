@@ -12,23 +12,24 @@
     "@panzoom/panzoom": "^4.5.1",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^9.0.3",
-    "@vueuse/core": "^11.2.0",
-    "axios": "^1.7.7",
+    "@vueuse/core": "^11.3.0",
+    "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
-    "docx": "^9.0.3",
+    "docx": "^9.1.0",
     "echarts": "^5.5.1",
     "html2pdf.js": "^0.10.2",
-    "pinia": "^2.2.6",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.2.8",
     "qr-scanner": "^1.4.2",
     "sweetalert2": "^11.14.5",
     "vue": "^3.5.13",
-    "vue-i18n": "^10.0.4",
-    "vue-router": "^4.4.5",
+    "vue-i18n": "^10.0.5",
+    "vue-router": "^4.5.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.0",
+    "@vitejs/plugin-vue": "^5.2.1",
     "vite": "^5.4.11",
-    "vite-plugin-vue-devtools": "^7.6.4"
+    "vite-plugin-vue-devtools": "^7.6.7"
   }
 }

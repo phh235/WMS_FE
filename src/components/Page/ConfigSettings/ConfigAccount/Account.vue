@@ -11,7 +11,8 @@
       {{ $t('AccountManagement.btn_account') }}
     </button>
   </div>
-  <AccountTable :users="filteredUsers" @delete="deleteUser" />
+  <AccountTable :users="filteredUsers" @delete="deleteUser" @lock="lockUser" @id="toggleSortById"
+    @fullName="toggleSortByName" @username="toggleSortByUsername" @phone="toggleSortByPhone" />
   <div class="modal fade" id="accountModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -27,13 +28,15 @@
           <form>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
-                  <label for="fullName" class="form-label"> {{ $t('AccountManagement.fullname') }}
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <label for="fullName" class="form-label"> {{ $t('AccountManagement.fullname') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="fullName" v-model="selectedUser.fullName" />
                 </div>
-                <div class="col-6">
-                  <label for="username" class="form-label"> {{ $t('AccountManagement.username') }}
+                <div class="col-12 col-md-6">
+                  <label for="username" class="form-label"> {{ $t('AccountManagement.username') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
                 </div>
@@ -41,13 +44,15 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
-                  <label for="phone" class="form-label"> {{ $t('AccountManagement.phone') }}
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <label for="phone" class="form-label"> {{ $t('AccountManagement.phone') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="phone" v-model="selectedUser.soDienThoai" />
                 </div>
-                <div class="col-6">
-                  <label for="password" class="form-label"> {{ $t('AccountManagement.password') }}
+                <div class="col-12 col-md-6">
+                  <label for="password" class="form-label"> {{ $t('AccountManagement.password') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="password" class="form-control" id="password" v-model="selectedUser.password" />
                 </div>
@@ -55,16 +60,17 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
-                  <label for="email" class="form-label">Email</label>
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                   <input type="email" class="form-control" id="email" v-model="selectedUser.email" />
                 </div>
-                <div class="col-6">
-                  <label for="roleId" class="form-label"> {{ $t('AccountManagement.role') }}</label>
+                <div class="col-12 col-md-6">
+                  <label for="roleId" class="form-label"> {{ $t('AccountManagement.role') }} <span
+                      class="text-danger">*</span></label>
                   <select class="form-select" id="roleId" v-model="selectedUser.sysIdRole">
                     <option value="">{{ $t('AccountManagement.choose_role') }}</option>
                     <option v-for="role in roleStore.roles" :key="role.sysIdRole" :value="role.sysIdRole">{{
-                      role.roleName }}
+                      role.moTa }}
                     </option>
                   </select>
                 </div>
@@ -101,6 +107,8 @@ const roleStore = useRoleStore();
 const addUserBtn = ref(null);
 const searchQuery = ref("");
 const apiService = useApiServices();
+// Sort
+const sortOption = ref("");
 
 onMounted(async () => {
   await userStore.getUsers();
@@ -114,18 +122,76 @@ const selectedUser = reactive({
   soDienThoai: "",
   password: "",
   sysIdRole: "",
+  active: "",
 });
+
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const filteredUsers = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  return userStore.users.filter((user) => {
-    const matchesSearchQuery =
-      user.username.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query) ||
-      user.soDienThoai.includes(query);
-    return matchesSearchQuery;
-  });
+  let filtered = userStore.users
+    .filter(user => (
+      user.sysIdUser.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
+      removeAccents(user.fullName.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(user.username.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(user.soDienThoai.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(user.email.toLowerCase()).includes(removeAccents(query))
+    ));
+
+  if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.sysIdUser - b.sysIdUser); // tăng dần
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.sysIdUser - a.sysIdUser); // giảm dần
+  } else if (sortOption.value === "name-asc") {
+    filtered.sort((a, b) => a.fullName.localeCompare(b.fullName)); // A-Z
+  } else if (sortOption.value === "name-desc") {
+    filtered.sort((a, b) => b.fullName.localeCompare(a.fullName)); // Z-A
+  } else if (sortOption.value === "username-asc") {
+    filtered.sort((a, b) => a.username.localeCompare(b.username)); // A-Z
+  } else if (sortOption.value === "username-desc") {
+    filtered.sort((a, b) => b.username.localeCompare(a.username)); // Z-A
+  } else if (sortOption.value === "phone-asc") {
+    filtered.sort((a, b) => a.soDienThoai.localeCompare(b.soDienThoai)); // A-Z
+  } else if (sortOption.value === "phone-desc") {
+    filtered.sort((a, b) => b.soDienThoai.localeCompare(a.soDienThoai)); // Z-A
+  }
+
+  return filtered;
 });
+
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  updateUrl();
+};
+
+const toggleSortByName = () => {
+  sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+
+const toggleSortByUsername = () => {
+  sortOption.value = sortOption.value === "username-asc" ? "username-desc" : "username-asc";
+  updateUrl();
+};
+
+const toggleSortByPhone = () => {
+  sortOption.value = sortOption.value === "phone-asc" ? "phone-desc" : "phone-asc";
+  updateUrl();
+};
+
+const updateUrl = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+
+  if (sortOption.value) {
+    params.set("sort", sortOption.value);
+  } else {
+    params.delete("sort");
+  }
+
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
+};
 
 const saveAccount = async () => {
   if (!selectedUser.fullName) {
@@ -204,6 +270,30 @@ const deleteUser = async (username) => {
       await apiService.delete(`account/${username}`);
       userStore.getUsers();
       showToastSuccess(i18n.global.t("AccountManagement.swal.delete.success"));
+    } catch (error) {
+      console.error("Error while deleting account:", error);
+      showToastError("Xóa tài khoản thất bại. Vui lòng thử lại");
+    }
+  }
+}
+
+const lockUser = async ({ username, active }) => {
+  const swalConfirm = await Swal.fire({
+    title: i18n.global.t("AccountManagement.swal.delete.title_lock"),
+    text: i18n.global.t("AccountManagement.swal.delete.text_lock"),
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#16a34a",
+    cancelButtonText: i18n.global.t("AccountManagement.swal.delete.cancel"),
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: i18n.global.t("AccountManagement.swal.delete.confirm_lock"),
+  });
+
+  if (swalConfirm.isConfirmed) {
+    try {
+      await apiService.post("users/lock-account", { username, active: !active });
+      userStore.getUsers();
+      showToastSuccess(i18n.global.t("AccountManagement.swal.delete.success_lock"));
     } catch (error) {
       console.error("Error while deleting account:", error);
       showToastError("Xóa tài khoản thất bại. Vui lòng thử lại");

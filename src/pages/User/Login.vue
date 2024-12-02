@@ -84,7 +84,7 @@ const handleLogin = async () => {
   // handle login
   loading.value = true;
   try {
-    await authStore.login({ username: username.value, password: password.value });
+    const response = await authStore.login({ username: username.value, password: password.value });
   } catch (error) {
     console.error("Lỗi đăng nhập:", error);
   } finally {
@@ -189,6 +189,4 @@ const handleLogin = async () => {
 input {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
-
-/* Bỏ transition chỉ cho input có is-invalid */
 </style>

@@ -15,7 +15,7 @@
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedWarehouse.sysIdKho ? $t('ConfigSettings.warehouses.title_edit')
-              : $t('ConfigSettings.warehouses.title_save') }}
+            : $t('ConfigSettings.warehouses.title_save') }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -24,14 +24,14 @@
           <form>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="warehouseId" class="form-label fs fw-bold">{{
                     $t('ConfigSettings.warehouses.warehouse_id') }}</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="warehouseId" :class="{ 'is-invalid': errors.maKho }"
                     v-model="selectedWarehouse.maKho" />
                   <div class="invalid-feedback" v-if="errors.maKho">{{ $t(errors.maKho) }}</div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="tenKho" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.warehouses.warehouse_name') }} <span class="text-danger">*</span>
                   </label>
@@ -43,14 +43,14 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="dienTich" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.warehouse_area')
                     }}</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="dienTich" aria-describedby="warehouseAdressHelp"
                     :class="{ 'is-invalid': errors.dienTich }" v-model="selectedWarehouse.dienTich" />
                   <div class="invalid-feedback" v-if="errors.dienTich">{{ $t(errors.dienTich) }}</div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="sysIdUser" class="form-label fs fw-bold">{{ $t('ConfigSettings.warehouses.manager')
                     }}</label> <span class="text-danger">*</span>
                   <select class="form-select" id="sysIdUser" v-model="selectedWarehouse.sysIdUser"

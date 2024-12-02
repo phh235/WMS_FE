@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 const API_DOMAIN_LOCAL = "http://localhost:8080";
-const API_DOMAIN_PROD = "http://localhost:8080";
+const API_DOMAIN_SERVER = "https://wms-techtribe.io.vn";
 const BASE_URL = `${API_DOMAIN_LOCAL}/api/v1/`;
 
 const getToken = () => localStorage.getItem("token");
@@ -68,3 +68,4 @@ export const useApiServices = defineStore("api", {
     },
   },
 });
+

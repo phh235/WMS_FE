@@ -1,6 +1,6 @@
 <template>
   <div class="category-selector box-shadow p-2">
-    <div class="scrollable-wrapper">
+    <div class="scrollable-wrapper" style="max-height: 740px; overflow-y: auto;">
       <ul class="list-group d-flex flex-md-column flex-row flex-nowrap overflow-auto">
         <li class="list-group-item flex-shrink-0 d-flex align-items-center px-3" @click="selectCategory('')"
           :class="{ active: selectedCategory === '' }">

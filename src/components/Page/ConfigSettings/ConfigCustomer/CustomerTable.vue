@@ -27,11 +27,11 @@
         <tr v-if="customers.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.customers.not_found') }}</td>
         </tr>
-        <tr v-for="customer in customers" :key="customer.sysIdKhachHang">
+        <tr v-for="customer in paginatedCustomers" :key="customer.sysIdKhachHang">
           <td scope="row">{{ customer.sysIdKhachHang }}</td>
           <td class="sticky">{{ customer.tenKhachHang }}</td>
-          <td class="sticky">{{ customer.tenCongTy }}</td>
-          <td class="sticky">{{ customer.soDienThoai }}</td>
+          <td>{{ customer.tenCongTy }}</td>
+          <td>{{ customer.soDienThoai }}</td>
           <td>{{ customer.diaChi }}</td>
           <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', customer)">
@@ -44,15 +44,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { ref, computed } from 'vue';
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   customers: {
     type: Array,
     required: true
@@ -60,6 +66,29 @@ defineProps({
 });
 
 defineEmits(['edit', 'delete', 'id', 'name', 'company', 'phone', 'address']);
+
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.customers.length / pageSize.value);
+});
+
+const paginatedCustomers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.customers.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>

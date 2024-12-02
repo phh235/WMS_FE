@@ -42,28 +42,27 @@
           <tr>
             <th class="sticky">{{ $t('Inbound.table.reference_code') }}</th>
             <th>{{ $t('Inbound.table.po_code') }}</th>
-            <th>{{ $t('Inbound.table.from') }}</th>
-            <th>{{ $t('Inbound.table.to') }}</th>
+            <!-- <th>{{ $t('Inbound.table.from') }}</th> -->
             <th>{{ $t('Inbound.table.person_in_charge') }}</th>
             <th>{{ $t('Inbound.table.plan_date') }}</th>
             <th>{{ $t('Inbound.table.status') }}</th>
+            <th>{{ $t('Inbound.table.to') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
-            <th>{{ $t('Inbound.table.effective_date') }}</th>
+            <!-- <th>{{ $t('Inbound.table.effective_date') }}</th> -->
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-if="filteredInbounds.length === 0" style="text-align: center; font-style: italic">
+          <tr v-if="filteredOutbound.length === 0" style="text-align: center; font-style: italic">
             <td colspan="10">{{ $t('Inbound.not_found') }}</td>
           </tr>
-          <tr v-for="inbound in paginatedInbounds" :key="inbound.sysIdInBound">
-            <td class="d-none">{{ inbound.sysIdInBound }}</td>
-            <td class="sticky">{{ inbound.maInBound }}</td>
+          <tr v-for="inbound in paginatedOutbound" :key="inbound.sysIdOutbound">
+            <td class="d-none">{{ inbound.sysIdOutbound }}</td>
+            <td class="sticky">{{ inbound.maOB }}</td>
             <td>{{ inbound.maPO }}</td>
-            <td>{{ inbound.chiTietNhapHang[0]?.sysIdKhachHang }}</td>
-            <td>{{ inbound.maKho }}</td>
-            <td>{{ inbound.fullName }}</td>
-            <td>{{ inbound.ngayNhap }}</td>
+            <!-- <td>{{ inbound.maKho }}</td> -->
+            <td>{{ inbound.nguoiPhuTrach }}</td>
+            <td>{{ inbound.ngayXuat }}</td>
             <td>
               <span class="d-flex align-items-center" style="width: fit-content;"
                 :class="['badge', getBadgeClass(inbound.trangThai)]">
@@ -71,8 +70,8 @@
                 {{ getStatusLabel(inbound.trangThai) }}
               </span>
             </td>
-            <td>{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien }}</td>
-            <td class="d-none">{{ inbound.ngayNhap }}</td>
+            <td>{{ inbound.chiTietXuatHang[0]?.tenKhachHang }}</td>
+            <td class="d-none">{{ inbound.ngayXuat }}</td>
             <td>
               <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(inbound)">
@@ -87,21 +86,21 @@
                   <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
                     <!-- <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'open'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
-                      style="cursor: pointer;" @click="confirmPR(inbound.sysIdInBound)">
+                      style="cursor: pointer;" @click="confirmPR(inbound.sysIdOutbound)">
                       {{ $t('Inbound.table.li_confirm') }}
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
                     <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'approving'">
                       <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
-                        @click="cancelPR(inbound.sysIdInBound)">
+                        @click="cancelPR(inbound.sysIdOutbound)">
                         {{ $t('Inbound.table.li_cancel') }}
                         <span class="material-symbols-outlined">cancel</span>
                       </a>
                     </li>
                     <!-- <li v-if="authStore.checkPermissions(['User', 'Admin'])">
                       <router-link
-                        :to="{ name: 'inbound-request/inbound/edit/:id', params: { id: inbound.sysIdInBound } }"
+                        :to="{ name: 'inbound-request/inbound/edit/:id', params: { id: inbound.sysIdOutbound } }"
                         class="dropdown-item d-flex align-items-center justify-content-between">
                         {{ $t('Inbound.table.li_edit') }}
                         <span class="material-symbols-outlined">edit_square</span>
@@ -128,7 +127,7 @@
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
               {{ $t('Inbound.table.detail.order_detail') }}
-              <span style="color: var(--primary-color);">{{ selectedInbound.sysIdInBound }}</span>
+              <span style="color: var(--primary-color);">{{ selectedOutbound.sysIdOutbound }}</span>
             </h5>
             <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
               @click="closeModal">close</span>
@@ -138,13 +137,13 @@
             <div class="row">
               <div class="col-6 col-md-4">
                 <label class="form-label">{{ $t('Inbound.table.id') }}</label>
-                <p class="fs">{{ selectedInbound.maInBound }}</p>
+                <p class="fs">{{ selectedOutbound.maOB }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
                   {{ $t('Inbound.table.detail.customer') }}
                 </label>
-                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.tenKhachHang }}</p>
+                <p class="fs">{{ selectedOutbound.chiTietXuatHang[0]?.tenKhachHang }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
@@ -152,9 +151,9 @@
                 </label>
                 <p>
                   <span class="d-flex align-items-center" style="width: fit-content;"
-                    :class="['badge', getBadgeClass(selectedInbound.trangThai)]">
-                    <span class="material-symbols-outlined me-2">{{ statusIcon[selectedInbound.trangThai] }}</span>
-                    {{ getStatusLabel(selectedInbound.trangThai) }}
+                    :class="['badge', getBadgeClass(selectedOutbound.trangThai)]">
+                    <span class="material-symbols-outlined me-2">{{ statusIcon[selectedOutbound.trangThai] }}</span>
+                    {{ getStatusLabel(selectedOutbound.trangThai) }}
                   </span>
                 </p>
               </div>
@@ -162,21 +161,21 @@
                 <label class="form-label">
                   {{ $t('Inbound.table.name') }}
                 </label>
-                <p class="fs">{{ selectedInbound.fullName }}</p>
+                <p class="fs">{{ selectedOutbound.nguoiPhuTrach }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
                   {{ $t('Inbound.table.date_request') }}
                 </label>
-                <p class="fs">{{ selectedInbound.maInBound }}</p>
+                <p class="fs">{{ selectedOutbound.maOB }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
                   {{ $t('Inbound.table.detail.product_detail.date_plan_ib') }}
                 </label>
-                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.ngayNhapDuKien }}</p>
+                <p class="fs">{{ selectedOutbound.chiTietXuatHang[0]?.ngayNhapDuKien }}</p>
               </div>
-              <div class="col-12 col-md-12" v-if="selectedInbound.trangThai === 'reject'">
+              <div class="col-12 col-md-12" v-if="selectedOutbound.trangThai === 'reject'">
                 <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
                   <span class="material-symbols-outlined fs-2 me-3">
                     warning
@@ -185,7 +184,7 @@
                     <label class="form-label mb-0">
                       {{ $t('Inbound.table.reason') }}
                     </label>
-                    <p class="mb-0">{{ selectedInbound.ngayNhap }}</p>
+                    <p class="mb-0">{{ selectedOutbound.ngayXuat }}</p>
                   </div>
                 </div>
               </div>
@@ -204,7 +203,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in selectedInbound.chiTietNhapHang" :key="item.maSanPham">
+                  <tr v-for="item in selectedOutbound.chiTietXuatHang" :key="item.maSanPham">
                     <td>{{ item.tenSanPham }}</td>
                     <td>{{ item.soLuong }} Kg</td>
                     <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
@@ -217,10 +216,10 @@
                 </tbody>
               </table>
             </div>
-            <p class="fw-bold float-end mt-2"> {{ $t('Inbound.table.detail.product_detail.total_price') }}:
+            <h5 class="fw-bold float-end mt-2"> {{ $t('Inbound.table.detail.product_detail.total_price') }}:
               <span style="color: var(--primary-color);">{{
                 totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-            </p>
+            </h5>
           </div>
         </div>
       </div>
@@ -282,7 +281,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
-const inbounds = ref([]);
+const outbound = ref([]);
 const apiService = useApiServices();
 // Tab
 const activeTab = ref(t('Inbound.tabs.all'));
@@ -299,7 +298,7 @@ const tabs = computed(() => {
 const sortOption = ref("");
 
 onMounted(async () => {
-  await getInbounds();
+  await getOutbound();
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -307,42 +306,41 @@ watch(() => tabs.value, (newTabs) => {
   activeTab.value = newTabs[0];
 });
 
-const selectedInbound = reactive({
-  sysIdInBound: "",
-  maInBound: "",
+const selectedOutbound = reactive({
+  sysIdOutbound: "",
+  maOB: "",
   maPO: "",
   sysIdUser: "",
-  fullName: "",
+  nguoiPhuTrach: "",
   trangThai: "",
-  ngayNhap: "",
-  chiTietNhapHang: []
+  ngayXuat: "",
+  chiTietXuatHang: []
 })
 
 // Tính tổng giá trị (số lượng * giá)
 const totalOrderValue = computed(() => {
-  return selectedInbound.chiTietNhapHang.reduce((total, item) => {
+  return selectedOutbound.chiTietXuatHang.reduce((total, item) => {
     return total + (parseFloat(item.tongChiPhi) || 0);
   }, 0);
 });
 
-const getInbounds = async () => {
+const getOutbound = async () => {
   try {
-    const response = await apiService.get("inbounds");
-    inbounds.value = response.data;
-    console.log(response.data);
+    const response = await apiService.get("outbound");
+    outbound.value = response.data;
   } catch (error) {
     console.error("Failed to fetch inbound requests:", error);
   }
 };
 
 const showDetail = (inbound) => {
-  selectedInbound.sysIdInBound = inbound.sysIdInBound;
-  selectedInbound.maInBound = inbound.maInBound;
-  selectedInbound.maPO = inbound.maPO;
-  selectedInbound.fullName = inbound.fullName;
-  selectedInbound.trangThai = inbound.trangThai;
-  selectedInbound.ngayNhap = inbound.ngayNhap;
-  selectedInbound.chiTietNhapHang = inbound.chiTietNhapHang;
+  selectedOutbound.sysIdOutbound = inbound.sysIdOutbound;
+  selectedOutbound.maOB = inbound.maOB;
+  selectedOutbound.maPO = inbound.maPO;
+  selectedOutbound.nguoiPhuTrach = inbound.nguoiPhuTrach;
+  selectedOutbound.trangThai = inbound.trangThai;
+  selectedOutbound.ngayXuat = inbound.ngayXuat;
+  selectedOutbound.chiTietXuatHang = inbound.chiTietXuatHang;
   isModalVisible.value = true;
 };
 
@@ -373,35 +371,35 @@ const parseDate = (dateString) => {
   return new Date(year, month - 1, day, hour, minute, second);
 };
 
-const filteredInbounds = computed(() => {
-  return inbounds.value
+const filteredOutbound = computed(() => {
+  return outbound.value
     .filter(inbound =>
       activeTab.value === t('Inbound.tabs.all') || inbound.trangThai === getStatusValue(activeTab.value)
     )
     .filter(inbound =>
-      !searchQuery.value || inbound.sysIdInBound.toLowerCase().includes(searchQuery.value.toLowerCase())
+      !searchQuery.value || inbound.sysIdOutbound.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
     .filter(inbound =>
-      !searchQueryByPeople.value || removeAccents(inbound.fullName.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
+      !searchQueryByPeople.value || removeAccents(inbound.nguoiPhuTrach.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
     .filter(inbound => {
       if (date.value && date.value.length === 2) {
         const [startDate, endDate] = date.value;
-        const purchaseDate = parseDate(inbound.ngayNhap);
+        const purchaseDate = parseDate(inbound.ngayXuat);
         return purchaseDate >= startDate && purchaseDate <= endDate;
       }
       return true;
     })
 });
 
-const paginatedInbounds = computed(() => {
+const paginatedOutbound = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return filteredInbounds.value.slice(start, end);
+  return filteredOutbound.value.slice(start, end);
 });
 
 const totalPages = computed(() => {
-  return Math.ceil(filteredInbounds.value.length / pageSize.value);
+  return Math.ceil(filteredOutbound.value.length / pageSize.value);
 });
 
 const handlePageChange = (page) => {
@@ -416,7 +414,7 @@ const handleItemsPerPageChange = (newItemsPerPage) => {
 // Sort
 const toggleSortById = () => {
   sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
-  inbounds.value.sort((a, b) => sortOption.value === "id-asc" ? a.sysIdInBound.localeCompare(b.sysIdInBound) : b.sysIdInBound.localeCompare(a.sysIdInBound));
+  outbound.value.sort((a, b) => sortOption.value === "id-asc" ? a.sysIdOutbound.localeCompare(b.sysIdOutbound) : b.sysIdOutbound.localeCompare(a.sysIdOutbound));
   updateUrl();
 };
 
@@ -472,13 +470,13 @@ const getStatusLabel = (status) => {
 
 // Export file excel
 const exportToExcel = () => {
-  const tableData = inbounds.value.map((inbound) => {
+  const tableData = outbound.value.map((inbound) => {
     return {
-      'Mã PR': inbound.sysIdInBound,
-      'Người yêu cầu': inbound.fullName,
+      'Mã PR': inbound.sysIdOutbound,
+      'Người yêu cầu': inbound.nguoiPhuTrach,
       'Trạng thái': getStatusValue(inbound.trangThai),
-      'Ngày yêu cầu': inbound.maInBound,
-      'Chi tiết nhập hàng': inbound.chiTietNhapHang.map((item) => {
+      'Ngày yêu cầu': inbound.maOB,
+      'Chi tiết nhập hàng': inbound.chiTietXuatHang.map((item) => {
         return `Mã sản phẩm: ${item.sysIdSanPham}, Tên sản phẩm: ${item.tenSanPham}, Số lượng: ${item.soLuong}, Giá: ${item.gia}, Tổng chi phí: ${item.tongChiPhi}`;
       }).join('\n'),
     };

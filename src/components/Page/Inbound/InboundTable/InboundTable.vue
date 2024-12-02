@@ -15,7 +15,7 @@
         <div class="d-flex">
           <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
             :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
-            placeholder="Tìm theo ngày">
+            :placeholder="$t('Inbound.search_input.search_date')">
             <template #preset-date-range-button="{ label, value, presetDate }">
               <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
                 @keyup.space.prevent="presetDate(value)">
@@ -27,7 +27,7 @@
             <span class="material-symbols-outlined">swap_vert</span>
           </button>
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
-              class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
+              class="material-symbols-outlined me-2">upgrade</span> {{ $t('Inbound.btn_export') }}</button>
           <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
             v-if="authStore.checkPermissions(['User', 'Admin'])">
             <span class="material-symbols-outlined me-2"> add </span>
@@ -60,10 +60,13 @@
             <td class="d-none">{{ inbound.sysIdInBound }}</td>
             <td class="sticky">{{ inbound.maInBound }}</td>
             <td>{{ inbound.maPO }}</td>
-            <td>{{ inbound.chiTietNhapHang[0]?.sysIdKhachHang }}</td>
-            <td>{{ inbound.maKho }}</td>
+            <td>{{ inbound.chiTietNhapHang[0]?.tenKhachHang }}</td>
+            <td>{{ inbound.tenKho }}</td>
             <td>{{ inbound.fullName }}</td>
-            <td>{{ inbound.ngayNhap }}</td>
+            <td>{{ new Date(inbound.ngayNhap).toLocaleDateString('en-GB', {
+              year: 'numeric', month: '2-digit', day:
+                '2-digit'
+            }) }}</td>
             <td>
               <span class="d-flex align-items-center" style="width: fit-content;"
                 :class="['badge', getBadgeClass(inbound.trangThai)]">
@@ -71,8 +74,11 @@
                 {{ getStatusLabel(inbound.trangThai) }}
               </span>
             </td>
-            <td>{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien }}</td>
-            <td class="d-none">{{ inbound.ngayNhap }}</td>
+            <td>{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien ? new
+              Date(inbound.chiTietNhapHang[0]?.ngayNhapDuKien).toLocaleDateString('en-GB', {
+                day: '2-digit', month:
+                  '2-digit', year: 'numeric'
+              }) : '' }}</td>
             <td>
               <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(inbound)">
@@ -128,53 +134,48 @@
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
               {{ $t('Inbound.table.detail.order_detail') }}
-              <span style="color: var(--primary-color);">{{ selectedInbound.sysIdInBound }}</span>
+              <span style="color: var(--primary-color);">{{ selectedInbound.maInBound }}</span>
             </h5>
+            <span class="d-flex align-items-center ms-5" style="width: fit-content;"
+              :class="['badge', getBadgeClass(selectedInbound.trangThai)]">
+              <span class="material-symbols-outlined me-2">{{ statusIcon[selectedInbound.trangThai] }}</span>
+              {{ getStatusLabel(selectedInbound.trangThai) }}
+            </span>
             <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
               @click="closeModal">close</span>
           </div>
           <div class="modal-body">
             <!-- Hiển thị thông tin chi tiết đơn hàng -->
             <div class="row">
-              <div class="col-6 col-md-4">
-                <label class="form-label">{{ $t('Inbound.table.id') }}</label>
-                <p class="fs">{{ selectedInbound.maInBound }}</p>
-              </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <label class="form-label">
                   {{ $t('Inbound.table.detail.customer') }}
                 </label>
                 <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.tenKhachHang }}</p>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <label class="form-label">
-                  {{ $t('Inbound.table.status') }}
-                </label>
-                <p>
-                  <span class="d-flex align-items-center" style="width: fit-content;"
-                    :class="['badge', getBadgeClass(selectedInbound.trangThai)]">
-                    <span class="material-symbols-outlined me-2">{{ statusIcon[selectedInbound.trangThai] }}</span>
-                    {{ getStatusLabel(selectedInbound.trangThai) }}
-                  </span>
-                </p>
-              </div>
-              <div class="col-6 col-md-4">
-                <label class="form-label">
-                  {{ $t('Inbound.table.name') }}
+                  {{ $t('Inbound.table.person_in_charge') }}
                 </label>
                 <p class="fs">{{ selectedInbound.fullName }}</p>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <label class="form-label">
-                  {{ $t('Inbound.table.date_request') }}
+                  {{ $t('Inbound.table.detail.product_detail.date_plan') }}
                 </label>
-                <p class="fs">{{ selectedInbound.maInBound }}</p>
+                <p class="fs">{{ new Date(selectedInbound.ngayNhap).toLocaleString('en-GB', {
+                  year: 'numeric', month:
+                    '2-digit', day: '2-digit'
+                }) }}</p>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <label class="form-label">
                   {{ $t('Inbound.table.detail.product_detail.date_plan_ib') }}
                 </label>
-                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.ngayNhapDuKien }}</p>
+                <p class="fs">{{ new Date(selectedInbound.chiTietNhapHang[0]?.ngayNhapDuKien).toLocaleString('en-GB', {
+                  year: 'numeric', month:
+                    '2-digit', day: '2-digit'
+                }) }}</p>
               </div>
               <div class="col-12 col-md-12" v-if="selectedInbound.trangThai === 'reject'">
                 <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
@@ -201,6 +202,7 @@
                     <th> {{ $t('Inbound.table.detail.product_detail.quantity') }}</th>
                     <th> {{ $t('Inbound.table.detail.product_detail.price') }}</th>
                     <th> {{ $t('Inbound.table.detail.product_detail.total') }}</th>
+                    <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -213,14 +215,116 @@
                     <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
                       <span class="currency-symbol">&#8363;</span>
                     </td>
+                    <td class="text-center"><button class="btn btn-primary" @click="showPhanLo()">Phân lô</button></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p class="fw-bold float-end mt-2"> {{ $t('Inbound.table.detail.product_detail.total_price') }}:
+            <h5 class=" fw-bold float-end mt-2"> {{ $t('Inbound.table.detail.product_detail.total_price') }}:
               <span style="color: var(--primary-color);">{{
                 totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-            </p>
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal để hiển thị phân lô -->
+    <div v-if="isPhanLoModalVisible" class="modal fade show" tabindex="-1" style="display: block;"
+      aria-labelledby="purchaseDetailModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
+              Phân lô phiếu nhập
+              <span style="color: var(--primary-color);">{{ selectedInbound.maInBound }}</span>
+            </h5>
+            <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
+              @click="closePhanLoModal">close</span>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6 col-md-3">
+                <label class="form-label fs fw-bold">
+                  {{ $t('Inbound.table.detail.product_detail.product_name') }}
+                </label>
+                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.tenSanPham }}</p>
+              </div>
+              <div class="col-6 col-md-3">
+                <label class="form-label fs fw-bold">
+                  {{ $t('Inbound.table.detail.product_detail.quantity') }}
+                </label>
+                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.soLuong }} Kg</p>
+              </div>
+              <div class="col-12 col-md-4 mb-md-0 mb-3">
+                <label for="dungTich" class="form-label fs fw-bold">
+                  Dung tích (m3) <span class="text-danger">*</span>
+                </label>
+                <div class="d-flex">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich1" value="250" />
+                    <label class="form-check-label" for="dungTich1">0.01</label>
+                  </div>
+                  <div class="form-check me-2">
+                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich2" value="500" />
+                    <label class="form-check-label" for="dungTich2">0.02</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich3" value="1000" />
+                    <label class="form-check-label" for="dungTich3">0.05</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-12 col-md-6 mb-md-0 mb-3">
+                    <label for="ctkv" class="form-label fs fw-bold">
+                      Chi tiết khu vực <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="ctkv" aria-describedby="consignmentNameHelp" disabled />
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label for="soLuong" class="form-label fs fw-bold">
+                      Số lượng (Kg) <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="soLuong" aria-describedby="consignmentNameHelp" />
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="row">
+                  <div class="col-md-6 col-12 mb-md-0 mb-3">
+                    <label for="ngaySanXuat" class="form-label fs fw-bold">
+                      {{ $t('ConfigSettings.consignments.consignment_date') }} <span class="text-danger">*</span>
+                    </label>
+                    <VueDatePicker :enable-time-picker="false" :teleport="true" :format="format" auto-apply
+                      :auto-position="true" placeholder="Chọn ngày sản xuất">
+                    </VueDatePicker>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <label for="ngayHetHan" class="form-label fs fw-bold">
+                      {{ $t('ConfigSettings.consignments.consignment_date_exp') }} <span class="text-danger">*</span>
+                    </label>
+                    <VueDatePicker :enable-time-picker="false" :teleport="true" :format="format" auto-apply
+                      :auto-position="true" placeholder="Chọn hạn sử dụng">
+                    </VueDatePicker>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-logout d-flex align-items-center" data-bs-dismiss="modal"
+              @click="closePhanLoModal">
+              <span class="material-symbols-outlined me-2">close</span>
+              {{ $t("ConfigSettings.btn_cancel") }}
+            </button>
+            <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveConsignment">
+              <span class="material-symbols-outlined me-2">check</span>
+              Xác nhận
+            </button>
           </div>
         </div>
       </div>
@@ -228,6 +332,7 @@
 
     <!-- Overlay khi modal mở -->
     <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
+    <div v-if="isPhanLoModalVisible" class="modal-backdrop fade show"></div>
   </div>
 </template>
 
@@ -273,6 +378,14 @@ const presetDates = ref([
     ]
   },
 ]);
+
+const format = (date) => {
+  if (!date || !(date instanceof Date)) return ""; // Kiểm tra null hoặc kiểu dữ liệu
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 // Check permissions
 const authStore = useAuthStore();
 // Pagination
@@ -282,6 +395,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
+const isPhanLoModalVisible = ref(false);
 const inbounds = ref([]);
 const apiService = useApiServices();
 // Tab
@@ -329,7 +443,6 @@ const getInbounds = async () => {
   try {
     const response = await apiService.get("inbounds");
     inbounds.value = response.data;
-    console.log(response.data);
   } catch (error) {
     console.error("Failed to fetch inbound requests:", error);
   }
@@ -346,8 +459,18 @@ const showDetail = (inbound) => {
   isModalVisible.value = true;
 };
 
+const showPhanLo = () => {
+  isPhanLoModalVisible.value = true;
+}
+
 const closeModal = () => {
   isModalVisible.value = false;
+  isPhanLoModalVisible.value = false;
+};
+
+const closePhanLoModal = () => {
+  isModalVisible.value = true;
+  isPhanLoModalVisible.value = false;
 };
 
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
@@ -553,10 +676,6 @@ td {
   padding: 6px 10px;
   border-radius: 10px;
   font-weight: 500;
-}
-
-.form-control {
-  width: 220px;
 }
 
 .form-label {

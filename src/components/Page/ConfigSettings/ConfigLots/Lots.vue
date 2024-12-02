@@ -101,8 +101,7 @@
                       {{ $t('ConfigSettings.consignments.choose_zone_detail') }}
                     </option>
                     <option v-for="zoneD in zoneDetailStore.zoneDetail" :key="zoneD.maChiTietKhuVuc"
-                      :value="zoneD.maChiTietKhuVuc">
-                      {{ zoneD.maChiTietKhuVuc }} - {{ zoneD.tenChiTietKhuVuc }}
+                      :value="zoneD.maChiTietKhuVuc">{{ zoneD.tenChiTietKhuVuc }}
                     </option>
                   </select>
                 </div>

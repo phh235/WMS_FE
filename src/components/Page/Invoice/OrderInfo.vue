@@ -1,1 +1,0 @@
-<template>thông tin đơn hàng</template>

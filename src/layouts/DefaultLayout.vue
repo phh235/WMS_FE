@@ -6,6 +6,12 @@
     </div>
   </div>
   <Cre />
+  <div v-if="$route.path !== '/inventory/scan-qr'" class="position-fixed bottom-0 end-0 p-2 py-2 user-select-none">
+    <router-link to="/inventory/scan-qr" class="btn btn-primary">
+      <span class="material-symbols-outlined align-middle me-2">qr_code_scanner</span>
+      Tìm lô hàng
+    </router-link>
+  </div>
 </template>
 
 <script setup>

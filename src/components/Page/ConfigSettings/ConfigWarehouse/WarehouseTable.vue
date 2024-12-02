@@ -16,7 +16,7 @@
         <tr v-if="warehouses.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.warehouses.not_found') }}</td>
         </tr>
-        <tr v-for="warehouse in warehouses" :key="warehouse.sysIdKho">
+        <tr v-for="warehouse in paginatedWarehouse" :key="warehouse.sysIdKho">
           <td scope="row" class="d-none">{{ warehouse.sysIdKho }}</td>
           <td class="sticky">{{ warehouse.maKho }}</td>
           <td>{{ warehouse.tenKho }}</td>
@@ -34,15 +34,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
+import { ref, computed } from 'vue';
 
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   warehouses: {
     type: Array,
     required: true
@@ -50,6 +56,29 @@ defineProps({
 });
 
 defineEmits(['edit', 'delete']);
+
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.warehouses.length / pageSize.value);
+});
+
+const paginatedWarehouse = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.warehouses.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>

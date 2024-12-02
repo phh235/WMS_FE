@@ -1,17 +1,27 @@
 <template>
-  <div class="mb-4 d-flex justify-content-end align-items-center">
-    <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.zone-detail.search_input')" />
-    <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByAreaVolume">
-      <span class="material-symbols-outlined">swap_vert</span>
-    </button>
-    <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
-      <span class="material-symbols-outlined">sort_by_alpha</span>
-    </button>
-    <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneDetailBtn"
-      data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
-      <span class=" material-symbols-outlined me-2"> add </span>
-      {{ $t('ConfigSettings.zone-detail.title_save') }}
-    </button>
+  <div class="mb-4 d-flex justify-content-between align-items-center">
+    <div class="justify-content-start mb-3 mb-md-0">
+      <select class="form-select me-2" id="zone" v-model="selectedZone" aria-label="Warehouse">
+        <option value="" selected>{{ $t('ConfigSettings.categories.tabs.all') }}</option>
+        <option v-for="zone in zoneStore.zones" :key="zone.maKhuVuc" :value="zone.maKhuVuc">
+          {{ zone.tenKhuVuc }}
+        </option>
+      </select>
+    </div>
+    <div class="d-flex flex-column flex-md-row">
+      <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.zone-detail.search_input')" />
+      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByAreaVolume">
+        <span class="material-symbols-outlined">swap_vert</span>
+      </button>
+      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
+        <span class="material-symbols-outlined">sort_by_alpha</span>
+      </button>
+      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneDetailBtn"
+        data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
+        <span class=" material-symbols-outlined me-2"> add </span>
+        {{ $t('ConfigSettings.zone-detail.title_save') }}
+      </button>
+    </div>
   </div>
   <ZoneDetailTable :zoneDetail="filteredZoneDetail" @detail="showZoneDetail" @edit="editZoneDetail"
     @delete="deleteZoneDetail" />
@@ -31,14 +41,14 @@
           <form>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="maChiTietKhuVuc" class="form-label fs fw-bold">{{
                     $t('ConfigSettings.zone-detail.zone_detail_id') }}</label>
                   <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="maChiTietKhuVuc" aria-describedby="maChiTietKhuVucHelp"
                     v-model="selectedZoneDetail.maChiTietKhuVuc" />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="tenChiTietKhuVuc" class="form-label fs fw-bold">{{
                     $t('ConfigSettings.zone-detail.zone_detail_name')
                   }}</label> <span class="text-danger">*</span>
@@ -119,6 +129,7 @@ const router = useRouter();
 const apiService = useApiServices();
 const zoneDetail = ref([]);
 const zoneStore = useZoneStore();
+const selectedZone = ref("");
 const addZoneDetailBtn = ref(null);
 // Search
 const searchQuery = ref("");
@@ -154,15 +165,17 @@ const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, 
 
 const filteredZoneDetail = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  let filtered = zoneDetail.value.filter(zone =>
-    removeAccents(zone.maChiTietKhuVuc.toLowerCase()).includes(query) ||
-    removeAccents(zone.tenChiTietKhuVuc.toLowerCase()).includes(query) ||
-    removeAccents(zone.moTa.toLowerCase()).includes(query) ||
-    zone.moTa.toLowerCase().includes(query) ||
-    zone.maKhuVuc.toLowerCase().includes(query) ||
-    zone.theTichLuuTru.toString().includes(query) ||
-    zone.theTichKhaDung.toString().includes(query)
-  );
+  let filtered = zoneDetail.value.
+    filter(zone => zone.maKhuVuc === selectedZone.value || !selectedZone.value)
+    .filter(zone =>
+      removeAccents(zone.maChiTietKhuVuc.toLowerCase()).includes(query) ||
+      removeAccents(zone.tenChiTietKhuVuc.toLowerCase()).includes(query) ||
+      removeAccents(zone.moTa.toLowerCase()).includes(query) ||
+      zone.moTa.toLowerCase().includes(query) ||
+      zone.maKhuVuc.toLowerCase().includes(query) ||
+      zone.theTichLuuTru.toString().includes(query) ||
+      zone.theTichKhaDung.toString().includes(query)
+    );
 
   if (sortOption.value === "name-asc") {
     filtered.sort((a, b) => a.tenChiTietKhuVuc.localeCompare(b.tenChiTietKhuVuc)); // A-Z

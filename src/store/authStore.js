@@ -14,7 +14,7 @@ export const useAuthStore = defineStore("auth", {
       try {
         const response = await axios.post(
           "http://localhost:8080/api/v1/auth/login",
-          // "http://localhost:8080/api/v1/auth/login",
+          // "/api/v1/auth/login",
           userCredentials
         );
 
@@ -32,7 +32,15 @@ export const useAuthStore = defineStore("auth", {
         }
         return true;
       } catch (error) {
-        showToastError(i18n.global.t("Swal.login.toast.error.login_fail"));
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errorMessage === "User is not active"
+        ) {
+          showToastError(i18n.global.t("Swal.login.toast.error.lock_account"));
+        } else {
+          showToastError(i18n.global.t("Swal.login.toast.error.login_fail"));
+        }
       }
     },
     setToken(token) {
