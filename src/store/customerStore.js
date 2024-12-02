@@ -11,7 +11,6 @@ export const useCustomerStore = defineStore("customers", () => {
     try {
       const response = await apiService.get("customers");
       customers.value = response.data;
-      console.log(response.data);
     } catch (error) {
       console.error("Failed to fetch customers:", error);
       showToastError("Không thể lấy danh sách khách hàng. Vui lòng thử lại sau.");

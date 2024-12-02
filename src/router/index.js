@@ -5,6 +5,7 @@ import Login from "@pages/User/Login.vue";
 import { useAuthStore } from "@/store/authStore";
 import i18n from "@/lang/i18n";
 import { showToastWarning, showToastLoading } from "@/utils/Toast/toastHandle";
+import NProgress from "nprogress";
 
 export const routes = [
   {
@@ -129,10 +130,16 @@ router.beforeEach((to, from, next) => {
       return next({ name: "not-authorized" }); // Chuyển hướng đến trang không tìm thấy nếu không có quyền truy cập
     }
     // Nếu đã xác thực
+    NProgress.start();
     next(); // Chuyển hướng bình thường
   } else {
+    NProgress.start();
     next(); // Chuyển hướng bình thường
   }
+});
+
+router.afterEach(() => {
+  NProgress.done(); // Kết thúc thanh tiến trình
 });
 
 export default router;

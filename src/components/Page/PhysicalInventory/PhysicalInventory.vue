@@ -1,9 +1,6 @@
 <template>
   <div class="container-fluid box-shadow p-3 mx-auto">
-    <div class="table-responsive p-md-3">
-      <!-- <button type="button" class="btn btn-primary d-flex align-items-center" @click="addInventory">
-        <span class="material-symbols-outlined me-2">add</span>Thêm tồn kho
-      </button> -->
+    <div class="table-responsive">
       <div class="d-flex justify-content-end mb-3">
         <SearchInput v-model="searchQuery" placeholder="Tìm kiếm..." />
       </div>
@@ -23,7 +20,7 @@
           <tr v-if="inventoriesStore.inventories.length === 0">
             <td colspan="7" class="text-center">Chưa có tồn kho</td>
           </tr>
-          <tr v-for="(inventory, index) in inventoriesStore.inventories" :key="inventory.sysIdTonKho">
+          <tr v-for="(inventory, index) in paginatedInventories" :key="inventory.sysIdTonKho">
             <td class="td-id">{{ inventory.sysIdTonKho }}</td>
             <td class="td-id-product">{{ inventory.tenSanPham }}</td>
             <td class="td-warehouse-code">{{ inventory.maKho }}</td>
@@ -34,35 +31,51 @@
               month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
             }).replace(/\/$/,
               '').replace(/:\d{2}$/, '') }}</td>
-            <!-- <td class="td-action">
-              <div class="d-flex align-items-center justify-content-center">
-                <button type="button" class="btn btn-primary d-flex justify-content-center align-items-center me-2"
-                  @click="removeInventory(index)" style="padding: 10px">
-                  <span class="material-symbols-outlined">check</span>
-                </button>
-                <button type="button" class="btn btn-danger d-flex justify-content-center align-items-center"
-                  @click="removeInventory(index)">
-                  <span class="material-symbols-outlined">delete_sweep</span>
-                </button>
-              </div>
-            </td> -->
           </tr>
         </tbody>
       </table>
+      <div class="d-flex justify-content-center">
+        <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+          @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import { useInventoriesStore } from "@/store/inventoriesStore.js";
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
 const inventoriesStore = useInventoriesStore();
+const searchQuery = ref("");
 
 onMounted(() => {
   inventoriesStore.getInventories();
 });
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(inventoriesStore.inventories.length / pageSize.value);
+});
+
+const paginatedInventories = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return inventoriesStore.inventories.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>

@@ -19,7 +19,7 @@
         <tr v-if="consignments.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.consignments.not_found') }}</td>
         </tr>
-        <tr v-for="consignment in consignments" :key="consignment.sysIdLoHang">
+        <tr v-for="consignment in paginatedConsigments" :key="consignment.sysIdLoHang">
           <td scope="row">{{ consignment.sysIdLoHang }}</td>
           <td class="sticky">{{ consignment.maLo }}</td>
           <td>{{ consignment.tenSanPham }}</td>
@@ -40,15 +40,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { ref, computed } from 'vue';
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   consignments: {
     type: Array,
     required: true
@@ -56,6 +62,29 @@ defineProps({
 });
 
 defineEmits(['edit', 'delete']);
+
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.consignments.length / pageSize.value);
+});
+
+const paginatedConsigments = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.consignments.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>

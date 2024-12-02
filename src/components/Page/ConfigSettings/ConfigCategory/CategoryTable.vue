@@ -17,7 +17,7 @@
         <tr v-if="categories.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.categories.not_found') }}</td>
         </tr>
-        <tr v-for="category in categories" :key="category.sysIdDanhMuc">
+        <tr v-for="category in paginatedCategories" :key="category.sysIdDanhMuc">
           <td scope="row">{{ category.sysIdDanhMuc }}</td>
           <td class="sticky">{{ category.tenDanhMuc }}</td>
           <td>{{ category.moTa }}</td>
@@ -33,15 +33,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { ref, computed } from 'vue';
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   categories: {
     type: Array,
     required: true
@@ -49,6 +55,28 @@ defineProps({
 });
 
 const emit = defineEmits(['edit', 'delete', 'sort']);
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.categories.length / pageSize.value);
+});
+
+const paginatedCategories = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.categories.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>

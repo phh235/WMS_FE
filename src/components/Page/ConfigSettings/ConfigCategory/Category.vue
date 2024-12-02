@@ -1,15 +1,17 @@
 <template>
   <div class="mb-4 d-flex justify-content-between align-items-center">
-    <div class="tab-container justify-content-start mb-3 mb-md-0 col-12">
-      <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
-        :class="['tab-button', { active: activeTab === tab }]">
-        {{ tab }}
-      </button>
+    <div class="justify-content-start mb-3 mb-md-0">
+      <select class="form-select me-2" id="warehouse" v-model="selectedWarehouse" aria-label="Warehouse">
+        <option value="" selected>{{ $t('ConfigSettings.categories.tabs.all') }}</option>
+        <option v-for="warehouse in warehouseStore.warehouses" :key="warehouse.maKho" :value="warehouse.maKho">
+          {{ warehouse.tenKho }}
+        </option>
+      </select>
     </div>
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.categories.search_input')" />
-      <button type="button" class="btn btn-primary d-flex align-items-center" ref="addCategoryBtn"
-        data-bs-toggle="modal" data-bs-target="#categoryModal">
+      <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
+        data-bs-target="#categoryModal">
         <span class="material-symbols-outlined me-2"> add </span>
         {{ $t('ConfigSettings.categories.title_save') }}
       </button>
@@ -38,7 +40,7 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="tenDanhMuc" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.categories.category_name') }} <span class="text-danger">*</span>
                   </label>
@@ -49,7 +51,7 @@
                     {{ $t("ConfigSettings.categories.swal.validate.category_name") }}
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="maKho" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.categories.warehouse_name') }} <span class="text-danger">*</span>
                   </label>
@@ -72,7 +74,6 @@
               <textarea class="form-control" id="categoryDescription" rows="4"
                 aria-describedby="categoryDescriptionHelp" v-model="selectedCategory.moTa"></textarea>
             </div>
-            <div class="mb-3"></div>
           </form>
         </div>
         <div class="modal-footer border-0">
@@ -109,8 +110,6 @@ const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
 const categoryStore = useCategoriesStore();
 // Tab
-const tabs = computed(() => [t('ConfigSettings.categories.tabs.all'), t('ConfigSettings.categories.tabs.normal'), t('ConfigSettings.categories.tabs.cold')]);
-const activeTab = ref(t('ConfigSettings.categories.tabs.all'));
 const addCategoryBtn = ref(null);
 // Search
 const searchQuery = ref("");
@@ -118,7 +117,7 @@ const searchQuery = ref("");
 const sortOption = ref("");
 // Validate
 const formSubmmited = ref(false);
-
+const selectedWarehouse = ref("");
 const selectedCategory = reactive({
   sysIdDanhMuc: "",
   tenDanhMuc: "",
@@ -129,28 +128,14 @@ const selectedCategory = reactive({
 onMounted(async () => {
   await categoryStore.getCategories();
   await warehouseStore.getWarehouses();
-  updateTabs();
 });
-
-watch(tabs, (newTabs) => {
-  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
-});
-
-const getStatusValue = (status) =>
-  ({ [t("ConfigSettings.categories.tabs.normal")]: "KHO001", [t("ConfigSettings.categories.tabs.cold")]: "KHO002" }[status] || status);
-
-// Cập nhật danh sách tab dựa trên mã kho có trong danh mục
-const updateTabs = () => {
-  const uniqueWarehouses = [...new Set(categoryStore.categories.map(category => category.maKho))];
-  tabs.value = [t('ConfigSettings.categories.tabs.all'), ...uniqueWarehouses];
-};
 
 const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const filteredCategories = computed(() => {
   const query = searchQuery.value.toLowerCase();
   let filtered = categoryStore.categories
-    .filter(category => category.maKho === getStatusValue(activeTab.value) || activeTab.value === t('ConfigSettings.categories.tabs.all'))
+    .filter(category => category.maKho === selectedWarehouse.value || !selectedWarehouse.value)
     .filter(category => (
       category.sysIdDanhMuc.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
       removeAccents(category.tenDanhMuc.toLowerCase()).includes(removeAccents(query)) ||

@@ -203,8 +203,7 @@ const getPurchaseRequestOBByID = async (id) => {
       selectedSupplier.value = supplierStore.suppliers.find(
         (s) => s.sysIdNhaCungCap === formData.chiTietNhapHang[0].sysIdNhaCungCap
       );
-      console.log(selectedSupplier.value);
-
+      
       selectedCustomer.value = customerStore.customers.find(
         (c) => c.sysIdKhachHang === formData.chiTietNhapHang[0].sysIdKhachHang
       );

@@ -18,7 +18,7 @@
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedCustomer.sysIdKhachHang ? $t("ConfigSettings.customers.title_edit") :
-              $t("ConfigSettings.customers.title_save") }}
+            $t("ConfigSettings.customers.title_save") }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -32,14 +32,14 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="tenKhachHang" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.customers.customer_name') }} <span class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="tenKhachHang" aria-describedby="customerNameHelp"
                     v-model="selectedCustomer.tenKhachHang" />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="soDienThoai" class="form-label fs fw-bold">
                     {{ $t('ConfigSettings.customers.phone') }} <span class="text-danger">*</span>
                   </label>

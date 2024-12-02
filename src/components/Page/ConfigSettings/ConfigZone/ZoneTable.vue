@@ -15,7 +15,7 @@
         <tr v-if="zones.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.zones.not_found') }}</td>
         </tr>
-        <tr v-for="zone in zones" :key="zone.sysIdKhuVuc" @dblclick="showZoneDetail(zone.maKhuVuc)">
+        <tr v-for="zone in paginatedZones" :key="zone.sysIdKhuVuc" @dblclick="showZoneDetail(zone.maKhuVuc)">
           <td scope="row" class="d-none">{{ zone.sysIdKhuVuc }}</td>
           <td class="sticky">{{ zone.maKhuVuc }}</td>
           <td>{{ zone.tenKhuVuc }}</td>
@@ -32,15 +32,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { ref, computed } from 'vue';
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   zones: {
     type: Array,
     required: true
@@ -48,6 +54,28 @@ defineProps({
 });
 
 defineEmits(['edit', 'delete']);
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.zones.length / pageSize.value);
+});
+
+const paginatedZones = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.zones.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>
