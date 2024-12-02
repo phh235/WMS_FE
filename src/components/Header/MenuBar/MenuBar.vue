@@ -8,7 +8,7 @@
         </router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
           aria-controls="staticBackdrop" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="material-symbols-outlined" style="transform: rotate(180deg); color:
+          <span class="material-symbols-outlined user-select-none" style="transform: rotate(180deg); color:
             var(--nav-link-color);">side_navigation</span>
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
@@ -16,7 +16,7 @@
             <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel" style="color: var(--nav-link-color);">{{
               $t('Offcanvas') }}</h5>
             <!-- <button type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button> -->
-            <span class="material-symbols-outlined text-muted custom-close" data-bs-dismiss="offcanvas"
+            <span class="material-symbols-outlined text-muted custom-close user-select-none" data-bs-dismiss="offcanvas"
               aria-label="Close" style="transform: rotate(180deg);">side_navigation</span>
           </div>
           <div class="offcanvas-body">
@@ -178,11 +178,11 @@
                   {{ $t('Navbar.menu_item.product') }}
                 </router-link>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <router-link to="/inventory/warehouses-management" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2">holiday_village</span>{{
                       $t('Navbar.menu_item.warehouses_management') }}</router-link>
-              </li>
+              </li> -->
               <!-- multi dropdown menu | kho - khu vuc  -->
               <!-- <li class="nav-item dropdown">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"

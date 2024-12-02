@@ -31,13 +31,13 @@
         <tr v-if="users.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">Không tìm thấy người dùng</td>
         </tr>
-        <tr v-for="(user, index) in users" :key="user.id">
+        <tr v-for="(user, index) in paginatedUsers" :key="user.id">
           <td>{{ user.sysIdUser }}</td>
           <td>{{ user.fullName }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.soDienThoai }}</td>
-          <td>{{ user.roles[0]?.roleName }}</td>
+          <td>{{ user.roles[0]?.moTa }}</td>
           <td>
             <span class="d-flex align-items-center" style="width: fit-content;"
               :class="['badge', getBadgeClass(user.active)]">
@@ -59,15 +59,22 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
 
+import { ref, computed } from 'vue';
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
+
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   users: {
     type: Array,
     required: true
@@ -102,6 +109,29 @@ const getStatusLabel = (status) => {
   };
 
   return statusMap[status] || status;
+};
+
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.users.length / pageSize.value);
+});
+
+const paginatedUsers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.users.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
 };
 </script>
 

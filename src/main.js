@@ -13,9 +13,17 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 // Vue datepicker
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 const app = createApp(App);
 const pinia = createPinia();
+
+NProgress.configure({
+  showSpinner: false, // Ẩn biểu tượng loading tròn
+  speed: 500, // Tốc độ chạy (ms)
+  minimum: 0.1, // Giá trị nhỏ nhất khi bắt đầu
+});
 
 app.use(router);
 app.use(pinia);

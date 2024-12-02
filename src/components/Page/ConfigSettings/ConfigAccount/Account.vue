@@ -28,13 +28,15 @@
           <form>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
-                  <label for="fullName" class="form-label"> {{ $t('AccountManagement.fullname') }}
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <label for="fullName" class="form-label"> {{ $t('AccountManagement.fullname') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="fullName" v-model="selectedUser.fullName" />
                 </div>
-                <div class="col-6">
-                  <label for="username" class="form-label"> {{ $t('AccountManagement.username') }}
+                <div class="col-12 col-md-6">
+                  <label for="username" class="form-label"> {{ $t('AccountManagement.username') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="username" v-model="selectedUser.username" />
                 </div>
@@ -42,13 +44,15 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
-                  <label for="phone" class="form-label"> {{ $t('AccountManagement.phone') }}
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <label for="phone" class="form-label"> {{ $t('AccountManagement.phone') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="text" class="form-control" id="phone" v-model="selectedUser.soDienThoai" />
                 </div>
-                <div class="col-6">
-                  <label for="password" class="form-label"> {{ $t('AccountManagement.password') }}
+                <div class="col-12 col-md-6">
+                  <label for="password" class="form-label"> {{ $t('AccountManagement.password') }} <span
+                      class="text-danger">*</span>
                   </label>
                   <input type="password" class="form-control" id="password" v-model="selectedUser.password" />
                 </div>
@@ -56,16 +60,17 @@
             </div>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
-                  <label for="email" class="form-label">Email</label>
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
+                  <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                   <input type="email" class="form-control" id="email" v-model="selectedUser.email" />
                 </div>
-                <div class="col-6">
-                  <label for="roleId" class="form-label"> {{ $t('AccountManagement.role') }}</label>
+                <div class="col-12 col-md-6">
+                  <label for="roleId" class="form-label"> {{ $t('AccountManagement.role') }} <span
+                      class="text-danger">*</span></label>
                   <select class="form-select" id="roleId" v-model="selectedUser.sysIdRole">
                     <option value="">{{ $t('AccountManagement.choose_role') }}</option>
                     <option v-for="role in roleStore.roles" :key="role.sysIdRole" :value="role.sysIdRole">{{
-                      role.roleName }}
+                      role.moTa }}
                     </option>
                   </select>
                 </div>

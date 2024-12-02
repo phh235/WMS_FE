@@ -216,10 +216,10 @@
                 </tbody>
               </table>
             </div>
-            <p class="fw-bold float-end mt-2"> {{ $t('Inbound.table.detail.product_detail.total_price') }}:
+            <h5 class="fw-bold float-end mt-2"> {{ $t('Inbound.table.detail.product_detail.total_price') }}:
               <span style="color: var(--primary-color);">{{
                 totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-            </p>
+            </h5>
           </div>
         </div>
       </div>
@@ -328,7 +328,6 @@ const getOutbound = async () => {
   try {
     const response = await apiService.get("outbound");
     outbound.value = response.data;
-    console.log(response.data);
   } catch (error) {
     console.error("Failed to fetch inbound requests:", error);
   }

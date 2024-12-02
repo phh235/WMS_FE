@@ -4,7 +4,7 @@
     "menu_item": {
       "home": "Trang chủ",
       "pr": {
-        "label": "Requisition",
+        "label": "Yêu cầu",
         "sub_items": {
           "small_1": "Điều chuyển",
           "inbound": "Yêu cầu nhập hàng",
@@ -12,7 +12,7 @@
         }
       },
       "po": {
-        "label": "Phê duyệt",
+        "label": "Mua hàng",
         "sub_items": {
           "small_1": "Mua hàng",
           "inbound": "Nhập hàng",
@@ -391,7 +391,7 @@
       "search_input": "Tìm kiếm sản phẩm",
       "btn_save": "Thêm sản phẩm",
       "btn_action": "Hành động",
-      "no": "ID",
+      "no": "STT",
       "product_name": "Sản phẩm",
       "desc": "Mô tả",
       "available_quantity": "Số lượng hiện có",
@@ -682,10 +682,12 @@
     },
     "search_input": {
       "search_id": "Tìm theo mã phiếu nhập",
-      "search_name": "Tìm theo người yêu cầu"
+      "search_name": "Tìm theo người yêu cầu",
+      "search_date": "Tìm theo ngày"
     },
     "title": "Nhập kho",
     "btn_create_inbound": "Tạo phiếu nhập",
+    "btn_export": "Xuất excel",
     "not_found": "Không tìm thấy",
     "table": {
       "reference_code": "Mã tham chiếu",
@@ -701,7 +703,22 @@
       "expiry_date": "Ngày hết hạn",
       "order_late": "Đơn hàng chậm trễ của",
       "status": "Trạng thái",
-      "action": "Hành động"
+      "action": "Hành động",
+      "detail": {
+        "order_detail": "Chi tiết phiếu nhập",
+        "inbound_detail": "Chi tiết phiếu nhập: ",
+        "customer": "Khách hàng",
+        "product_detail": {
+          "title": "Chi tiết sản phẩm",
+          "product_name": "Tên sản phẩm",
+          "quantity": "Số lượng",
+          "price": "Giá",
+          "date_plan": "Ngày theo kế hoạch",
+          "date_plan_ib": "Ngày nhập dự kiến",
+          "total": "Tổng tiền",
+          "total_price": "Tổng giá trị đơn hàng"
+        }
+      }
     }
   },
   "Outbound": {
@@ -722,5 +739,23 @@
       "order_late": "Đơn hàng chậm trễ của",
       "status": "Trạng thái"
     }
+  },
+  "ConsignmentsInfo": {
+    "id": "ID chi tiết nhập hàng",
+    "inbound": "Mã nhập kho",
+    "pr": "Mã yêu cầu",
+    "price": "Giá (VND)",
+    "total_price": "Tổng chi phí (VND)",
+    "po": "Mã đơn",
+    "customer": "Tên khách hàng",
+    "supplier": "Tên nhà cung cấp",
+    "product_name": "Tên sản phẩm",
+    "quantity": "Số lượng tồn kho (KG)",
+    "date": "Ngày sản xuất",
+    "date_exp": "Hạn sử dụng",
+    "quantity_inbound": "Số lượng nhập (KG)",
+    "warehouse_name": "Tên kho",
+    "date_inbound": "Ngày nhập",
+    "consignment_id": "Mã lô"
   }
 }

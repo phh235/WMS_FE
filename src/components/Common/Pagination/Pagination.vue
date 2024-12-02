@@ -1,7 +1,7 @@
 <template>
-  <div class="d-flex align-items-center">
-    <nav aria-label="Page navigation">
-      <ul class="pagination mb-0">
+  <div class="d-flex align-items-center flex-wrap">
+    <nav aria-label="Page navigation" class="flex-grow-1">
+      <ul class="pagination mb-2 mb-md-0 justify-content-center justify-content-md-start">
         <li class="page-item" :class="{ disabled: currentPage === 1 }">
           <a class="page-link" href="#" @click.prevent="changePage(1)" aria-label="First page">
             <span class="material-symbols-outlined">
@@ -37,13 +37,14 @@
         </li>
       </ul>
     </nav>
-    <select id="itemsPerPage" v-model="itemsPerPage" class="form-select ms-1" style="width: auto;"
-      @change="changeItemsPerPage">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="15">15</option>
-      <option value="20">20</option>
-    </select>
+    <div class="select-wrapper ms-0 ms-md-2">
+      <select id="itemsPerPage" v-model="itemsPerPage" class="form-select" style="width: auto;" @change="changeItemsPerPage">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -149,4 +150,15 @@ label {
   margin-bottom: 0;
   color: var(--nav-link-color);
 }
+
+@media (max-width: 768px) {
+  .pagination {
+    flex-wrap: wrap;
+  }
+  .select-wrapper {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
 </style>
+

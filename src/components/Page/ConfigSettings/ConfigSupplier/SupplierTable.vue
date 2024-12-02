@@ -22,7 +22,7 @@
         <tr v-if="suppliers.length === 0" style="text-align: center; font-style: italic">
           <td colspan="10">{{ $t('ConfigSettings.suppliers.not_found') }}</td>
         </tr>
-        <tr v-for="supplier in suppliers" :key="supplier.sysIdNhaCungCap">
+        <tr v-for="supplier in paginatedSuppliers" :key="supplier.sysIdNhaCungCap">
           <td scope="row">{{ supplier.sysIdNhaCungCap }}</td>
           <td class="sticky">{{ supplier.tenNhaCungCap }}</td>
           <td>{{ supplier.tenCongTy }}</td>
@@ -39,15 +39,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+      <Pagination :current-page="currentPage" :total-pages="totalPages" :items-per-page="pageSize"
+        @page-change="handlePageChange" @items-per-page-change="handleItemsPerPageChange" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { ref, computed } from 'vue';
+import Pagination from '@/components/Common/Pagination/Pagination.vue';
 
 const { t } = useI18n();
 
-defineProps({
+const props = defineProps({
   suppliers: {
     type: Array,
     required: true
@@ -55,6 +61,29 @@ defineProps({
 });
 
 defineEmits(['edit', 'delete', 'name', 'company']);
+
+
+const currentPage = ref(1);
+const pageSize = ref(10);
+
+const totalPages = computed(() => {
+  return Math.ceil(props.suppliers.length / pageSize.value);
+});
+
+const paginatedSuppliers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return props.suppliers.slice(start, end);
+});
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const handleItemsPerPageChange = (itemsPerPage) => {
+  pageSize.value = itemsPerPage;
+  currentPage.value = 1;
+};
 </script>
 
 <style scoped>

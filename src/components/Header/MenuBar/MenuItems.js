@@ -145,12 +145,12 @@ export default [
     },
   },
   {
-    path: "invoice/order-info/:id",
-    name: "OrderInfo",
-    component: () => import("@/components/Page/Invoice/OrderInfo.vue"),
+    path: "scan-result/lot-info/:id",
+    name: "LotsInfo",
+    component: () => import("@/components/Page/Invoice/LotsInfo.vue"),
     meta: {
       requiresAuth: true,
-      headerTitle: "Thông tin đơn hàng",
+      headerTitle: "Thông tin lô hàng",
       searchConfig: {},
       storeConfig: {},
     },

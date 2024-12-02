@@ -1,10 +1,12 @@
 <template>
   <div class="mb-4 d-flex justify-content-between align-items-center">
-    <div class="tab-container justify-content-start mb-3 mb-md-0 col-12">
-      <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
-        :class="['tab-button', { active: activeTab === tab }]">
-        {{ tab }}
-      </button>
+    <div class="justify-content-start mb-3 mb-md-0">
+      <select class="form-select me-2" id="warehouse" v-model="selectedWarehouse" aria-label="Warehouse">
+        <option value="" selected>{{ $t('ConfigSettings.categories.tabs.all') }}</option>
+        <option v-for="warehouse in warehouseStore.warehouses" :key="warehouse.maKho" :value="warehouse.maKho">
+          {{ warehouse.tenKho }}
+        </option>
+      </select>
     </div>
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.zones.search_input')" />
@@ -35,13 +37,13 @@
           <form>
             <div class="mb-3">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6 mb-md-0 mb-3">
                   <label for="maKhuVuc" class="form-label fs fw-bold">{{ $t('ConfigSettings.zones.zone_id') }}</label>
                   <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="maKhuVuc" aria-describedby="maKhuVucHelp"
                     v-model="selectedZone.maKhuVuc" />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <label for="tenKhuVuc" class="form-label fs fw-bold">{{ $t('ConfigSettings.zones.zone_name')
                     }}</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" id="tenKhuVuc" aria-moTa="warehouseZoneNameHelp"
@@ -100,15 +102,13 @@ const { t } = useI18n();
 const router = useRouter();
 const apiService = useApiServices();
 const warehouseStore = useWarehouseStore();
+const selectedWarehouse = ref("");
 const zoneStore = useZoneStore();
 const addZoneBtn = ref(null);
 // Search
 const searchQuery = ref("");
 // Sort
 const sortOption = ref("");
-// Tab
-const tabs = computed(() => [t('ConfigSettings.categories.tabs.all'), t('ConfigSettings.categories.tabs.normal'), t('ConfigSettings.categories.tabs.cold')]);
-const activeTab = ref(t('ConfigSettings.categories.tabs.all'));
 
 const selectedZone = reactive({
   sysIdKhuVuc: "",
@@ -121,27 +121,13 @@ const selectedZone = reactive({
 onMounted(async () => {
   await zoneStore.getZones();
   await warehouseStore.getWarehouses();
-  updateTabs();
 });
-
-watch(tabs, (newTabs) => {
-  activeTab.value = newTabs[0]; // Cập nhật activeTab khi tabs thay đổi
-});
-
-const getStatusValue = (status) =>
-  ({ [t("ConfigSettings.zones.tabs.normal")]: "KHO001", [t("ConfigSettings.zones.tabs.cold")]: "KHO002" }[status] || status);
-
-// Cập nhật danh sách tab dựa trên mã kho có trong danh mục
-const updateTabs = () => {
-  const uniqueWarehouses = [...new Set(zoneStore.zones.map(zone => zone.maKho))];
-  tabs.value = [t('ConfigSettings.zones.tabs.all'), ...uniqueWarehouses];
-};
 
 const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const filteredZones = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  let filtered = zoneStore.zones.filter(zone => zone.maKho === getStatusValue(activeTab.value) || activeTab.value === t('ConfigSettings.zones.tabs.all'))
+  let filtered = zoneStore.zones.filter(category => category.maKho === selectedWarehouse.value || !selectedWarehouse.value)
     .filter(zone =>
       removeAccents(zone.maKhuVuc.toLowerCase()).includes(query) ||
       removeAccents(zone.tenKhuVuc.toLowerCase()).includes(query) ||

@@ -681,11 +681,13 @@
       "confirm": "Confirmed"
     },
     "search_input": {
-      "search_id": "Find by Inbound ID",
-      "search_name": "Find by requestor"
+      "search_id": "Search by Inbound ID",
+      "search_name": "Search by requestor",
+      "search_date": "Search by date"
     },
     "title": "Inbound",
     "btn_create_inbound": "Create inbound",
+    "btn_export": "Export excel",
     "not_found": "Not found",
     "table": {
       "reference_code": "Reference code",
@@ -701,7 +703,22 @@
       "expiry_date": "Expiry date",
       "order_late": "Delayed order of",
       "status": "Status",
-      "action": "Action"
+      "action": "Action",
+      "detail": {
+        "order_detail": "Inbound order details",
+        "inbound_detail": "Inbound order details: ",
+        "customer": "Customer",
+        "product_detail": {
+          "title": "Product details",
+          "product_name": "Product name",
+          "quantity": "Quantity",
+          "price": "Price",
+          "date_plan": "Planned date",
+          "date_plan_ib": "Expected import date",
+          "total": "Total amount",
+          "total_price": "Total order value"
+        }
+      }
     }
   },
   "Outbound": {
@@ -722,5 +739,23 @@
       "order_late": "Delayed order of",
       "status": "Status"
     }
+  },
+  "ConsignmentsInfo": {
+    "id": "Inbound detail ID",
+    "inbound": "Inbound Code",
+    "pr": "PR Code",
+    "price": "Price (VND)",
+    "total_price": "Total Cost (VND)",
+    "po": "PO Code",
+    "customer": "Customer Name",
+    "supplier": "Supplier Name",
+    "product_name": "Product Name",
+    "quantity": "Inventory Quantity (KG)",
+    "date": "Manufacturing Date",
+    "date_exp": "Expiry Date",
+    "quantity_inbound": "Inbound Quantity (KG)",
+    "warehouse_name": "Warehouse Name",
+    "date_inbound": "Inbound Date",
+    "consignment_id": "Lot Code"
   }
 }

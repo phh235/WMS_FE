@@ -8,16 +8,35 @@
   <div class="container-fluid box-shadow p-3 mx-auto">
     <form @submit.prevent="handleSubmit">
       <div class="row p-md-3">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-2">
           <div class="mb-3 mb-md-0">
             <label for="maPR" class="form-label">Mã đơn đặt hàng <span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-2">
           <div class="mb-3 mb-md-0">
             <label for="requesterName" class="form-label">Người tạo <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="requesterName" v-model="sysIdUser" disabled />
+          </div>
+        </div>
+        <div class="col-12 col-md-2">
+          <div class="mb-3 mb-md-0">
+            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
+            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
+              :auto-position="true" placeholder="Chọn ngày nhập hàng dự kiến">
+            </VueDatePicker>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="mb-3 mb-md-0">
+            <label for="supplier" class="form-label">Nhà cung cấp <span class="text-danger">*</span></label>
+            <select v-model="selectedSupplier" id="supplier" class="form-select">
+              <option :value="null" disabled>Chọn nhà cung cấp</option>
+              <option v-for="supplier in supplierStore.suppliers" :key="supplier.sysIdNhaCungCap" :value="supplier">
+                {{ supplier.tenNhaCungCap }}
+              </option>
+            </select>
           </div>
         </div>
         <div class="col-12 col-md-3">
@@ -29,14 +48,6 @@
                 {{ customer.tenKhachHang }}
               </option>
             </select>
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <div class="mb-3 mb-md-0">
-            <label for="dateDuKien" class="form-label">Ngày nhập hàng dự kiến <span class="text-danger">*</span></label>
-            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-              :auto-position="true" placeholder="Chọn ngày nhập hàng dự kiến">
-            </VueDatePicker>
           </div>
         </div>
       </div>
@@ -104,6 +115,7 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useProductStore } from "@/store/productStore.js";
 import { useCustomerStore } from '@/store/customerStore';
+import { useSupplierStore } from '@/store/supplierStore';
 import { useRouter } from "vue-router";
 import { useApiServices } from "@/services/apiService.js";
 import { showToastSuccess, showToastError, showToastInfo, closeToastLoading, showToastLoading } from "@/utils/Toast/toastHandle";
@@ -114,9 +126,11 @@ const { t } = useI18n();
 const apiService = useApiServices();
 const productStore = useProductStore();
 const customerStore = useCustomerStore();
+const supplierStore = useSupplierStore();
 const router = useRouter();
 const isLoading = ref(false);
 const selectedCustomer = ref(null);
+const selectedSupplier = ref(null);
 const isEdit = ref(false);
 const sysIdUser = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
 const dateDuKien = ref();
@@ -124,6 +138,7 @@ const dateDuKien = ref();
 onMounted(async () => {
   await productStore.getProducts();
   await customerStore.getCustomers();
+  await supplierStore.getSuppliers();
   const { id } = router.currentRoute.value.params;
   if (id) {
     await getPurchaseRequestOBByID(id);
@@ -170,6 +185,7 @@ const getPurchaseRequestOBByID = async (id) => {
       formData.chiTietNhapHang = purchase.chiTietNhapHang.map((product) => ({
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
         sysIdSanPham: product.sysIdSanPham,
+        sysIdNhaCungCap: product.sysIdNhaCungCap,
         sysIdKhachHang: product.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,
@@ -177,6 +193,10 @@ const getPurchaseRequestOBByID = async (id) => {
       }));
 
       dateDuKien.value = parseDateString(formData.chiTietNhapHang[0].ngayNhapDuKien);
+
+      selectedSupplier.value = supplierStore.suppliers.find(
+        (s) => s.sysIdNhaCungCap === formData.chiTietNhapHang[0].sysIdNhaCungCap
+      );
 
       selectedCustomer.value = customerStore.customers.find(
         (c) => c.sysIdKhachHang === formData.chiTietNhapHang[0].sysIdKhachHang
@@ -191,6 +211,7 @@ const getPurchaseRequestOBByID = async (id) => {
 const addProduct = () => {
   formData.chiTietNhapHang.push({
     sysIdSanPham: '',
+    sysIdNhaCungCap: '',
     sysIdKhachHang: '',
     soLuong: 0,
     gia: 0,
@@ -212,6 +233,16 @@ const totalCost = computed(() => {
 
 // Thêm/chỉnh sửa yêu cầu
 const handleSubmit = async () => {
+  if (!dateDuKien.value) {
+    showToastError('Vui lòng chọn ngày nhập dự kiến!');
+    return;
+  }
+
+  if (!selectedSupplier.value) {
+    showToastError('Vui lòng chọn nhà cung cấp!');
+    return;
+  }
+
   if (!selectedCustomer.value) {
     showToastError('Vui lòng chọn khách hàng!');
     return;
@@ -232,6 +263,7 @@ const handleSubmit = async () => {
         gia: product.gia,
         tongChiPhi: product.soLuong * product.gia,
         sysIdSanPham: product.sysIdSanPham,
+        sysIdNhaCungCap: selectedSupplier.value.sysIdNhaCungCap,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
         ngayNhapDuKien: format(dateDuKien.value)
       }))
@@ -243,6 +275,7 @@ const handleSubmit = async () => {
       chiTietNhapHang: formData.chiTietNhapHang.map(product => ({
         sysIdChiTietNhapHang: product.sysIdChiTietNhapHang,
         sysIdSanPham: product.sysIdSanPham,
+        sysIdNhaCungCap: selectedSupplier.value.sysIdNhaCungCap,
         sysIdKhachHang: selectedCustomer.value.sysIdKhachHang,
         soLuong: product.soLuong,
         gia: product.gia,

@@ -27,14 +27,14 @@
     </div>
   </div>
   <div class="table-responsive">
-    <table class="table mb-3 ">
+    <table class="table mb-3">
       <thead>
         <tr>
-          <th class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
-          <th>{{ $t('PurchaseOrder.table.id_pr') }}</th>
-          <th>{{ $t('PurchaseOrder.table.name') }}</th>
-          <th>{{ $t('PurchaseOrder.table.date_request') }}</th>
-          <th style="width: 200px;" class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
+          <th style="width: 200px;" class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
+          <th style="width: 200px;">{{ $t('PurchaseOrder.table.id_pr') }}</th>
+          <th style="width: 200px;">{{ $t('PurchaseOrder.table.name') }}</th>
+          <th style="width: 200px;">{{ $t('PurchaseOrder.table.date_request') }}</th>
+          <th style="width: 190px;" class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -42,11 +42,14 @@
           <td colspan="10">{{ $t('PurchaseOrder.not_found') }}</td>
         </tr>
         <tr v-for="purchase in paginatedPurchases" :key="purchase.maPO">
-          <td class="sticky">{{ purchase.maPO }}</td>
-          <td>{{ purchase.maPR }}</td>
-          <td>{{ purchase.nguoiTao }}</td>
-          <td>{{ formatDate(purchase.ngayTao) }}</td>
-          <td style="width: 210px;" class="d-flex align-items-center justify-content-center">
+          <td style="width: 200px;" class="sticky">{{ purchase.maPO }}</td>
+          <td style="width: 200px;">{{ purchase.maPR ? purchase.maPR : 'Không có' }}</td>
+          <td style="width: 200px;">{{ purchase.nguoiTao }}</td>
+          <td style="width: 200px;">{{ formatDate(purchase.ngayTao) }}</td>
+          <td style="width: 190px;" class="d-flex align-items-center ">
+            <button v-if="purchase.isExistIb === false" class="btn btn-primary d-flex align-items-center me-2"
+              @click="createInbound(purchase.maPO)"><span class="material-symbols-outlined me-2">add</span> Tạo phiếu
+              nhập</button>
             <button class="btn btn-export d-flex align-items-center me-2" @click="exportToWord(purchase)"><span
                 class="material-symbols-outlined me-2">upgrade</span> Xuất hóa đơn</button>
             <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
@@ -126,19 +129,19 @@
               </tbody>
             </table>
           </div>
-          <div class="d-flex align-items-center justify-content-between">
-            <button class="btn btn-primary d-flex align-items-center" @click="exportOrderToPDF">
+          <div class="d-flex align-items-center justify-content-end">
+            <!-- <button class="btn btn-primary d-flex align-items-center" @click="exportOrderToPDF">
               <span class="material-symbols-outlined me-2">upgrade</span> Xuất PDF
-            </button>
-            <p class="fw-bold mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
+            </button> -->
+            <h5 class="fw-bold mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
               <span style="color: var(--primary-color);">{{
                 totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-            </p>
+            </h5>
           </div>
         </div>
       </div>
     </div>
-    <div class="export-data" style="z-index: -9999;">
+    <!-- <div class="export-data" style="z-index: -9999;">
       <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" alt="Logo WMS"
         width="45" class="me-2 rounded-4" />
       <p class="h6 fw-bold mt-2" style="color: var(--nav-link-color);"> {{
@@ -153,11 +156,10 @@
             </h5>
           </div>
           <div class="modal-body">
-            <!-- Hiển thị thông tin chi tiết đơn hàng -->
             <div class="row">
               <div class="col-6 col-md-4">
                 <label class="form-label">{{ $t('PurchaseOrder.table.id_pr') }}</label>
-                <p class="fs">{{ selectedPurchaseOrder.maPR }}</p>
+                <p class="fs">{{ selectedPurchaseOrder.maPR ? selectedPurchaseOrder.maPR : 'Không có' }}</p>
               </div>
               <div class="col-6 col-md-4">
                 <label class="form-label">
@@ -200,15 +202,15 @@
               </table>
             </div>
             <div class="d-flex align-items-center justify-content-end">
-              <p class="fw-bold mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
+              <h5 class="fw-bold mt-2"> {{ $t('PurchaseOrder.table.detail.product_detail.total_price') }}:
                 <span style="color: var(--primary-color);">{{
                   totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-              </p>
+              </h5>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- Overlay khi modal mở -->
@@ -222,6 +224,7 @@ import { useAuthStore } from "@/store/authStore.js";
 import { useI18n } from "vue-i18n";
 import i18n from "@/lang/i18n";
 import Swal from "sweetalert2";
+import { showToastSuccess, showToastError } from "@/utils/Toast/toastHandle.js";
 import html2pdf from "html2pdf.js";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
@@ -269,7 +272,7 @@ const apiService = useApiServices();
 const sortOption = ref("");
 
 onMounted(async () => {
-  await getPurchaseRequests();
+  await getPurchaseOrders();
 })
 
 const selectedPurchaseOrder = reactive({
@@ -300,7 +303,7 @@ const totalOrderValue = computed(() => {
   }, 0);
 });
 
-const getPurchaseRequests = async () => {
+const getPurchaseOrders = async () => {
   try {
     const response = await apiService.get("purchase-orders");
     purchases.value = response.data;
@@ -394,6 +397,25 @@ const updateUrl = () => {
 
   url.search = params.toString();
   window.history.replaceState({}, "", url.toString());
+};
+
+const createInbound = async (id) => {
+  try {
+    const response = await apiService.post("inbounds/create", {
+      maPO: id,
+      maKho: "KHO002",
+      trangThai: "confirm",
+      sysIdUser: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+    });
+    if (response.status) {
+      showToastSuccess("Tạo phiếu nhập thành công");
+      getPurchaseOrders();
+    } else {
+      showToastError("Tạo phiếu nhập thất bại");
+    }
+  } catch (error) {
+    console.error("Failed to save inbound:", error);
+  }
 };
 
 const exportOrderToPDF = () => {

@@ -482,7 +482,7 @@ select {
   color: #fff;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 2000px) {
   .table th,
   .table td {
     white-space: nowrap;
@@ -515,7 +515,8 @@ td {
   }
 }
 
-th {
+th,
+.side-col {
   background-color: var(--secondary-color) !important;
   color: var(--tab-button-text) !important;
   border: none !important;
@@ -526,6 +527,20 @@ th {
 
   &:hover {
     background-color: var(--secondary-color-hover) !important;
+  }
+}
+
+.side-col {
+  background-color: var(--secondary-color) !important;
+  color: var(--tab-button-text) !important;
+  border: none !important;
+  padding: 12px 8px !important;
+  font-size: 14px !important;
+  cursor: pointer;
+  user-select: none !important;
+
+  &:hover {
+    background-color: var(--secondary-color) !important;
   }
 }
 
@@ -647,4 +662,33 @@ input.is-invalid,
 select.is-invalid {
   transition: none !important;
   border: 1.5px solid #dc3545 !important;
+}
+
+.material-symbols-outlined {
+  user-select: none !important;
+}
+
+.form-check {
+  background-color: var(--background-color) !important;
+}
+.form-check-label {
+  user-select: none !important;
+}
+
+.form-check-input[type="radio"] {
+  border-radius: 50%;
+  background-color: var(--background-color) !important;
+  &:checked {
+    background-color: var(--primary-color) !important;
+  }
+}
+
+#nprogress .bar {
+  background: var(--primary-color) !important;
+  height: 2px !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--btn-logout-color), 0 0 5px var(--btn-logout-color);
+  height: 2px !important;
 }
