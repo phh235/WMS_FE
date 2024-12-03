@@ -12,21 +12,6 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
-          :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
-          placeholder="Tìm theo ngày">
-          <template #preset-date-range-button="{ label, value, presetDate }">
-            <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
-              @keyup.space.prevent="presetDate(value)">
-              {{ label }}
-            </span>
-          </template>
-        </VueDatePicker>
-        <button class="btn btn-secondary d-flex align-items-center ms-2 me-2" @click="toggleSortById">
-          <span class="material-symbols-outlined">swap_vert</span>
-        </button>
-        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
-            class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
         <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User', 'Admin'])">
           <span class="material-symbols-outlined me-2"> add </span>
@@ -35,11 +20,25 @@
       </div>
     </div>
   </div>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+        class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
+    <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true" :auto-position="true"
+      :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy" placeholder="Tìm theo ngày">
+      <template #preset-date-range-button="{ label, value, presetDate }">
+        <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
+          @keyup.space.prevent="presetDate(value)">
+          {{ label }}
+        </span>
+      </template>
+    </VueDatePicker>
+  </div>
   <div class="table-responsive">
     <table class="table mb-3 ">
       <thead>
         <tr>
-          <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
+          <th class="sticky" @click="toggleSortById">{{ $t('PurchaseRequest.table.id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th>{{ $t('PurchaseRequest.table.name') }}</th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
           <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
@@ -134,7 +133,7 @@
             {{ $t('PurchaseRequest.table.detail.order_detail') }}
             <span style="color: var(--primary-color);">{{ selectedPurchase.maPR }}</span>
           </h5>
-          <span class="d-flex align-items-center ms-2" style="width: fit-content;"
+          <span class="d-flex align-items-center ms-5" style="width: fit-content;"
             :class="['badge', getBadgeClass(selectedPurchase.trangThai)]">
             <span class="material-symbols-outlined me-2">{{ statusIcon[selectedPurchase.trangThai] }}</span>
             {{ getStatusLabel(selectedPurchase.trangThai) }}
@@ -196,14 +195,16 @@
             <table class="table ">
               <thead>
                 <tr>
-                  <th> {{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
-                  <th> {{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
-                  <th> {{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
-                  <th> {{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
+                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
+                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
+                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
+                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
+                  <th class="text-end px-4" v-if="selectedPurchase.trangThai === 'confirm'">{{
+                    $t('PurchaseRequest.table.action') }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in selectedPurchase.chiTietXuatHang" :key="item.maSanPham">
+                <tr v-for=" item in selectedPurchase.chiTietXuatHang" :key="item.maSanPham">
                   <td>{{ item.tenSanPham }}</td>
                   <td>{{ item.soLuong }} Kg</td>
                   <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
@@ -211,6 +212,12 @@
                   </td>
                   <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
                     <span class="currency-symbol">&#8363;</span>
+                  </td>
+                  <td class="d-flex justify-content-end" v-if="selectedPurchase.trangThai === 'confirm'">
+                    <button class="btn btn-export d-flex align-items-center me-2"
+                      @click="btnCheckFirstOut(item.sysIdSanPham)"
+                      v-if="authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm'"><span
+                        class="material-symbols-outlined me-2">rubric</span> Kiểm tra </button>
                   </td>
                 </tr>
               </tbody>
@@ -225,8 +232,59 @@
     </div>
   </div>
 
+  <!-- Modal để hiển thị check first out -->
+  <div v-if="isCheckingFirstOutModalVisible" class="modal fade show" tabindex="-1" style="display: block;"
+    aria-labelledby="checkingFirstOutModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title fw-bold" id="checkingFirstOutModal">
+            Chi tiết lô
+          </h5>
+          <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
+            @click="closeCheckingFirstOutModal">close</span>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tên kho</th>
+                  <th>Mã lô</th>
+                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
+                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
+                  <th>Ngày cập nhật</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="ck in checkFirstOut" :key="ck.maLo">
+                  <td>{{ ck.maKho }}</td>
+                  <td>{{ ck.maLo }}</td>
+                  <td>{{ ck.tenSanPham }}</td>
+                  <td>{{ ck.soLuong }} Kg</td>
+                  <td>{{ ck.ngayCapNhat }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-logout d-flex align-items-center" data-bs-dismiss="modal"
+            @click="closeCheckingFirstOutModal">
+            <span class="material-symbols-outlined me-2">close</span>
+            Đóng
+          </button>
+          <!-- <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveConsignment">
+            <span class="material-symbols-outlined me-2">check</span>
+            Xác nhận
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Overlay khi modal mở -->
   <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
+  <div v-if="isCheckingFirstOutModalVisible" class="modal-backdrop fade show"></div>
 </template>
 
 <script setup>
@@ -278,7 +336,9 @@ const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
 const purchases = ref([]);
+const checkFirstOut = ref([]);
 const apiService = useApiServices();
+const isCheckingFirstOutModalVisible = ref(false);
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
 const showTabOpen = computed(() => {
@@ -478,6 +538,23 @@ const showDetail = (purchase) => {
 const closeModal = () => {
   isModalVisible.value = false;
 };
+
+const closeCheckingFirstOutModal = () => {
+  isModalVisible.value = true;
+  isCheckingFirstOutModalVisible.value = false;
+};
+
+// Check firstout
+const btnCheckFirstOut = async (id) => {
+  isCheckingFirstOutModalVisible.value = true;
+  isModalVisible.value = false;
+  try {
+    const response = await apiService.get(`outbound/first-out/${id}`);
+    checkFirstOut.value = response.data;
+    console.log(response.data);
+  } catch (error) {
+  }
+}
 
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
@@ -689,8 +766,8 @@ td {
 }
 
 .badge {
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 6px 8px;
+  border-radius: 12px;
   font-weight: 500;
 }
 

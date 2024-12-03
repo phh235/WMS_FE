@@ -277,7 +277,7 @@
     "not_found": "Không tìm thấy đơn đặt hàng",
     "btn_create": "Tạo đơn đặt hàng",
     "table": {
-      "id": "Mã đơn đặt hàng",
+      "id": "Mã mua hàng",
       "id_pr": "Mã yêu cầu",
       "name": "Người tạo",
       "name_pr": "Người yêu cầu",
@@ -691,7 +691,7 @@
     "not_found": "Không tìm thấy",
     "table": {
       "reference_code": "Mã tham chiếu",
-      "po_code": "Mã PO",
+      "po_code": "Mã đơn hàng",
       "wh_code": "Mã kho",
       "from": "Từ",
       "to": "Đến",
@@ -729,7 +729,7 @@
     "table": {
       "reference_code": "Mã tham chiếu",
       "from": "Từ",
-      "to": "Đến",
+      "to": "Khách hàng",
       "contact": "Liên hệ",
       "person_in_charge": "Người phụ trách",
       "plan_date": "Ngày theo kế hoạch",

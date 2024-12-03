@@ -28,11 +28,11 @@
           </button>
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
               class="material-symbols-outlined me-2">upgrade</span> {{ $t('Inbound.btn_export') }}</button>
-          <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
+          <!-- <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
             v-if="authStore.checkPermissions(['User', 'Admin'])">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('Inbound.btn_create_inbound') }}
-          </router-link>
+          </router-link> -->
         </div>
       </div>
     </div>
@@ -460,6 +460,7 @@ const showDetail = (inbound) => {
 };
 
 const showPhanLo = () => {
+  isModalVisible.value = false;
   isPhanLoModalVisible.value = true;
 }
 
@@ -673,8 +674,8 @@ td {
 }
 
 .badge {
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 6px 8px;
+  border-radius: 12px;
   font-weight: 500;
 }
 

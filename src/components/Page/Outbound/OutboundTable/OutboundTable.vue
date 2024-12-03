@@ -28,11 +28,11 @@
           </button>
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
               class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
-          <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
+          <!-- <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
             v-if="authStore.checkPermissions(['User', 'Admin'])">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('Inbound.btn_create_inbound') }}
-          </router-link>
+          </router-link> -->
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
             <th>{{ $t('Inbound.table.person_in_charge') }}</th>
             <th>{{ $t('Inbound.table.plan_date') }}</th>
             <th>{{ $t('Inbound.table.status') }}</th>
-            <th>{{ $t('Inbound.table.to') }}</th>
+            <th>{{ $t('Outbound.table.to') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
             <!-- <th>{{ $t('Inbound.table.effective_date') }}</th> -->
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
@@ -548,8 +548,8 @@ td {
 }
 
 .badge {
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 6px 8px;
+  border-radius: 12px;
   font-weight: 500;
 }
 

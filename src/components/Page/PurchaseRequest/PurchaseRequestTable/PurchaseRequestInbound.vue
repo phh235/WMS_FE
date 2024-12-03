@@ -12,21 +12,6 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
-          :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
-          placeholder="Tìm theo ngày">
-          <template #preset-date-range-button="{ label, value, presetDate }">
-            <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
-              @keyup.space.prevent="presetDate(value)">
-              {{ label }}
-            </span>
-          </template>
-        </VueDatePicker>
-        <button class="btn btn-secondary d-flex align-items-center ms-2 me-2" @click="toggleSortById">
-          <span class="material-symbols-outlined">swap_vert</span>
-        </button>
-        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
-            class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
         <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User', 'Admin'])">
           <span class="material-symbols-outlined me-2"> add </span>
@@ -35,11 +20,25 @@
       </div>
     </div>
   </div>
+  <div class="mb-3 d-flex justify-content-end">
+    <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+        class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
+    <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true" :auto-position="true"
+      :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy" placeholder="Tìm theo ngày">
+      <template #preset-date-range-button="{ label, value, presetDate }">
+        <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
+          @keyup.space.prevent="presetDate(value)">
+          {{ label }}
+        </span>
+      </template>
+    </VueDatePicker>
+  </div>
   <div class="table-responsive">
     <table class="table mb-3">
       <thead>
         <tr>
-          <th class="sticky">{{ $t('PurchaseRequest.table.id') }}</th>
+          <th class="sticky" @click="toggleSortById">{{ $t('PurchaseRequest.table.id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th>{{ $t('PurchaseRequest.table.name') }}</th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
           <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
@@ -472,7 +471,6 @@ const updatePRStatus = async (id, status, lyDo) => {
       })),
       ...(lyDo && { lyDo: lyDo }),
     };
-    console.log(submitDataUpdate);
     showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     await apiService.post("purchase-requests/save", submitDataUpdate);
     switch (status) {
