@@ -11,6 +11,7 @@ export const useUserStore = defineStore("users", () => {
     fullName: "",
     soDienThoai: "",
     role: "",
+    hinhAnh: "",
   });
   const users = ref([]);
   const apiService = useApiServices();
@@ -33,7 +34,8 @@ export const useUserStore = defineStore("users", () => {
       user.email = storedUser.email;
       user.fullName = storedUser.fullName;
       user.soDienThoai = storedUser.soDienThoai;
-      user.role = storedUser.roles[0]?.roleName || "N/A";
+      user.hinhAnh = storedUser.hinhAnh;
+      user.role = storedUser.roles[0]?.moTa || "N/A";
     }
   };
 
@@ -54,7 +56,8 @@ export const useUserStore = defineStore("users", () => {
       user.email = responseData.email;
       user.fullName = responseData.fullName;
       user.soDienThoai = responseData.soDienThoai;
-      user.role = responseData.roles[0]?.roleName || ""; // lấy roleName nếu tồn tại
+      user.hinhAnh = responseData.hinhAnh;
+      user.role = responseData.roles[0]?.moTa || ""; // lấy moTa nếu tồn tại
 
       // Lưu thông tin người dùng vào sessionStorage để sử dụng lại
       sessionStorage.setItem("user", JSON.stringify(responseData));

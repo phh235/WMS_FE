@@ -1,5 +1,5 @@
 <template>
-  <div class="card mb-4 box-shadow p-4">
+  <div class="card mb-4 box-shadow p-md-4 p-1">
     <div class="card-body">
       <h5 class="mb-4 fw-bold" style="color: var(--primary-color); font-size: 1.5rem">
         {{ $t("AccountInfo.title_info") }}

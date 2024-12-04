@@ -5,13 +5,13 @@
         <div class="card mb-4 box-shadow">
           <div class="card-body text-center">
             <div class="d-flex justify-content-center">
-              <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="User Profile"
-                class="rounded-4 img-fluid mb-3" width="200" loading="lazy" />
+              <img :src="userStore.user.hinhAnh" alt="avatar" class="rounded-4 img-fluid mb-3" width="278"
+                loading="lazy" />
             </div>
             <h4 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h4>
             <div class="d-flex justify-content-center">
-              <span class="badge bg-primary box-shadow"
-                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important; font-size: 0.775rem !important">{{
+              <span class="badge p-2 box-shadow"
+                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important; font-size: 0.875rem !important">{{
                   userStore.user.role }}</span>
             </div>
           </div>

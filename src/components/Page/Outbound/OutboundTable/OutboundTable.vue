@@ -13,7 +13,7 @@
           <!-- <SearchInput v-model="searchQueryByPeople" :placeholder="$t('Inbound.search_input.search_name')" /> -->
         </div>
         <div class="d-flex">
-          <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+          <VueDatePicker v-model="date" range auto-apply :dark="isDarkMode" :preset-dates="presetDates" :teleport="true"
             :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
             placeholder="Tìm theo ngày">
             <template #preset-date-range-button="{ label, value, presetDate }">
@@ -28,11 +28,11 @@
           </button>
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
               class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
-          <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
+          <!-- <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
             v-if="authStore.checkPermissions(['User', 'Admin'])">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('Inbound.btn_create_inbound') }}
-          </router-link>
+          </router-link> -->
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
             <th>{{ $t('Inbound.table.person_in_charge') }}</th>
             <th>{{ $t('Inbound.table.plan_date') }}</th>
             <th>{{ $t('Inbound.table.status') }}</th>
-            <th>{{ $t('Inbound.table.to') }}</th>
+            <th>{{ $t('Outbound.table.to') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
             <!-- <th>{{ $t('Inbound.table.effective_date') }}</th> -->
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
@@ -245,12 +245,12 @@ import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { showToastLoading } from "@/utils/Toast/toastHandle";
 import router from "@/router";
 
-// const date = ref([
-//   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
-//   new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
-// ]);
+const date = ref([
+  new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
+  new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
+]);
 
-const date = ref([])
+// const date = ref([])
 
 const presetDates = ref([
   {
@@ -281,6 +281,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
+const isDarkMode = ref(false);
 const outbound = ref([]);
 const apiService = useApiServices();
 // Tab
@@ -299,6 +300,14 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getOutbound();
+  isDarkMode.value = localStorage.getItem("isDarkMode") === "true";
+
+  // Lắng nghe sự kiện `storage` để cập nhật khi localStorage thay đổi
+  window.addEventListener("storage", (event) => {
+    if (event.key === "isDarkMode") {
+      isDarkMode.value = event.newValue === "true";
+    }
+  });
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -382,11 +391,18 @@ const filteredOutbound = computed(() => {
     .filter(inbound =>
       !searchQueryByPeople.value || removeAccents(inbound.nguoiPhuTrach.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
-    .filter(inbound => {
+    .filter(purchase => {
       if (date.value && date.value.length === 2) {
-        const [startDate, endDate] = date.value;
-        const purchaseDate = parseDate(inbound.ngayXuat);
-        return purchaseDate >= startDate && purchaseDate <= endDate;
+        const [startDate, endDate] = date.value.map(dateString => {
+          const dateObj = dateString;
+          dateObj.setHours(0, 0, 0, 0);
+          return dateObj;
+        });
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        const purchaseDate = parseDate(purchase.ngayXuat);
+        purchaseDate.setHours(0, 0, 0, 0);
+        return purchaseDate.getTime() >= startDate.getTime() && purchaseDate.getTime() <= endDate.getTime();
       }
       return true;
     })
@@ -548,8 +564,8 @@ td {
 }
 
 .badge {
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 6px 8px;
+  border-radius: 12px;
   font-weight: 500;
 }
 

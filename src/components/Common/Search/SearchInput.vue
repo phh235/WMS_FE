@@ -36,19 +36,18 @@ const model = computed({
 <style scoped>
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #4c4c4c !important;
-  opacity: 1;
+  color: var(--search-input-color) !important;
   /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #4c4c4c !important;
+  color: var(--search-input-color) !important;
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: #4c4c4c !important;
+  color: var(--search-input-color) !important;
 }
 
 input[type='search']::-webkit-search-cancel-button {

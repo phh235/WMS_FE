@@ -92,6 +92,7 @@ const router = createRouter({
 
 // Chặn quay lại trang của trình duyệt
 router.afterEach((to) => {
+  NProgress.done(); // Kết thúc thanh tiến trình
   if (to.path === "/login") {
     // Đẩy thêm một trạng thái mới để chặn việc quay lại
     window.history.pushState(null, "", "/login");
@@ -136,10 +137,6 @@ router.beforeEach((to, from, next) => {
     NProgress.start();
     next(); // Chuyển hướng bình thường
   }
-});
-
-router.afterEach(() => {
-  NProgress.done(); // Kết thúc thanh tiến trình
 });
 
 export default router;

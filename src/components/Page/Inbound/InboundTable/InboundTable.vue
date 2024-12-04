@@ -13,7 +13,7 @@
           <!-- <SearchInput v-model="searchQueryByPeople" :placeholder="$t('Inbound.search_input.search_name')" /> -->
         </div>
         <div class="d-flex">
-          <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+          <VueDatePicker v-model="date" range auto-apply :dark="isDarkMode" :preset-dates="presetDates" :teleport="true"
             :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
             :placeholder="$t('Inbound.search_input.search_date')">
             <template #preset-date-range-button="{ label, value, presetDate }">
@@ -28,11 +28,11 @@
           </button>
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
               class="material-symbols-outlined me-2">upgrade</span> {{ $t('Inbound.btn_export') }}</button>
-          <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
+          <!-- <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
             v-if="authStore.checkPermissions(['User', 'Admin'])">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('Inbound.btn_create_inbound') }}
-          </router-link>
+          </router-link> -->
         </div>
       </div>
     </div>
@@ -41,12 +41,12 @@
         <thead>
           <tr>
             <th class="sticky">{{ $t('Inbound.table.reference_code') }}</th>
-            <th>{{ $t('Inbound.table.po_code') }}</th>
-            <th>{{ $t('Inbound.table.from') }}</th>
-            <th>{{ $t('Inbound.table.to') }}</th>
-            <th>{{ $t('Inbound.table.person_in_charge') }}</th>
-            <th>{{ $t('Inbound.table.plan_date') }}</th>
-            <th>{{ $t('Inbound.table.status') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.po_code') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.from') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.to') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.person_in_charge') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.plan_date') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.status') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
             <th>{{ $t('Inbound.table.effective_date') }}</th>
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
@@ -57,17 +57,14 @@
             <td colspan="10">{{ $t('Inbound.not_found') }}</td>
           </tr>
           <tr v-for="inbound in paginatedInbounds" :key="inbound.sysIdInBound">
-            <td class="d-none">{{ inbound.sysIdInBound }}</td>
-            <td class="sticky">{{ inbound.maInBound }}</td>
-            <td>{{ inbound.maPO }}</td>
-            <td>{{ inbound.chiTietNhapHang[0]?.tenKhachHang }}</td>
-            <td>{{ inbound.tenKho }}</td>
-            <td>{{ inbound.fullName }}</td>
-            <td>{{ new Date(inbound.ngayNhap).toLocaleDateString('en-GB', {
-              year: 'numeric', month: '2-digit', day:
-                '2-digit'
-            }) }}</td>
-            <td>
+            <td style="width: 300px;" class="d-none">{{ inbound.sysIdInBound }}</td>
+            <td style="width: 300px;" class="sticky">{{ inbound.maInBound }}</td>
+            <td style="width: 300px;">{{ inbound.maPO }}</td>
+            <td style="width: 300px;">{{ inbound.chiTietNhapHang[0]?.tenKhachHang }}</td>
+            <td style="width: 300px;">{{ inbound.tenKho }}</td>
+            <td style="width: 300px;">{{ inbound.fullName }}</td>
+            <td style="width: 300px;">{{ formatDate(inbound.ngayNhap) }}</td>
+            <td style="width: 300px;">
               <span class="d-flex align-items-center" style="width: fit-content;"
                 :class="['badge', getBadgeClass(inbound.trangThai)]">
                 <span class="material-symbols-outlined me-2">{{ statusIcon[inbound.trangThai] }}</span>
@@ -263,15 +260,15 @@
                 <div class="d-flex">
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="dungTich" id="dungTich1" value="250" />
-                    <label class="form-check-label" for="dungTich1">0.01</label>
+                    <label class="form-check-label fs" for="dungTich1">0.01</label>
                   </div>
                   <div class="form-check me-2">
                     <input class="form-check-input" type="radio" name="dungTich" id="dungTich2" value="500" />
-                    <label class="form-check-label" for="dungTich2">0.02</label>
+                    <label class="form-check-label fs" for="dungTich2">0.02</label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="dungTich" id="dungTich3" value="1000" />
-                    <label class="form-check-label" for="dungTich3">0.05</label>
+                    <label class="form-check-label fs" for="dungTich3">0.05</label>
                   </div>
                 </div>
               </div>
@@ -287,7 +284,7 @@
                   </div>
                   <div class="col-12 col-md-6">
                     <label for="soLuong" class="form-label fs fw-bold">
-                      Số lượng (Kg) <span class="text-danger">*</span>
+                      Số lượng mỗi thùng (Kg) <span class="text-danger">*</span>
                     </label>
                     <input type="text" class="form-control" id="soLuong" aria-describedby="consignmentNameHelp" />
                   </div>
@@ -351,12 +348,12 @@ import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { showToastLoading } from "@/utils/Toast/toastHandle";
 import router from "@/router";
 
-// const date = ref([
-//   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
-//   new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
-// ]);
+const date = ref([
+  new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
+  new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
+]);
 
-const date = ref([])
+// const date = ref([])
 
 const presetDates = ref([
   {
@@ -395,6 +392,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
+const isDarkMode = ref(false);
 const isPhanLoModalVisible = ref(false);
 const inbounds = ref([]);
 const apiService = useApiServices();
@@ -414,6 +412,14 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getInbounds();
+  isDarkMode.value = localStorage.getItem("isDarkMode") === "true";
+
+  // Lắng nghe sự kiện `storage` để cập nhật khi localStorage thay đổi
+  window.addEventListener("storage", (event) => {
+    if (event.key === "isDarkMode") {
+      isDarkMode.value = event.newValue === "true";
+    }
+  });
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -460,6 +466,7 @@ const showDetail = (inbound) => {
 };
 
 const showPhanLo = () => {
+  isModalVisible.value = false;
   isPhanLoModalVisible.value = true;
 }
 
@@ -491,6 +498,17 @@ const statusIcon = {
 // Hàm chuyển đổi ký tự có dấu thành không dấu
 const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  const second = date.getSeconds().toString().padStart(2, '0');
+  return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+};
+
 const parseDate = (dateString) => {
   const [day, month, year, hour, minute, second] = dateString.split(/\/|\s|:/);
   return new Date(year, month - 1, day, hour, minute, second);
@@ -507,11 +525,18 @@ const filteredInbounds = computed(() => {
     .filter(inbound =>
       !searchQueryByPeople.value || removeAccents(inbound.fullName.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
-    .filter(inbound => {
+    .filter(purchase => {
       if (date.value && date.value.length === 2) {
-        const [startDate, endDate] = date.value;
-        const purchaseDate = parseDate(inbound.ngayNhap);
-        return purchaseDate >= startDate && purchaseDate <= endDate;
+        const [startDate, endDate] = date.value.map(dateString => {
+          const dateObj = parseDate(formatDate(dateString));
+          dateObj.setHours(0, 0, 0, 0);
+          return dateObj;
+        });
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        const purchaseDate = parseDate(formatDate(purchase.ngayNhap));
+        purchaseDate.setHours(0, 0, 0, 0);
+        return purchaseDate.getTime() >= startDate.getTime() && purchaseDate.getTime() <= endDate.getTime();
       }
       return true;
     })
@@ -673,8 +698,8 @@ td {
 }
 
 .badge {
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 6px 8px;
+  border-radius: 12px;
   font-weight: 500;
 }
 

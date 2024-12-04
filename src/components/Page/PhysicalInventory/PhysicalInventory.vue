@@ -13,6 +13,7 @@
             <th class="th-batch-code">Mã lô</th>
             <th class="th-quantity">Số lượng</th>
             <th class="th-update-date">Ngày cập nhật</th>
+            <th class="th-update-date">{{ $t('PurchaseRequest.table.action') }}</th>
             <!-- <th class="th-action text-center">Hành động</th> -->
           </tr>
         </thead>
@@ -31,6 +32,8 @@
               month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
             }).replace(/\/$/,
               '').replace(/:\d{2}$/, '') }}</td>
+            <td class="td-quantity"><button class="btn btn-danger d-flex align-items-center"><span
+                  class="material-symbols-outlined me-2">close</span> Hủy</button></td>
           </tr>
         </tbody>
       </table>

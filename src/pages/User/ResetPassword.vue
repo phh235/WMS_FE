@@ -18,7 +18,7 @@
             <span v-else class="material-symbols-outlined"> visibility </span>
           </span>
         </div>
-        <ul class="password-criteria box-shadow-sm px-2 py-2 mb-2 user-select-none">
+        <ul class="password-criteria box-shadow px-2 py-2 mb-2">
           <li :class="{ valid: passwordCriteria.length, invalid: !passwordCriteria.length }">
             <span class="material-symbols-outlined me-1"
               :style="{ color: passwordCriteria.length ? 'var(--valid-color)' : 'var(--is-valid-color)' }">
@@ -208,7 +208,7 @@ const handleResetPassword = async () => {
 .password-criteria {
   list-style-type: none;
   padding: 0;
-  margin: 10px 0 0;
+  margin: 5px 0 0;
   font-size: 0.875rem;
 }
 
@@ -250,7 +250,7 @@ li {
   align-items: center;
 }
 
-.box-shadow-sm {
+.box-shadow {
   border-radius: 1rem;
   border: 1.5px solid var(--border-main-color);
   cursor: pointer;
