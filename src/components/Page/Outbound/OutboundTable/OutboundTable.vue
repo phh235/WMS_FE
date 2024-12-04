@@ -13,7 +13,7 @@
           <!-- <SearchInput v-model="searchQueryByPeople" :placeholder="$t('Inbound.search_input.search_name')" /> -->
         </div>
         <div class="d-flex">
-          <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+          <VueDatePicker v-model="date" range auto-apply :dark="isDarkMode" :preset-dates="presetDates" :teleport="true"
             :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
             placeholder="Tìm theo ngày">
             <template #preset-date-range-button="{ label, value, presetDate }">
@@ -245,12 +245,12 @@ import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { showToastLoading } from "@/utils/Toast/toastHandle";
 import router from "@/router";
 
-// const date = ref([
-//   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
-//   new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
-// ]);
+const date = ref([
+  new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
+  new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
+]);
 
-const date = ref([])
+// const date = ref([])
 
 const presetDates = ref([
   {
@@ -281,6 +281,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
+const isDarkMode = ref(false);
 const outbound = ref([]);
 const apiService = useApiServices();
 // Tab
@@ -299,6 +300,14 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getOutbound();
+  isDarkMode.value = localStorage.getItem("isDarkMode") === "true";
+
+  // Lắng nghe sự kiện `storage` để cập nhật khi localStorage thay đổi
+  window.addEventListener("storage", (event) => {
+    if (event.key === "isDarkMode") {
+      isDarkMode.value = event.newValue === "true";
+    }
+  });
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -382,11 +391,18 @@ const filteredOutbound = computed(() => {
     .filter(inbound =>
       !searchQueryByPeople.value || removeAccents(inbound.nguoiPhuTrach.toLowerCase()).includes(removeAccents(searchQueryByPeople.value.toLowerCase()))
     )
-    .filter(inbound => {
+    .filter(purchase => {
       if (date.value && date.value.length === 2) {
-        const [startDate, endDate] = date.value;
-        const purchaseDate = parseDate(inbound.ngayXuat);
-        return purchaseDate >= startDate && purchaseDate <= endDate;
+        const [startDate, endDate] = date.value.map(dateString => {
+          const dateObj = dateString;
+          dateObj.setHours(0, 0, 0, 0);
+          return dateObj;
+        });
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        const purchaseDate = parseDate(purchase.ngayXuat);
+        purchaseDate.setHours(0, 0, 0, 0);
+        return purchaseDate.getTime() >= startDate.getTime() && purchaseDate.getTime() <= endDate.getTime();
       }
       return true;
     })

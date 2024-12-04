@@ -181,7 +181,6 @@ const getPurchaseRequestOBByID = async (id) => {
         gia: product.gia,
         ngayXuatDuKien: product.ngayXuatDuKien
       }));
-      console.log(formData);
 
       dateDuKien.value = parseDateString(formData.chiTietXuatHang[0].ngayXuatDuKien);
 

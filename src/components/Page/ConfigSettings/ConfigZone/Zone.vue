@@ -244,7 +244,6 @@ const btnResetForm = () => {
 };
 
 const showZoneDetail = (id) => {
-  console.log(id);
   router.push({ path: `/config-settings/config-warehouse-zone/zone-detail/${id}` })
   // router.push({ path: '/inventory/lots-management/lots-normal' })
 }

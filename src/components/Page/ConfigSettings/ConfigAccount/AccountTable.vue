@@ -33,7 +33,13 @@
         </tr>
         <tr v-for="(user, index) in paginatedUsers" :key="user.id">
           <td>{{ user.sysIdUser }}</td>
-          <td>{{ user.fullName }}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <img :src="user.hinhAnh" alt="Product Image" class="me-3 rounded-2" width="40" loading="lazy"
+                style="object-fit: cover; object-position: center" />
+              <div class="fw-bold" style="color: var(--nav-link-color);">{{ user.fullName }}</div>
+            </div>
+          </td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.soDienThoai }}</td>
