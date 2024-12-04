@@ -30,11 +30,11 @@
     <table class="table mb-3">
       <thead>
         <tr>
-          <th style="width: 200px;" class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
-          <th style="width: 200px;">{{ $t('PurchaseOrder.table.id_pr') }}</th>
-          <th style="width: 200px;">{{ $t('PurchaseOrder.table.name') }}</th>
-          <th style="width: 200px;">{{ $t('PurchaseOrder.table.date_request') }}</th>
-          <th style="width: 190px;" class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
+          <th style="width: 400px;" class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
+          <th style="width: 400px;">{{ $t('PurchaseOrder.table.id_pr') }}</th>
+          <th style="width: 400px;">{{ $t('PurchaseOrder.table.name') }}</th>
+          <th style="width: 400px;">{{ $t('PurchaseOrder.table.date_request') }}</th>
+          <th class="text-end px-4">{{ $t('PurchaseOrder.table.action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -42,19 +42,19 @@
           <td colspan="10">{{ $t('PurchaseOrder.not_found') }}</td>
         </tr>
         <tr v-for="purchase in paginatedPurchases" :key="purchase.maPO">
-          <td style="width: 200px;" class="sticky">{{ purchase.maPO }}</td>
-          <td style="width: 200px;">{{ purchase.maPR ? purchase.maPR : 'Không có' }}</td>
-          <td style="width: 200px;">{{ purchase.nguoiTao }}</td>
-          <td style="width: 200px;">{{ formatDate(purchase.ngayTao) }}</td>
-          <td style="width: 190px;" class="d-flex align-items-center ">
+          <td style="width: 400px" class="sticky">{{ purchase.maPO }}</td>
+          <td style="width: 400px">{{ purchase.maPR ? purchase.maPR : 'Không có' }}</td>
+          <td style="width: 400px">{{ purchase.nguoiTao }}</td>
+          <td style="width: 400px">{{ formatDate(purchase.ngayTao) }}</td>
+          <td class="d-flex align-items-center justify-content-end">
             <button v-if="purchase.isExistIb === false" class="btn btn-primary d-flex align-items-center me-2"
               @click="createInbound(purchase.maPO)"><span class="material-symbols-outlined me-2">add</span> Tạo phiếu
               nhập</button>
-            <button class="btn btn-export d-flex align-items-center me-2" @click="exportToWord(purchase)"><span
-                class="material-symbols-outlined me-2">upgrade</span> Xuất hóa đơn</button>
             <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
               <span class="material-symbols-outlined">visibility</span>
             </button>
+            <button class="btn btn-export d-flex align-items-center me-2" @click="exportToWord(purchase)"><span
+                class="material-symbols-outlined me-2">upgrade</span> Xuất hóa đơn</button>
             <!-- <router-link :to="{ name: 'purchase-order/inbound/edit/:id', params: { id: purchase.maPO } }"
               class="btn btn-secondary d-flex align-items-center">
               <span class="material-symbols-outlined">edit_square</span>
@@ -287,12 +287,12 @@ const selectedPurchaseOrder = reactive({
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  const day = `0${date.getDate()}`.slice(-2);
-  const month = `0${date.getMonth() + 1}`.slice(-2);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
-  const hour = `0${date.getHours()}`.slice(-2);
-  const minute = `0${date.getMinutes()}`.slice(-2);
-  const second = `0${date.getSeconds()}`.slice(-2);
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  const second = date.getSeconds().toString().padStart(2, '0');
   return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
 };
 
@@ -348,12 +348,19 @@ const filteredRequests = computed(() => {
     )
     .filter(purchase => {
       if (date.value && date.value.length === 2) {
-        const [startDate, endDate] = date.value;
-        const purchaseDate = parseDate(purchase.ngayTao);
-        return purchaseDate >= startDate && purchaseDate <= endDate;
+        const [startDate, endDate] = date.value.map(dateString => {
+          const dateObj = new Date(parseDate(formatDate(dateString)));
+          dateObj.setHours(0, 0, 0, 0);
+          return dateObj;
+        });
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        const purchaseDate = new Date(parseDate(formatDate(purchase.ngayTao)));
+        purchaseDate.setHours(0, 0, 0, 0);
+        return purchaseDate.getTime() >= startDate.getTime() && purchaseDate.getTime() <= endDate.getTime();
       }
       return true;
-    });
+    })
 });
 
 const paginatedPurchases = computed(() => {

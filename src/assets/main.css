@@ -685,10 +685,10 @@ select.is-invalid {
 
 #nprogress .bar {
   background: var(--primary-color) !important;
-  height: 2px !important;
+  height: 3px !important;
 }
 
 #nprogress .peg {
   box-shadow: 0 0 10px var(--btn-logout-color), 0 0 5px var(--btn-logout-color);
-  height: 2px !important;
+  height: 3px !important;
 }

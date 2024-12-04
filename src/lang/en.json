@@ -729,7 +729,7 @@
     "table": {
       "reference_code": "Reference code",
       "from": "From",
-      "to": "To",
+      "to": "Customer",
       "contact": "Contact",
       "person_in_charge": "Person in charge",
       "plan_date": "Plan date",
