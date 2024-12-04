@@ -12,6 +12,8 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
+        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+            class="material-symbols-outlined me-2">upgrade</span>{{ $t('PurchaseRequest.btn_export') }}</button>
         <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User', 'Admin'])">
           <span class="material-symbols-outlined me-2"> add </span>
@@ -21,10 +23,9 @@
     </div>
   </div>
   <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
-        class="material-symbols-outlined me-2">upgrade</span> Xuất Excel</button>
-    <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true" :auto-position="true"
-      :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy" placeholder="Tìm theo ngày">
+    <VueDatePicker v-model="date" range auto-apply :dark="isDarkMode" :preset-dates="presetDates" :teleport="true"
+      :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
+      placeholder="Tìm theo ngày">
       <template #preset-date-range-button="{ label, value, presetDate }">
         <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
           @keyup.space.prevent="presetDate(value)">
@@ -335,6 +336,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
+const isDarkMode = ref(false);
 const purchases = ref([]);
 const checkFirstOut = ref([]);
 const apiService = useApiServices();
@@ -360,6 +362,14 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getPurchaseRequests();
+  isDarkMode.value = localStorage.getItem("isDarkMode") === "true";
+
+  // Lắng nghe sự kiện `storage` để cập nhật khi localStorage thay đổi
+  window.addEventListener("storage", (event) => {
+    if (event.key === "isDarkMode") {
+      isDarkMode.value = event.newValue === "true";
+    }
+  });
 })
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
@@ -502,7 +512,6 @@ const updatePRStatus = async (id, status, lyDo) => {
       })),
       ...(lyDo && { lyDo: lyDo }),
     };
-    console.log(submitDataUpdate);
     showToastLoading(i18n.global.t('PurchaseRequest.table.swal.loading'), 10000);
     await apiService.post("purchase-request-ob/save", submitDataUpdate);
     switch (status) {
@@ -551,7 +560,6 @@ const btnCheckFirstOut = async (id) => {
   try {
     const response = await apiService.get(`outbound/first-out/${id}`);
     checkFirstOut.value = response.data;
-    console.log(response.data);
   } catch (error) {
   }
 }
@@ -596,9 +604,16 @@ const filteredRequests = computed(() => {
     )
     .filter(purchase => {
       if (date.value && date.value.length === 2) {
-        const [startDate, endDate] = date.value;
-        const purchaseDate = parseDate(purchase.ngayYeuCau);
-        return purchaseDate >= startDate && purchaseDate <= endDate;
+        const [startDate, endDate] = date.value.map(dateString => {
+          const dateObj = new Date(dateString);
+          dateObj.setHours(0, 0, 0, 0);
+          return dateObj;
+        });
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(23, 59, 59, 999);
+        const purchaseDate = new Date(parseDate(purchase.ngayYeuCau));
+        purchaseDate.setHours(0, 0, 0, 0);
+        return purchaseDate.getTime() >= startDate.getTime() && purchaseDate.getTime() <= endDate.getTime();
       }
       return true;
     })

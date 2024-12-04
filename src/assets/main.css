@@ -21,6 +21,7 @@
   --input-bg: #fff;
   --disable: #f4f4f5;
   --table-hover: #f4f4f5;
+  --search-input-color: #4c4c4c;
 
   /* Status */
   --bg-success: #effbf2;
@@ -102,6 +103,7 @@
   --border-input-color: #22c55e;
   --valid-color: #22c55e;
   --nav-link-color: #fff;
+  --search-input-color: #bdbdbe;
   --label-color: #fff;
   --nav-link-hover: #303134;
   --tab-button-bg: #09090b;
@@ -122,12 +124,25 @@
   --export-color: #469cec;
   --export-color-hover: #51a7f7;
 
-  --tw-shadow: 0 1px 1px 0 rgba(7, 6, 6, 0.02), 0 1px 1px -1px rgb(255 255 255 / 0.02);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 1px 1px 0 rgba(255, 255, 255, 0.02), 0 1px 1px -1px rgb(255 255 255 / 0.02);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
 
   --background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 0);
 }
 
 /* Date picker */
+.dp__theme_dark {
+  --dp-background-color: #202124 !important;
+  --dp-text-color: #fff;
+}
+
+.dp__theme_light {
+  --dp-background-color: #fff;
+  --dp-text-color: #212121;
+}
+
 .dp__range_end,
 .dp__range_start,
 .dp__active_date {
@@ -310,7 +325,7 @@ button {
 /* Login/Primary button */
 .btn.btn-export {
   background-color: var(--export-color);
-  color: #fff !important;
+  color: var(--btn-primary-color) !important;
   border: none;
   &:hover,
   &:active {
@@ -685,7 +700,7 @@ select.is-invalid {
 
 #nprogress .bar {
   background: var(--primary-color) !important;
-  height: 3px !important;
+  height: 2.5px !important;
 }
 
 #nprogress .peg {

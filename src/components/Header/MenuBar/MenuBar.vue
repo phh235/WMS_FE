@@ -39,12 +39,13 @@
                           aria-expanded="false">
                           <div class="d-flex flex-column">
                             <span class="fs mb-1 fw-bold">{{ userStore.user.fullName }}
-                              <span class="badge ms-1 float-end box-shadow" style="
-                                  background-color: var(--primary-color) !important;
-                                  color: var(--btn-primary-color) !important;
-                                  font-size: 13px;
-                                  border-radius: 8px;
-                                ">{{ userStore.user.role }}</span></span>
+                              <span class="badge ms-1 box-shadow" style="
+                                background-color: var(--primary-color) !important;
+                                color: var(--btn-primary-color) !important;
+                                font-size: 12px;
+                                border-radius: 8px;
+                              ">{{ userStore.user.role }}
+                              </span></span>
                             <span class="fs-sm">{{ userStore.user.email }}</span>
                           </div>
                         </router-link>
@@ -437,10 +438,10 @@
                         aria-expanded="false">
                         <div class="d-flex flex-column">
                           <span class="fs mb-1 fw-bold">{{ userStore.user.fullName }}
-                            <span class="badge ms-1 float-end box-shadow" style="
+                            <span class="badge ms-1 box-shadow" style="
                                 background-color: var(--primary-color) !important;
                                 color: var(--btn-primary-color) !important;
-                                font-size: 11px;
+                                font-size: 12px;
                                 border-radius: 8px;
                               ">{{ userStore.user.role }}
                             </span>

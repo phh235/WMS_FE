@@ -211,8 +211,9 @@
       "search_name": "Find by requestor"
     },
     "not_found": "Request not found",
-    "btn_create": "Create purchase request inbound",
-    "btn_create_ob": "Create purchase request outbound",
+    "btn_create": "Create request",
+    "btn_create_ob": "Create request",
+    "btn_export": "Export excel",
     "table": {
       "id": "Request Id",
       "name": "Requestor",
@@ -334,9 +335,10 @@
         "email_check": "Email is not in the correct format",
         "password_old_text": "Old password required.",
         "password_old_check": "Old password is incorrect",
-        "password_new_text": "New password cannot be blank",
-        "password_confirm_text": "New password cannot be blank",
+        "password_new_text": "New password cannot be empty",
+        "password_confirm_text": "New password cannot be empty",
         "password_confirm_check": "New password confirmation is incorrect",
+        "password_confirm_check_empty": "New password confirmation cannot be empty",
         "failed": "Update info failed",
         "failed_password": "Update password failed"
       },

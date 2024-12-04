@@ -9,7 +9,7 @@
         <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
           <span class="material-symbols-outlined">swap_vert</span>
         </button>
-        <VueDatePicker v-model="date" range auto-apply :preset-dates="presetDates" :teleport="true"
+        <VueDatePicker v-model="date" range auto-apply :dark="isDarkMode" :preset-dates="presetDates" :teleport="true"
           :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
           placeholder="Tìm theo ngày">
           <template #preset-date-range-button="{ label, value, presetDate }">
@@ -50,11 +50,11 @@
             <button v-if="purchase.isExistIb === false" class="btn btn-primary d-flex align-items-center me-2"
               @click="createInbound(purchase.maPO)"><span class="material-symbols-outlined me-2">add</span> Tạo phiếu
               nhập</button>
-            <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
-              <span class="material-symbols-outlined">visibility</span>
-            </button>
             <button class="btn btn-export d-flex align-items-center me-2" @click="exportToWord(purchase)"><span
                 class="material-symbols-outlined me-2">upgrade</span> Xuất hóa đơn</button>
+            <button class="btn btn-secondary d-flex align-items-center" @click="showDetail(purchase)">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
             <!-- <router-link :to="{ name: 'purchase-order/inbound/edit/:id', params: { id: purchase.maPO } }"
               class="btn btn-secondary d-flex align-items-center">
               <span class="material-symbols-outlined">edit_square</span>
@@ -231,11 +231,11 @@ import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, TableLayoutType } from 'docx';
 
-// const date = ref([
-//   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
-//   new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
-// ]);
-const date = ref([]);
+const date = ref([
+  new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
+  new Date(new Date(Date.now() - 0 * 24 * 60 * 60 * 1000).toDateString() + ' 23:59:59')
+]);
+// const date = ref([]);
 
 const presetDates = ref([
   {
@@ -266,6 +266,7 @@ const { t } = useI18n();
 const searchQuery = ref("");
 const searchQueryByPeople = ref("");
 const isModalVisible = ref(false);
+const isDarkMode = ref(false);
 const purchases = ref([]);
 const apiService = useApiServices();
 // Sort
@@ -273,6 +274,14 @@ const sortOption = ref("");
 
 onMounted(async () => {
   await getPurchaseOrders();
+  isDarkMode.value = localStorage.isDarkMode === 'true';
+  console.log(isDarkMode.value);
+
+  window.addEventListener('storage', ({ key, newValue }) => {
+    if (key === 'isDarkMode') {
+      isDarkMode.value = newValue === 'true';
+    }
+  });
 })
 
 const selectedPurchaseOrder = reactive({
@@ -349,13 +358,13 @@ const filteredRequests = computed(() => {
     .filter(purchase => {
       if (date.value && date.value.length === 2) {
         const [startDate, endDate] = date.value.map(dateString => {
-          const dateObj = new Date(parseDate(formatDate(dateString)));
+          const dateObj = parseDate(formatDate(dateString));
           dateObj.setHours(0, 0, 0, 0);
           return dateObj;
         });
         startDate.setHours(0, 0, 0, 0);
         endDate.setHours(23, 59, 59, 999);
-        const purchaseDate = new Date(parseDate(formatDate(purchase.ngayTao)));
+        const purchaseDate = parseDate(formatDate(purchase.ngayTao));
         purchaseDate.setHours(0, 0, 0, 0);
         return purchaseDate.getTime() >= startDate.getTime() && purchaseDate.getTime() <= endDate.getTime();
       }
