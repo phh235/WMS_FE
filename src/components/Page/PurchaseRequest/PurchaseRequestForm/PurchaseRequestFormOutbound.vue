@@ -34,8 +34,8 @@
         <div class="col-12 col-md-3">
           <div class="mb-3 mb-md-0">
             <label for="dateDuKien" class="form-label">Ngày xuất hàng dự kiến <span class="text-danger">*</span></label>
-            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-              :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
+            <VueDatePicker v-model="dateDuKien" :enable-time-picker="false" :teleport="true" :dark="isDarkMode"
+              format="dd/MM/yyyy" auto-apply :auto-position="true" placeholder="Chọn ngày xuất hàng dự kiến">
             </VueDatePicker>
           </div>
         </div>
@@ -122,10 +122,19 @@ const selectedCustomer = ref(null);
 const isEdit = ref(false);
 const nguoiYeuCau = ref(JSON.parse(sessionStorage.getItem("user")).fullName);
 const dateDuKien = ref();
+const isDarkMode = ref(false);
 
 onMounted(async () => {
   await productStore.getProducts();
   await customerStore.getCustomers();
+  isDarkMode.value = localStorage.getItem("isDarkMode") === "true";
+
+  // Lắng nghe sự kiện `storage` để cập nhật khi localStorage thay đổi
+  window.addEventListener("storage", (event) => {
+    if (event.key === "isDarkMode") {
+      isDarkMode.value = event.newValue === "true";
+    }
+  });
   const { id } = router.currentRoute.value.params;
   if (id) {
     await getPurchaseRequestOBByID(id);

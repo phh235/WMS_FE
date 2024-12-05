@@ -370,8 +370,10 @@
         "failed_lock": "Khóa tài khoản thất bại",
         "title": "Xóa tài khoản?",
         "title_lock": "Khóa tài khoản?",
+        "title_unlock": "Mở khóa tài khoản?",
         "text": "Bạn có chắc chắn muốn xóa tài khoản này?",
         "text_lock": "Bạn có chắc chắn muốn khóa tài khoản này?",
+        "text_unlock": "Bạn có chắc chắn muốn mở khóa tài khoản này?",
         "cancel": "Hủy",
         "confirm": "Xóa",
         "confirm_lock": "OK"

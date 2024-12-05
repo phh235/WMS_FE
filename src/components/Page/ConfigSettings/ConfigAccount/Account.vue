@@ -278,9 +278,12 @@ const deleteUser = async (username) => {
 }
 
 const lockUser = async ({ username, active }) => {
+  const title = active ? "AccountManagement.swal.delete.title_lock" : "AccountManagement.swal.delete.title_unlock";
+  const text = active ? "AccountManagement.swal.delete.text_lock" : "AccountManagement.swal.delete.text_unlock";
+
   const swalConfirm = await Swal.fire({
-    title: i18n.global.t("AccountManagement.swal.delete.title_lock"),
-    text: i18n.global.t("AccountManagement.swal.delete.text_lock"),
+    title: i18n.global.t(title),
+    text: i18n.global.t(text),
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
