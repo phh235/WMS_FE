@@ -63,7 +63,7 @@ const selectCategory = (categoryId) => {
 .list-group-item.active {
   background-color: var(--primary-color);
   border-radius: 0.625rem;
-  color: #fff;
+  color: var(--btn-primary-color) !important;
   margin: 3px 5px;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
     var(--tw-shadow);

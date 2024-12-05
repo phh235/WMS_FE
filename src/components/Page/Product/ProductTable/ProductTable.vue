@@ -40,8 +40,8 @@
             <td class="td-id">{{ product.sysIdSanPham }}</td>
             <td class="td-name">
               <div class="d-flex align-items-center">
-                <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="40" loading="lazy"
-                  style="object-fit: cover; object-position: center" />
+                <img :src="product.hinhAnhUrl" alt="Product Image" class="me-3 rounded-2" width="40" height="40"
+                  loading="lazy" style="object-fit: cover; object-position: center" />
                 <div>
                   <div class="fw-bold" style="color: var(--nav-link-color);">{{ product.tenSanPham }}</div>
                   <div class="badge text-dark d-none"
@@ -231,7 +231,7 @@ const deleteProduct = async (id) => {
 }
 
 .td-name {
-  width: 400px;
+  width: 220px;
 }
 
 .td-desc {
@@ -239,11 +239,11 @@ const deleteProduct = async (id) => {
 }
 
 .td-quantity {
-  width: 200px;
+  width: 150px;
 }
 
 .td-action {
-  width: 150px;
+  width: 100px;
 }
 
 .btn-danger,

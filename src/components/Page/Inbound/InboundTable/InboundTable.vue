@@ -46,9 +46,9 @@
             <th style="width: 300px;">{{ $t('Inbound.table.to') }}</th>
             <th style="width: 300px;">{{ $t('Inbound.table.person_in_charge') }}</th>
             <th style="width: 300px;">{{ $t('Inbound.table.plan_date') }}</th>
-            <th style="width: 300px;">{{ $t('Inbound.table.status') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
             <th>{{ $t('Inbound.table.effective_date') }}</th>
+            <th style="width: 300px;">{{ $t('Inbound.table.status') }}</th>
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
           </tr>
         </thead>
@@ -64,6 +64,11 @@
             <td style="width: 300px;">{{ inbound.tenKho }}</td>
             <td style="width: 300px;">{{ inbound.fullName }}</td>
             <td style="width: 300px;">{{ formatDate(inbound.ngayNhap) }}</td>
+            <td style="width: 300px;">{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien ? new
+              Date(inbound.chiTietNhapHang[0]?.ngayNhapDuKien).toLocaleDateString('en-GB', {
+                day: '2-digit', month:
+                  '2-digit', year: 'numeric'
+              }) : '' }}</td>
             <td style="width: 300px;">
               <span class="d-flex align-items-center" style="width: fit-content;"
                 :class="['badge', getBadgeClass(inbound.trangThai)]">
@@ -71,11 +76,6 @@
                 {{ getStatusLabel(inbound.trangThai) }}
               </span>
             </td>
-            <td>{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien ? new
-              Date(inbound.chiTietNhapHang[0]?.ngayNhapDuKien).toLocaleDateString('en-GB', {
-                day: '2-digit', month:
-                  '2-digit', year: 'numeric'
-              }) : '' }}</td>
             <td>
               <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(inbound)">
@@ -195,15 +195,15 @@
               <table class="table ">
                 <thead>
                   <tr>
-                    <th> {{ $t('Inbound.table.detail.product_detail.product_name') }}</th>
-                    <th> {{ $t('Inbound.table.detail.product_detail.quantity') }}</th>
-                    <th> {{ $t('Inbound.table.detail.product_detail.price') }}</th>
-                    <th> {{ $t('Inbound.table.detail.product_detail.total') }}</th>
+                    <th style="width: 150px;"> {{ $t('Inbound.table.detail.product_detail.product_name') }}</th>
+                    <th style="width: 150px;"> {{ $t('Inbound.table.detail.product_detail.quantity') }}</th>
+                    <th style="width: 150px;"> {{ $t('Inbound.table.detail.product_detail.price') }}</th>
+                    <th style="width: 150px;"> {{ $t('Inbound.table.detail.product_detail.total') }}</th>
                     <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in selectedInbound.chiTietNhapHang" :key="item.maSanPham">
+                  <tr v-for="item in selectedInbound.chiTietNhapHang" :key="item.sysIdSanPham">
                     <td>{{ item.tenSanPham }}</td>
                     <td>{{ item.soLuong }} Kg</td>
                     <td>{{ parseFloat(item.gia).toLocaleString('vi-VN') }}
@@ -212,7 +212,11 @@
                     <td>{{ parseFloat(item.tongChiPhi).toLocaleString('vi-VN') }}
                       <span class="currency-symbol">&#8363;</span>
                     </td>
-                    <td class="text-center"><button class="btn btn-primary" @click="showPhanLo()">Phân lô</button></td>
+                    <td class="d-flex justify-content-center"><button class="btn btn-primary d-flex align-items-center"
+                        @click="showPhanLo(item.sysIdSanPham)">
+                        <span class="material-symbols-outlined me-1">package_2</span> Phân lô
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -229,7 +233,7 @@
     <!-- Modal để hiển thị phân lô -->
     <div v-if="isPhanLoModalVisible" class="modal fade show" tabindex="-1" style="display: block;"
       aria-labelledby="purchaseDetailModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
@@ -245,29 +249,32 @@
                 <label class="form-label fs fw-bold">
                   {{ $t('Inbound.table.detail.product_detail.product_name') }}
                 </label>
-                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.tenSanPham }}</p>
+                <p class="fs">{{ selectedZoneDetail.tenSanPham }}</p>
               </div>
               <div class="col-6 col-md-3">
                 <label class="form-label fs fw-bold">
                   {{ $t('Inbound.table.detail.product_detail.quantity') }}
                 </label>
-                <p class="fs">{{ selectedInbound.chiTietNhapHang[0]?.soLuong }} Kg</p>
+                <p class="fs">{{ selectedZoneDetail.tenSanPham }} Kg</p>
               </div>
-              <div class="col-12 col-md-4 mb-md-0 mb-3">
+              <div class="col-12 col-md-6 mb-md-0 mb-3">
                 <label for="dungTich" class="form-label fs fw-bold">
                   Dung tích (m3) <span class="text-danger">*</span>
                 </label>
                 <div class="d-flex">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich1" value="250" />
+                  <div class="form-check form-check-inline me-5">
+                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich1" value="0.01"
+                      v-model="selectedConsignment.dungTich" />
                     <label class="form-check-label fs" for="dungTich1">0.01</label>
                   </div>
-                  <div class="form-check me-2">
-                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich2" value="500" />
+                  <div class="form-check me-5">
+                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich2" value="0.02"
+                      v-model="selectedConsignment.dungTich" />
                     <label class="form-check-label fs" for="dungTich2">0.02</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich3" value="1000" />
+                    <input class="form-check-input" type="radio" name="dungTich" id="dungTich3" value="0.05"
+                      v-model="selectedConsignment.dungTich" />
                     <label class="form-check-label fs" for="dungTich3">0.05</label>
                   </div>
                 </div>
@@ -280,13 +287,15 @@
                     <label for="ctkv" class="form-label fs fw-bold">
                       Chi tiết khu vực <span class="text-danger">*</span>
                     </label>
-                    <input type="text" class="form-control" id="ctkv" aria-describedby="consignmentNameHelp" disabled />
+                    <input type="text" class="form-control" id="ctkv" aria-describedby="consignmentNameHelp" disabled
+                      v-model="selectedZoneDetail.tenChiTietKhuVuc" />
                   </div>
                   <div class="col-12 col-md-6">
                     <label for="soLuong" class="form-label fs fw-bold">
                       Số lượng mỗi thùng (Kg) <span class="text-danger">*</span>
                     </label>
-                    <input type="text" class="form-control" id="soLuong" aria-describedby="consignmentNameHelp" />
+                    <input type="text" class="form-control" id="soLuong" aria-describedby="consignmentNameHelp"
+                      v-model="selectedConsignment.soLuong" />
                   </div>
                 </div>
               </div>
@@ -296,16 +305,18 @@
                     <label for="ngaySanXuat" class="form-label fs fw-bold">
                       {{ $t('ConfigSettings.consignments.consignment_date') }} <span class="text-danger">*</span>
                     </label>
-                    <VueDatePicker :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-                      :auto-position="true" placeholder="Chọn ngày sản xuất">
+                    <VueDatePicker :dark="isDarkMode" :enable-time-picker="false" :teleport="true" format="dd/MM/yyyy"
+                      auto-apply :auto-position="true" placeholder="Chọn ngày sản xuất"
+                      v-model="selectedConsignment.ngaySanXuat">
                     </VueDatePicker>
                   </div>
                   <div class="col-md-6 col-12">
                     <label for="ngayHetHan" class="form-label fs fw-bold">
                       {{ $t('ConfigSettings.consignments.consignment_date_exp') }} <span class="text-danger">*</span>
                     </label>
-                    <VueDatePicker :enable-time-picker="false" :teleport="true" :format="format" auto-apply
-                      :auto-position="true" placeholder="Chọn hạn sử dụng">
+                    <VueDatePicker :dark="isDarkMode" :enable-time-picker="false" :teleport="true" format="dd/MM/yyyy"
+                      auto-apply :auto-position="true" placeholder="Chọn hạn sử dụng"
+                      v-model="selectedConsignment.hanSuDung">
                     </VueDatePicker>
                   </div>
                 </div>
@@ -376,13 +387,6 @@ const presetDates = ref([
   },
 ]);
 
-const format = (date) => {
-  if (!date || !(date instanceof Date)) return ""; // Kiểm tra null hoặc kiểu dữ liệu
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
 // Check permissions
 const authStore = useAuthStore();
 // Pagination
@@ -438,6 +442,23 @@ const selectedInbound = reactive({
   chiTietNhapHang: []
 })
 
+const selectedZoneDetail = reactive({
+  maChiTietKhuVuc: '',
+  tenChiTietKhuVuc: '',
+  sysIdSanPham: '',
+  tenSanPham: ''
+})
+
+const selectedConsignment = reactive({
+  sysIdSanPham: '',
+  soLuong: '',
+  ngaySanXuat: '',
+  hanSuDung: '',
+  dungTich: '',
+  maChiTietKhuVuc: '',
+  sysIdChiTietNhapHang: ''
+})
+
 // Tính tổng giá trị (số lượng * giá)
 const totalOrderValue = computed(() => {
   return selectedInbound.chiTietNhapHang.reduce((total, item) => {
@@ -465,9 +486,16 @@ const showDetail = (inbound) => {
   isModalVisible.value = true;
 };
 
-const showPhanLo = () => {
+const showPhanLo = async (id) => {
   isModalVisible.value = false;
   isPhanLoModalVisible.value = true;
+
+  try {
+    const response = await apiService.get(`zone-details/warehouse-detail-by-product/${id}`);
+    Object.assign(selectedZoneDetail, response.data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const closeModal = () => {
@@ -479,6 +507,38 @@ const closePhanLoModal = () => {
   isModalVisible.value = true;
   isPhanLoModalVisible.value = false;
 };
+
+const saveConsignment = async () => {
+  const consignmentData = {
+    soLuong: selectedConsignment.soLuong,
+    ngaySanXuat: format(selectedConsignment.ngaySanXuat),
+    hanSuDung: format(selectedConsignment.hanSuDung),
+    dungTich: selectedConsignment.dungTich,
+    maChiTietKhuVuc: selectedZoneDetail.maChiTietKhuVuc,
+    sysIdChiTietNhapHang: 24
+  };
+
+  try {
+    const response = await apiService.post("consignment/create-from-inbound", consignmentData);
+    console.log(response.data);
+    if (response) {
+      showToastSuccess("Tạo lô thành công")
+    }
+    isModalVisible.value = false;
+    isPhanLoModalVisible.value = false;
+    Object.assign(selectedConsignment, {
+      sysIdSanPham: '',
+      soLuong: '',
+      ngaySanXuat: '',
+      hanSuDung: '',
+      dungTich: '',
+      maChiTietKhuVuc: '',
+      sysIdChiTietNhapHang: ''
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Hàm chuyển đổi trạng thái từ tiếng Việt sang giá trị tương ứng
 const getStatusValue = (status) => {
@@ -497,6 +557,14 @@ const statusIcon = {
 
 // Hàm chuyển đổi ký tự có dấu thành không dấu
 const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+const format = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${year}/${month}/${day}`;
+};
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);

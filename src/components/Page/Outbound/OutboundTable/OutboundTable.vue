@@ -41,12 +41,11 @@
         <thead>
           <tr>
             <th class="sticky">{{ $t('Inbound.table.reference_code') }}</th>
-            <th>{{ $t('Inbound.table.po_code') }}</th>
             <!-- <th>{{ $t('Inbound.table.from') }}</th> -->
+            <th>{{ $t('Outbound.table.to') }}</th>
             <th>{{ $t('Inbound.table.person_in_charge') }}</th>
             <th>{{ $t('Inbound.table.plan_date') }}</th>
             <th>{{ $t('Inbound.table.status') }}</th>
-            <th>{{ $t('Outbound.table.to') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
             <!-- <th>{{ $t('Inbound.table.effective_date') }}</th> -->
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
@@ -58,8 +57,8 @@
           </tr>
           <tr v-for="inbound in paginatedOutbound" :key="inbound.sysIdOutbound">
             <td class="d-none">{{ inbound.sysIdOutbound }}</td>
+            <td>{{ inbound.chiTietXuatHang[0]?.tenKhachHang }}</td>
             <td class="sticky">{{ inbound.maOB }}</td>
-            <td>{{ inbound.maPO }}</td>
             <!-- <td>{{ inbound.maKho }}</td> -->
             <td>{{ inbound.nguoiPhuTrach }}</td>
             <td>{{ inbound.ngayXuat }}</td>
@@ -70,7 +69,6 @@
                 {{ getStatusLabel(inbound.trangThai) }}
               </span>
             </td>
-            <td>{{ inbound.chiTietXuatHang[0]?.tenKhachHang }}</td>
             <td class="d-none">{{ inbound.ngayXuat }}</td>
             <td>
               <div class="d-flex align-items-center justify-content-end">
