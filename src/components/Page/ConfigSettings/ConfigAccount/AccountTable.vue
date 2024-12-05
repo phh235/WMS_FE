@@ -35,8 +35,8 @@
           <td>{{ user.sysIdUser }}</td>
           <td>
             <div class="d-flex align-items-center">
-              <img :src="user.hinhAnh" alt="Product Image" class="me-3 rounded-2" width="40" loading="lazy"
-                style="object-fit: cover; object-position: center" />
+              <img :src="user.hinhAnh || defaultAvatar" alt="User avatar" class="me-3 rounded-2" width="39" height="39"
+                loading="lazy" style="object-fit: cover; object-position: center" />
               <div class="fw-bold" style="color: var(--nav-link-color);">{{ user.fullName }}</div>
             </div>
           </td>
@@ -74,11 +74,13 @@
 
 <script setup>
 import { useI18n } from "vue-i18n";
-
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onBeforeUpdate } from 'vue';
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
+import { validateImage } from '@/utils/image';
 
 const { t } = useI18n();
+const defaultAvatar = 'https://scontent-sin2-2.xx.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=dst-png_s200x200&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_eui2=AeHhpylGP-pRms_VZ8gahMcxWt9TLzuBU1Ba31MvO4FTUEPSj7eG2-liyHygiWo4_l0k3agXQGFkKlM5KXb6mLiO&_nc_ohc=nhHrY9pzliIQ7kNvgFT9LSh&_nc_zt=24&_nc_ht=scontent-sin2-2.xx&_nc_gid=ABYRsLogzm2p1zMr-TshowT&oh=00_AYBPq1EYWpZvdd3cAL6gv0wzJv-XEnAHsC1RhisNhbEKRA&oe=67776D7A';
+const avatarUrl = ref(null);
 
 const props = defineProps({
   users: {
@@ -86,6 +88,24 @@ const props = defineProps({
     required: true
   }
 });
+
+onMounted(() => {
+  props.users.forEach(user => {
+    validateImage(user.hinhAnh, defaultAvatar, (url) => {
+      user.hinhAnh = url ? url : defaultAvatar; // Gán giá trị default avatar nếu user.hinhAnh không phải là một URL hợp lệ
+    });
+  });
+});
+
+// Thêm hàm này để cập nhật lại giá trị của user.hinhAnh sau khi tải lại trang
+onBeforeUpdate(() => {
+  props.users.forEach(user => {
+    validateImage(user.hinhAnh, defaultAvatar, (url) => {
+      user.hinhAnh = url ? url : defaultAvatar; // Gán giá trị default avatar nếu user.hinhAnh không phải là một URL hợp lệ
+    });
+  });
+});
+
 
 defineEmits(['id', 'fullName', 'username', 'phone', 'lock', 'edit', 'delete']);
 

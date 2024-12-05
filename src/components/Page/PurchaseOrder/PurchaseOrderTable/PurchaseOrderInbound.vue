@@ -34,7 +34,7 @@
           <th style="width: 400px;">{{ $t('PurchaseOrder.table.id_pr') }}</th>
           <th style="width: 400px;">{{ $t('PurchaseOrder.table.name') }}</th>
           <th style="width: 400px;">{{ $t('PurchaseOrder.table.date_request') }}</th>
-          <th class="text-end px-4">{{ $t('PurchaseOrder.table.action') }}</th>
+          <th class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -455,10 +455,17 @@ const exportToWord = (purchase) => {
         text: "Mẫu số 06 - VT",
         bold: true,
         size: 24, // Font size (24 = 12pt)
+        break: 1,
       }),
       new TextRun({
-        text: "\n(Ban hành theo Thông tư số 200/2014/TT-BTC\nNgày 22/12/2014 của Bộ Tài chính)",
+        text: "Ban hành theo Thông tư số 200/2014/TT-BTC",
         size: 20,
+        break: 1,
+      }),
+      new TextRun({
+        text: "Ngày 22/12/2014 của Bộ Tài chính",
+        size: 20,
+        break: 1,
       }),
     ],
     alignment: AlignmentType.CENTER,
@@ -528,10 +535,10 @@ const exportToWord = (purchase) => {
         new TableCell({ children: [new Paragraph((index + 1).toString())] }),
         new TableCell({ children: [new Paragraph(item.tenSanPham)] }),
         new TableCell({ children: [new Paragraph("Địa chỉ A")] }),
-        new TableCell({ children: [new Paragraph(item.soLuong.toString())] }),
+        new TableCell({ children: [new Paragraph(item.soLuong.toLocaleString('vi-VN'))] }),
         new TableCell({ children: [new Paragraph("Kg")] }),
-        new TableCell({ children: [new Paragraph(item.gia.toString())] }),
-        new TableCell({ children: [new Paragraph(item.tongChiPhi.toString())] }),
+        new TableCell({ children: [new Paragraph(`${item.gia.toLocaleString('vi-VN')} ₫`)] }),
+        new TableCell({ children: [new Paragraph(`${item.tongChiPhi.toLocaleString('vi-VN')} ₫`)] }),
       ],
     })
   );

@@ -370,8 +370,10 @@
         "failed_lock": "Account locked failed",
         "title": "Delete account?",
         "title_lock": "Lock account?",
+        "title_unlock": "Unlock account?",
         "text": "Are you sure you want to delete this account?",
         "text_lock": "Are you sure you want to lock this account?",
+        "text_unlock": "Are you sure you want to unlock this account?",
         "cancel": "Cancel",
         "confirm": "Delete",
         "confirm_lock": "OK"

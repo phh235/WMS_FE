@@ -26,8 +26,7 @@
                   <div class="dropdown">
                     <button class="nav-link d-flex align-items-center" type="button" id="dropdownMenuButton"
                       data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="Avatar"
-                        style="border-radius: 5px" width="30" />
+                      <img :src="avatarUrl" class="rounded-3" width="30" height="30" />
                       <span class="ms-2 fw-bold" style="color: var(--nav-link-color);">{{ userStore.user.fullName
                         }}</span>
                       <span class="material-symbols-outlined ms-2">unfold_more</span>
@@ -424,8 +423,7 @@
                 <div class="dropdown">
                   <button class="nav-link d-flex align-items-center" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://avatars.githubusercontent.com/u/121915529?v=4" alt="Avatar"
-                      style="border-radius: 5px" width="30" />
+                    <img :src="avatarUrl" class="rounded-3" width="30" height="30" />
                     <span class="material-symbols-outlined ms-2">unfold_more</span>
                   </button>
                   <ul class="dropdown-menu box-shadow dropdown-menu-lg-end mt-2" aria-labelledby="dropdownMenuButton"
@@ -484,6 +482,7 @@ import { useI18n } from "vue-i18n";
 import { useLocalStorage } from "@vueuse/core";
 import { updateTheme } from "@/theme/themeManager";
 import { useUserStore } from '@/store/userStore';
+import { validateImage } from '@/utils/image';
 
 const userStore = useUserStore();
 const { t, locale } = useI18n()
@@ -491,12 +490,10 @@ const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 const isDarkMode = useLocalStorage('isDarkMode', false);
-
+const defaultAvatar = 'https://scontent-sin2-2.xx.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=dst-png_s200x200&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_eui2=AeHhpylGP-pRms_VZ8gahMcxWt9TLzuBU1Ba31MvO4FTUEPSj7eG2-liyHygiWo4_l0k3agXQGFkKlM5KXb6mLiO&_nc_ohc=nhHrY9pzliIQ7kNvgFT9LSh&_nc_zt=24&_nc_ht=scontent-sin2-2.xx&_nc_gid=ABYRsLogzm2p1zMr-TshowT&oh=00_AYBPq1EYWpZvdd3cAL6gv0wzJv-XEnAHsC1RhisNhbEKRA&oe=67776D7A';
+const avatarUrl = ref(null);
 const tabs = ["VI", "EN"];
 const activeTab = ref("VI");
-
-const activeTabNoti = ref('Inbox');
-
 const notifications = ref([
   { id: 1, title: "PO đã xác nhận yêu cầu của bạn", time: "1 giờ trước", status: "success" },
   { id: 2, title: "Có yêu cầu của PR cần xác nhận", time: "1 giờ trước", status: "warning" },
@@ -539,12 +536,15 @@ const changeLanguage = (tab) => {
   authStore.setLanguage(tab);
 };
 
-onMounted(() => {
-  userStore.loadUserFromSession();
+onMounted(async () => {
+  await userStore.loadUserFromSession();
   const savedLanguage = localStorage.getItem("language");
   if (savedLanguage) {
-    changeLanguage(savedLanguage);
+    await changeLanguage(savedLanguage);
   }
+  await validateImage(userStore.user.hinhAnh, defaultAvatar, (url) => {
+    avatarUrl.value = url;
+  });
 })
 
 // Sử dụng computed để lấy giá trị headerTitle từ meta của route hiện tại

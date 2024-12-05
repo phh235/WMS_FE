@@ -80,6 +80,9 @@
                 v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'reject'">
                 <span class="material-symbols-outlined me-2">sync</span> {{ $t('PurchaseRequest.tabs.re-open') }}
               </button>
+              <button class="btn btn-export d-flex align-items-center me-2" @click="exportToWord(purchase)"
+                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'confirm'"><span
+                  class="material-symbols-outlined me-2">upgrade</span> Xuất phiếu</button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
                 <span class="material-symbols-outlined">visibility</span>
               </button>
@@ -97,19 +100,19 @@
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
-                    <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
-                      @click="cancelPR(purchase.maPR)">
-                      {{ $t('PurchaseRequest.table.li_cancel') }}
-                      <span class="material-symbols-outlined">cancel</span>
-                    </a>
-                  </li>
                   <li v-if="authStore.checkPermissions(['User', 'Admin'])">
                     <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}
                       <span class="material-symbols-outlined">edit_square</span>
                     </router-link>
+                  </li>
+                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
+                    <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
+                      @click="cancelPR(purchase.maPR)">
+                      {{ $t('PurchaseRequest.table.li_cancel') }}
+                      <span class="material-symbols-outlined">cancel</span>
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -196,11 +199,11 @@
             <table class="table ">
               <thead>
                 <tr>
-                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
-                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
-                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
-                  <th>{{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
-                  <th class="text-end px-4" v-if="selectedPurchase.trangThai === 'confirm'">{{
+                  <th style="width: 200px">{{ $t('PurchaseRequest.table.detail.product_detail.product_name') }}</th>
+                  <th style="width: 200px">{{ $t('PurchaseRequest.table.detail.product_detail.quantity') }}</th>
+                  <th style="width: 200px">{{ $t('PurchaseRequest.table.detail.product_detail.price') }}</th>
+                  <th style="width: 200px">{{ $t('PurchaseRequest.table.detail.product_detail.total') }}</th>
+                  <th style="width: 200px" class="text-end px-4" v-if="selectedPurchase.trangThai === 'confirm'">{{
                     $t('PurchaseRequest.table.action') }}</th>
                 </tr>
               </thead>
@@ -219,15 +222,27 @@
                       @click="btnCheckFirstOut(item.sysIdSanPham)"
                       v-if="authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm'"><span
                         class="material-symbols-outlined me-2">rubric</span> Kiểm tra </button>
+                    <button type="button" class="btn btn-primary d-flex align-items-center"
+                      @click="btnConfirmCheckOutbound(item.sysIdChiTietXuatHang, item.sysIdSanPham)">
+                      <span class="material-symbols-outlined me-2">check</span>
+                      Xuất
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <h5 class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
-            <span style="color: var(--primary-color);">{{
-              totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
-          </h5>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-primary d-flex align-items-center" @click="createOutbound"
+              :class="{ 'opacity-0': !(authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm') }">
+              <span class="material-symbols-outlined me-2">check_circle</span>
+              Tạo phiếu xuất
+            </button>
+            <h5 class="fw-bold float-end mt-2"> {{ $t('PurchaseRequest.table.detail.product_detail.total_price') }}:
+              <span style="color: var(--primary-color);">{{
+                totalOrderValue.toLocaleString('vi-VN') }} <span class="currency-symbol">&#8363;</span></span>
+            </h5>
+          </div>
         </div>
       </div>
     </div>
@@ -275,10 +290,6 @@
             <span class="material-symbols-outlined me-2">close</span>
             Đóng
           </button>
-          <!-- <button type="button" class="btn btn-primary d-flex align-items-center" @click="saveConsignment">
-            <span class="material-symbols-outlined me-2">check</span>
-            Xác nhận
-          </button> -->
         </div>
       </div>
     </div>
@@ -301,6 +312,7 @@ import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { showToastLoading } from "@/utils/Toast/toastHandle";
+import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, TableLayoutType } from 'docx';
 
 const date = ref([
   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
@@ -403,6 +415,44 @@ const getPurchaseRequests = async () => {
     console.error("Failed to fetch purchase requests:", error);
   }
 };
+
+const btnConfirmCheckOutbound = async (sysIdChiTietXuatHang, sysIdSanPham) => {
+  try {
+    const response = await apiService.post(`outbound/check-outbound/${sysIdChiTietXuatHang}/${sysIdSanPham}`);
+    Swal.fire({
+      title: 'Thông báo',
+      html: `<table class="table"><thead><tr><th>Mã lô</th><th>Số lượng xuất</th></tr></thead><tbody>${response.data.loSuDung.map(lo => `<tr><td>${lo.maLo}</td><td>${lo.soLuongXuat} kg</td></tr>`).join("")}</tbody></table>`,
+      icon: 'success',
+      confirmButtonText: 'Đóng',
+      confirmButtonColor: 'var(--primary-color)',
+    })
+
+    const sysIdChiTietXuatHangs = JSON.parse(localStorage.getItem('sysIdChiTietXuatHangs') || '[]');
+    localStorage.setItem('sysIdChiTietXuatHangs', JSON.stringify([...sysIdChiTietXuatHangs, sysIdChiTietXuatHang]));
+  } catch (error) {
+    console.log(error);
+    showToastError("Không đủ hàng để xuất")
+  }
+}
+
+const createOutbound = async () => {
+  try {
+    const sysIdChiTietXuatHangs = JSON.parse(localStorage.getItem('sysIdChiTietXuatHangs'));
+    const data = {
+      nguoiPhuTrach: JSON.parse(sessionStorage.getItem("user")).sysIdUser,
+      chiTietXuatHang: sysIdChiTietXuatHangs.map((sysIdChiTietXuatHang) => ({
+        sysIdChiTietXuatHang,
+      }))
+    };
+    const response = await apiService.post('outbound/save', data);
+    if (response) {
+      showToastSuccess('Tạo phiếu xuất thành công');
+    }
+  } catch (error) {
+    console.log(error);
+    showToastError('Tạo phiếu xuất thất bại');
+  }
+}
 
 const cancelPR = async (id) => {
   const result = await Swal.fire({
@@ -734,7 +784,7 @@ const exportToExcel = () => {
   const excelFile = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(excelFile);
-  link.download = 'danh-sach-yeu-cau-outbound.xlsx';
+  link.download = 'danh-sach-yeu-cau-xuat-hang.xlsx';
   link.click();
 };
 
@@ -744,6 +794,161 @@ const kyGuiDate = computed(() => {
   const kyGui = ngayXuatDuKienNgay - ngayYeuCauNgay;
   return kyGui;
 });
+
+const exportToWord = (purchase) => {
+  // 1. Thêm "Mẫu số 06 - VT"
+  const templateInfo = new Paragraph({
+    children: [
+      new TextRun({
+        text: "Mẫu số 06 - VT",
+        bold: true,
+        size: 24, // Font size (24 = 12pt)
+        break: 1,
+      }),
+      new TextRun({
+        text: "Ban hành theo Thông tư số 200/2014/TT-BTC",
+        size: 20,
+        break: 1,
+      }),
+      new TextRun({
+        text: "Ngày 22/12/2014 của Bộ Tài chính",
+        size: 20,
+        break: 1,
+      }),
+    ],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 300 },
+  });
+
+  // 2. Tạo tiêu đề
+  const title = new Paragraph({
+    children: [
+      new TextRun({
+        text: "BẢNG KÊ XUẤT HÀNG",
+        bold: true,
+        size: 28,
+      }),
+    ],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 300 },
+  });
+
+  // 3. Thêm ngày tháng
+  const date = new Paragraph({
+    children: [
+      new TextRun({
+        text: `Ngày ${new Date(purchase.ngayYeuCau).getDate()} tháng ${new Date(purchase.ngayYeuCau).getMonth() + 1} năm ${new Date(purchase.ngayYeuCau).getFullYear()}`,
+      }),
+    ],
+    alignment: AlignmentType.CENTER,
+    spacing: { after: 300 },
+  });
+
+  // 4. Thông tin chung
+  const info = [
+    new Paragraph({
+      children: [
+        new TextRun({ text: `- Họ và tên người yêu cầu:  `, bold: true }),
+        new TextRun({ text: `${purchase.nguoiYeuCau}` }),
+      ],
+      spacing: { after: 200 },
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({ text: "- " }),
+        new TextRun({ text: "Bộ phận (phòng, ban):", bold: true }),
+      ],
+      spacing: { after: 200 },
+    }),
+    new Paragraph({ text: "" }),
+  ];
+
+  // 5. Tạo bảng header
+  const headerRow = new TableRow({
+    children: [
+      new TableCell({ children: [new Paragraph("STT")] }),
+      new TableCell({ children: [new Paragraph("Tên sản phẩm")] }),
+      new TableCell({ children: [new Paragraph("Khách hàng")] }),
+      new TableCell({ children: [new Paragraph("Số lượng")] }),
+      new TableCell({ children: [new Paragraph("Đơn vị tính")] }),
+      new TableCell({ children: [new Paragraph("Đơn giá")] }),
+      new TableCell({ children: [new Paragraph("Thành tiền")] }),
+    ],
+  });
+
+  // 6. Dữ liệu sản phẩm
+  const productRows = purchase.chiTietXuatHang.map((item, index) =>
+    new TableRow({
+      children: [
+        new TableCell({ children: [new Paragraph((index + 1).toString())] }),
+        new TableCell({ children: [new Paragraph(item.tenSanPham)] }),
+        new TableCell({ children: [new Paragraph(item.sysIdKhachHang)] }),
+        new TableCell({ children: [new Paragraph(item.soLuong.toLocaleString('vi-VN'))] }),
+        new TableCell({ children: [new Paragraph("Kg")] }),
+        new TableCell({ children: [new Paragraph(`${item.gia.toLocaleString('vi-VN')} ₫`)] }),
+        new TableCell({ children: [new Paragraph(`${item.tongChiPhi.toLocaleString('vi-VN')} ₫`)] }),
+      ],
+    })
+  );
+
+  // 7. Tạo bảng hoàn chỉnh
+  const table = new Table({
+    rows: [headerRow, ...productRows],
+    borders: {
+      top: { style: BorderStyle.SINGLE, size: 1 },
+      bottom: { style: BorderStyle.SINGLE, size: 1 },
+      left: { style: BorderStyle.SINGLE, size: 1 },
+      right: { style: BorderStyle.SINGLE, size: 1 },
+      insideHorizontal: { style: BorderStyle.SINGLE, size: 1 },
+      insideVertical: { style: BorderStyle.SINGLE, size: 1 },
+    },
+    alignment: AlignmentType.CENTER,
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    layout: TableLayoutType.FIXED,
+  });
+
+  // 8. Phần chữ ký
+  const signatures = [
+    new Paragraph({
+      children: [new TextRun("Ngày ..... tháng ..... năm .....")],
+      alignment: AlignmentType.RIGHT,
+      spacing: { before: 400 },
+    }),
+    new Paragraph({
+      spacing: { before: 400 },
+      children: [
+        new TextRun({
+          text: "Người lập phiếu",
+          bold: true,
+        }),
+        new TextRun({
+          text: " ".repeat(120), // Khoảng cách
+        }),
+        new TextRun({
+          text: "Người duyệt",
+          bold: true,
+        }),
+      ],
+    }),
+  ];
+
+  // 9. Tạo tài liệu Word
+  const doc = new Document({
+    sections: [
+      {
+        children: [templateInfo, title, date, ...info, table, ...signatures],
+      },
+    ],
+  });
+
+  // 10. Xuất file Word
+  Packer.toBlob(doc).then((blob) => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `bang-ke-xuat-hang-${purchase.maPR}.docx`;
+    link.click();
+  });
+};
 </script>
 
 <style scoped>

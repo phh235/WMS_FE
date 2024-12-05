@@ -86,7 +86,7 @@
               <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false"
-                  :disabled="(authStore.checkPermissions(['Manager', 'Admin']) && purchase.trangThai !== 'open')">
+                  :disabled="(authStore.checkPermissions(['User']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'reject')">
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
@@ -703,7 +703,7 @@ const exportToExcel = () => {
   const excelFile = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(excelFile);
-  link.download = 'danh-sach-yeu-cau-inbound.xlsx';
+  link.download = 'danh-sach-yeu-cau-nhap-hang.xlsx';
   link.click();
 };
 
