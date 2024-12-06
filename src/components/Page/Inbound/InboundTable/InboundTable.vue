@@ -213,7 +213,7 @@
                       <span class="currency-symbol">&#8363;</span>
                     </td>
                     <td class="d-flex justify-content-center"><button class="btn btn-primary d-flex align-items-center"
-                        @click="showPhanLo(item.sysIdSanPham)">
+                        @click="showPhanLo(item.sysIdSanPham, item.sysIdChiTietNhapHang)">
                         <span class="material-symbols-outlined me-1">package_2</span> Phân lô
                       </button>
                     </td>
@@ -486,12 +486,12 @@ const showDetail = (inbound) => {
   isModalVisible.value = true;
 };
 
-const showPhanLo = async (id) => {
+const showPhanLo = async (sysIdSanPham, sysIdChiTietNhapHang) => {
   isModalVisible.value = false;
   isPhanLoModalVisible.value = true;
-
+  localStorage.setItem("sysIdChiTietNhapHangDrafts", sysIdChiTietNhapHang);
   try {
-    const response = await apiService.get(`zone-details/warehouse-detail-by-product/${id}`);
+    const response = await apiService.get(`zone-details/warehouse-detail-by-product/${sysIdSanPham}`);
     Object.assign(selectedZoneDetail, response.data);
   } catch (error) {
     console.log(error);
@@ -506,6 +506,16 @@ const closeModal = () => {
 const closePhanLoModal = () => {
   isModalVisible.value = true;
   isPhanLoModalVisible.value = false;
+  localStorage.removeItem("sysIdChiTietNhapHangDrafts");
+  Object.assign(selectedConsignment, {
+    sysIdSanPham: '',
+    soLuong: '',
+    ngaySanXuat: '',
+    hanSuDung: '',
+    dungTich: '',
+    maChiTietKhuVuc: '',
+    sysIdChiTietNhapHang: ''
+  });
 };
 
 const saveConsignment = async () => {
@@ -515,7 +525,7 @@ const saveConsignment = async () => {
     hanSuDung: format(selectedConsignment.hanSuDung),
     dungTich: selectedConsignment.dungTich,
     maChiTietKhuVuc: selectedZoneDetail.maChiTietKhuVuc,
-    sysIdChiTietNhapHang: 24
+    sysIdChiTietNhapHang: localStorage.getItem("sysIdChiTietNhapHangDrafts"),
   };
 
   try {
@@ -523,6 +533,7 @@ const saveConsignment = async () => {
     console.log(response.data);
     if (response) {
       showToastSuccess("Tạo lô thành công")
+      localStorage.removeItem("sysIdChiTietNhapHangDrafts");
     }
     isModalVisible.value = false;
     isPhanLoModalVisible.value = false;

@@ -107,7 +107,7 @@ const productInfo = reactive({
   tenSanPham: "",
   moTa: "",
   sysIdDanhMuc: "",
-  hinhAnh: "",
+  hinhAnh: null, // Lưu File object trực tiếp
 });
 
 const getProductById = async (id) => {
@@ -118,7 +118,7 @@ const getProductById = async (id) => {
       Object.assign(productInfo, product);
       imagePreview.value = product.hinhAnhUrl; // Hiển thị hình ảnh nếu có
     } else {
-      // showToastError(t("Product.form.swal.error.product_not_found"));
+      showToastError(t("Product.form.swal.error.product_not_found"));
     }
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -133,43 +133,58 @@ onMounted(async () => {
   }
 });
 
-watch(() => productStore.selectedProduct, (newProduct) => {
-  if (newProduct) {
-    Object.assign(productInfo, newProduct);
-    imagePreview.value = newProduct.hinhAnhUrl;
+watch(
+  () => productStore.selectedProduct,
+  (newProduct) => {
+    if (newProduct) {
+      Object.assign(productInfo, newProduct);
+      imagePreview.value = newProduct.hinhAnhUrl;
+    }
+  },
+  { deep: true }
+);
+
+const onFileChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imagePreview.value = e.target.result; // Gắn URL xem trước
+    };
+    reader.readAsDataURL(file);
+
+    // Lưu File object vào productInfo.hinhAnh để sử dụng trong FormData
+    productInfo.hinhAnh = file;
   }
-}, { deep: true });
+};
 
 const saveProduct = async () => {
   formSubmitted.value = true;
   // Validate form
   if (!productInfo.tenSanPham) {
+    showToastError(t("Product.form.swal.validate.product_name"));
     return;
   }
   if (!productInfo.sysIdDanhMuc) {
+    showToastError(t("Product.form.swal.validate.choose_category"));
     return;
   }
-  // Kiểm tra xem đã chọn ảnh hay chưa
-  // if (!imagePreview.value) {
-  //   showToastError(i18n.global.t("Product.form.swal.validate.image"));
-  //   return;
-  // }
+
   isLoading.value = true;
   try {
     const formData = new FormData();
-
     formData.append("tenSanPham", productInfo.tenSanPham);
     formData.append("moTa", productInfo.moTa);
     formData.append("sysIdDanhMuc", productInfo.sysIdDanhMuc);
 
-    if (imagePreview.value) {
-      const file = await fetch(imagePreview.value, { mode: 'no-cors' }).then((res) => res.blob());
-      formData.append("hinhAnh", file, productInfo.hinhAnh.name);
+    if (productInfo.hinhAnh) {
+      formData.append("hinhAnh", productInfo.hinhAnh); // Lấy File object trực tiếp
     }
 
     if (productInfo.sysIdSanPham) {
       formData.append("sysIdSanPham", productInfo.sysIdSanPham);
     }
+
     const response = await apiService.postImage("products", formData);
 
     if (response.status === 200) {
@@ -179,33 +194,20 @@ const saveProduct = async () => {
       showToastError("Lưu thất bại");
     }
   } catch (error) {
-    console.error("Failed to save products:", error);
+    console.error("Failed to save product:", error);
+    showToastError("Có lỗi xảy ra, vui lòng thử lại!");
   } finally {
     isLoading.value = false;
   }
 };
 
-const onFileChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      imagePreview.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-
-    // Lưu tên tệp vào productInfo
-    productInfo.hinhAnh = file.name; // Lưu tên tệp
-  }
-};
-
 const replaceImage = () => {
-  document.getElementById('imageUpload').click();
+  document.getElementById("imageUpload").click();
 };
 
 const deleteImage = () => {
   imagePreview.value = null;
-  productInfo.hinhAnh = '';
+  productInfo.hinhAnh = null;
 };
 </script>
 
