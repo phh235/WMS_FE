@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import MenuBar from "@components/Header/MenuBar/MenuBar.vue";
+import MenuBar from "@components/Header/MenuBar.vue";
 import { useUserStore } from "@/store/userStore";
 import Cre from "@layouts/Cre/Cre.vue";
 import { onMounted } from "vue";
