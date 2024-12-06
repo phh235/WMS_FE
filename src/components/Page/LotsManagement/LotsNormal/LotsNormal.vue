@@ -10,9 +10,9 @@
       <div class="row">
         <!-- Danh sách các khu vực trong kho -->
         <div class="col-2 mb-4 zone-card" v-for="zone in warehouseZones" :key="zone.id" @click="showZoneDetails(zone)">
-          <div class="card">
+          <div class="card box-shadow-sm">
             <div class="card-body text-center">
-              <p class="card-text">{{ zone.name }}</p>
+              <p class="card-text" style="color: var(--nav-link-color) !important;">{{ zone.name }}</p>
               <p class="card-text"><span class="badge rounded-pill bg-success">{{ zone.id }}</span></p>
             </div>
           </div>
@@ -121,5 +121,7 @@ const zoomOut = () => panzoomInstance.value.zoomOut();
 
 .card {
   width: 100%;
+  background-color: var(--background-color) !important;
+  border: 1.5px solid var(--border-main-color) !important;
 }
 </style>

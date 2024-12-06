@@ -71,7 +71,8 @@
         "label": "Transactions last 7 days",
         "small_1": "Last",
         "small_2": "recent transactions",
-        "title": "Number of transactions"
+        "title_quantity": "Number of transactions",
+        "title_type": "Transaction type"
       },
       "card": {},
       "tabs": {

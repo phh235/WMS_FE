@@ -32,7 +32,8 @@
               month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
             }).replace(/\/$/,
               '').replace(/:\d{2}$/, '') }}</td>
-            <td class="td-quantity"><button class="btn btn-danger d-flex align-items-center"><span
+            <td class="td-quantity"><button class="btn btn-danger d-flex align-items-center"
+                @click="deleteWasteConsignment(inventory.sysIdTonKho)"><span
                   class="material-symbols-outlined me-2">close</span> Hủy</button></td>
           </tr>
         </tbody>
@@ -50,9 +51,12 @@ import { ref, onMounted, computed } from 'vue';
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import { useInventoriesStore } from "@/store/inventoriesStore.js";
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
+import { useApiServices } from '@/services/apiService';
+import { showToastSuccess } from '@/utils/Toast/toastHandle';
 
 const inventoriesStore = useInventoriesStore();
 const searchQuery = ref("");
+const apiService = useApiServices();
 
 onMounted(() => {
   inventoriesStore.getInventories();
@@ -78,6 +82,17 @@ const handlePageChange = (page) => {
 const handleItemsPerPageChange = (itemsPerPage) => {
   pageSize.value = itemsPerPage;
   currentPage.value = 1;
+};
+
+const deleteWasteConsignment = async (id) => {
+  try {
+    const response = await apiService.post(`waste-products/${id}`);
+    if (response) {
+      showToastSuccess('Hủy bỏ lô hàng hết hạn thành công');
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 

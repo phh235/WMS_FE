@@ -70,7 +70,8 @@
         "label": "Giao dịch trong 7 ngày qua",
         "small_1": "Có",
         "small_2": "giao dịch gần đây",
-        "title": "Số lượng giao dịch"
+        "title_quantity": "Số lượng giao dịch",
+        "title_type": "Loại giao dịch"
       },
       "card": {},
       "tabs": {

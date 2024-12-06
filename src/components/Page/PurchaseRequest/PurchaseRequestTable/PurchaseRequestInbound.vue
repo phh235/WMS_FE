@@ -12,7 +12,7 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+        <button class="btn btn-secondary-2 d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span> {{ $t('PurchaseRequest.btn_export') }}</button>
         <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User', 'Admin'])">

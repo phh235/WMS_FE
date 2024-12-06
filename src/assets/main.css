@@ -253,6 +253,7 @@ button {
 .btn.btn-login,
 .btn.btn-logout,
 .btn.btn-secondary,
+.btn.btn-secondary-2,
 .btn.btn-logout,
 .btn.btn-export,
 .btn.btn-danger {
@@ -343,6 +344,19 @@ button {
   &:active {
     border: none;
     background-color: var(--primary-color-hover) !important;
+  }
+}
+
+.btn.btn.btn-secondary-2 {
+  /* background-color: rgba(81, 235, 138, 0.151) !important; */
+  color: var(--primary-color) !important;
+  border: none;
+  box-shadow: none;
+  &:hover,
+  &:active {
+    border: none;
+    /* background-color: rgba(81, 235, 138, 0.151) !important; */
+    background-color: var(--bg-success) !important;
   }
 }
 

@@ -1,8 +1,9 @@
 <template>
   <div class="card box-shadow h-100" style="max-height: 500px;">
     <div class="card-body d-flex flex-column">
-      <h5 class="card-title fw-bold">{{ $t('Home.dashboard.recent_transaction.label') }}</h5>
-      <p class="card-title">{{ $t('Home.dashboard.recent_transaction.small_1') }}
+      <h5 class="card-title fw-bold" style="color: var(--nav-link-color);">{{
+        $t('Home.dashboard.recent_transaction.label') }}</h5>
+      <p class="card-title" style="color: var(--nav-link-color);">{{ $t('Home.dashboard.recent_transaction.small_1') }}
         <span class="fw-bold" style="color: var(--primary-color);">{{ recentTransactions.length }}</span>
         {{ $t('Home.dashboard.recent_transaction.small_2') }}
       </p>
@@ -19,17 +20,23 @@
             <div>
               <strong style="color: var(--nav-link-color); font-size: 18px">{{ transaction.tenSanPham }}</strong>
               <br />
-              <small class="fw-bold" style="font-size: 15px;"
-                :style="transaction.loaiGiaoDich === 'NHAP' ? 'color: var(--primary-color) !important;' : 'color: var(--export-color) !important;'">{{
-                  transaction.loaiGiaoDich === 'NHAP' ? 'Nhập' : 'Xuất' }}
+              <small style="font-size: 15px;">
+                {{ $t('Home.dashboard.recent_transaction.title_type') }}:
+                <span class="fw-bold"
+                  :style="transaction.loaiGiaoDich === 'NHAP' ? 'color: var(--primary-color) !important;' : 'color: #dc3545 !important;'">
+                  {{ transaction.loaiGiaoDich === 'NHAP' ? 'Nhập' : 'Xuất' }}
+                </span>
               </small>
               <br>
-              <small style="color: var(--nav-link-color);">{{ $t('Home.dashboard.recent_transaction.title') }} <span
-                  class="fw-bold" style="color: var(--primary-color);">{{ transaction.soLuongGiaoDich }}</span></small>
+              <small style="color: var(--nav-link-color);">{{ $t('Home.dashboard.recent_transaction.title_quantity') }}:
+                <span class="fw-bold"
+                  :style="transaction.loaiGiaoDich === 'NHAP' ? 'color: var(--primary-color) !important;' : 'color: #dc3545 !important;'">{{
+                    transaction.soLuongGiaoDich
+                  }}</span></small>
             </div>
             <span :class="[
               'badge',
-              transaction.loaiGiaoDich === 'NHAP' ? 'bg-success' : 'bg-primary',
+              transaction.loaiGiaoDich === 'NHAP' ? 'bg-success' : 'bg-danger',
             ]">
               {{ transaction.loaiGiaoDich === 'NHAP' ? '+ ' : '- ' }}{{
                 parseFloat(transaction.tongSoLuong).toLocaleString('vi-VN') }} Kg
@@ -61,6 +68,11 @@ const tabs = computed(() => [
 
 onMounted(async () => {
   await getRecentlyInboundTransactions();
+});
+
+// dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang
+watch(() => tabs.value, (newTabs) => {
+  activeTab.value = newTabs[0];
 });
 
 // Watch for changes in the selected tab
@@ -126,17 +138,22 @@ const getRecentlyOutboundTransactions = async () => {
 </script>
 
 <style scoped>
+.list-group-item {
+  background-color: var(--background-color) !important;
+  border-bottom: 1.5px solid var(--border-main-color) !important;
+}
+
 .badge {
   padding: 6px 8px;
   border-radius: 12px;
   font-size: 14px;
 }
 
-.bg-primary {
+.bg-danger {
   font-size: 0.875rem;
-  background-color: var(--bg-primary) !important;
-  color: #4ca7f1;
-  border: 1.5px solid #4ca7f1;
+  background-color: var(--bg-danger) !important;
+  color: #dc3545;
+  border: 1.5px solid #dc3545;
 }
 
 .bg-success {
