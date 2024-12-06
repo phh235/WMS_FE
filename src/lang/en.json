@@ -68,14 +68,16 @@
       "btn_download": "Download report",
       "chart_title": "Overview",
       "recent_transaction": {
-        "label": "Recent transactions",
-        "small": "Last 5 warehouse transactions"
+        "label": "Transactions last 7 days",
+        "small_1": "Last",
+        "small_2": "recent transactions",
+        "title": "Number of transactions"
       },
       "card": {},
       "tabs": {
         "all": "All",
-        "imported": "Imported",
-        "exported": "Exported"
+        "imported": "Inbound",
+        "exported": "Outbound"
       }
     }
   },

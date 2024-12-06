@@ -8,7 +8,7 @@
         <thead>
           <tr>
             <th class="th-id">ID Tồn kho</th>
-            <th class="th-id-product">ID Sản phẩm</th>
+            <th class="th-id-product">Tên sản phẩm</th>
             <th class="th-warehouse-code">Mã kho</th>
             <th class="th-batch-code">Mã lô</th>
             <th class="th-quantity">Số lượng</th>

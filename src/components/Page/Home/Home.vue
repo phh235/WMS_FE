@@ -5,13 +5,7 @@
         <h3 class="fw-bold mb-3" style="color: var(--nav-link-color);">
           {{ $t('Home.dashboard.title') }}
         </h3>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="tab-container justify-content-start mb-3 mb-md-0">
-            <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
-              :class="['tab-button', { active: activeTab === tab }]">
-              {{ tab }}
-            </button>
-          </div>
+        <div class="d-flex justify-content-end align-items-center mb-4">
           <div class="d-flex flex-column flex-md-row">
             <VueDatePicker v-model="date" week-picker placeholder="Tìm theo tuần" class="me-2"
               style="max-width: 200px;" />
@@ -57,29 +51,7 @@
         </div>
       </div>
       <div class="col-12 col-lg-4">
-        <div class="card box-shadow h-100">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title fw-bold">{{ $t('Home.dashboard.recent_transaction.label') }}</h5>
-            <p class="card-text">{{ $t('Home.dashboard.recent_transaction.small') }}</p>
-            <ul class="list-group list-group-flush flex-grow-1 overflow-auto">
-              <li v-for=" transaction in recentTransactions" :key="transaction.id"
-                class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <strong style="color: var(--nav-link-color);">{{ transaction.type }}</strong>
-                  <br />
-                  <small>{{ transaction.item }}</small>
-                </div>
-                <span :class="[
-                  'badge',
-                  'rounded-pill',
-                  transaction.type === 'Nhận' ? 'bg-success' : 'bg-primary',
-                ]">
-                  {{ transaction.quantity }}
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <RecentlyTransactions />
       </div>
     </div>
   </div>
@@ -90,6 +62,7 @@ import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import * as echarts from "echarts";
 import { useI18n } from 'vue-i18n';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import RecentlyTransactions from "./RecentlyTransactions.vue";
 
 const date = ref([]);
 const month = ref([]);
@@ -136,14 +109,6 @@ const cardData = ref([
     change: "+3,5% so với tuần trước",
     icon: "inventory",
   },
-]);
-
-const recentTransactions = ref([
-  { id: 1, type: "Nhận", item: "Khoai tây", quantity: "+500" },
-  { id: 2, type: "Gửi", item: "Cà chua", quantity: "-200" },
-  { id: 3, type: "Nhận", item: "Khoai lang", quantity: "+300" },
-  { id: 4, type: "Gửi", item: "Hành tím", quantity: "-150" },
-  { id: 5, type: "Nhận", item: "Táo", quantity: "+1000" },
 ]);
 
 const initChart = () => {
