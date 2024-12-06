@@ -41,8 +41,8 @@
         <thead>
           <tr>
             <th class="sticky">{{ $t('Inbound.table.reference_code') }}</th>
-            <!-- <th>{{ $t('Inbound.table.from') }}</th> -->
             <th>{{ $t('Outbound.table.to') }}</th>
+            <!-- <th>{{ $t('Inbound.table.from') }}</th> -->
             <th>{{ $t('Inbound.table.person_in_charge') }}</th>
             <th>{{ $t('Inbound.table.plan_date') }}</th>
             <th>{{ $t('Inbound.table.status') }}</th>
@@ -57,8 +57,8 @@
           </tr>
           <tr v-for="inbound in paginatedOutbound" :key="inbound.sysIdOutbound">
             <td class="d-none">{{ inbound.sysIdOutbound }}</td>
-            <td>{{ inbound.chiTietXuatHang[0]?.tenKhachHang }}</td>
             <td class="sticky">{{ inbound.maOB }}</td>
+            <td>{{ inbound.chiTietXuatHang[0]?.tenKhachHang }}</td>
             <!-- <td>{{ inbound.maKho }}</td> -->
             <td>{{ inbound.nguoiPhuTrach }}</td>
             <td>{{ inbound.ngayXuat }}</td>

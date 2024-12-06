@@ -448,6 +448,7 @@ const createOutbound = async () => {
     if (response) {
       showToastSuccess('Tạo phiếu xuất thành công');
     }
+    localStorage.removeItem('sysIdChiTietXuatHangs');
   } catch (error) {
     console.log(error);
     showToastError('Tạo phiếu xuất thất bại');

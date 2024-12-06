@@ -14,7 +14,7 @@ const Toast = Swal.mixin({
   didOpen: (toast) => {
     toast.onmouseenter = Swal.stopTimer;
     toast.onmouseleave = Swal.resumeTimer;
-    // toast.onclick = Swal.close;
+    toast.onclick = Swal.close;
   },
 });
 

@@ -537,12 +537,12 @@ const changeLanguage = (tab) => {
 };
 
 onMounted(async () => {
-  await userStore.loadUserFromSession();
+  userStore.loadUserFromSession();
   const savedLanguage = localStorage.getItem("language");
   if (savedLanguage) {
-    await changeLanguage(savedLanguage);
+    changeLanguage(savedLanguage);
   }
-  await validateImage(userStore.user.hinhAnh, defaultAvatar, (url) => {
+  validateImage(userStore.user.hinhAnh, defaultAvatar, (url) => {
     avatarUrl.value = url;
   });
 })
