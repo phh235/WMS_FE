@@ -67,14 +67,17 @@
       "btn_download": "Tải xuống báo cáo",
       "chart_title": "Tổng quan biến động kho hàng",
       "recent_transaction": {
-        "label": "Giao dịch gần đây",
-        "small": "5 giao dịch gần đây"
+        "label": "Giao dịch trong 7 ngày qua",
+        "small_1": "Có",
+        "small_2": "giao dịch gần đây",
+        "title_quantity": "Số lượng giao dịch",
+        "title_type": "Loại giao dịch"
       },
       "card": {},
       "tabs": {
         "all": "Tất cả",
-        "imported": "Đã nhập",
-        "exported": "Đã xuất"
+        "imported": "Nhập",
+        "exported": "Xuất"
       }
     }
   },
@@ -83,8 +86,8 @@
       "toast": {
         "error": {
           "title": "Đăng nhập thất bại",
-          "username_text": "Tên đăng nhập không được trống",
-          "password_text": "Mật khẩu không được trống",
+          "username_text": "Tên đăng nhập không để trống",
+          "password_text": "Mật khẩu không để trống",
           "login_fail": "Đăng nhập thất bại",
           "lock_account": "Tài khoản đã bị vô hiệu hóa"
         },
@@ -119,7 +122,7 @@
       "toast": {
         "error": {
           "title": "Gửi email thất bại",
-          "text": "Email không được trống"
+          "text": "Email không để trống"
         },
         "success": {
           "title": "Gửi OTP thành công",
@@ -326,18 +329,18 @@
       },
       "error": {
         "title": "Cập nhật thất bại",
-        "fullname_text": "Họ và tên không được trống",
-        "username_text": "Tên người dùng không được trống",
-        "phone_text": "Số điện thoại không được trống",
+        "fullname_text": "Họ và tên không để trống",
+        "username_text": "Tên người dùng không để trống",
+        "phone_text": "Số điện thoại không để trống",
         "phone_check": "Số điện thoại không đúng định dạng",
-        "email_text": "Email không được trống",
+        "email_text": "Email không để trống",
         "email_check": "Email không đúng định dạng",
-        "password_old_text": "Mật khẩu cũ không được trống",
+        "password_old_text": "Mật khẩu cũ không để trống",
         "password_old_check": "Mật khẩu cũ không đúng",
-        "password_new_text": "Mật khẩu mới không được trống",
-        "password_confirm_text": "Mật khẩu mới không được trống",
+        "password_new_text": "Mật khẩu mới không để trống",
+        "password_confirm_text": "Mật khẩu mới không để trống",
         "password_confirm_check": "Xác nhận mật khẩu mới không đúng",
-        "password_confirm_check_empty": "Xác nhận mật khẩu mới không được để trống",
+        "password_confirm_check_empty": "Xác nhận mật khẩu mới không để trống",
         "failed": "Cập nhật thông tin thất bại",
         "failed_password": "Cập nhật mật khẩu thất bại"
       },
@@ -380,12 +383,12 @@
       },
       "success": "Lưu thành công",
       "validate": {
-        "fullname": "Họ và tên không được trống!",
-        "username": "Tên người dùng không được trống!",
-        "password": "Mật khẩu không được trống!",
-        "email": "Email không được trống!",
+        "fullname": "Họ và tên không để trống!",
+        "username": "Tên người dùng không để trống!",
+        "password": "Mật khẩu không để trống!",
+        "email": "Email không để trống!",
         "email_check": "Email không đúng định dạng!",
-        "phone": "Số điện thoại không được trống!",
+        "phone": "Số điện thoại không để trống!",
         "role": "Vui lòng chọn vai trò!"
       }
     }
@@ -437,7 +440,7 @@
           "product_name": "Vui lòng nhập tên sản phẩm",
           "available_quantity": "Vui lòng nhập số lượng hiện có",
           "available_quantity_number": "Số lượng hiện có phải là số",
-          "available_quantity_negative": "Số lượng hiện không được bé hơn không",
+          "available_quantity_negative": "Số lượng hiện không để bé hơn không",
           "choose_category": "Vui lòng chọn danh mục",
           "image": "Chưa chọn ảnh sản phẩm"
         }
@@ -473,9 +476,9 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "warehouse_id": "Mã kho hàng không được trống!",
-          "warehouse_name": "Tên kho hàng không được trống!",
-          "warehouse_area": "Diện tích hàng không được trống!",
+          "warehouse_id": "Mã kho hàng không để trống!",
+          "warehouse_name": "Tên kho hàng không để trống!",
+          "warehouse_area": "Diện tích hàng không để trống!",
           "manager": "Vui lòng chọn người phụ trách!"
         }
       }
@@ -506,9 +509,9 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "zone_id": "Mã khu vực không được trống!",
-          "zone_name": "Tên khu vực không được trống!",
-          "zone_desc": "Mô tả khu vực không được trống!",
+          "zone_id": "Mã khu vực không để trống!",
+          "zone_name": "Tên khu vực không để trống!",
+          "zone_desc": "Mô tả khu vực không để trống!",
           "warehouse_id": "Vui lòng chọn kho!"
         }
       }
@@ -536,10 +539,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "zone_detail_id": "Mã chi tiết khu vực không được trống!",
-          "zone_detail_name": "Tên chi tiết khu vực không được trống!",
-          "area_storage": "Thể tích lưu trữ không được trống!",
-          "area_available": "Thể tích khả dụng không được trống!",
+          "zone_detail_id": "Mã chi tiết khu vực không để trống!",
+          "zone_detail_name": "Tên chi tiết khu vực không để trống!",
+          "area_storage": "Thể tích lưu trữ không để trống!",
+          "area_available": "Thể tích khả dụng không để trống!",
           "zone_id": "Vui lòng chọn khu vực"
         }
       }
@@ -569,7 +572,7 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "category_name": "Tên danh mục không được trống!",
+          "category_name": "Tên danh mục không để trống!",
           "warehouse_id": "Vui lòng chọn kho!"
         }
       }
@@ -601,10 +604,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "customer_name": "Tên khách hàng không được trống!",
-          "customer_company": "Tên công ty không được trống!",
-          "phone": "Tên công ty không được trống!",
-          "address": "Địa chỉ không được trống!",
+          "customer_name": "Tên khách hàng không để trống!",
+          "customer_company": "Tên công ty không để trống!",
+          "phone": "Tên công ty không để trống!",
+          "address": "Địa chỉ không để trống!",
           "supplier_id": "Vui lòng chọn loại khách hàng!"
         }
       }
@@ -630,10 +633,10 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "supplier_name": "Tên nhà cung cấp không được trống!",
-          "supplier_company": "Tên công ty không được trống!",
-          "supplier_phone": "Số điện thoại không được trống!",
-          "supplier_address": "Địa chỉ không được trống!"
+          "supplier_name": "Tên nhà cung cấp không để trống!",
+          "supplier_company": "Tên công ty không để trống!",
+          "supplier_phone": "Số điện thoại không để trống!",
+          "supplier_address": "Địa chỉ không để trống!"
         }
       }
     },
@@ -663,13 +666,13 @@
         },
         "success": "Lưu thành công",
         "validate": {
-          "consignment_id": "Mã lô hàng không được trống!",
+          "consignment_id": "Mã lô hàng không để trống!",
           "consignment_zone_detail": "Vui lòng chọn chi tiết khu vực!",
           "consignment_product": "Vui lòng chọn sản phẩm!",
-          "consignment_quantity": "Số lượng không được trống!",
+          "consignment_quantity": "Số lượng không để trống!",
           "consignment_date": "Vui lòng chọn ngày sản xuất!",
           "consignment_date_exp": "Vui lòng chọn ngày hết hạn!",
-          "consignment_area": "Dung tích không được trống!"
+          "consignment_area": "Dung tích không để trống!"
         }
       }
     }

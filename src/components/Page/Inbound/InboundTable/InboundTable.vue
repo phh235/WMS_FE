@@ -214,7 +214,7 @@
                     </td>
                     <td class="d-flex justify-content-center"><button class="btn btn-primary d-flex align-items-center"
                         @click="showPhanLo(item.sysIdSanPham, item.sysIdChiTietNhapHang)">
-                        <span class="material-symbols-outlined me-1">package_2</span> Phân lô
+                        <span class="material-symbols-outlined me-2">package_2</span> Phân lô
                       </button>
                     </td>
                   </tr>

@@ -4,46 +4,95 @@
       <h5 class="mb-4 fw-bold" style="color: var(--primary-color); font-size: 1.5rem">
         {{ $t("AccountInfo.title_password") }}
       </h5>
-      <form @submit.prevent="changePassword">
-        <!-- Old Password -->
-        <div class="row mb-3 d-flex align-items-center">
-          <label for="passwordOld" class="col-sm-4 form-label">
-            {{ $t("AccountInfo.label.password.old") }}
-          </label>
-          <div class="col-sm-8">
-            <input id="passwordOld" v-model="passwordChange.passwordOld" type="password" class="form-control"
-              :class="{ 'is-invalid': !passwordChange.passwordOld && formSubmitted }" />
-            <div class="invalid-feedback" v-if="formSubmitted && !passwordChange.passwordOld">
-              {{ $t("AccountInfo.swal.error.password_old_text") }}
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <form @submit.prevent="changePassword">
+            <!-- Old Password -->
+            <div class="row mb-3 d-flex align-items-center">
+              <label for="passwordOld" class="col-sm-5 form-label">
+                {{ $t("AccountInfo.label.password.old") }}
+              </label>
+              <div class="col-12 col-md-7">
+                <input id="passwordOld" v-model="passwordChange.passwordOld" type="password" class="form-control"
+                  :class="{ 'is-invalid': !passwordChange.passwordOld && formSubmitted }" />
+                <div class="invalid-feedback" v-if="formSubmitted && !passwordChange.passwordOld">
+                  {{ $t("AccountInfo.swal.error.password_old_text") }}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- New Password -->
-        <div class="row mb-3 d-flex align-items-center">
-          <label for="password" class="col-sm-4 form-label">
-            {{ $t("AccountInfo.label.password.new") }}
-          </label>
-          <div class="col-sm-8">
-            <input id="password" v-model="passwordChange.password" type="password" class="form-control"
-              @input="validatePassword" :class="{ 'is-invalid': !isValidPassword && formSubmitted }" />
-            <div class="invalid-feedback" v-if="formSubmitted && !passwordChange.password">
-              {{ $t("AccountInfo.swal.error.password_new_text") }}
+            <!-- New Password -->
+            <div class="row mb-3 d-flex align-items-center">
+              <label for="password" class="col-sm-5 form-label">
+                {{ $t("AccountInfo.label.password.new") }}
+              </label>
+              <div class="col-12 col-md-7">
+                <input id="password" v-model="passwordChange.password" type="password" class="form-control"
+                  @input="validatePassword" :class="{ 'is-invalid': !isValidPassword && formSubmitted }" />
+                <div class="invalid-feedback" v-if="formSubmitted && !passwordChange.password">
+                  {{ $t("AccountInfo.swal.error.password_new_text") }}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="row mb-3 d-flex align-items-center" v-if="formSubmitted">
-          <label for="password" class="col-sm-4 form-label opacity-0">
-            {{ $t("AccountInfo.label.password.new") }}
-          </label>
+            <div class="row mb-3 d-flex align-items-center d-block d-md-none" v-if="formSubmitted">
+              <!-- Password Criteria -->
+              <div class="col-sm-8" v-if="formSubmitted">
+                <div class="box-shadow px-2 py-1"
+                  style="border-radius: 1rem; border: 1.5px solid var(--border-main-color); width: fit-content;">
+                  <ul class="password-criteria">
+                    <li v-for="(valid, key) in passwordCriteria" :key="key" :class="{ valid, invalid: !valid }"
+                      class="d-flex align-items-center">
+                      <span class="material-symbols-outlined me-1"
+                        :style="{ color: valid ? 'var(--valid-color)' : 'var(--is-valid-color)' }">
+                        {{ valid ? 'check_circle' : 'cancel' }}
+                      </span>
+                      {{ $t(`Swal.reset.toast.error.check_${key}`) }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="row mb-3 d-flex align-items-center">
+              <label for="confirmPassword" class="col-sm-5 form-label">
+                {{ $t("AccountInfo.label.password.confirm") }}
+              </label>
+              <div class="col-12 col-md-7">
+                <input id="confirmPassword" v-model="passwordChange.confirmPassword" type="password"
+                  class="form-control"
+                  :class="{ 'is-invalid': (!passwordChange.confirmPassword || passwordChange.password !== passwordChange.confirmPassword) && formSubmitted }" />
+                <div class="invalid-feedback"
+                  v-if="formSubmitted && !passwordChange.confirmPassword || passwordChange.password !== passwordChange.confirmPassword">
+                  {{
+                    !passwordChange.confirmPassword
+                      ? $t("AccountInfo.swal.error.password_confirm_check_empty")
+                      : passwordChange.password !== passwordChange.confirmPassword
+                        ? $t("AccountInfo.swal.error.password_confirm_check")
+                        : ""
+                  }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button :disabled="isLoading" class="btn btn-primary d-flex align-items-center">
+              <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+                aria-hidden="true"></span>
+              <span v-else class="material-symbols-outlined me-2">sync</span>
+              {{ $t("AccountInfo.btn_update") }}
+            </button>
+          </form>
+        </div>
+        <div class="col-12 col-md-6 d-none d-md-block">
           <!-- Password Criteria -->
-          <div class="col-sm-8" v-if="formSubmitted">
-            <div class="box-shadow px-2 py-1"
+          <div class="d-flex justify-content-center">
+            <div class="box-shadow-sm px-3 py-2"
               style="border-radius: 1rem; border: 1.5px solid var(--border-main-color); width: fit-content;">
               <ul class="password-criteria">
                 <li v-for="(valid, key) in passwordCriteria" :key="key" :class="{ valid, invalid: !valid }"
-                  class="d-flex align-items-center">
+                  class="d-flex align-items-center mb-2" style="font-size: 15px;">
                   <span class="material-symbols-outlined me-1"
                     :style="{ color: valid ? 'var(--valid-color)' : 'var(--is-valid-color)' }">
                     {{ valid ? 'check_circle' : 'cancel' }}
@@ -54,35 +103,7 @@
             </div>
           </div>
         </div>
-
-        <!-- Confirm Password -->
-        <div class="row mb-3 d-flex align-items-center">
-          <label for="confirmPassword" class="col-sm-4 form-label">
-            {{ $t("AccountInfo.label.password.confirm") }}
-          </label>
-          <div class="col-sm-8">
-            <input id="confirmPassword" v-model="passwordChange.confirmPassword" type="password" class="form-control"
-              :class="{ 'is-invalid': (!passwordChange.confirmPassword || passwordChange.password !== passwordChange.confirmPassword) && formSubmitted }" />
-            <div class="invalid-feedback"
-              v-if="formSubmitted && !passwordChange.confirmPassword || passwordChange.password !== passwordChange.confirmPassword">
-              {{
-                !passwordChange.confirmPassword
-                  ? $t("AccountInfo.swal.error.password_confirm_check_empty")
-                  : passwordChange.password !== passwordChange.confirmPassword
-                    ? $t("AccountInfo.swal.error.password_confirm_check")
-                    : ""
-              }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Submit Button -->
-        <button :disabled="isLoading" class="btn btn-primary d-flex align-items-center">
-          <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          <span v-else class="material-symbols-outlined me-2">sync</span>
-          {{ $t("AccountInfo.btn_update") }}
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 </template>
