@@ -1,11 +1,10 @@
 <template>
-  <div class="card box-shadow h-100">
+  <div class="card box-shadow">
     <div class="card-body d-flex flex-column">
       <h5 class="card-title fw-bold mb-4" style="color: var(--nav-link-color) !important;">
         {{ $t('Home.dashboard.chart_title') }}
       </h5>
-      <div class="filters mb-3">
-        <!-- Dropdown to filter by warehouse -->
+      <!-- <div class="filters mb-3">
         <label for="warehouse" class="form-label">Chọn kho:</label>
         <select id="warehouse" class="form-select" v-model="selectedWarehouse">
           <option value="all">Tất cả</option>
@@ -13,9 +12,12 @@
             {{ warehouse }}
           </option>
         </select>
-      </div>
+      </div> -->
       <div class="chart-container">
         <div ref="chartRef" class="echarts"></div>
+      </div>
+      <div class="mt-3 text-center">
+        <h5 class="fw-bold" style="font-size: 15px;">Thống kê số lượng sản phẩm theo khu vực</h5>
       </div>
     </div>
   </div>
@@ -38,7 +40,7 @@ const fetchProductData = async () => {
     const response = await apiService.get("thongke/san-pham/theo-khu-vuc");
     productData.value = response.data;
 
-    // Extract unique products
+    // Extract unique categories
     uniqueProducts.value = [
       ...new Set(productData.value.map(item => item.tenSanPham)),
     ];
@@ -65,10 +67,18 @@ const prepareGroupedData = () => {
   const series = uniqueProducts.value.map(product => ({
     name: product,
     type: "bar",
-    stack: null, // Use "total" for stacked chart
+    stack: null,
     data: categories.map(
       khuVuc => groupedData[khuVuc][product] || 0
     ),
+    label: {
+      show: true,
+      position: "top",
+      formatter: params => {
+        const value = params.value;
+        return value > 0 ? value : "";
+      },
+    },
   }));
 
   return { categories, series };
@@ -146,3 +156,6 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 </style>
+
+
+

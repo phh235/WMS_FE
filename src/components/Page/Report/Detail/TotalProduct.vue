@@ -36,6 +36,7 @@ onMounted(async () => {
         // Tùy chỉnh tooltip để hiển thị cả value và "số lượng hiện có"
         return `<b>${params.name}</b><br />Số lượng hiện có: <b>${params.value}</b>`;
       },
+      fontFamily: "Google Sans",
     },
     toolbox: {
       show: true,
@@ -46,6 +47,7 @@ onMounted(async () => {
     legend: {
       top: "bottom",
       left: "center",
+      fontFamily: "Google Sans",
     },
     series: [
       {
@@ -61,12 +63,14 @@ onMounted(async () => {
         label: {
           show: false,
           position: "center",
+          fontFamily: "Google Sans",
         },
         emphasis: {
           label: {
             show: false,
             fontSize: 40,
             fontWeight: "bold",
+            fontFamily: "Google Sans",
           },
         },
         labelLine: {
@@ -88,3 +92,4 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", () => { });
 });
 </script>
+

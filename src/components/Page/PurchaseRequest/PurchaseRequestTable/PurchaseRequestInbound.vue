@@ -104,7 +104,7 @@
                       <span class="material-symbols-outlined">cancel</span>
                     </a>
                   </li>
-                  <li v-if="authStore.checkPermissions(['User', 'Admin'])">
+                  <li v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
                     <router-link :to="{ name: 'purchase-request/inbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}

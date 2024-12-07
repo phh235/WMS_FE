@@ -34,6 +34,14 @@
         <RecentlyTransactions />
       </div>
     </div>
+    <!-- <div class="row equal-height-row">
+      <div class="col-12 col-lg-8 mb-4 mb-lg-0">
+        <RecentlyTransactions />
+      </div>
+      <div class="col-12 col-lg-4">
+        <Chart />
+      </div>
+    </div> -->
   </div>
 </template>
 

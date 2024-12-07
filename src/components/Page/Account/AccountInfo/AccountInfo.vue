@@ -1,37 +1,27 @@
 <template>
   <!-- Khung chứa chính -->
   <div class="container">
-    <div class="row">
-      <!-- Phần thông tin cơ bản và thay đổi mật khẩu -->
-      <div class="col-lg-8">
-        <BasicInfo />
-      </div>
+    <div class="row flex-column flex-md-row">
       <!-- Phần hiển thị thông tin ảnh đại diện -->
-      <div class="col-lg-4">
-        <div class="card mb-4 box-shadow">
+      <div class="col-12 col-md-4 order-md-2 mb-md-0 mb-4">
+        <div class="card box-shadow">
           <div class="card-body text-center">
-            <!-- Hiển thị ảnh đại diện -->
             <div class="d-flex justify-content-center mb-3 position-relative">
               <div style="width: 278px; height: 278px;">
-                <!-- Ảnh đại diện với nút chỉnh sửa -->
                 <img :src="avatarUrl" alt="Avatar" class="rounded-4 img-fluid mb-3" loading="lazy"
                   style="object-fit: cover; object-position: center; width: 100%; height: 100%;" />
-                <!-- Nút thay đổi ảnh đại diện -->
                 <button @click="openFileInput"
-                  class="btn btn-primary position-absolute bottom-0 m-2 d-flex align-items-center"
+                  class="btn btn-secondary position-absolute bottom-0 m-2 d-flex align-items-center"
                   style="padding: 10px 10px;">
                   <span class="material-symbols-outlined">photo_camera</span>
                 </button>
-                <!-- Input tệp ảnh ẩn -->
                 <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" class="d-none" />
               </div>
             </div>
-            <!-- Hiển thị tên người dùng -->
             <h4 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h4>
-            <!-- Hiển thị vai trò người dùng -->
             <div class="d-flex justify-content-center">
-              <span class="badge p-2 box-shadow"
-                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important; font-size: 0.875rem !important">
+              <span class="badge py-2 px-3"
+                style="background-color: var(--bg-success) !important; border-radius: 10px; color: var(--primary-color) !important; font-size: 0.875rem !important;">
                 {{ userStore.user.role }}
               </span>
             </div>
@@ -39,7 +29,13 @@
         </div>
       </div>
 
-      <div class="col-lg-12 mb-5">
+      <!-- Phần thông tin cơ bản -->
+      <div class="col-12 col-md-8 order-md-1 mb-md-0">
+        <BasicInfo />
+      </div>
+
+      <!-- Phần thay đổi mật khẩu -->
+      <div class="col-12 order-md-3 mb-5">
         <ChangePassword />
       </div>
     </div>

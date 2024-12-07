@@ -1,5 +1,5 @@
 <template>
-  <div class="card box-shadow h-100" style="max-height: 500px;">
+  <div class="card box-shadow h-100">
     <div class="card-body d-flex flex-column">
       <h5 class="card-title fw-bold" style="color: var(--nav-link-color);">{{
         $t('Home.dashboard.recent_transaction.label') }}</h5>
@@ -13,14 +13,14 @@
           {{ tab }}
         </button>
       </div>
-      <div class="overflow-auto" style="max-height: 360px;">
+      <div class="overflow-auto" style="max-height: 385px;">
         <ul class="list-group list-group-flush flex-grow-1">
           <li v-for="transaction in recentTransactions" :key="transaction.id"
             class="list-group-item d-flex justify-content-between align-items-center">
             <div>
-              <strong style="color: var(--nav-link-color); font-size: 18px">{{ transaction.tenSanPham }}</strong>
+              <strong style="color: var(--nav-link-color); font-size: 17px">{{ transaction.tenSanPham }}</strong>
               <br />
-              <small style="font-size: 15px;">
+              <small style="font-size: 14px;">
                 {{ $t('Home.dashboard.recent_transaction.title_type') }}:
                 <span class="fw-bold"
                   :style="transaction.loaiGiaoDich === 'NHAP' ? 'color: var(--primary-color) !important;' : 'color: #dc3545 !important;'">
