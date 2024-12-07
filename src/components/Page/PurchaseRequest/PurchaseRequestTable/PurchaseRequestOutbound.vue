@@ -12,7 +12,7 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+        <button class="btn btn-secondary-2 d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span>{{ $t('PurchaseRequest.btn_export') }}</button>
         <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User', 'Admin'])">
@@ -82,7 +82,7 @@
               </button>
               <button class="btn btn-export d-flex align-items-center me-2" @click="exportToWord(purchase)"
                 v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'confirm'"><span
-                  class="material-symbols-outlined me-2">upgrade</span> Xuất phiếu</button>
+                  class="material-symbols-outlined me-2">upgrade</span> Xuất đơn</button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
                 <span class="material-symbols-outlined">visibility</span>
               </button>
@@ -100,7 +100,7 @@
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
-                  <li v-if="authStore.checkPermissions(['User', 'Admin'])">
+                  <li v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
                     <router-link :to="{ name: 'purchase-request/outbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}
@@ -223,7 +223,8 @@
                       v-if="authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm'"><span
                         class="material-symbols-outlined me-2">rubric</span> Kiểm tra </button>
                     <button type="button" class="btn btn-primary d-flex align-items-center"
-                      @click="btnConfirmCheckOutbound(item.sysIdChiTietXuatHang, item.sysIdSanPham)">
+                      @click="btnConfirmCheckOutbound(item.sysIdChiTietXuatHang, item.sysIdSanPham)"
+                      v-if="authStore.checkPermissions(['Admin', 'Manager']) && item.isOutboundNull === false">
                       <span class="material-symbols-outlined me-2">check</span>
                       Xuất
                     </button>
@@ -234,7 +235,7 @@
           </div>
           <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-primary d-flex align-items-center" @click="createOutbound"
-              :class="{ 'opacity-0': !(authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm') }">
+              :class="{ 'opacity-0': !(authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm' && selectedPurchase.isExistOutbound === false) }">
               <span class="material-symbols-outlined me-2">check_circle</span>
               Tạo phiếu xuất
             </button>

@@ -196,6 +196,7 @@ const filteredConsignments = computed(() => {
     .filter(consignment => (
       consignment.sysIdLoHang.toString().includes(removeAccents(searchQuery.value.toUpperCase())) ||
       removeAccents(consignment.maLo.toLowerCase()).includes(removeAccents(query)) ||
+      removeAccents(consignment.tenSanPham.toLowerCase()).includes(removeAccents(query)) ||
       removeAccents(consignment.maChiTietKhuVuc.toLowerCase()).includes(removeAccents(query))
     ));
 

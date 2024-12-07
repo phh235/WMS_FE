@@ -547,6 +547,12 @@ onMounted(async () => {
   });
 })
 
+watch(() => userStore.user.hinhAnh, (newVal) => {
+  validateImage(newVal, defaultAvatar, (url) => {
+    avatarUrl.value = url;
+  });
+});
+
 // Sử dụng computed để lấy giá trị headerTitle từ meta của route hiện tại
 const headerTitle = computed(() => route.meta.headerTitle || "Default Title");
 

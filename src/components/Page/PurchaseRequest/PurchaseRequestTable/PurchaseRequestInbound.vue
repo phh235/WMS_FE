@@ -12,7 +12,7 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseRequest.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
+        <button class="btn btn-secondary-2 d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span> {{ $t('PurchaseRequest.btn_export') }}</button>
         <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center"
           v-if="authStore.checkPermissions(['User', 'Admin'])">
@@ -104,7 +104,7 @@
                       <span class="material-symbols-outlined">cancel</span>
                     </a>
                   </li>
-                  <li v-if="authStore.checkPermissions(['User', 'Admin'])">
+                  <li v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
                     <router-link :to="{ name: 'purchase-request/inbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}

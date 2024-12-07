@@ -1,59 +1,58 @@
 <template>
   <!-- Khung chứa chính -->
   <div class="container">
-    <div class="row">
+    <div class="row flex-column flex-md-row">
       <!-- Phần hiển thị thông tin ảnh đại diện -->
-      <div class="col-lg-4">
-        <div class="card mb-4 box-shadow">
+      <div class="col-12 col-md-4 order-md-2 mb-md-0 mb-4">
+        <div class="card box-shadow">
           <div class="card-body text-center">
-            <!-- Hiển thị ảnh đại diện -->
             <div class="d-flex justify-content-center mb-3 position-relative">
-              <div style="width: 320px; height: 278px;">
-                <!-- Ảnh đại diện với nút chỉnh sửa -->
+              <div style="width: 278px; height: 278px;">
                 <img :src="avatarUrl" alt="Avatar" class="rounded-4 img-fluid mb-3" loading="lazy"
                   style="object-fit: cover; object-position: center; width: 100%; height: 100%;" />
-                <!-- Nút thay đổi ảnh đại diện -->
                 <button @click="openFileInput"
                   class="btn btn-secondary position-absolute bottom-0 m-2 d-flex align-items-center"
                   style="padding: 10px 10px;">
                   <span class="material-symbols-outlined">photo_camera</span>
                 </button>
-                <!-- Input tệp ảnh ẩn -->
                 <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" class="d-none" />
               </div>
             </div>
-            <!-- Hiển thị tên người dùng -->
             <h4 class="fw-bold" style="color: var(--label-color);">{{ userStore.user.fullName }}</h4>
-            <!-- Hiển thị vai trò người dùng -->
             <div class="d-flex justify-content-center">
-              <span class="badge p-2 box-shadow"
-                style="background-color: var(--primary-color) !important; border-radius: 8px; color: var(--btn-primary-color) !important; font-size: 0.875rem !important">
+              <span class="badge py-2 px-3"
+                style="background-color: var(--bg-success) !important; border-radius: 10px; color: var(--primary-color) !important; font-size: 0.875rem !important;">
                 {{ userStore.user.role }}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <!-- Phần thông tin cơ bản và thay đổi mật khẩu -->
-      <div class="col-lg-8">
+
+      <!-- Phần thông tin cơ bản -->
+      <div class="col-12 col-md-8 order-md-1 mb-md-0">
         <BasicInfo />
+      </div>
+
+      <!-- Phần thay đổi mật khẩu -->
+      <div class="col-12 order-md-3 mb-5">
         <ChangePassword />
       </div>
     </div>
 
     <!-- Modal xem trước ảnh đại diện -->
     <div v-if="showPreviewModal" class="modal" tabindex="-1" style="display: block; background-color: rgba(0,0,0,0.5);">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog">
         <div class="modal-content">
           <!-- Tiêu đề của modal -->
           <div class="modal-header border-0">
-            <h5 class="modal-title">Xem trước ảnh đại diện</h5>
+            <h5 class="modal-title fw-bold">Xem trước ảnh đại diện</h5>
             <span class="material-symbols-outlined custom-close" @click="closePreviewModal">close</span>
           </div>
           <!-- Hiển thị ảnh xem trước -->
-          <div class="modal-body">
+          <div class="modal-body d-flex justify-content-center">
             <img :src="previewUrl" alt="Preview" class="img-fluid rounded-4"
-              style="width: 300px; height: 300px; object-fit: cover;" />
+              style="width: 500px; height: 500px; object-fit: cover;" />
           </div>
           <!-- Nút hành động trong modal -->
           <div class="modal-footer border-0">
@@ -64,7 +63,7 @@
               @click="saveAvatar">
               <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
               </span>
-              <span v-else class="material-symbols-outlined me-2">check</span> Lưu thay đổi
+              <span v-else class="material-symbols-outlined me-2">check</span> Cập nhật
             </button>
           </div>
         </div>
@@ -124,12 +123,6 @@ const closePreviewModal = () => {
 
 /* Lưu ảnh đại diện */
 const saveAvatar = async () => {
-  if (!fileInput.value.files[0]) { // Kiểm tra xem đã chọn tệp chưa
-    showToastError("Vui lòng chọn ảnh trước khi lưu");
-    return;
-  }
-
-  // Chuẩn bị dữ liệu gửi lên server
   const formData = new FormData();
   formData.append("username", userStore.user.username);
   formData.append("fullName", userStore.user.fullName);
@@ -145,11 +138,9 @@ const saveAvatar = async () => {
       showToastSuccess("Cập nhật ảnh thành công");
       // Làm mới dữ liệu từ store
       await userStore.getUserByUsername(userStore.user.username);
-
       // Cập nhật lại avatarUrl với dữ liệu mới
       avatarUrl.value = `${userStore.user.hinhAnh}`;
-
-      closePreviewModal(); // Đóng modal
+      closePreviewModal();
     }
   } catch (error) {
     console.error("Error updating avatar:", error);
