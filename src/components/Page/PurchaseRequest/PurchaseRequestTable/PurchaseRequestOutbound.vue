@@ -484,7 +484,7 @@ const cancelPR = async (id) => {
 };
 
 const confirmPR = async (id) => {
-  Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.title'),
     text: i18n.global.t('PurchaseRequest.table.swal.confirm.text'),
     icon: 'warning',
@@ -492,44 +492,44 @@ const confirmPR = async (id) => {
     confirmButtonColor: "#16a34a",
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
-    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'confirm');
-    }
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel'),
   });
+
+  if (isConfirmed) {
+    await updatePRStatus(id, 'confirm');
+  }
 };
 
 const sendToAdmin = async (id) => {
-  Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_po'),
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
-    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'approving');
-    }
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel'),
   });
+
+  if (isConfirmed) {
+    await updatePRStatus(id, 'approving');
+  }
 };
 
 const reOpen = async (id) => {
-  Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_re_open'),
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: "#16a34a",
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
-    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'open');
-    }
+    cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel'),
   });
+
+  if (isConfirmed) {
+    await updatePRStatus(id, 'open');
+  }
 };
 
 const updatePRStatus = async (id, status, lyDo) => {

@@ -67,7 +67,7 @@ const tabs = computed(() => [
 ]);
 
 onMounted(async () => {
-  await getRecentlyInboundTransactions();
+  await getAllTransactions();
 });
 
 // dùng Watch để theo dõi và luôn chọn tab đầu tiên mỗi khi đổi ngôn ngữ hoặc load lại trang

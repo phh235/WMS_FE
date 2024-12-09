@@ -7,27 +7,19 @@ const BASE_URL = `${API_DOMAIN_LOCAL}/api/v1/`;
 
 const getToken = () => localStorage.getItem("token");
 
-const createConfig = (isMultipart = false, params = null) => {
-  const headers = {
+const createConfig = (isMultipart = false, params = null) => ({
+  headers: {
     Authorization: `Bearer ${getToken()}`,
     "Content-Type": isMultipart ? "multipart/form-data" : "application/json",
-  };
-
-  const config = { headers };
-
-  if (params) {
-    config.params = params;
-  }
-
-  return config;
-};
+  },
+  params,
+});
 
 export const useApiServices = defineStore("api", {
   actions: {
-    async get(url, params = null) {
+    async get(url, params) {
       try {
-        const response = await axios.get(`${BASE_URL}${url}`, createConfig(false, params));
-        return response.data;
+        return (await axios.get(`${BASE_URL}${url}`, createConfig(false, params))).data;
       } catch (error) {
         console.error("GET request error:", error);
         throw error;
@@ -36,8 +28,7 @@ export const useApiServices = defineStore("api", {
 
     async post(url, data) {
       try {
-        const response = await axios.post(`${BASE_URL}${url}`, data, createConfig());
-        return response.data;
+        return (await axios.post(`${BASE_URL}${url}`, data, createConfig())).data;
       } catch (error) {
         console.error("POST request error:", error);
         throw error;
@@ -46,8 +37,7 @@ export const useApiServices = defineStore("api", {
 
     async postImage(url, data) {
       try {
-        const response = await axios.post(`${BASE_URL}${url}`, data, createConfig(true));
-        return response.data;
+        return (await axios.post(`${BASE_URL}${url}`, data, createConfig(true))).data;
       } catch (error) {
         console.error("POST image request error:", error);
         throw error;
@@ -56,11 +46,12 @@ export const useApiServices = defineStore("api", {
 
     async delete(url, id) {
       try {
-        const response = await axios.delete(`${BASE_URL}${url}`, {
-          ...createConfig(),
-          data: id,
-        });
-        return response.data;
+        return (
+          await axios.delete(`${BASE_URL}${url}`, {
+            ...createConfig(),
+            data: id,
+          })
+        ).data;
       } catch (error) {
         console.error("DELETE request error:", error);
         throw error;
@@ -68,4 +59,3 @@ export const useApiServices = defineStore("api", {
     },
   },
 });
-
