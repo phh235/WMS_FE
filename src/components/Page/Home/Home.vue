@@ -5,7 +5,7 @@
         <h3 class="fw-bold mb-3" style="color: var(--nav-link-color);">
           {{ $t('Home.dashboard.title') }}
         </h3>
-        <div class="d-flex justify-content-end align-items-center mb-4">
+        <!-- <div class="d-flex justify-content-end align-items-center mb-4">
           <div class="d-flex flex-column flex-md-row">
             <VueDatePicker v-model="date" week-picker placeholder="Tìm theo tuần" class="me-2"
               style="max-width: 200px;" />
@@ -20,7 +20,7 @@
               {{ $t('Home.dashboard.btn_download') }}
             </button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 

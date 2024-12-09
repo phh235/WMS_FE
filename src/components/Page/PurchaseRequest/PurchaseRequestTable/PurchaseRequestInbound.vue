@@ -400,7 +400,7 @@ const cancelPR = async (id) => {
 };
 
 const confirmPR = async (id) => {
-  Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.title'),
     text: i18n.global.t('PurchaseRequest.table.swal.confirm.text'),
     icon: 'warning',
@@ -409,15 +409,15 @@ const confirmPR = async (id) => {
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
     cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'confirm');
-    }
   });
+
+  if (isConfirmed) {
+    await updatePRStatus(id, 'confirm');
+  }
 };
 
 const sendToPO = async (id) => {
-  Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_po'),
     icon: 'warning',
     showCancelButton: true,
@@ -425,15 +425,15 @@ const sendToPO = async (id) => {
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
     cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'approving');
-    }
   });
+
+  if (isConfirmed) {
+    await updatePRStatus(id, 'approving');
+  }
 };
 
 const reOpen = async (id) => {
-  Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: i18n.global.t('PurchaseRequest.table.swal.confirm.text_re_open'),
     icon: 'warning',
     showCancelButton: true,
@@ -441,11 +441,11 @@ const reOpen = async (id) => {
     cancelButtonColor: "#dc3545",
     confirmButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.confirm'),
     cancelButtonText: i18n.global.t('PurchaseRequest.table.swal.confirm.cancel')
-  }).then((result) => {
-    if (result.isConfirmed) {
-      updatePRStatus(id, 'open');
-    }
   });
+
+  if (isConfirmed) {
+    await updatePRStatus(id, 'open');
+  }
 };
 
 const updatePRStatus = async (id, status, lyDo) => {

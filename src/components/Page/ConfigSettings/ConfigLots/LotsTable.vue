@@ -11,8 +11,8 @@
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_date_exp') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_area') }}</th>
           <th scope="col">{{ $t('ConfigSettings.consignments.consignment_zone_detail') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_detail_inbound') }}</th>
-          <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
+          <!-- <th scope="col">{{ $t('ConfigSettings.consignments.consignment_detail_inbound') }}</th> -->
+          <!-- <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th> -->
         </tr>
       </thead>
       <tbody>
@@ -23,20 +23,23 @@
           <td scope="row">{{ consignment.sysIdLoHang }}</td>
           <td class="sticky">{{ consignment.maLo }}</td>
           <td>{{ consignment.tenSanPham }}</td>
-          <td>{{ consignment.soLuong }}</td>
+          <td>{{ parseFloat(consignment.soLuong).toLocaleString('vi-VN') }}</td>
           <td>{{ consignment.ngaySanXuat }}</td>
           <td>{{ consignment.hanSuDung }}</td>
           <td>{{ consignment.dungTich }}</td>
-          <td>{{ consignment.maChiTietKhuVuc }}</td>
-          <td>{{ consignment.sysIdChiTietNhapHang || 'Không có' }}</td>
-          <td class="text-center">
+          <td>{{ consignment.maChiTietKhuVuc }} <button class="btn btn-secondary opacity-0"
+              @click="$emit('edit', consignment)">
+              <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
+            </button></td>
+          <!-- <td>{{ consignment.sysIdChiTietNhapHang || 'Không có' }}</td> -->
+          <!-- <td class="text-center">
             <button class="btn btn-secondary me-2" @click="$emit('edit', consignment)">
               <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
             </button>
             <button class="btn btn-danger" @click="$emit('delete', consignment.maLo)">
               <span class="material-symbols-outlined d-flex align-items-center">delete</span>
             </button>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
