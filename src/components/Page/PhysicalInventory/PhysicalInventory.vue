@@ -9,10 +9,11 @@
           <tr>
             <th class="th-id">ID Tồn kho</th>
             <th class="th-id-product">Tên sản phẩm</th>
-            <th class="th-warehouse-code">Mã kho</th>
+            <th class="th-warehouse-code">Tên kho</th>
             <th class="th-batch-code">Mã lô</th>
             <th class="th-quantity">Số lượng</th>
             <th class="th-update-date">Ngày cập nhật</th>
+            <th class="th-update-date">Cảnh báo hết hạn</th>
             <th class="th-update-date">{{ $t('PurchaseRequest.table.action') }}</th>
             <!-- <th class="th-action text-center">Hành động</th> -->
           </tr>
@@ -24,7 +25,7 @@
           <tr v-for="(inventory, index) in paginatedInventories" :key="inventory.sysIdTonKho">
             <td class="td-id">{{ inventory.sysIdTonKho }}</td>
             <td class="td-id-product">{{ inventory.tenSanPham }}</td>
-            <td class="td-warehouse-code">{{ inventory.maKho }}</td>
+            <td class="td-warehouse-code">{{ inventory.tenKho }}</td>
             <td class="td-batch-code">{{ inventory.maLo }}</td>
             <td class="td-quantity">{{ inventory.soLuong }}</td>
             <td class="td-update-date">{{ new Date(inventory.ngayCapNhat).toLocaleString('en-GB', {
@@ -32,6 +33,7 @@
               month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
             }).replace(/\/$/,
               '').replace(/:\d{2}$/, '') }}</td>
+            <td>{{ inventory.isNearExpiry ? 'Sắp hết hạn' : '' }}</td>
             <td class="td-quantity"><button class="btn btn-danger d-flex align-items-center"
                 @click="deleteWasteConsignment(inventory.sysIdTonKho)"><span
                   class="material-symbols-outlined me-2">close</span> Hủy</button></td>
@@ -90,6 +92,7 @@ const deleteWasteConsignment = async (id) => {
     if (response) {
       showToastSuccess('Hủy bỏ lô hàng hết hạn thành công');
     }
+    inventoriesStore.getInventories();
   } catch (error) {
     console.error(error);
   }
