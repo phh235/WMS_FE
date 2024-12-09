@@ -63,7 +63,7 @@
   "Home": {
     "headerTitle": "Tổng quan kho",
     "dashboard": {
-      "title": "Bảng điều khiển",
+      "title": "Tổng quan",
       "btn_download": "Tải xuống báo cáo",
       "chart_title": "Tổng quan biến động kho hàng",
       "recent_transaction": {

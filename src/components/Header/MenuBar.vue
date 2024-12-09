@@ -339,7 +339,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item notification mt-2">
+              <!-- <li class="nav-item notification mt-2">
                 <div class="dropdown">
                   <button class="btn btn-secondary d-flex align-items-center me-2  position-relative" type="button"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
@@ -371,10 +371,10 @@
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> -->
             </ul>
             <div class="d-flex align-items-center justify-content-center me-2">
-              <div class="dropdown notifications">
+              <!-- <div class="dropdown notifications">
                 <button class="btn btn-secondary d-flex align-items-center me-2 position-relative" type="button"
                   id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
                   style="padding: 9px; transition: all 0.2s ease;">
@@ -404,7 +404,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <button class="btn btn-secondary d-flex align-items-center me-2"
                 style="padding: 8px; transition: all 0.2s ease;" @click="toggleLightDarkMode">
                 <span class="material-symbols-outlined">

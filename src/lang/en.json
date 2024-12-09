@@ -64,7 +64,7 @@
   "Home": {
     "headerTitle": "Overview",
     "dashboard": {
-      "title": "Dashboard",
+      "title": "Overview",
       "btn_download": "Download report",
       "chart_title": "Overview",
       "recent_transaction": {
