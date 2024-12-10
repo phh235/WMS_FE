@@ -2,7 +2,7 @@
   <div class="container-fluid border-0 p-0">
     <router-link to="/inventory/purchase-request/inbound"
       class="btn btn-secondary mb-3 d-flex align-items-center fw-bold" style="width: fit-content;">
-      <span class="material-symbols-outlined me-2">chevron_left</span> Quay về danh sách
+      <span class="material-symbols-outlined me-2">chevron_left</span> {{ $t('PurchaseRequest.btn_back') }}
     </router-link>
   </div>
   <div class="container-fluid box-shadow p-3 mx-auto">
@@ -10,7 +10,7 @@
       <div class="row p-md-3">
         <div class="col-12 col-md-2">
           <div class="mb-3 mb-md-0">
-            <label for="maPR" class="form-label">Mã yêu cầu mua hàng <span class="text-danger">*</span></label>
+            <label for="maPR" class="form-label">Mã yêu cầu mua hàng<span class="text-danger">*</span></label>
             <input v-model="formData.maPR" type="text" class="form-control" id="maPR" disabled>
           </div>
         </div>

@@ -33,7 +33,13 @@
               month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit'
             }).replace(/\/$/,
               '').replace(/:\d{2}$/, '') }}</td>
-            <td>{{ inventory.isNearExpiry ? 'Sắp hết hạn' : '' }}</td>
+            <td>
+              <span v-if="inventory.isNearExpiry" class="badge d-flex align-items-center bg-danger" style="width: fit-content;">
+                <span class="material-symbols-outlined me-2">alarm</span>
+                Sắp hết hạn
+              </span>
+              <span v-else></span>
+            </td>
             <td class="td-quantity"><button class="btn btn-danger d-flex align-items-center"
                 @click="deleteWasteConsignment(inventory.sysIdTonKho)"><span
                   class="material-symbols-outlined me-2">close</span> Hủy</button></td>
@@ -139,5 +145,18 @@ const deleteWasteConsignment = async (id) => {
 .th-action,
 .td-action {
   width: 80px;
+}
+
+.bg-danger {
+  font-size: 0.875rem;
+  background-color: var(--bg-danger) !important;
+  color: #dc3545;
+  border: 1.5px solid #dc3545;
+}
+
+.badge {
+  padding: 6px 8px;
+  border-radius: 12px;
+  font-weight: 500;
 }
 </style>

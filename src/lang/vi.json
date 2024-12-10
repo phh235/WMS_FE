@@ -216,6 +216,7 @@
     "btn_create": "Tạo yêu cầu",
     "btn_create_ob": "Tạo yêu cầu",
     "btn_export": "Xuất excel",
+    "btn_back": "Quay về danh sách",
     "table": {
       "id": "Mã yêu cầu",
       "name": "Người yêu cầu",
@@ -268,6 +269,28 @@
           "day": "ngày",
           "total": "Tổng tiền",
           "total_price": "Tổng giá trị đơn hàng"
+        }
+      },
+      "form": {
+        "pr_code": "Mã yêu cầu mua hàng",
+        "requestor": "Người yêu cầu",
+        "date_ib": "Ngày nhập dự kiến",
+        "supplier": "Nhà cung cấp",
+        "customer": "Khách hàng",
+        "btn_add": "Thêm sản phẩm",
+        "btn_confirm": "Xác nhận",
+        "product_name": "Sản phẩm",
+        "quantity": "Số lượng",
+        "price": "Giá",
+        "action": "Hành động",
+        "total": "Tổng tiền",
+        "swal": {
+          "validate": {
+            "date_ib": "Vui lòng chọn ngày nhập dự kiến",
+            "customer": "Vui lòng chọn nhà cung cấp",
+            "supplier": "Vui lòng chọn khách hàng",
+            "product": "Vui lòng  thêm sản phẩm"
+          }
         }
       }
     },
@@ -711,6 +734,7 @@
       "order_late": "Đơn hàng chậm trễ của",
       "status": "Trạng thái",
       "action": "Hành động",
+      "li_cancel": "Hủy",
       "detail": {
         "order_detail": "Chi tiết phiếu nhập",
         "inbound_detail": "Chi tiết phiếu nhập: ",
@@ -744,7 +768,10 @@
       "effective_date": "Ngày hiệu lực",
       "expiry_date": "Ngày hết hạn",
       "order_late": "Đơn hàng chậm trễ của",
-      "status": "Trạng thái"
+      "status": "Trạng thái",
+      "detail": {
+        "order_detail": "Chi tiết phiếu xuất"
+      }
     }
   },
   "ConsignmentsInfo": {

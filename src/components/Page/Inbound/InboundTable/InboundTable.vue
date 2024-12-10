@@ -84,7 +84,7 @@
                 <div class="dropdown" style="display: inline-block;">
                   <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false"
-                    :disabled="(authStore.checkPermissions(['User', 'Admin']) && inbound.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'reject')">
+                    :disabled="(authStore.checkPermissions(['User', 'Admin']) && inbound.trangThai !== 'confirm')">
                     <span class="material-symbols-outlined">more_vert</span>
                   </button>
                   <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
@@ -95,7 +95,7 @@
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
-                    <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'approving'">
+                    <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'confirm'">
                       <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                         @click="cancelPR(inbound.sysIdInBound)">
                         {{ $t('Inbound.table.li_cancel') }}
