@@ -34,14 +34,11 @@
         <RecentlyTransactions />
       </div>
     </div>
-    <!-- <div class="row equal-height-row">
-      <div class="col-12 col-lg-8 mb-4 mb-lg-0">
-        <RecentlyTransactions />
+    <div class="row equal-height-row mt-4">
+      <div class="col-12 col-lg-12">
+        <InboundByProd />
       </div>
-      <div class="col-12 col-lg-4">
-        <Chart />
-      </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -53,6 +50,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import RecentlyTransactions from "./RecentlyTransactions.vue";
 import AnalysisCard from "./AnalysisCard.vue";
 import Chart from "./Chart.vue";
+import InboundByProd from "./InboundByProd.vue";
 
 const date = ref([]);
 const month = ref([]);
