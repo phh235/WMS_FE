@@ -40,7 +40,8 @@
         <tr>
           <th class="sticky" @click="toggleSortById">{{ $t('PurchaseRequest.table.id') }} <span
               class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
-          <th>{{ $t('PurchaseRequest.table.name') }}</th>
+          <th @click="toggleSortByName">{{ $t('PurchaseRequest.table.name') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
           <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
           <th style="width: 300px;" class="text-end px-4">{{ $t('PurchaseRequest.table.action') }}</th>
@@ -616,6 +617,23 @@ const toggleSortById = () => {
   purchases.value.sort((a, b) => sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR));
   updateUrl();
 };
+
+const toggleSortByName = () => {
+  sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc"
+
+  purchases.value.sort((a, b) => {
+    const nameA = a.nguoiYeuCau.toUpperCase();
+    const nameB = b.nguoiYeuCau.toUpperCase();
+
+    if (sortOption.value === "name-asc") {
+      return nameA.localeCompare(nameB);
+    } else {
+      return nameB.localeCompare(nameA);
+    }
+  });
+
+  updateUrl();
+}
 
 // Dùng watch để cập nhật URL khi activeTab thay đổi
 watch(activeTab, () => {

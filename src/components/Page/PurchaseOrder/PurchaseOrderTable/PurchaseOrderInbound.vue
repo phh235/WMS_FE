@@ -6,9 +6,6 @@
         <SearchInput v-model="searchQueryByPeople" :placeholder="$t('PurchaseOrder.search_input.search_name')" />
       </div>
       <div class="d-flex">
-        <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortById">
-          <span class="material-symbols-outlined">swap_vert</span>
-        </button>
         <VueDatePicker v-model="date" range auto-apply :dark="isDarkMode" :preset-dates="presetDates" :teleport="true"
           :auto-position="true" :enable-time-picker="false" style="max-width: 234px;" format="dd/MM/yyyy"
           placeholder="Tìm theo ngày">
@@ -30,9 +27,12 @@
     <table class="table mb-3">
       <thead>
         <tr>
-          <th style="width: 400px;" class="sticky">{{ $t('PurchaseOrder.table.id') }}</th>
-          <th style="width: 400px;">{{ $t('PurchaseOrder.table.id_pr') }}</th>
-          <th style="width: 400px;">{{ $t('PurchaseOrder.table.name') }}</th>
+          <th style="width: 400px;" class="sticky" @click="toggleSortByPO">{{ $t('PurchaseOrder.table.id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th style="width: 400px;" @click="toggleSortByPR">{{ $t('PurchaseOrder.table.id_pr') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th style="width: 400px;" @click="toggleSortByName">{{ $t('PurchaseOrder.table.name') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th style="width: 400px;">{{ $t('PurchaseOrder.table.date_request') }}</th>
           <th class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
         </tr>
@@ -392,11 +392,45 @@ const handleItemsPerPageChange = (newItemsPerPage) => {
 };
 
 // Sort
-const toggleSortById = () => {
+const toggleSortByPO = () => {
   sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
-  purchases.value.sort((a, b) => sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR));
+  purchases.value.sort((a, b) => {
+    if (a.maPO && b.maPO) {
+      return sortOption.value === "id-asc" ? a.maPO.localeCompare(b.maPO) : b.maPO.localeCompare(a.maPO);
+    }
+    return 0;
+  });
   updateUrl();
 };
+
+const toggleSortByPR = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  purchases.value.sort((a, b) => {
+    if (a.maPR && b.maPR) {
+      return sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR);
+    }
+    return 0;
+  });
+  updateUrl();
+};
+
+const toggleSortByName = () => {
+  sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc"
+
+  purchases.value.sort((a, b) => {
+    const nameA = a.nguoiTao.toUpperCase();
+    const nameB = b.nguoiTao.toUpperCase();
+
+    if (sortOption.value === "name-asc") {
+      return nameA.localeCompare(nameB);
+    } else {
+      return nameB.localeCompare(nameA);
+    }
+  });
+
+  updateUrl();
+}
+
 
 /**
  * Cập nhật URL hiện tại

@@ -1,4 +1,7 @@
 <h1 align="center">Warehouse Management System / Inventory</h1>
+<div align="center">
+  <img src="https://res.cloudinary.com/dnfccnxew/image/upload/v1728803542/u8zl2zd4xhaxdjw543om.png" width=200/>
+</div>
 <h2 align="center">🛠 Tech Stack 🛠</h2>
 <div align="center">
   <span><img src="https://img.shields.io/badge/Spring Boot-282C34?logo=springboot&logoColor=6DB33F" alt="Spring Boot logo" title="Spring Boot" height="25" /></span>
