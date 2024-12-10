@@ -46,7 +46,7 @@ const initChart = (data) => {
   const option = {
     tooltip: {
       trigger: 'item',
-      formatter: (params) => `${params.data.name}: ${params.data.value.toLocaleString()}`
+      formatter: (params) => `<b>${params.data.name}</b>: ${params.data.value.toLocaleString()}`
     },
     legend: {
       data: [...new Set(data.map(item => item.tenSanPham))],
@@ -87,7 +87,7 @@ const initChart = (data) => {
           value: item.value,
           name: item.name,
           itemStyle: {
-            color: item.value > 0 ? '#5470C6' : '#E0E0E0'
+            color: item.value > 0 ? '#16a34a' : '#E0E0E0'
           }
         })),
         label: {
