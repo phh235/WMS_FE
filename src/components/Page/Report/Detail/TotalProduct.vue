@@ -1,5 +1,5 @@
 <template>
-  <div id="doughnut-chart" style="width: 100%; height: 100%;"></div>
+  <div id="doughnut-chart" style="width: 80%; height: 80%;"></div>
 </template>
 
 <script setup>
@@ -92,4 +92,3 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", () => { });
 });
 </script>
-

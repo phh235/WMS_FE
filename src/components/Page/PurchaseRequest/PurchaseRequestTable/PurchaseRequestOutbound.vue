@@ -235,7 +235,7 @@
           </div>
           <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-primary d-flex align-items-center" @click="createOutbound"
-              :class="{ 'opacity-0': !(authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm' && selectedPurchase.isExistOutbound === false) }">
+              :class="{ 'opacity-0': !(authStore.checkPermissions(['Admin', 'Manager']) && selectedPurchase.trangThai === 'confirm') }">
               <span class="material-symbols-outlined me-2">check_circle</span>
               Tạo phiếu xuất
             </button>
@@ -430,6 +430,7 @@ const btnConfirmCheckOutbound = async (sysIdChiTietXuatHang, sysIdSanPham) => {
 
     const sysIdChiTietXuatHangs = JSON.parse(localStorage.getItem('sysIdChiTietXuatHangs') || '[]');
     localStorage.setItem('sysIdChiTietXuatHangs', JSON.stringify([...sysIdChiTietXuatHangs, sysIdChiTietXuatHang]));
+    getPurchaseRequests();
   } catch (error) {
     console.log(error);
     showToastError("Không đủ hàng để xuất")
@@ -449,6 +450,8 @@ const createOutbound = async () => {
     if (response) {
       showToastSuccess('Tạo phiếu xuất thành công');
     }
+    // bug get all
+    getPurchaseRequests();
     localStorage.removeItem('sysIdChiTietXuatHangs');
   } catch (error) {
     console.log(error);

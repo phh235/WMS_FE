@@ -78,7 +78,7 @@
                 <div class="dropdown" style="display: inline-block;">
                   <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false"
-                    :disabled="(authStore.checkPermissions(['User', 'Admin']) && inbound.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'reject')">
+                    :disabled="(authStore.checkPermissions(['User', 'Admin']) && inbound.trangThai !== 'confirm')">
                     <span class="material-symbols-outlined">more_vert</span>
                   </button>
                   <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
@@ -89,7 +89,7 @@
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
-                    <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'approving'">
+                    <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'confirm'">
                       <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                         @click="cancelPR(inbound.sysIdOutbound)">
                         {{ $t('Inbound.table.li_cancel') }}
@@ -124,8 +124,8 @@
         <div class="modal-content">
           <div class="modal-header border-0">
             <h5 class="modal-title fw-bold" id="purchaseDetailModalLabel">
-              {{ $t('Inbound.table.detail.order_detail') }}
-              <span style="color: var(--primary-color);">{{ selectedOutbound.sysIdOutbound }}</span>
+              {{ $t('Outbound.table.detail.order_detail') }}
+              <span style="color: var(--primary-color);">{{ selectedOutbound.maOB }}</span>
             </h5>
             <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
               @click="closeModal">close</span>
@@ -133,17 +133,19 @@
           <div class="modal-body">
             <!-- Hiển thị thông tin chi tiết đơn hàng -->
             <div class="row">
-              <div class="col-6 col-md-4">
-                <label class="form-label">{{ $t('Inbound.table.id') }}</label>
-                <p class="fs">{{ selectedOutbound.maOB }}</p>
-              </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <label class="form-label">
                   {{ $t('Inbound.table.detail.customer') }}
                 </label>
                 <p class="fs">{{ selectedOutbound.chiTietXuatHang[0]?.tenKhachHang }}</p>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
+                <label class="form-label">
+                  {{ $t('Inbound.table.person_in_charge') }}
+                </label>
+                <p class="fs">{{ selectedOutbound.nguoiPhuTrach }}</p>
+              </div>
+              <div class="col-6 col-md-3">
                 <label class="form-label">
                   {{ $t('Inbound.table.status') }}
                 </label>
@@ -155,36 +157,11 @@
                   </span>
                 </p>
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <label class="form-label">
-                  {{ $t('Inbound.table.name') }}
+                  {{ $t('Inbound.table.plan_date') }}
                 </label>
-                <p class="fs">{{ selectedOutbound.nguoiPhuTrach }}</p>
-              </div>
-              <div class="col-6 col-md-4">
-                <label class="form-label">
-                  {{ $t('Inbound.table.date_request') }}
-                </label>
-                <p class="fs">{{ selectedOutbound.maOB }}</p>
-              </div>
-              <div class="col-6 col-md-4">
-                <label class="form-label">
-                  {{ $t('Inbound.table.detail.product_detail.date_plan_ib') }}
-                </label>
-                <p class="fs">{{ selectedOutbound.chiTietXuatHang[0]?.ngayNhapDuKien }}</p>
-              </div>
-              <div class="col-12 col-md-12" v-if="selectedOutbound.trangThai === 'reject'">
-                <div class="alert alert-danger p-3 box-shadow d-flex align-items-center" role="alert">
-                  <span class="material-symbols-outlined fs-2 me-3">
-                    warning
-                  </span>
-                  <div>
-                    <label class="form-label mb-0">
-                      {{ $t('Inbound.table.reason') }}
-                    </label>
-                    <p class="mb-0">{{ selectedOutbound.ngayXuat }}</p>
-                  </div>
-                </div>
+                <p class="fs">{{ selectedOutbound.ngayXuat }}</p>
               </div>
             </div>
             <hr />
