@@ -141,12 +141,6 @@ const fetchDataByTab = async () => {
     initChart(data);
   } catch (error) {
     console.error('Error fetching data:', error);
-
-    const sampleData = [
-      { "tenSanPham": "Thịt vịt", "tongSoLuong": 1000.0, "thang": "11", "nam": "2024" },
-      { "tenSanPham": "Dứa", "tongSoLuong": 115939.0, "thang": "12", "nam": "2024" }
-    ];
-    initChart(sampleData);
   }
 };
 
