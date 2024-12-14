@@ -27,7 +27,8 @@
           "small_2": "Configure",
           "inbound": "Inbound",
           "outbound": "Outbound",
-          "physical_warehouses": "Physical Inventory"
+          "physical_warehouses": "Physical Inventory",
+          "waste": "Waste"
         }
       },
       "product": "Products",
@@ -273,9 +274,7 @@
           "form": {}
         }
       },
-      "form": {
-        
-      }
+      "form": {}
     }
   },
   "PurchaseOrder": {
@@ -530,7 +529,7 @@
       "zone_detail_desc": "Description",
       "area_storage": "Storage volume",
       "area_available": "Available volume",
-      "zone_id": "Zone code",
+      "zone_id": "Zone name",
       "choose_warehouse": "Choose zone",
       "swal": {
         "delete": {
@@ -650,7 +649,7 @@
       "title_edit": "Edit consignment",
       "search_input": "Search for consignment...",
       "consignment_id": "Consignment code",
-      "consignment_zone_detail": "Zone detail code",
+      "consignment_zone_detail": "Zone detail name",
       "consignment_product": "Product",
       "consignment_quantity": "Quantity",
       "consignment_date": "Manufacturing date",

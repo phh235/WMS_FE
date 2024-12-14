@@ -10,12 +10,6 @@
     </div>
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.zone-detail.search_input')" />
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByAreaVolume">
-        <span class="material-symbols-outlined">swap_vert</span>
-      </button>
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
-        <span class="material-symbols-outlined">sort_by_alpha</span>
-      </button>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneDetailBtn"
         data-bs-toggle="modal" data-bs-target="#warehouseZoneModal">
         <span class=" material-symbols-outlined me-2"> add </span>
@@ -24,7 +18,8 @@
     </div>
   </div>
   <ZoneDetailTable :zoneDetail="filteredZoneDetail" @detail="showZoneDetail" @edit="editZoneDetail"
-    @delete="deleteZoneDetail" />
+    @delete="deleteZoneDetail" @id="toggleSortById" @name="toggleSortByName" @storage="toggleSortByAreaVolume"
+    @available="toggleSortByAvailable" @zoneId="toggleSortByZoneId" />
   <div class="modal fade" id="warehouseZoneModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -177,18 +172,35 @@ const filteredZoneDetail = computed(() => {
       zone.theTichKhaDung.toString().includes(query)
     );
 
-  if (sortOption.value === "name-asc") {
+  if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.maChiTietKhuVuc.localeCompare(b.maChiTietKhuVuc)); // A-Z
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.maChiTietKhuVuc.localeCompare(a.maChiTietKhuVuc)); // Z-A
+  } else if (sortOption.value === "name-asc") {
     filtered.sort((a, b) => a.tenChiTietKhuVuc.localeCompare(b.tenChiTietKhuVuc)); // A-Z
   } else if (sortOption.value === "name-desc") {
     filtered.sort((a, b) => b.tenChiTietKhuVuc.localeCompare(a.tenChiTietKhuVuc)); // Z-A
+  } else if (sortOption.value === "zone-name-asc") {
+    filtered.sort((a, b) => a.maKhuVuc.localeCompare(b.maKhuVuc)); // A-Z
+  } else if (sortOption.value === "zone-name-desc") {
+    filtered.sort((a, b) => b.maKhuVuc.localeCompare(a.maKhuVuc)); // Z-A
   } else if (sortOption.value === "area-volume-asc") {
     filtered.sort((a, b) => a.theTichLuuTru - b.theTichLuuTru);
   } else if (sortOption.value === "area-volume-desc") {
     filtered.sort((a, b) => b.theTichLuuTru - a.theTichLuuTru);
+  } else if (sortOption.value === "available-volume-asc") {
+    filtered.sort((a, b) => a.theTichKhaDung - b.theTichKhaDung);
+  } else if (sortOption.value === "available-volume-desc") {
+    filtered.sort((a, b) => b.theTichKhaDung - a.theTichKhaDung);
   }
 
   return filtered;
 });
+
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  updateUrl();
+};
 
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
@@ -197,6 +209,14 @@ const toggleSortByName = () => {
 
 const toggleSortByAreaVolume = () => {
   sortOption.value = sortOption.value === "area-volume-asc" ? "area-volume-desc" : "area-volume-asc";
+};
+
+const toggleSortByAvailable = () => {
+  sortOption.value = sortOption.value === "available-volume-asc" ? "available-volume-desc" : "available-volume-asc";
+};
+
+const toggleSortByZoneId = () => {
+  sortOption.value = sortOption.value === "zone-name-asc" ? "zone-name-desc" : "zone-name-asc";
 };
 
 const updateUrl = () => {

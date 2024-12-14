@@ -4,8 +4,11 @@
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.zones.zone_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.zones.zone_name') }}</th>
+          <th scope="col" class="sticky" @click="$emit('id', toggleSortById)">{{ $t('ConfigSettings.zones.zone_id') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('name', toggleSortByName)">{{ $t('ConfigSettings.zones.zone_name') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th scope="col">{{ $t('ConfigSettings.zones.zone_desc') }}</th>
           <th scope="col" class="d-none">{{ $t('ConfigSettings.zones.warehouse_id') }}</th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
@@ -53,7 +56,7 @@ const props = defineProps({
   }
 });
 
-defineEmits(['edit', 'delete']);
+defineEmits(['edit', 'delete', 'id', 'name']);
 
 const currentPage = ref(1);
 const pageSize = ref(10);

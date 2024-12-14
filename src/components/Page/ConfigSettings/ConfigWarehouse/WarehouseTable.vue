@@ -4,11 +4,19 @@
       <thead>
         <tr>
           <th scope="col" class="d-none">ID</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.warehouses.warehouse_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_name') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_area') }}</th>
+          <th scope="col" class="sticky" @click="$emit('id', toggleSortById)">{{
+            $t('ConfigSettings.warehouses.warehouse_id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" @click="$emit('name', toggleSortByName)">{{ $t('ConfigSettings.warehouses.warehouse_name') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
+          <th scope="col" @click="$emit('area', toggleSortByArea)">{{ $t('ConfigSettings.warehouses.warehouse_area') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
           <th scope="col">{{ $t('ConfigSettings.warehouses.warehouse_desc') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.warehouses.manager') }}</th>
+          <th scope="col" @click="$emit('manager', toggleSortByManager)">{{ $t('ConfigSettings.warehouses.manager') }}
+            <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span>
+          </th>
           <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
@@ -55,7 +63,7 @@ const props = defineProps({
   },
 });
 
-defineEmits(['edit', 'delete']);
+defineEmits(['id', 'name', 'area', 'manager', 'edit', 'delete']);
 
 
 const currentPage = ref(1);
