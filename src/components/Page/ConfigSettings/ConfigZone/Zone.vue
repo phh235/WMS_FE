@@ -10,9 +10,6 @@
     </div>
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.zones.search_input')" />
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
-        <span class="material-symbols-outlined">sort_by_alpha</span>
-      </button>
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addZoneBtn" data-bs-toggle="modal"
         data-bs-target="#warehouseZoneModal">
         <span class=" material-symbols-outlined me-2"> add </span>
@@ -20,7 +17,8 @@
       </button>
     </div>
   </div>
-  <ZoneTable :zones="filteredZones" @edit="editZone" @delete="deleteZone" />
+  <ZoneTable :zones="filteredZones" @edit="editZone" @delete="deleteZone" @id="toggleSortById"
+    @name="toggleSortByName" />
   <div class="modal fade" id="warehouseZoneModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -139,6 +137,10 @@ const filteredZones = computed(() => {
     filtered.sort((a, b) => a.tenKhuVuc.localeCompare(b.tenKhuVuc)); // A-Z
   } else if (sortOption.value === "name-desc") {
     filtered.sort((a, b) => b.tenKhuVuc.localeCompare(a.tenKhuVuc)); // Z-A
+  } else if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.maKhuVuc.localeCompare(b.maKhuVuc)); // A-Z
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.maKhuVuc.localeCompare(a.maKhuVuc)); // Z-A
   }
 
   return filtered;
@@ -146,6 +148,11 @@ const filteredZones = computed(() => {
 
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
   updateUrl();
 };
 

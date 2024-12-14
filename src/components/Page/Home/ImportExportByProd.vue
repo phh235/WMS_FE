@@ -1,8 +1,21 @@
 <template>
   <div class="box-shadow p-3" style="border-radius: 16px; border: 1px solid var(--border-main-color)">
+    <!-- Tabs -->
+    <div class="tab-container justify-content-center mb-2 mb-md-0">
+      <button v-for="tab in tabs" :key="tab.name" :class="['tab-button', { active: currentTab === tab.name }]"
+        @click="selectTab(tab.name)">
+        {{ tab.label }}
+      </button>
+    </div>
+
+    <!-- Chart -->
     <div id="chart-container" style="width: 100%; height: 400px;"></div>
+
+    <!-- Chart Title -->
     <div class="mt-3 text-center">
-      <h5 class="fw-bold" style="font-size: 15px;">Thống kê số lượng sản phẩm nhập vào theo tháng</h5>
+      <h5 class="fw-bold" style="font-size: 15px; color: var(--nav-link-color);">
+        Thống kê số lượng sản phẩm {{ currentTab === 'export' ? 'xuất' : 'nhập' }} theo tháng
+      </h5>
     </div>
   </div>
 </template>
@@ -12,8 +25,14 @@ import { onMounted, ref, onUnmounted } from 'vue';
 import * as echarts from 'echarts';
 import { useApiServices } from '@/services/apiService';
 
+
 const apiService = useApiServices();
 const chartInstance = ref(null);
+const tabs = [
+  { name: 'import', label: 'Nhập' },
+  { name: 'export', label: 'Xuất' }
+];
+const currentTab = ref(tabs[0].name); // Default: Xuất
 
 const generateFullYearData = (inputData) => {
   const monthsData = Array.from({ length: 12 }, (_, index) => ({
@@ -36,6 +55,13 @@ const generateFullYearData = (inputData) => {
 
 const initChart = (data) => {
   const dom = document.getElementById('chart-container');
+
+  // Hủy biểu đồ cũ nếu đã tồn tại
+  if (chartInstance.value) {
+    chartInstance.value.dispose();
+  }
+
+  // Khởi tạo biểu đồ mới
   chartInstance.value = echarts.init(dom, null, {
     renderer: 'canvas',
     useDirtyRect: false
@@ -103,13 +129,18 @@ const initChart = (data) => {
   chartInstance.value.setOption(option);
 };
 
-const getIbByProd = async () => {
+const fetchDataByTab = async () => {
   try {
-    const response = await apiService.get('reports/import-product-by-months');
+    const endpoint =
+      currentTab.value === 'export'
+        ? 'reports/export-product-by-months'
+        : 'reports/import-product-by-months';
+
+    const response = await apiService.get(endpoint);
     const data = response.data;
     initChart(data);
   } catch (error) {
-    console.error('Error fetching product import data:', error);
+    console.error('Error fetching data:', error);
 
     const sampleData = [
       { "tenSanPham": "Thịt vịt", "tongSoLuong": 1000.0, "thang": "11", "nam": "2024" },
@@ -125,8 +156,13 @@ const handleResize = () => {
   }
 };
 
+const selectTab = (tabName) => {
+  currentTab.value = tabName;
+  fetchDataByTab();
+};
+
 onMounted(() => {
-  getIbByProd();
+  fetchDataByTab();
   window.addEventListener('resize', handleResize);
 });
 
@@ -137,4 +173,3 @@ onUnmounted(() => {
   }
 });
 </script>
-

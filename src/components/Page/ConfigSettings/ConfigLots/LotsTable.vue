@@ -3,16 +3,27 @@
     <table class="table ">
       <thead>
         <tr>
-          <th scope="col">{{ $t('ConfigSettings.no') }}</th>
-          <th scope="col" class="sticky">{{ $t('ConfigSettings.consignments.consignment_id') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_product') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_quantity') }} (Kg)</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_date') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_date_exp') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_area') }}</th>
-          <th scope="col">{{ $t('ConfigSettings.consignments.consignment_zone_detail') }}</th>
+          <th scope="col" style="width: 70px" @click="$emit('id', toggleSortById)">{{ $t('ConfigSettings.no') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 200px" @click="$emit('maLo', toggleSortByMaLo)" class="sticky">{{
+            $t('ConfigSettings.consignments.consignment_id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 250px" @click="$emit('product', toggleSortByProduct)">{{
+            $t('ConfigSettings.consignments.consignment_product') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 150px" @click="$emit('quantity', toggleSortByQuantity)">{{
+            $t('ConfigSettings.consignments.consignment_quantity') }} (Kg) <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 150px">{{ $t('ConfigSettings.consignments.consignment_date') }}</th>
+          <th scope="col" style="width: 150px">{{ $t('ConfigSettings.consignments.consignment_date_exp') }}</th>
+          <th scope="col" style="width: 150px" @click="$emit('area', toggleSortByArea)">{{
+            $t('ConfigSettings.consignments.consignment_area')
+          }} <span class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 200px" @click="$emit('zoneDetail', toggleSortByZoneDetail)">{{
+            $t('ConfigSettings.consignments.consignment_zone_detail') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <!-- <th scope="col">{{ $t('ConfigSettings.consignments.consignment_detail_inbound') }}</th> -->
-          <!-- <th scope="col" class="text-center">{{ $t('ConfigSettings.btn_action') }}</th> -->
+          <th scope="col" class="text-end px-4" style="width: 200px">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -27,19 +38,13 @@
           <td>{{ consignment.ngaySanXuat }}</td>
           <td>{{ consignment.hanSuDung }}</td>
           <td>{{ consignment.dungTich }}</td>
-          <td>{{ consignment.maChiTietKhuVuc }} <button class="btn btn-secondary opacity-0"
-              @click="$emit('edit', consignment)">
-              <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
-            </button></td>
+          <td>{{ consignment.tenChiTietKhuVuc }} </td>
           <!-- <td>{{ consignment.sysIdChiTietNhapHang || 'Không có' }}</td> -->
-          <!-- <td class="text-center">
-            <button class="btn btn-secondary me-2" @click="$emit('edit', consignment)">
-              <span class="material-symbols-outlined d-flex align-items-center">edit_square</span>
+          <td class="d-flex justify-content-end">
+            <button class="btn btn-export d-flex me-2" @click="$emit('generate', consignment.maLo)">
+              <span class="material-symbols-outlined me-2">qr_code</span> Xuất mã QR
             </button>
-            <button class="btn btn-danger" @click="$emit('delete', consignment.maLo)">
-              <span class="material-symbols-outlined d-flex align-items-center">delete</span>
-            </button>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -64,8 +69,7 @@ const props = defineProps({
   }
 });
 
-defineEmits(['edit', 'delete']);
-
+defineEmits(['generate', 'delete', 'id', 'maLo', 'product', 'quantity', 'area', 'zoneDetail']);
 
 const currentPage = ref(1);
 const pageSize = ref(10);
@@ -91,7 +95,7 @@ const handleItemsPerPageChange = (itemsPerPage) => {
 </script>
 
 <style scoped>
-.btn-danger,
+.btn-export,
 .btn-secondary {
   padding: 10px 10px;
 }

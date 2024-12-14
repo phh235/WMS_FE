@@ -2,9 +2,10 @@
   <div class="mb-4 d-flex justify-content-end align-items-center">
     <div class="d-flex flex-column flex-md-row">
       <SearchInput v-model="searchQuery" :placeholder="$t('ConfigSettings.consignments.search_input')" />
-      <button class="btn btn-secondary d-flex align-items-center me-2" @click="toggleSortByName">
-        <span class="material-symbols-outlined">sort_by_alpha</span>
-      </button>
+      <VueDatePicker v-model="dateRelease" range placeholder="Tìm theo ngày sản xuất" class="me-2"
+        style="max-width: 230px;" auto-apply :teleport="true" :enable-time-picker="false" format="dd/MM/yyyy" />
+      <VueDatePicker v-model="dateExpiration" auto-apply range placeholder="Tìm theo hạn sử dụng" class="me-2"
+        style="max-width: 230px;" :auto-position="true" :enable-time-picker="false" format="dd/MM/yyyy" />
       <button type="button" class="btn btn-primary d-flex align-items-center" ref="addConsignmentBtn"
         data-bs-toggle="modal" data-bs-target="#consignmentModal">
         <span class="material-symbols-outlined me-2"> add </span>
@@ -12,7 +13,9 @@
       </button>
     </div>
   </div>
-  <ConsignmentTable :consignments="filteredConsignments" @edit="editConsignment" @delete="deleteConsignment" />
+  <ConsignmentTable :consignments="filteredConsignments" @generate="generateQrCode" @delete="deleteConsignment"
+    @id="toggleSortById" @maLo="toggleSortByMaLo" @product="toggleSortByProduct" @quantity="toggleSortByQuantity"
+    @area="toggleSortByArea" @zoneDetail="toggleSortByZoneDetail" />
   <div class="modal fade" id="consignmentModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -146,6 +149,7 @@ import { useI18n } from "vue-i18n";
 import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import ConsignmentTable from "./LotsTable.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
+import axios from "axios";
 
 const { t } = useI18n();
 const apiService = useApiServices();
@@ -155,6 +159,9 @@ const productStore = useProductStore();
 const addConsignmentBtn = ref(null);
 // Search
 const searchQuery = ref("");
+const qrCode = ref("");
+const dateRelease = ref([]);
+const dateExpiration = ref([]);
 // Sort
 const sortOption = ref("");
 
@@ -174,6 +181,31 @@ onMounted(async () => {
   await zoneDetailStore.getZoneDetail();
   await productStore.getProducts();
 });
+
+const generateQrCode = async (id) => {
+  try {
+    // Gửi yêu cầu tới API
+    const url = `http://localhost:8080/api/v1/barcodes/generate?maLo=${id}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+
+    const blob = await response.blob(); // Chuyển dữ liệu về Blob
+    const objectUrl = URL.createObjectURL(blob); // Tạo URL Blob
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.setAttribute('download', `QRCode_${id}.png`);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  } catch (error) {
+    console.error("Error while generating QR code:", error);
+  }
+}
 
 const format = (date) => {
   if (!date || !(date instanceof Date)) return ""; // Kiểm tra null hoặc kiểu dữ liệu
@@ -200,17 +232,72 @@ const filteredConsignments = computed(() => {
       removeAccents(consignment.maChiTietKhuVuc.toLowerCase()).includes(removeAccents(query))
     ));
 
+  // Thêm điều kiện lọc theo ngày đã chọn
+  if (dateRelease.value && dateRelease.value.length > 0) {
+    filtered = filtered.filter(consignment => {
+      const releaseDate = parseDate(consignment.ngaySanXuat);
+      return releaseDate >= dateRelease.value[0] && releaseDate <= dateRelease.value[1];
+    });
+  }
+
+  if (dateExpiration.value && dateExpiration.value.length > 0) {
+    filtered = filtered.filter(consignment => {
+      const expirationDate = parseDate(consignment.hanSuDung);
+      return expirationDate >= dateExpiration.value[0] && expirationDate <= dateExpiration.value[1];
+    });
+  }
+
   if (sortOption.value === "name-asc") {
     filtered.sort((a, b) => a.maLo.localeCompare(b.maLo)); // A-Z
   } else if (sortOption.value === "name-desc") {
     filtered.sort((a, b) => b.maLo.localeCompare(a.maLo)); // Z-A
+  } else if (sortOption.value === "lots-id-asc") {
+    filtered.sort((a, b) => a.sysIdLoHang - b.sysIdLoHang); // A-Z
+  } else if (sortOption.value === "lots-id-desc") {
+    filtered.sort((a, b) => b.sysIdLoHang - a.sysIdLoHang); // Z-A
+  } else if (sortOption.value === "product-asc") {
+    filtered.sort((a, b) => a.tenSanPham.localeCompare(b.tenSanPham)); // A-Z
+  } else if (sortOption.value === "product-desc") {
+    filtered.sort((a, b) => b.tenSanPham.localeCompare(a.tenSanPham)); // Z-A
+  } else if (sortOption.value === "quantity-asc") {
+    filtered.sort((a, b) => a.soLuong - b.soLuong); // A-Z
+  } else if (sortOption.value === "quantity-desc") {
+    filtered.sort((a, b) => b.soLuong - a.soLuong); // Z-A
+  } else if (sortOption.value === "area-asc") {
+    filtered.sort((a, b) => a.dungTich - b.dungTich); // A-Z
+  } else if (sortOption.value === "area-desc") {
+    filtered.sort((a, b) => b.dungTich - a.dungTich); // Z-A
+  } else if (sortOption.value === "zone-detail-asc") {
+    filtered.sort((a, b) => a.maChiTietKhuVuc.localeCompare(b.maChiTietKhuVuc)); // A-Z
+  } else if (sortOption.value === "zone-detail-desc") {
+    filtered.sort((a, b) => b.maChiTietKhuVuc.localeCompare(a.maChiTietKhuVuc)); // Z-A
   }
 
   return filtered;
 });
 
-const toggleSortByName = () => {
+const toggleSortByMaLo = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "lots-id-asc" ? "lots-id-desc" : "lots-id-asc";
+  updateUrl();
+};
+const toggleSortByProduct = () => {
+  sortOption.value = sortOption.value === "product-asc" ? "product-desc" : "product-asc";
+  updateUrl();
+};
+const toggleSortByQuantity = () => {
+  sortOption.value = sortOption.value === "quantity-asc" ? "quantity-desc" : "quantity-asc";
+  updateUrl();
+};
+const toggleSortByArea = () => {
+  sortOption.value = sortOption.value === "area-asc" ? "area-desc" : "area-asc";
+  updateUrl();
+};
+const toggleSortByZoneDetail = () => {
+  sortOption.value = sortOption.value === "zone-detail-asc" ? "zone-detail-desc" : "zone-detail-asc";
   updateUrl();
 };
 

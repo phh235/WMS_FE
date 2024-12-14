@@ -17,7 +17,8 @@
         <div ref="chartRef" class="echarts"></div>
       </div>
       <div class="mt-3 text-center">
-        <h5 class="fw-bold" style="font-size: 15px;">Thống kê số lượng sản phẩm theo khu vực</h5>
+        <h5 class="fw-bold" style="font-size: 15px;  color: var(--nav-link-color);">Thống kê số lượng sản phẩm theo khu
+          vực</h5>
       </div>
     </div>
   </div>
@@ -156,6 +157,3 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 </style>
-
-
-

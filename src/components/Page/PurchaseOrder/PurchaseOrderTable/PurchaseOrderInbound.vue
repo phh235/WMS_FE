@@ -348,8 +348,8 @@ const filteredRequests = computed(() => {
     .filter(
       purchase =>
         !searchQuery.value ||
-        [purchase.maPO, purchase.maPR].some(
-          field => field.toLowerCase().includes(searchQuery.value.toLowerCase())
+        [purchase?.maPO, purchase?.maPR].some(
+          field => field?.toLowerCase().includes(searchQuery.value?.toLowerCase())
         )
     )
     .filter(purchase =>
