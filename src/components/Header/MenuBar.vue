@@ -87,7 +87,7 @@
                       <span class="material-symbols-outlined">input</span>
                     </router-link>
                   </li>
-                  <li v-if="authStore.checkPermissions(['Admin', 'User'])">
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_USER'])">
                     <router-link to="/inventory/purchase-request/outbound"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
@@ -120,7 +120,7 @@
                   </li>
                 </ul>
               </li> -->
-              <li class="nav-item" v-if="authStore.checkPermissions(['Admin', 'Manager'])">
+              <li class="nav-item" v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER'])">
                 <router-link to="/inventory/purchase-order/inbound" class="nav-link d-flex align-items-center"><span
                     class="material-symbols-outlined me-2"> shopping_cart </span>
                   {{ $t('Navbar.menu_item.po.label') }}
@@ -238,7 +238,7 @@
                   {{ $t('Navbar.menu_item.report') }}
                 </router-link>
               </li>
-              <li class="nav-item dropdown" v-if="authStore.checkPermissions(['Admin'])">
+              <li class="nav-item dropdown" v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="material-symbols-outlined me-2"> manufacturing </span>

@@ -4,7 +4,8 @@
       <h5 class="card-title fw-bold" style="color: var(--nav-link-color);">{{
         $t('Home.dashboard.recent_transaction.label') }}</h5>
       <p class="card-title" style="color: var(--nav-link-color);">{{ $t('Home.dashboard.recent_transaction.small_1') }}
-        <span class="fw-bold" style="color: var(--primary-color);">{{ recentTransactions.length }}</span>
+        <span class="fw-bold" style="color: var(--primary-color);">{{ recentTransactions.reduce((acc, curr) => acc +
+          curr.soLuongGiaoDich, 0) }}</span>
         {{ $t('Home.dashboard.recent_transaction.small_2') }}
       </p>
       <div class="tab-container justify-content-start mb-3 mb-md-0">

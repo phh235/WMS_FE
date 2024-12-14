@@ -52,7 +52,7 @@
                             $t('ConsignmentsInfo.total_price') }}</span>
                       </td>
                       <td style="border-bottom: none !important">{{
-                        parseFloat(consignmentInfo?.tongChiPhi).toLocaleString('vi-VN', {
+                        parseFloat(consignmentInfo?.soLuongNhap * consignmentInfo?.gia).toLocaleString('vi-VN', {
                           style: 'currency', currency:
                             'VND'
                         }) }}</td>
