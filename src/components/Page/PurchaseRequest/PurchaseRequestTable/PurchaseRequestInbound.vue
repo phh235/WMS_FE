@@ -15,7 +15,7 @@
         <button class="btn btn-secondary-2 d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span> {{ $t('PurchaseRequest.btn_export') }}</button>
         <router-link to="/inventory/purchase-request/inbound/new" class="btn btn-primary d-flex align-items-center"
-          v-if="authStore.checkPermissions(['User', 'Admin'])">
+          v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN'])">
           <span class="material-symbols-outlined me-2"> add </span>
           {{ $t('PurchaseRequest.btn_create') }}
         </router-link>
@@ -66,19 +66,19 @@
           <td>
             <div class="d-flex align-items-center justify-content-end">
               <button class="btn btn-primary d-flex align-items-center me-2" @click="createPO(purchase.maPR)"
-                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm' && purchase.isExistPO === false">
+                v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && purchase.trangThai === 'confirm' && purchase.isExistPO === false">
                 <span class="material-symbols-outlined me-2">add_circle</span> Tạo PO
               </button>
               <button class="btn btn-primary d-flex align-items-center me-2" @click="confirmPR(purchase.maPR)"
-                v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
+                v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && purchase.trangThai === 'approving'">
                 <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
               <button class="btn btn-export d-flex align-items-center me-2" @click="sendToPO(purchase.maPR)"
-                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
+                v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) && purchase.trangThai === 'open'">
                 <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="reOpen(purchase.maPR)"
-                v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'reject'">
+                v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) && purchase.trangThai === 'reject'">
                 <span class="material-symbols-outlined me-2">sync</span> {{ $t('PurchaseRequest.tabs.re-open') }}
               </button>
               <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(purchase)">
@@ -87,25 +87,26 @@
               <div class="dropdown" style="display: inline-block;">
                 <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                   data-bs-toggle="dropdown" aria-expanded="false"
-                  :disabled="(authStore.checkPermissions(['User']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'reject')">
+                  :disabled="(authStore.checkPermissions(['ROLE_USER']) && purchase.trangThai !== 'open') || (authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && purchase.trangThai === 'confirm') || (authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && purchase.trangThai === 'reject')">
                   <span class="material-symbols-outlined">more_vert</span>
                 </button>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                  <!-- <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'open'">
+                  <!-- <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'Manager']) && purchase.trangThai === 'open'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
                       style="cursor: pointer;" @click="confirmPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_confirm') }}
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
-                  <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && purchase.trangThai === 'approving'">
+                  <li
+                    v-if="authStore.checkPermissions(['ROLE_ADMIN', 'Manager']) && purchase.trangThai === 'approving'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                       @click="cancelPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_cancel') }}
                       <span class="material-symbols-outlined">cancel</span>
                     </a>
                   </li>
-                  <li v-if="authStore.checkPermissions(['User', 'Admin']) && purchase.trangThai === 'open'">
+                  <li v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) && purchase.trangThai === 'open'">
                     <router-link :to="{ name: 'purchase-request/inbound/edit/:id', params: { id: purchase.maPR } }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('PurchaseRequest.table.li_edit') }}
@@ -307,7 +308,7 @@ const isDarkMode = ref(false);
 // Tab
 const activeTab = ref(t('PurchaseRequest.tabs.all'));
 const showTabOpen = computed(() => {
-  return authStore.checkPermissions(['User', 'Admin']);
+  return authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']);
 });
 
 const tabs = computed(() => {
@@ -588,7 +589,7 @@ const filteredRequests = computed(() => {
       return true;
     })
     .filter(purchase =>
-      authStore.checkPermissions(['User', 'Admin']) || purchase.trangThai !== 'open'
+      authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) || purchase.trangThai !== 'open'
     );
 });
 

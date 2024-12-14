@@ -45,7 +45,7 @@ const sendMessage = async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer`, // Replace with your API token
+        'Authorization': `Bearer `, // Replace with your API token
       },
       body: JSON.stringify({ inputs: userMessage }),
     });
