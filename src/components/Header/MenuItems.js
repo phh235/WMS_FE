@@ -123,6 +123,17 @@ export default [
     },
   },
   {
+    path: "waste",
+    name: "Waste",
+    component: () => import("@components/Page/Waste/Waste.vue"),
+    meta: {
+      requiresAuth: true,
+      headerTitle: "Hàng phế phẩm",
+      searchConfig: {},
+      storeConfig: {},
+    },
+  },
+  {
     path: "report",
     name: "Report",
     component: () => import("@/components/Page/Report/Report.vue"),

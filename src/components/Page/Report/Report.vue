@@ -1,7 +1,8 @@
 <template>
   <div class="row">
     <div class="col-12 col-md-6 vh-100">
-      <TotalCategory />
+      <CardIBOB />
+      <WasteRecently />
     </div>
     <div class="col-12 col-md-6 vh-100">
       <TotalProduct />
@@ -10,8 +11,9 @@
 </template>
 
 <script setup>
-import TotalCategory from "./Detail/TotalProduct.vue";
-import TotalProduct from "./Detail/TotalCategory.vue";
+import TotalProduct from "./Detail/TotalProduct.vue";
+import CardIBOB from "./Detail/CardIBOB.vue";
+import WasteRecently from "./Detail/WasteRecently.vue";
 </script>
 
 <style scoped>

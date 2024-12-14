@@ -7,7 +7,8 @@
       {{ $t('ConfigSettings.warehouses.btn_create') }}
     </button>
   </div>
-  <WarehouseTable :warehouses="filteredWarehouses" @edit="editWarehouse" @delete="deleteWarehouse" />
+  <WarehouseTable :warehouses="filteredWarehouses" @edit="editWarehouse" @delete="deleteWarehouse" @id="toggleSortById"
+    @name="toggleSortByName" @area="toggleSortByArea" @manager="toggleSortByManager" />
   <div class="modal fade" id="warehouseModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -15,7 +16,7 @@
         <div class="modal-header border-0">
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
             {{ selectedWarehouse.sysIdKho ? $t('ConfigSettings.warehouses.title_edit')
-            : $t('ConfigSettings.warehouses.title_save') }}
+              : $t('ConfigSettings.warehouses.title_save') }}
           </h5>
           <span class="material-symbols-outlined custom-close" data-bs-dismiss="modal" aria-label="Close"
             @click="btnResetForm">close</span>
@@ -107,6 +108,7 @@ const warehouseStore = useWarehouseStore();
 const userStore = useUserStore();
 const addWarehouseBtn = ref(null);
 const searchQuery = ref("");
+const sortOption = ref("");
 const selectedWarehouse = reactive({
   sysIdKho: "",
   maKho: "",
@@ -127,14 +129,68 @@ const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, 
 const filteredWarehouses = computed(() => {
   const queryUpper = removeAccents(searchQuery.value.toUpperCase());
   const queryLower = removeAccents(searchQuery.value.toLowerCase());
-  return warehouseStore.warehouses.filter(
+  let filtered = warehouseStore.warehouses.filter(
     (warehouse) =>
       removeAccents(warehouse.maKho.toString()).includes(queryUpper) ||
       removeAccents(warehouse.tenKho.toString()).includes(queryUpper) ||
       removeAccents(warehouse.moTa.toLowerCase()).includes(queryLower) ||
       warehouse.dienTich.toString().includes(queryLower)
   );
+
+  if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.sysIdKho - b.sysIdKho); // tăng dần
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.sysIdKho - a.sysIdKho); // giảm dần
+  } else if (sortOption.value === "name-asc") {
+    filtered.sort((a, b) => a.tenKho.localeCompare(b.tenKho)); // A-Z
+  } else if (sortOption.value === "name-desc") {
+    filtered.sort((a, b) => b.tenKho.localeCompare(a.tenKho)); // Z-A
+  } else if (sortOption.value === "area-asc") {
+    filtered.sort((a, b) => a.dienTich - b.dienTich); // A-Z
+  } else if (sortOption.value === "area-desc") {
+    filtered.sort((a, b) => b.dienTich - a.dienTich); // Z-A
+  } else if (sortOption.value === "manager-asc") {
+    filtered.sort((a, b) => a.nguoiPhuTrach.localeCompare(b.nguoiPhuTrach)); // A-Z
+  } else if (sortOption.value === "manager-desc") {
+    filtered.sort((a, b) => b.nguoiPhuTrach.localeCompare(a.nguoiPhuTrach)); // Z-A
+  }
+
+  return filtered;
 });
+
+const toggleSortById = () => {
+  sortOption.value = sortOption.value === "id-asc" ? "id-desc" : "id-asc";
+  updateUrl();
+};
+
+const toggleSortByName = () => {
+  sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc";
+  updateUrl();
+};
+
+const toggleSortByArea = () => {
+  sortOption.value = sortOption.value === "area-asc" ? "area-desc" : "area-asc";
+  updateUrl();
+};
+
+const toggleSortByManager = () => {
+  sortOption.value = sortOption.value === "manager-asc" ? "manager-desc" : "manager-asc";
+  updateUrl();
+};
+
+const updateUrl = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+
+  if (sortOption.value) {
+    params.set("sort", sortOption.value);
+  } else {
+    params.delete("sort");
+  }
+
+  url.search = params.toString();
+  window.history.replaceState({}, "", url.toString());
+};
 
 // Lưu hoặc cập nhật kho hàng
 const saveWarehouse = async () => {

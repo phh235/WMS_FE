@@ -36,26 +36,18 @@
     </div>
     <div class="row equal-height-row mt-4">
       <div class="col-12 col-lg-12">
-        <InboundByProd />
+        <ImportExportByProd />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
-import * as echarts from "echarts";
 import { useI18n } from 'vue-i18n';
-import VueDatePicker from '@vuepic/vue-datepicker';
 import RecentlyTransactions from "./RecentlyTransactions.vue";
 import AnalysisCard from "./AnalysisCard.vue";
 import Chart from "./Chart.vue";
-import InboundByProd from "./InboundByProd.vue";
-
-const date = ref([]);
-const month = ref([]);
-const year = ref(new Date().getFullYear());
-
+import ImportExportByProd from "./ImportExportByProd.vue";
 const { t } = useI18n();
 </script>
 

@@ -170,6 +170,17 @@
                       <span class="material-symbols-outlined">inventory_2</span>
                     </router-link>
                   </li>
+                  <li>
+                    <router-link to="/inventory/waste"
+                      class="dropdown-item d-flex align-items-center justify-content-between">
+                      <span class="fs">
+                        {{ $t('Navbar.menu_item.activity.sub_items.waste') }}
+                      </span>
+                      <span class="material-symbols-outlined">
+                        event_busy
+                      </span>
+                    </router-link>
+                  </li>
                 </ul>
               </li>
               <li class="nav-item">

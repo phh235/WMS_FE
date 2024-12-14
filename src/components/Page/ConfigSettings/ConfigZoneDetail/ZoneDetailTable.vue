@@ -4,12 +4,22 @@
       <thead>
         <tr>
           <th scope="col" class="d-none" style="width: 0px">ID</th>
-          <th scope="col" class="sticky" style="width: 150px">{{ $t('ConfigSettings.zone-detail.zone_detail_id') }}</th>
-          <th scope="col" style="width: 200px">{{ $t('ConfigSettings.zone-detail.zone_detail_name') }}</th>
-          <th scope="col" style="width: 250px">{{ $t('ConfigSettings.zone-detail.zone_detail_desc') }}</th>
-          <th scope="col" style="width: 150px">{{ $t('ConfigSettings.zone-detail.area_storage') }}</th>
-          <th scope="col" style="width: 150px">{{ $t('ConfigSettings.zone-detail.area_available') }}</th>
-          <th scope="col" style="width: 150px">{{ $t('ConfigSettings.zone-detail.zone_id') }}</th>
+          <th scope="col" class="sticky" style="width: 150px" @click="$emit('id', toggleSortById)">{{
+            $t('ConfigSettings.zone-detail.zone_detail_id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 200px" @click="$emit('name', toggleSortByName)">{{
+            $t('ConfigSettings.zone-detail.zone_detail_name') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 300px">{{ $t('ConfigSettings.zone-detail.zone_detail_desc') }}</th>
+          <th scope="col" style="width: 150px" @click="$emit('storage', toggleSortByAreaVolume)">{{
+            $t('ConfigSettings.zone-detail.area_storage') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 150px" @click="$emit('available', toggleSortByAvailable)">{{
+            $t('ConfigSettings.zone-detail.area_available') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
+          <th scope="col" style="width: 150px" @click="$emit('zoneId', toggleSortByZoneId)">{{
+            $t('ConfigSettings.zone-detail.zone_id') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th scope="col" class="text-center" style="width: 120px">{{ $t('ConfigSettings.btn_action') }}</th>
         </tr>
       </thead>
@@ -25,7 +35,7 @@
           <td style="width: 250px">{{ zoneDetail.moTa }}</td>
           <td style="width: 150px">{{ zoneDetail.theTichLuuTru }}</td>
           <td style="width: 150px">{{ zoneDetail.theTichKhaDung }}</td>
-          <td style="width: 150px">{{ zoneDetail.maKhuVuc }}</td>
+          <td style="width: 150px">{{ zoneDetail.tenKhuVuc }}</td>
           <td class="text-center" style="width: 120px">
             <button class="btn btn-secondary me-2" @click="$emit('edit', zoneDetail)">
               <span class="material-symbols-outlined d-flex align-items-center"> edit_square </span>
@@ -58,7 +68,7 @@ const props = defineProps({
   }
 });
 
-defineEmits(['detail', 'edit', 'delete']);
+defineEmits(['detail', 'edit', 'delete', 'id', 'name', 'storage', 'available', 'zoneId']);
 
 const currentPage = ref(1);
 const pageSize = ref(10);

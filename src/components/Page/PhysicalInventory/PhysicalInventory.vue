@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="inventoriesStore.inventories.length === 0">
+          <tr v-if="filteredInventories.length === 0">
             <td colspan="7" class="text-center">Chưa có tồn kho</td>
           </tr>
           <tr v-for="(inventory, index) in paginatedInventories" :key="inventory.sysIdTonKho">
@@ -34,7 +34,8 @@
             }).replace(/\/$/,
               '').replace(/:\d{2}$/, '') }}</td>
             <td>
-              <span v-if="inventory.isNearExpiry" class="badge d-flex align-items-center bg-danger" style="width: fit-content;">
+              <span v-if="inventory.isNearExpiry" class="badge d-flex align-items-center bg-danger"
+                style="width: fit-content;">
                 <span class="material-symbols-outlined me-2">alarm</span>
                 Sắp hết hạn
               </span>
@@ -42,7 +43,7 @@
             </td>
             <td class="td-quantity"><button class="btn btn-danger d-flex align-items-center"
                 @click="deleteWasteConsignment(inventory.sysIdTonKho)"><span
-                  class="material-symbols-outlined me-2">close</span> Hủy</button></td>
+                  class="material-symbols-outlined me-2">close</span> Hủy lô</button></td>
           </tr>
         </tbody>
       </table>
@@ -60,11 +61,16 @@ import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import { useInventoriesStore } from "@/store/inventoriesStore.js";
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { useApiServices } from '@/services/apiService';
+import { useI18n } from "vue-i18n";
+import Swal from "sweetalert2"
 import { showToastSuccess } from '@/utils/Toast/toastHandle';
 
 const inventoriesStore = useInventoriesStore();
 const searchQuery = ref("");
 const apiService = useApiServices();
+const { t } = useI18n();
+const lyDo = ref('');
+const sortOption = ref("");
 
 onMounted(() => {
   inventoriesStore.getInventories();
@@ -74,13 +80,99 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 
 const totalPages = computed(() => {
-  return Math.ceil(inventoriesStore.inventories.length / pageSize.value);
+  return Math.ceil(filteredInventories.value.length / pageSize.value);
 });
+
+const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+const filteredInventories = computed(() => {
+  const query = removeAccents(searchQuery.value.toLowerCase());
+  let filtered = inventoriesStore.inventories.filter((product) => {
+    return (
+      removeAccents(product.tenSanPham.toLowerCase()).includes(query) ||
+      removeAccents(product.maLo.toLowerCase()).includes(query) ||
+      product.soLuong.toString().includes(query) ||
+      removeAccents(product.ngayPhePham.toLowerCase()).includes(query) ||
+      removeAccents(product.lyDo.toLowerCase()).includes(query)
+    );
+  });
+
+  if (sortOption.value === "id-asc") {
+    filtered.sort((a, b) => a.sysIdTonKho - b.sysIdTonKho);
+  } else if (sortOption.value === "id-desc") {
+    filtered.sort((a, b) => b.sysIdTonKho - a.sysIdTonKho);
+  } else if (sortOption.value === "name-asc") {
+    filtered.sort((a, b) => a.tenSanPham.localeCompare(b.tenSanPham));
+  } else if (sortOption.value === "name-desc") {
+    filtered.sort((a, b) => b.tenSanPham.localeCompare(a.tenSanPham));
+  } else if (sortOption.value === "warehouse-asc") {
+    filtered.sort((a, b) => a.tenKho.localeCompare(b.tenKho));
+  } else if (sortOption.value === "warehouse-desc") {
+    filtered.sort((a, b) => b.tenKho.localeCompare(a.tenKho));
+  } else if (sortOption.value === "batch-asc") {
+    filtered.sort((a, b) => a.maLo.localeCompare(b.maLo));
+  } else if (sortOption.value === "batch-desc") {
+    filtered.sort((a, b) => b.maLo.localeCompare(a.maLo));
+  } else if (sortOption.value === "quantity-asc") {
+    filtered.sort((a, b) => a.soLuong - b.soLuong);
+  } else if (sortOption.value === "quantity-desc") {
+    filtered.sort((a, b) => b.soLuong - a.soLuong);
+  } else if (sortOption.value === "update-date-asc") {
+    filtered.sort((a, b) => new Date(a.ngayCapNhat) - new Date(b.ngayCapNhat));
+  } else if (sortOption.value === "update-date-desc") {
+    filtered.sort((a, b) => new Date(b.ngayCapNhat) - new Date(a.ngayCapNhat));
+  }
+
+  return filtered;
+});
+
+const toggleSortById = () => {
+  if (sortOption.value === "id-asc") {
+    sortOption.value = "id-desc";
+  } else {
+    sortOption.value = "id-asc";
+  }
+};
+const toggleSortByName = () => {
+  if (sortOption.value === "name-asc") {
+    sortOption.value = "name-desc";
+  } else {
+    sortOption.value = "name-asc";
+  }
+};
+const toggleSortByWarehouse = () => {
+  if (sortOption.value === "warehouse-asc") {
+    sortOption.value = "warehouse-desc";
+  } else {
+    sortOption.value = "warehouse-asc";
+  }
+};
+const toggleSortByBatch = () => {
+  if (sortOption.value === "batch-asc") {
+    sortOption.value = "batch-desc";
+  } else {
+    sortOption.value = "batch-asc";
+  }
+};
+const toggleSortByQuantity = () => {
+  if (sortOption.value === "quantity-asc") {
+    sortOption.value = "quantity-desc";
+  } else {
+    sortOption.value = "quantity-asc";
+  }
+};
+const toggleSortByUpdateDate = () => {
+  if (sortOption.value === "update-date-asc") {
+    sortOption.value = "update-date-desc";
+  } else {
+    sortOption.value = "update-date-asc";
+  }
+};
 
 const paginatedInventories = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return inventoriesStore.inventories.slice(start, end);
+  return filteredInventories.value.slice(start, end);
 });
 
 const handlePageChange = (page) => {
@@ -93,15 +185,29 @@ const handleItemsPerPageChange = (itemsPerPage) => {
 };
 
 const deleteWasteConsignment = async (id) => {
-  try {
-    const response = await apiService.post(`waste-products/${id}`);
-    if (response) {
-      showToastSuccess('Hủy bỏ lô hàng hết hạn thành công');
+  Swal.fire({
+    title: 'Hủy lô hàng hết hạn',
+    text: 'Xác nhận hủy lô hàng hết hạn',
+    input: 'text',
+    preConfirm: (lyDo) => {
+      return lyDo;
+    },
+    confirmButtonText: 'Xác nhận',
+    showCancelButton: true,
+    cancelButtonText: 'Hủy',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const response = await apiService.post(`waste-products/${id}/${result.value}`);
+        if (response) {
+          showToastSuccess('Hủy bỏ lô hàng hết hạn thành công');
+        }
+        inventoriesStore.getInventories();
+      } catch (error) {
+        console.error(error);
+      }
     }
-    inventoriesStore.getInventories();
-  } catch (error) {
-    console.error(error);
-  }
+  });
 };
 </script>
 

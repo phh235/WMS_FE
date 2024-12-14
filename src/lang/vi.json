@@ -26,7 +26,8 @@
           "small_2": "Điều chỉnh",
           "inbound": "Nhập kho",
           "outbound": "Xuất kho",
-          "physical_warehouses": "Tồn kho vật lý"
+          "physical_warehouses": "Tồn kho vật lý",
+          "waste": "Phế phẩm"
         }
       },
       "product": "Sản phẩm",
@@ -65,7 +66,7 @@
     "dashboard": {
       "title": "Tổng quan",
       "btn_download": "Tải xuống báo cáo",
-      "chart_title": "Tổng quan biến động kho hàng",
+      "chart_title": "Tổng quan sản phẩm theo khu vực",
       "recent_transaction": {
         "label": "Giao dịch trong 7 ngày qua",
         "small_1": "Có",
@@ -549,7 +550,7 @@
       "zone_detail_desc": "Mô tả",
       "area_storage": "Thể tích lưu trữ",
       "area_available": "Thể tích khả dụng",
-      "zone_id": "Mã khu vực",
+      "zone_id": "Tên khu vực",
       "choose_zone": "Chọn khu vực",
       "swal": {
         "delete": {
@@ -669,7 +670,7 @@
       "title_edit": "Chỉnh sửa lô hàng",
       "search_input": "Tìm kiếm lô hàng...",
       "consignment_id": "Mã lô",
-      "consignment_zone_detail": "Mã chi tiết khu vực",
+      "consignment_zone_detail": "Tên chi tiết khu vực",
       "consignment_product": "Sản phẩm",
       "consignment_quantity": "Số lượng",
       "consignment_date": "Ngày sản xuất",
