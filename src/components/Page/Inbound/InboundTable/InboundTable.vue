@@ -245,17 +245,11 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-6 col-md-3">
+              <div class="col-6 col-md-6">
                 <label class="form-label fs fw-bold">
                   {{ $t('Inbound.table.detail.product_detail.product_name') }}
                 </label>
                 <p class="fs">{{ selectedZoneDetail.tenSanPham }}</p>
-              </div>
-              <div class="col-6 col-md-3">
-                <label class="form-label fs fw-bold">
-                  {{ $t('Inbound.table.detail.product_detail.quantity') }}
-                </label>
-                <p class="fs">{{ selectedZoneDetail.tenSanPham }} Kg</p>
               </div>
               <div class="col-12 col-md-6 mb-md-0 mb-3">
                 <label for="dungTich" class="form-label fs fw-bold">
