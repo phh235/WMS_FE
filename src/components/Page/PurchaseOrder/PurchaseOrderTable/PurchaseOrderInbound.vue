@@ -33,7 +33,8 @@
               class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th style="width: 400px;" @click="toggleSortByName">{{ $t('PurchaseOrder.table.name') }} <span
               class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
-          <th style="width: 400px;">{{ $t('PurchaseOrder.table.date_request') }}</th>
+          <th style="width: 400px;" @click="toggleSortByDateRequest">{{ $t('PurchaseOrder.table.date_request') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th class="text-center">{{ $t('PurchaseOrder.table.action') }}</th>
         </tr>
       </thead>
@@ -230,6 +231,7 @@ import SearchInput from "@/components/Common/Search/SearchInput.vue";
 import VueDatePicker from "@vuepic/vue-datepicker"
 import Pagination from '@/components/Common/Pagination/Pagination.vue';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle, TableLayoutType } from 'docx';
+import { format } from "echarts";
 
 const date = ref([
   new Date(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toDateString()),
@@ -275,7 +277,6 @@ const sortOption = ref("");
 onMounted(async () => {
   await getPurchaseOrders();
   isDarkMode.value = localStorage.isDarkMode === 'true';
-  console.log(isDarkMode.value);
 
   window.addEventListener('storage', ({ key, newValue }) => {
     if (key === 'isDarkMode') {
@@ -413,6 +414,17 @@ const toggleSortByPR = () => {
   });
   updateUrl();
 };
+
+const toggleSortByDateRequest = () => {
+  sortOption.value = sortOption.value === "recent-date-asc" ? "recent-date-desc" : "recent-date-asc";
+  purchases.value.sort((a, b) => {
+    const dateA = parseDate(formatDate(a.ngayTao));
+    const dateB = parseDate(formatDate(b.ngayTao));
+    return sortOption.value === "recent-date-asc" ? dateA - dateB : dateB - dateA;
+  });
+  updateUrl();
+
+}
 
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc"
