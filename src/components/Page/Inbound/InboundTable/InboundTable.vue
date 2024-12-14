@@ -29,7 +29,7 @@
           <button class="btn btn-primary d-flex align-items-center me-2" @click="exportToExcel"><span
               class="material-symbols-outlined me-2">upgrade</span> {{ $t('Inbound.btn_export') }}</button>
           <!-- <router-link to="/inventory/inbound/new" class="btn btn-primary d-flex align-items-center"
-            v-if="authStore.checkPermissions(['User', 'Admin'])">
+            v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN'])">
             <span class="material-symbols-outlined me-2"> add </span>
             {{ $t('Inbound.btn_create_inbound') }}
           </router-link> -->
@@ -43,7 +43,7 @@
             <th class="sticky">{{ $t('Inbound.table.reference_code') }}</th>
             <th style="width: 300px;">{{ $t('Inbound.table.po_code') }}</th>
             <th style="width: 300px;">{{ $t('Inbound.table.from') }}</th>
-            <th style="width: 300px;">{{ $t('Inbound.table.to') }}</th>
+            <!-- <th style="width: 300px;">{{ $t('Inbound.table.to') }}</th> -->
             <th style="width: 300px;">{{ $t('Inbound.table.person_in_charge') }}</th>
             <th style="width: 300px;">{{ $t('Inbound.table.plan_date') }}</th>
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
@@ -61,7 +61,7 @@
             <td style="width: 300px;" class="sticky">{{ inbound.maInBound }}</td>
             <td style="width: 300px;">{{ inbound.maPO }}</td>
             <td style="width: 300px;">{{ inbound.chiTietNhapHang[0]?.tenKhachHang }}</td>
-            <td style="width: 300px;">{{ inbound.tenKho }}</td>
+            <!-- <td style="width: 300px;">{{ inbound.tenKho }}</td> -->
             <td style="width: 300px;">{{ inbound.fullName }}</td>
             <td style="width: 300px;">{{ formatDate(inbound.ngayNhap) }}</td>
             <td style="width: 300px;">{{ inbound.chiTietNhapHang[0]?.ngayNhapDuKien ? new
@@ -84,25 +84,25 @@
                 <div class="dropdown" style="display: inline-block;">
                   <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false"
-                    :disabled="(authStore.checkPermissions(['User', 'Admin']) && inbound.trangThai !== 'confirm')">
+                    :disabled="(authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) && inbound.trangThai !== 'confirm')">
                     <span class="material-symbols-outlined">more_vert</span>
                   </button>
                   <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                    <!-- <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'open'">
+                    <!-- <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'Manager']) && inbound.trangThai === 'open'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
                       style="cursor: pointer;" @click="confirmPR(inbound.sysIdInBound)">
                       {{ $t('Inbound.table.li_confirm') }}
                       <span class="material-symbols-outlined">check_circle</span>
                     </a>
                   </li> -->
-                    <li v-if="authStore.checkPermissions(['Admin', 'Manager']) && inbound.trangThai === 'confirm'">
+                    <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && inbound.trangThai === 'confirm'">
                       <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                         @click="cancelPR(inbound.sysIdInBound)">
                         {{ $t('Inbound.table.li_cancel') }}
                         <span class="material-symbols-outlined">cancel</span>
                       </a>
                     </li>
-                    <!-- <li v-if="authStore.checkPermissions(['User', 'Admin'])">
+                    <!-- <li v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN'])">
                       <router-link
                         :to="{ name: 'inbound-request/inbound/edit/:id', params: { id: inbound.sysIdInBound } }"
                         class="dropdown-item d-flex align-items-center justify-content-between">

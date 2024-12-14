@@ -280,9 +280,9 @@ const handleSubmit = async () => {
     if (response.status === 201) {
       closeToastLoading();
       showToastSuccess(`${isEdit.value ? 'Cập nhật' : 'Tạo'} yêu cầu mua hàng thành công!`);
-      setTimeout(() => {
-        showToastInfo('Đã gửi mail cho phòng Purchase Order');
-      }, 2500);
+      // setTimeout(() => {
+      //   showToastInfo('Đã gửi mail cho phòng Purchase Order');
+      // }, 2500);
       router.push("/inventory/purchase-request/outbound");
     } else {
       showToastError('Có lỗi xảy ra, vui lòng thử lại sau');

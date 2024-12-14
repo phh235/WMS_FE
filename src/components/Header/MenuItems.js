@@ -203,7 +203,7 @@ export default [
           headerTitle: "Yêu cầu xuất hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["User", "Admin"],
+          permissions: ["ROLE_USER", "ROLE_ADMIN"],
         },
       },
     ],
@@ -220,7 +220,7 @@ export default [
       headerTitle: "Tạo yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User", "Admin"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN"],
     },
   },
   {
@@ -235,7 +235,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User", "Admin"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN"],
     },
   },
   {
@@ -250,7 +250,7 @@ export default [
       headerTitle: "Tạo yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User", "Admin"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN"],
     },
   },
   {
@@ -265,7 +265,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["User", "Admin"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN"],
     },
   },
   {
@@ -277,7 +277,7 @@ export default [
       headerTitle: "Đặt hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["Manager", "Admin"],
+      permissions: ["ROLE_MANAGER", "ROLE_ADMIN"],
     },
     children: [
       {
@@ -290,7 +290,7 @@ export default [
           headerTitle: "Mua hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Manager", "Admin"],
+          permissions: ["ROLE_MANAGER", "ROLE_ADMIN"],
         },
       },
     ],
@@ -305,7 +305,7 @@ export default [
       headerTitle: "Tạo đơn mua hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["Manager", "Admin"],
+      permissions: ["ROLE_MANAGER", "ROLE_ADMIN"],
     },
   },
   {
@@ -318,7 +318,7 @@ export default [
       headerTitle: "Chỉnh sửa đơn mua hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["Manager", "Admin"],
+      permissions: ["ROLE_MANAGER", "ROLE_ADMIN"],
     },
   },
   {
@@ -377,7 +377,7 @@ export default [
       headerTitle: "Danh mục sản phẩm",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["Admin"],
+      permissions: ["ROLE_ADMIN"],
     },
     children: [
       {
@@ -389,7 +389,7 @@ export default [
           headerTitle: "Cấu hình danh mục",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -401,7 +401,7 @@ export default [
           headerTitle: "Cấu hình kho hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -413,7 +413,7 @@ export default [
           headerTitle: "Cấu hình khu vực",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -425,7 +425,7 @@ export default [
           headerTitle: "Cấu hình chi tiết khu vực",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -437,7 +437,7 @@ export default [
           headerTitle: "Cấu hình nhà cung cấp",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -449,7 +449,7 @@ export default [
           headerTitle: "Cấu hình khách hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -461,7 +461,7 @@ export default [
           headerTitle: "Quản lý tài khoản",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
       {
@@ -473,7 +473,7 @@ export default [
           headerTitle: "Quản lý lô hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["Admin"],
+          permissions: ["ROLE_ADMIN"],
         },
       },
     ],
