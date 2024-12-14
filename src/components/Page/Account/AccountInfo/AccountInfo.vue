@@ -83,7 +83,7 @@ import { showToastError, showToastSuccess } from '@/utils/Toast/toastHandle';
 
 const apiService = useApiServices();
 const userStore = useUserStore();
-const defaultAvatar = 'https://example.com/default-avatar.png';
+const defaultAvatar = 'https://scontent-sin2-2.xx.fbcdn.net/v/t1.30497-1/453178253_471506465671661_2781666950760530985_n.png?stp=dst-png_s200x200&_nc_cat=1&ccb=1-7&_nc_sid=136b72&_nc_eui2=AeHhpylGP-pRms_VZ8gahMcxWt9TLzuBU1Ba31MvO4FTUEPSj7eG2-liyHygiWo4_l0k3agXQGFkKlM5KXb6mLiO&_nc_ohc=nhHrY9pzliIQ7kNvgFT9LSh&_nc_zt=24&_nc_ht=scontent-sin2-2.xx&_nc_gid=ABYRsLogzm2p1zMr-TshowT&oh=00_AYBPq1EYWpZvdd3cAL6gv0wzJv-XEnAHsC1RhisNhbEKRA&oe=67776D7A';
 const avatarUrl = ref(null);
 const fileInput = ref(null);
 const showPreviewModal = ref(false);
