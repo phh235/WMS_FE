@@ -1,0 +1,34 @@
+# Loại trừ thư mục node_modules vì nó được cài đặt lại trong Docker
+node_modules
+
+# Loại trừ file lock và các file hệ thống
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Loại trừ các file và thư mục tạm thời
+dist
+!.env.production
+
+# Loại trừ các cấu hình chỉ dùng cho phát triển
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+
+# Loại trừ các tài liệu không cần thiết
+README.md
+*.iml
+*.log
+
+# Loại trừ các file hoặc thư mục của IDE/Editor
+.idea
+.vscode
+*.swp
+
+# Loại trừ các script hoặc tài nguyên chỉ dùng cho CI/CD hoặc dev
+scripts/
+tests/
+docker-compose*.yml
