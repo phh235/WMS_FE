@@ -67,15 +67,37 @@ const initChart = (data) => {
     useDirtyRect: false
   });
 
-  const fullYearData = generateFullYearData(data);
+  const months = Array.from({ length: 12 }, (_, index) => `Tháng ${index + 1}`);
+  const products = [...new Set(data.map(item => item.tenSanPham))];
+
+  const series = products.map(product => ({
+    name: product,
+    type: 'bar',
+    stack: 'total',
+    data: Array(12).fill(0).map((_, index) => {
+      const item = data.find(d => d.tenSanPham === product && parseInt(d.thang) === index + 1);
+      return item ? item.tongSoLuong : 0;
+    }),
+    label: {
+      show: true,
+      position: 'inside'
+    }
+  }));
 
   const option = {
     tooltip: {
-      trigger: 'item',
-      formatter: (params) => `<b>${params.data.name}</b>: ${params.data.value.toLocaleString()}`
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: (params) => {
+        let tooltip = `${params[0].axisValue}<br/>`;
+        params.forEach(p => {
+          tooltip += `${p.seriesName}: ${p.value.toLocaleString()}<br/>`;
+        });
+        return tooltip;
+      }
     },
     legend: {
-      data: [...new Set(data.map(item => item.tenSanPham))],
+      data: products,
       textStyle: {
         fontFamily: 'Google Sans'
       }
@@ -88,7 +110,7 @@ const initChart = (data) => {
     },
     xAxis: {
       type: 'category',
-      data: fullYearData.map(item => `Tháng ${item.month}`),
+      data: months,
       axisTick: {
         alignWithLabel: true
       },
@@ -104,26 +126,7 @@ const initChart = (data) => {
         fontFamily: 'Google Sans'
       }
     },
-    series: [
-      {
-        name: 'Số lượng sản phẩm',
-        type: 'bar',
-        barWidth: '60%',
-        data: fullYearData.map(item => ({
-          value: item.value,
-          name: item.name,
-          itemStyle: {
-            color: item.value > 0 ? '#16a34a' : '#E0E0E0'
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top',
-          formatter: (params) => params.value > 0 ? params.value.toLocaleString() : '',
-          fontFamily: 'Google Sans'
-        }
-      }
-    ]
+    series: series
   };
 
   chartInstance.value.setOption(option);
@@ -141,12 +144,6 @@ const fetchDataByTab = async () => {
     initChart(data);
   } catch (error) {
     console.error('Error fetching data:', error);
-
-    const sampleData = [
-      { "tenSanPham": "Thịt vịt", "tongSoLuong": 1000.0, "thang": "11", "nam": "2024" },
-      { "tenSanPham": "Dứa", "tongSoLuong": 115939.0, "thang": "12", "nam": "2024" }
-    ];
-    initChart(sampleData);
   }
 };
 

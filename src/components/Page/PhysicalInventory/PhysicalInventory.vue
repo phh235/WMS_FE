@@ -188,15 +188,18 @@ const deleteWasteConsignment = async (id) => {
   Swal.fire({
     title: 'Hủy lô hàng hết hạn',
     text: 'Xác nhận hủy lô hàng hết hạn',
-    input: 'text',
+    input: 'textarea',
     preConfirm: (lyDo) => {
       return lyDo;
     },
     confirmButtonText: 'Xác nhận',
     showCancelButton: true,
+    cancelButtonColor: "#dc3545",
+    confirmButtonColor: "#16a34a",
     cancelButtonText: 'Hủy',
   }).then(async (result) => {
     if (result.isConfirmed) {
+      console.log(result.value);
       try {
         const response = await apiService.post(`waste-products/${id}/${result.value}`);
         if (response) {

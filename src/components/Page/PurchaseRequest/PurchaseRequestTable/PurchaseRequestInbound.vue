@@ -43,7 +43,8 @@
           <th @click="toggleSortByName">{{ $t('PurchaseRequest.table.name') }} <span
               class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th>{{ $t('PurchaseRequest.table.status') }}</th>
-          <th>{{ $t('PurchaseRequest.table.date_request') }}</th>
+          <th @click="toggleSortRecentDate">{{ $t('PurchaseRequest.table.date_request') }} <span
+              class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
           <th style="width: 300px;" class="text-end px-4">{{ $t('PurchaseRequest.table.action') }}</th>
         </tr>
       </thead>
@@ -618,6 +619,15 @@ const toggleSortById = () => {
   purchases.value.sort((a, b) => sortOption.value === "id-asc" ? a.maPR.localeCompare(b.maPR) : b.maPR.localeCompare(a.maPR));
   updateUrl();
 };
+
+const toggleSortRecentDate = () => {
+  sortOption.value = sortOption.value === "recent-date-asc" ? "recent-date-desc" : "recent-date-asc";
+  purchases.value.sort((a, b) => {
+    const dateA = parseDate(a.ngayYeuCau);
+    const dateB = parseDate(b.ngayYeuCau);
+    return sortOption.value === "recent-date-asc" ? dateA - dateB : dateB - dateA;
+  });
+}
 
 const toggleSortByName = () => {
   sortOption.value = sortOption.value === "name-asc" ? "name-desc" : "name-asc"

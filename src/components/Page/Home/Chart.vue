@@ -4,21 +4,13 @@
       <h5 class="card-title fw-bold mb-4" style="color: var(--nav-link-color) !important;">
         {{ $t('Home.dashboard.chart_title') }}
       </h5>
-      <!-- <div class="filters mb-3">
-        <label for="warehouse" class="form-label">Chọn kho:</label>
-        <select id="warehouse" class="form-select" v-model="selectedWarehouse">
-          <option value="all">Tất cả</option>
-          <option v-for="warehouse in uniqueWarehouses" :key="warehouse" :value="warehouse">
-            {{ warehouse }}
-          </option>
-        </select>
-      </div> -->
       <div class="chart-container">
         <div ref="chartRef" class="echarts"></div>
       </div>
       <div class="mt-3 text-center">
-        <h5 class="fw-bold" style="font-size: 15px;  color: var(--nav-link-color);">Thống kê số lượng sản phẩm theo khu
-          vực</h5>
+        <h5 class="fw-bold" style="font-size: 15px; color: var(--nav-link-color);">
+          Thống kê số lượng sản phẩm theo khu vực
+        </h5>
       </div>
     </div>
   </div>
@@ -41,7 +33,7 @@ const fetchProductData = async () => {
     const response = await apiService.get("thongke/san-pham/theo-khu-vuc");
     productData.value = response.data;
 
-    // Extract unique categories
+    // Extract unique products
     uniqueProducts.value = [
       ...new Set(productData.value.map(item => item.tenSanPham)),
     ];
@@ -68,19 +60,24 @@ const prepareGroupedData = () => {
   const series = uniqueProducts.value.map(product => ({
     name: product,
     type: "bar",
-    stack: null,
+    stack: "total", // Enable stacking
     data: categories.map(
-      khuVuc => groupedData[khuVuc][product] || 0
+      khuVuc => groupedData[khuVuc][product] || 0 // Use number 0 instead of string '0'
     ),
     label: {
       show: true,
-      position: "top",
+      position: "inside",
       formatter: params => {
         const value = params.value;
-        return value > 0 ? value : "";
+        return value > 0 ? `${product}: ${value}` : "";
       },
     },
   }));
+
+  // Add console logs for debugging
+  console.log("Grouped Data:", groupedData);
+  console.log("Categories:", categories);
+  console.log("Series:", series);
 
   return { categories, series };
 };
@@ -99,33 +96,45 @@ const initChart = () => {
 
   const option = {
     tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
-      },
+      trigger: "item", // Change trigger to 'item' to show tooltip per stack
       formatter: params => {
-        const content = params
-          .map(
-            param =>
-              `${param.marker} ${param.seriesName}: ${param.value}`
-          )
-          .join("<br/>");
-        return `<strong>${params[0].axisValue}</strong><br/>${content}`;
+        if (params.componentType === 'series') {
+          return `${params.seriesName}: ${params.value}`;
+        }
+        return '';
       },
+      backgroundColor: 'rgba(0,0,0,0.7)',
+      textStyle: {
+        color: '#fff',
+      },
+      // Ensure tooltip displays on hover over each stack
+      showContent: true,
     },
     legend: {
       data: uniqueProducts.value,
+      orient: 'horizontal',
+      top: 'top',
     },
     xAxis: {
       type: "category",
       data: categories,
+      axisLabel: {
+        interval: 0,
+        rotate: 30, // Rotate labels if they overlap
+      },
     },
     yAxis: {
       type: "value",
+      name: 'Số lượng',
+      axisLabel: {
+        formatter: '{value}',
+      },
     },
     series,
   };
-  chart.value.setOption(option);
+
+  console.log("ECharts Option:", option);
+  chart.value.setOption(option, true);
 };
 
 // Handle chart resize
@@ -143,6 +152,9 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", resizeChart);
+  if (chart.value) {
+    chart.value.dispose();
+  }
 });
 </script>
 
