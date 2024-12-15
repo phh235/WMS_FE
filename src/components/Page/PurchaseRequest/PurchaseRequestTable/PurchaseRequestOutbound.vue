@@ -15,7 +15,7 @@
         <button class="btn btn-secondary-2 d-flex align-items-center me-2" @click="exportToExcel"><span
             class="material-symbols-outlined me-2">upgrade</span>{{ $t('PurchaseRequest.btn_export') }}</button>
         <router-link to="/inventory/purchase-request/outbound/new" class="btn btn-primary d-flex align-items-center"
-          v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN'])">
+          v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_MANAGER'])">
           <span class="material-symbols-outlined me-2"> add </span>
           {{ $t('PurchaseRequest.btn_create_ob') }}
         </router-link>

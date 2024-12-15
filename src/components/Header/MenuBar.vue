@@ -87,7 +87,7 @@
                       <span class="material-symbols-outlined">input</span>
                     </router-link>
                   </li>
-                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_USER'])">
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_USER', 'ROLE_MANAGER'])">
                     <router-link to="/inventory/purchase-request/outbound"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">

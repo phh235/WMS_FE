@@ -203,7 +203,7 @@ export default [
           headerTitle: "Yêu cầu xuất hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["ROLE_USER", "ROLE_ADMIN"],
+          permissions: ["ROLE_USER", "ROLE_ADMIN", "ROLE_MANAGER"],
         },
       },
     ],
@@ -220,7 +220,7 @@ export default [
       headerTitle: "Tạo yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["ROLE_USER", "ROLE_ADMIN"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN", "ROLE_MANAGER"],
     },
   },
   {
@@ -235,7 +235,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu nhập hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["ROLE_USER", "ROLE_ADMIN"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN", "ROLE_MANAGER"],
     },
   },
   {
@@ -250,7 +250,7 @@ export default [
       headerTitle: "Tạo yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["ROLE_USER", "ROLE_ADMIN"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN", "ROLE_MANAGER"],
     },
   },
   {
@@ -265,7 +265,7 @@ export default [
       headerTitle: "Chỉnh sửa yêu cầu xuất hàng",
       searchConfig: {},
       storeConfig: {},
-      permissions: ["ROLE_USER", "ROLE_ADMIN"],
+      permissions: ["ROLE_USER", "ROLE_ADMIN", "ROLE_MANAGER"],
     },
   },
   {
