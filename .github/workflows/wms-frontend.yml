@@ -11,7 +11,7 @@ on:
 
 env:
   USER_PROJECT: "techtribe"
-  IMAGE_NAME: "${{ secrets.DOCKERHUB_USERNAME }}/techtribe-wms-backend"
+  IMAGE_NAME: "${{ secrets.DOCKERHUB_USERNAME }}/techtribe-wms-frontend"
 
 jobs:
   build_and_push:
@@ -55,7 +55,7 @@ jobs:
     needs:
       - build_and_push
     steps:
-      - name: Execute remote SSH commands as vanguard
+      - name: Execute remote SSH commands as techtribe
         uses: appleboy/ssh-action@v1.2.0
         env:
           IMAGE_TAG: ${{needs.build_and_push.outputs.short_sha}}
