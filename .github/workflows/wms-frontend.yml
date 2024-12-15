@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: "${{ secrets.DOCKERHUB_USERNAME }}/techtribe-wms-backend"
 
 jobs:
-  build_and_push:
+  dockerize:
     runs-on: ubuntu-latest
     outputs:
       short_sha: ${{ steps.vars.outputs.short_sha }}
@@ -55,7 +55,7 @@ jobs:
     needs:
       - build_and_push
     steps:
-      - name: Execute remote SSH commands as vanguard
+      - name: Execute remote SSH commands as techtribe
         uses: appleboy/ssh-action@v1.2.0
         env:
           IMAGE_TAG: ${{needs.build_and_push.outputs.short_sha}}
