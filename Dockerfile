@@ -1,35 +1,32 @@
-# Build stage
-FROM node:20-alpine AS build-stage
+# Chọn image node để xây dựng ứng dụng Vue3
+FROM node:16-alpine as build
 
-# Install pnpm
-RUN npm install -g pnpm
-
-# Set working directory
+# Thiết lập thư mục làm việc
 WORKDIR /app
 
-# Copy package files
+# Copy các file package.json và pnpm-lock.yaml để cài đặt dependencies trước
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies using pnpm
-RUN pnpm install --frozen-lockfile
+# Cài đặt pnpm
+RUN npm install -g pnpm
 
-# Copy all project files
+# Cài đặt các dependencies
+RUN pnpm install
+
+# Copy tất cả các file còn lại của dự án vào container
 COPY . .
 
-# Ensure vite is installed
-RUN pnpm list vite
-
-# Build the application
+# Build ứng dụng Vue3
 RUN pnpm run build
 
-# Production stage
-FROM nginx:stable-alpine AS production-stage
+# Chuyển sang một image Nginx để phục vụ các file static
+FROM nginx:alpine
 
-# Copy built files from build stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# Sao chép các tệp build từ stage trước vào thư mục /usr/share/nginx/html/
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80
+# Expose cổng 80 cho Nginx
 EXPOSE 80
 
-# Start nginx
+# Khởi chạy Nginx
 CMD ["nginx", "-g", "daemon off;"]
