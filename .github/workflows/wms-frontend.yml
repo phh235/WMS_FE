@@ -11,10 +11,10 @@ on:
 
 env:
   USER_PROJECT: "techtribe"
-  IMAGE_NAME: "${{ secrets.DOCKERHUB_USERNAME }}/techtribe-wms-backend"
+  IMAGE_NAME: "${{ secrets.DOCKERHUB_USERNAME }}/techtribe-wms-frontend"
 
 jobs:
-  dockerize:
+  build_and_push:
     runs-on: ubuntu-latest
     outputs:
       short_sha: ${{ steps.vars.outputs.short_sha }}
