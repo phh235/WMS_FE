@@ -52,7 +52,7 @@ onMounted(() => {
 });
 
 const currentPage = ref(1);
-const pageSize = ref(10);
+const pageSize = ref(5);
 
 const removeAccents = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 

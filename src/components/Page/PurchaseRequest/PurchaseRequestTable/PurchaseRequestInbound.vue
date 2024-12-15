@@ -100,7 +100,7 @@
                     </a>
                   </li> -->
                   <li
-                    v-if="authStore.checkPermissions(['ROLE_ADMIN', 'Manager']) && purchase.trangThai === 'approving'">
+                    v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && purchase.trangThai === 'approving'">
                     <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                       @click="cancelPR(purchase.maPR)">
                       {{ $t('PurchaseRequest.table.li_cancel') }}

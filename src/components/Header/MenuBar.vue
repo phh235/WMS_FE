@@ -238,7 +238,8 @@
                   {{ $t('Navbar.menu_item.report') }}
                 </router-link>
               </li>
-              <li class="nav-item dropdown" v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
+              <li class="nav-item dropdown"
+                v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'])">
                 <a class="nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <span class="material-symbols-outlined me-2"> manufacturing </span>
@@ -247,10 +248,10 @@
                 </a>
                 <ul class="dropdown-menu box-shadow" aria-labelledby="navbarDropdown"
                   style="max-height: 400px; overflow-y: auto;">
-                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                  <small class="p-2 fw-bold" style="font-size: .75rem" v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     {{ $t('Navbar.menu_item.config.sub_items.small_1') }}
                   </small>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <router-link to="/inventory/config/warehouses"
                       class="dropdown-item d-flex align-items-center justify-content-between" aria-expanded="false">
                       <span class="fs">
@@ -259,13 +260,13 @@
                       <span class="material-symbols-outlined">warehouse</span>
                     </router-link>
                   </li>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                  <small class="p-2 fw-bold" style="font-size: .75rem" v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     {{ $t('Navbar.menu_item.config.sub_items.small_3') }}
                   </small>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <router-link to="/inventory/config/zones"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
@@ -274,7 +275,7 @@
                       <span class="material-symbols-outlined">pin_drop</span>
                     </router-link>
                   </li>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <router-link to="/inventory/config/zone-detail"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs">
@@ -283,22 +284,22 @@
                       <span class="material-symbols-outlined">activity_zone</span>
                     </router-link>
                   </li>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                  <small class="p-2 fw-bold" style="font-size: .75rem" v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER'])">
                     {{ $t('Navbar.menu_item.config.sub_items.small_5') }}
                   </small>
-                  <li class="nav-item">
+                  <li class="nav-item" v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER'])">
                     <router-link to="/inventory/config/lots-management"
                       class="nav-link d-flex align-items-center justify-content-between">
                       {{ $t('Navbar.menu_item.lots') }} <span class="material-symbols-outlined"> dataset </span>
                     </router-link>
                   </li>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER'])">
                     <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                  <small class="p-2 fw-bold" style="font-size: .75rem" >
                     {{ $t('Navbar.menu_item.config.sub_items.small_2') }}
                   </small>
                   <li>
@@ -334,13 +335,13 @@
                       <span class="material-symbols-outlined">conveyor_belt</span>
                     </router-link>
                   </li>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <hr class="dropdown-divider" style="border-color: var(--border-main-color) !important;" />
                   </li>
-                  <small class="p-2 fw-bold" style="font-size: .75rem">
+                  <small class="p-2 fw-bold" style="font-size: .75rem" v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     {{ $t('Navbar.menu_item.config.sub_items.small_4') }}
                   </small>
-                  <li>
+                  <li v-if="authStore.checkPermissions(['ROLE_ADMIN'])">
                     <router-link to="/inventory/config/account-management"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       {{ $t('Navbar.menu_item.config.sub_items.account') }}

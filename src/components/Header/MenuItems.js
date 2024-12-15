@@ -87,6 +87,7 @@ export default [
       headerTitle: "Quản lý nhập kho",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["ROLE_ADMIN", "ROLE_MANAGER"],
     },
   },
   {
@@ -109,6 +110,7 @@ export default [
       headerTitle: "Quản lý xuất kho",
       searchConfig: {},
       storeConfig: {},
+      permissions: ["ROLE_ADMIN", "ROLE_MANAGER"],
     },
   },
   {
@@ -389,7 +391,7 @@ export default [
           headerTitle: "Cấu hình danh mục",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["ROLE_ADMIN"],
+          permissions: ["ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"],
         },
       },
       {
@@ -437,7 +439,7 @@ export default [
           headerTitle: "Cấu hình nhà cung cấp",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["ROLE_ADMIN"],
+          permissions: ["ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"],
         },
       },
       {
@@ -449,7 +451,7 @@ export default [
           headerTitle: "Cấu hình khách hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["ROLE_ADMIN"],
+          permissions: ["ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"],
         },
       },
       {
@@ -473,7 +475,7 @@ export default [
           headerTitle: "Quản lý lô hàng",
           searchConfig: {},
           storeConfig: {},
-          permissions: ["ROLE_ADMIN"],
+          permissions: ["ROLE_ADMIN", "ROLE_MANAGER"],
         },
       },
     ],

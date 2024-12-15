@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid box-shadow p-3">
-    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mb-3">
-      <div class="tab-container justify-content-start mb-2 mb-md-0">
+    <div class="d-flex justify-content-end align-items-center flex-column flex-md-row mb-3">
+      <!-- <div class="tab-container justify-content-start mb-2 mb-md-0">
         <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
           :class="['tab-button', { active: activeTab === tab }]">
           {{ tab }}
         </button>
-      </div>
+      </div> -->
       <div class="d-flex flex-column flex-md-row align-items-center">
         <div class="d-flex mb-2 mb-md-0">
           <SearchInput v-model="searchQuery" :placeholder="$t('Inbound.search_input.search_id')" />
@@ -45,7 +45,7 @@
             <!-- <th>{{ $t('Inbound.table.from') }}</th> -->
             <th>{{ $t('Inbound.table.person_in_charge') }}</th>
             <th>{{ $t('Inbound.table.plan_date') }}</th>
-            <th>{{ $t('Inbound.table.status') }}</th>
+            <!-- <th>{{ $t('Inbound.table.status') }}</th> -->
             <!-- <th>{{ $t('Inbound.table.condition') }}</th> -->
             <!-- <th>{{ $t('Inbound.table.effective_date') }}</th> -->
             <th style="width: 300px;" class="text-end px-4">{{ $t('Inbound.table.action') }}</th>
@@ -62,50 +62,36 @@
             <!-- <td>{{ inbound.maKho }}</td> -->
             <td>{{ inbound.nguoiPhuTrach }}</td>
             <td>{{ inbound.ngayXuat }}</td>
-            <td>
+            <!-- <td>
               <span class="d-flex align-items-center" style="width: fit-content;"
                 :class="['badge', getBadgeClass(inbound.trangThai)]">
                 <span class="material-symbols-outlined me-2">{{ statusIcon[inbound.trangThai] }}</span>
                 {{ getStatusLabel(inbound.trangThai) }}
               </span>
-            </td>
+            </td> -->
             <td class="d-none">{{ inbound.ngayXuat }}</td>
             <td>
               <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary d-flex align-items-center me-2" @click="showDetail(inbound)">
                   <span class="material-symbols-outlined">visibility</span>
                 </button>
-                <div class="dropdown" style="display: inline-block;">
+                <!-- <div class="dropdown" style="display: inline-block;">
                   <button class="btn btn-secondary d-flex align-items-center me-2" type="button" id="dropdownMenuButton"
                     data-bs-toggle="dropdown" aria-expanded="false"
                     :disabled="(authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) && inbound.trangThai !== 'confirm')">
                     <span class="material-symbols-outlined">more_vert</span>
                   </button>
                   <ul class="dropdown-menu box-shadow" aria-labelledby="dropdownMenuButton">
-                    <!-- <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'Manager']) && inbound.trangThai === 'open'">
-                    <a class="dropdown-item d-flex align-items-center justify-content-between custom-confirm"
-                      style="cursor: pointer;" @click="confirmPR(inbound.sysIdOutbound)">
-                      {{ $t('Inbound.table.li_confirm') }}
-                      <span class="material-symbols-outlined">check_circle</span>
-                    </a>
-                  </li> -->
-                    <li v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && inbound.trangThai === 'confirm'">
+                    <li
+                      v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && inbound.trangThai === 'confirm'">
                       <a class="dropdown-item d-flex align-items-center justify-content-between btn-logout"
                         @click="cancelPR(inbound.sysIdOutbound)">
                         {{ $t('Inbound.table.li_cancel') }}
                         <span class="material-symbols-outlined">cancel</span>
                       </a>
                     </li>
-                    <!-- <li v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN'])">
-                      <router-link
-                        :to="{ name: 'inbound-request/inbound/edit/:id', params: { id: inbound.sysIdOutbound } }"
-                        class="dropdown-item d-flex align-items-center justify-content-between">
-                        {{ $t('Inbound.table.li_edit') }}
-                        <span class="material-symbols-outlined">edit_square</span>
-                      </router-link>
-                    </li> -->
                   </ul>
-                </div>
+                </div> -->
               </div>
             </td>
           </tr>
