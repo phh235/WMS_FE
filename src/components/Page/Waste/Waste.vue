@@ -13,7 +13,7 @@
                 class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
             <th class="th-quantity" @click="toggleSortByQuantity">Số lượng <span
                 class="material-symbols-outlined ms-2 align-middle">swap_vert</span></th>
-            <th class="th-update-date">Ngày phế phẩm</th>
+            <th class="th-update-date">Ngày hủy</th>
             <th class="th-update-date">Lý do</th>
           </tr>
         </thead>

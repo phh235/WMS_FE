@@ -80,7 +80,10 @@ const initChart = (data) => {
     }),
     label: {
       show: true,
-      position: 'inside'
+      position: 'inside',
+      formatter: (params) => {
+        return params.value > 0 ? params.value : '';
+      }
     }
   }));
 

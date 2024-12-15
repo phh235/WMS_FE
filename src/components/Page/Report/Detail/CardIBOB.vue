@@ -71,11 +71,6 @@ const loadData = async () => {
       apiService.get('purchase-details-outbound/thong-ke-xuat-nhieu-nhat'),
     ]);
 
-    console.log('Nhập ít nhất:', priceRes);
-    console.log('Nhập nhiều nhất:', ibRes);
-    console.log('Xuất ít nhất:', obRes);
-    console.log('Xuất nhiều nhất:', invRes);
-
     // Truy xuất dữ liệu từ `data[0]`:
     cardData.value = [
       {

@@ -228,8 +228,8 @@ const addProduct = () => {
     sysIdSanPham: '',
     sysIdKhachHang: '',
     sysIdNhaCungCap: '',
-    soLuong: 0,
-    gia: 0,
+    soLuong: '',
+    gia: '',
     ngayNhapDuKien: ''
   });
 };
