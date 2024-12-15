@@ -74,11 +74,6 @@ const prepareGroupedData = () => {
     },
   }));
 
-  // Add console logs for debugging
-  console.log("Grouped Data:", groupedData);
-  console.log("Categories:", categories);
-  console.log("Series:", series);
-
   return { categories, series };
 };
 
@@ -133,7 +128,6 @@ const initChart = () => {
     series,
   };
 
-  console.log("ECharts Option:", option);
   chart.value.setOption(option, true);
 };
 

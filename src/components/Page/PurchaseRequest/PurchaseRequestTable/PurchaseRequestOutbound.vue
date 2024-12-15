@@ -74,7 +74,7 @@
                 v-if="authStore.checkPermissions(['ROLE_ADMIN', 'ROLE_MANAGER']) && purchase.trangThai === 'approving'">
                 <span class="material-symbols-outlined me-2">check_circle</span> Xác nhận
               </button>
-              <button class="btn btn-secondary d-flex align-items-center me-2" @click="sendToAdmin(purchase.maPR)"
+              <button class="btn btn-export d-flex align-items-center me-2" @click="sendToAdmin(purchase.maPR)"
                 v-if="authStore.checkPermissions(['ROLE_USER', 'ROLE_ADMIN']) && purchase.trangThai === 'open'">
                 <span class="material-symbols-outlined me-2">send</span> {{ $t('PurchaseRequest.tabs.send') }}
               </button>
