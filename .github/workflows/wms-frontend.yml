@@ -80,7 +80,7 @@ jobs:
                 docker container rm $TECHTRIBE_APP_NAME
               fi
 
-              docker run -d -p 5173:5173 \
+              docker run -d -p 5173:80 \
                 --restart unless-stopped \
                 --name $TECHTRIBE_APP_NAME \
                 --cpus=1 \
