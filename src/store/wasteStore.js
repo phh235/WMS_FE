@@ -14,7 +14,7 @@ export const useWasteProductStore = defineStore("wasteProduct", () => {
       wasteProduct.value = response.data;
     } catch (error) {
       console.error("Failed to fetch wasteProduct:", error);
-      showToastError("Không thể lấy danh sách tồn kho vật lý. Vui lòng thử lại sau.");
+      showToastError("Không thể lấy danh sách. Vui lòng thử lại sau.");
     }
   };
 
@@ -22,9 +22,10 @@ export const useWasteProductStore = defineStore("wasteProduct", () => {
     try {
       const response = await apiService.get("waste-products/tong-so-luong");
       wasteTotalProduct.value = response.data;
+      console.log(wasteTotalProduct.value);
     } catch (error) {
       console.error("Failed to fetch wasteProduct:", error);
-      showToastError("Không thể lấy danh sách tồn kho vật lý. Vui lòng thử lại sau.");
+      showToastError("Không thể lấy danh sách. Vui lòng thử lại sau.");
     }
   };
 

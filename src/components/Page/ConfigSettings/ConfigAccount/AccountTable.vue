@@ -52,14 +52,17 @@
             </span>
           </td>
           <td class="d-flex text-center justify-content-center">
-            <button class="btn btn-secondary d-flex me-2" @click="$emit('lock', user)">
+            <button class="btn btn-secondary d-flex me-2" @click="$emit('lock', user)"
+              v-if="user.roles[0]?.moTa !== 'Quản trị hệ thống'">
               <div class="material-symbols-outlined">{{ lockIcon[user.active] }}</div>
             </button>
             <!-- <button class="btn btn-secondary d-flex me-2" @click="$emit('edit', user)">
               <div class="material-symbols-outlined">edit_square</div>
             </button> -->
-            <button class="btn btn-danger d-flex" @click="$emit('delete', user.username)">
-              <div class="material-symbols-outlined">delete</div>
+            <button class="btn btn-danger d-flex" @click="$emit('delete', user.username)"
+              v-if="user.roles[0]?.moTa !== 'Quản trị hệ thống'">
+              <div class=" material-symbols-outlined">delete
+              </div>
             </button>
           </td>
         </tr>
@@ -165,6 +168,10 @@ const handleItemsPerPageChange = (itemsPerPage) => {
 .btn-danger,
 .btn-secondary {
   padding: 10px 10px;
+}
+
+td {
+  height: 60px;
 }
 
 .bg-success {
